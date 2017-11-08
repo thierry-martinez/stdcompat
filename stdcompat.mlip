@@ -1,0 +1,554 @@
+val hypot : float -> float -> float
+
+val copysign : float -> float -> float
+
+val raise_notrace : exn -> 'a
+
+#if OCAMLVERSION < 402
+type bytes = string
+#else
+type bytes_ = bytes
+type bytes = bytes_
+#endif
+
+val print_bytes : bytes -> unit
+
+val prerr_bytes : bytes -> unit
+
+val output_subbytes : out_channel -> bytes -> int -> int -> unit
+
+val output_substring : out_channel -> string -> int -> int -> unit
+
+val really_input_string : in_channel -> int -> string
+
+#if OCAMLVERSION < 403
+type ('a, 'b) result = Ok of 'a | Error of 'b
+#else
+type ('a, 'b) result = ('a, 'b) Pervasives.result
+#endif
+
+val bool_of_string_opt : string -> bool option
+
+val int_of_string_opt : string -> int option
+
+val float_of_string_opt : string -> float option
+
+val read_int_opt : unit -> int option
+
+val read_float_opt : unit -> float option
+
+#if OCAMLVERSION < 406
+type floatarray = float array
+#else
+type floatarray_ = floatarray
+type floatarray = floatarray_
+#endif
+
+module Arg : sig
+  include module type of Arg
+
+  val read_arg : string -> string array
+
+  val read_arg0 : string -> string array
+
+  val write_arg : string -> string array -> unit
+
+  val write_arg0 : string -> string array -> unit
+end
+
+module Lazy : sig
+  include module type of Lazy
+
+  val from_fun : (unit -> 'a) -> 'a t
+
+  val from_val : 'a -> 'a t
+end
+
+module Char : sig
+  include module type of Char
+
+  val lowercase_ascii : t -> t
+
+  val uppercase_ascii : t -> t
+
+  val equal : t -> t -> bool
+end
+
+module String : sig
+  include module type of String
+
+  val init : int -> (int -> char) -> string
+
+  val mapi : (int -> char -> char) -> string -> string
+
+  val iteri : (int -> char -> unit) -> string -> unit
+
+  val map : (char -> char) -> string -> string
+
+  val trim : string -> string
+
+  val lowercase_ascii : string -> string
+
+  val uppercase_ascii : string -> string
+
+  val capitalize_ascii : string -> string
+
+  val uncapitalize_ascii : string -> string
+
+  val equal : t -> t -> bool
+
+  val split_on_char : char -> string -> string list
+
+  val index_opt : string -> char -> int option
+
+  val rindex_opt : string -> char -> int option
+
+  val index_from_opt : string -> int -> char -> int option
+
+  val rindex_opt : string -> char -> int option
+
+  val rindex_from_opt : string -> int -> char -> int option
+end
+
+module Stack : sig
+  include module type of Stack
+
+  val fold : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+end
+
+module Hashtbl : sig
+  type ('a, 'b) t = ('a, 'b) Hashtbl.t
+
+  val clear : ('a, 'b) t -> unit
+
+  val copy : ('a, 'b) t -> ('a, 'b) t
+
+  val add : ('a, 'b) t -> 'a -> 'b -> unit
+
+  val find : ('a, 'b) t -> 'a -> 'b
+
+  val find_all : ('a, 'b) t -> 'a -> 'b list
+
+  val mem : ('a, 'b) t -> 'a -> bool
+
+  val remove : ('a, 'b) t -> 'a -> unit
+
+  val replace : ('a, 'b) t -> 'a -> 'b -> unit
+
+  val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
+
+  val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
+
+  val length : ('a, 'b) t -> int
+
+  module type HashedType = Hashtbl.HashedType
+
+  val hash : 'a -> int
+
+  val hash_param : int -> int -> 'a -> int
+
+  val create : ?random:bool -> int -> ('a, 'b) t
+
+  val reset : ('a, 'b) t -> unit
+
+  val randomize : unit -> unit
+
+#if OCAMLVERSION < 400
+  type statistics = {
+      num_bindings : int;
+      num_buckets : int;
+      max_bucket_length : int;
+      bucket_histogram : int array;
+    }
+#else
+  type statistics = Hashtbl.statistics
+#endif
+
+  val stats : ('a, 'b) t -> statistics
+
+  val is_randomized : unit -> bool
+
+  val filter_map_inplace : ('a -> 'b -> 'b option) -> ('a, 'b) t -> unit
+
+  val find_opt : ('a, 'b) t -> 'a -> 'b option
+
+  val seeded_hash : int -> 'a -> int
+
+  val seeded_hash_param : int -> int -> int -> 'a -> int
+
+  module type S = sig
+    type 'a t
+
+    type key
+
+    val clear : 'a t -> unit
+
+    val copy : 'a t -> 'a t
+
+    val add : 'a t -> key -> 'a -> unit
+
+    val find : 'a t -> key -> 'a
+
+    val find_all : 'a t -> key -> 'a list
+
+    val mem : 'a t -> key -> bool
+
+    val remove : 'a t -> key -> unit
+
+    val replace : 'a t -> key -> 'a -> unit
+
+    val iter : (key -> 'a -> unit) -> 'a t -> unit
+
+    val fold : (key -> 'a -> 'c -> 'c) -> 'a t -> 'c -> 'c
+
+    val length : 'a t -> int
+
+    val create : int -> 'a t
+
+    val reset : 'a t -> unit
+
+    val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
+
+    val find_opt : 'a t -> key -> 'a option
+
+    val stats : 'a t -> statistics
+  end
+
+  module Make (H : HashedType) : S with type key = H.t
+
+  module type SeededHashedType = sig
+    type t
+
+    val equal : t -> t -> bool
+
+    val hash : int -> t -> int
+  end
+
+  module type SeededS = sig
+    include S
+
+    val create : ?random:bool -> int -> 'a t
+  end
+
+  module MakeSeeded (H : SeededHashedType) : SeededS with type key = H.t
+end
+
+module Set : sig
+  module type OrderedType = Set.OrderedType
+
+  module type S = sig
+    include Set.S
+
+    val find : elt -> t -> elt
+
+    val of_list : elt list -> t
+
+    val map : (elt -> elt) -> t -> t
+
+    val min_elt_opt : t -> elt option
+
+    val max_elt_opt : t -> elt option
+
+    val choose_opt : t -> elt option
+
+    val find_opt : elt -> t -> elt option
+
+    val find_first : (elt -> bool) -> t -> elt
+
+    val find_first_opt : (elt -> bool) -> t -> elt option
+
+    val find_last : (elt -> bool) -> t -> elt
+
+    val find_last_opt : (elt -> bool) -> t -> elt option
+  end
+
+  module Make (Ord : OrderedType) : S with type elt = Ord.t  
+end
+
+module Map : sig
+  module type OrderedType = Map.OrderedType
+
+  module type S = sig
+    include Map.S
+
+    val union : (key -> 'a -> 'a -> 'a option) -> 'a t -> 'a t -> 'a t
+
+    val find_opt : key -> 'a t -> 'a option
+
+    val min_binding_opt : 'a t -> (key * 'a) option
+
+    val max_binding_opt : 'a t -> (key * 'a) option
+
+    val choose_opt : 'a t -> (key * 'a) option
+
+    val update : key -> ('a option -> 'a option) -> 'a t -> 'a t
+  end
+
+  module Make (Ord : OrderedType) : S with type key = Ord.t  
+end
+
+module Sys : sig
+  include module type of Sys
+
+  val unix : bool
+
+  val win32 : bool
+
+  val cygwin : bool
+
+  val sigbus : int
+
+  val sigpoll : int
+
+  val sigsys : int
+
+  val sigtrap : int
+
+  val sigurg : int
+
+  val sigxcpu : int
+
+  val sigxfsz : int
+
+  val getenv_opt : string -> string option
+end
+
+module Uchar : sig
+#if OCAMLVERSION < 403
+  type t
+#else
+  include module type of Uchar
+#endif
+
+  val min : t
+
+  val max : t
+
+  val succ : t -> t
+
+  val pred : t -> t
+
+  val is_valid : int -> bool
+
+  val of_int : int -> t
+
+  val unsafe_of_int : int -> t
+
+  val to_int : t -> int
+
+  val is_char : t -> bool
+
+  val of_char : char -> t
+
+  val to_char : t -> char
+
+  val unsafe_to_char : t -> char
+
+  val equal : t -> t -> bool
+
+  val compare : t -> t -> int
+
+  val hash : t -> int
+
+  val bom : t
+
+  val rep : t
+end
+
+module Bytes : sig
+#if OCAMLVERSION < 402
+  include module type of String
+#else
+  include module type of Bytes
+#endif
+
+  val empty : t
+
+  val of_string : string -> t
+
+  val to_string : t -> string
+
+  val sub_string : t -> int -> int -> string
+
+  val extend : t -> int -> int -> t
+
+  val blit_string : string -> int -> t -> int -> int -> unit
+
+  val cat : t -> t -> t
+
+  val unsafe_of_string : string -> t
+
+  val unsafe_to_string : t -> string
+
+  val uppercase_ascii : t -> t
+
+  val lowercase_ascii : t -> t
+
+  val capitalize_ascii : t -> t
+
+  val uncapitalize_ascii : t -> t
+
+  val equal : t -> t -> bool
+end
+
+module Buffer : sig
+  include module type of Buffer
+
+  val to_bytes : t -> bytes
+
+  val add_bytes : t -> bytes -> unit
+
+  val add_subbytes : t -> bytes -> int -> int -> unit
+
+  val add_utf_8_uchar : t -> Uchar.t -> unit
+
+  val add_utf_16be_uchar : t -> Uchar.t -> unit
+
+  val add_utf_16le_uchar : t -> Uchar.t -> unit
+end
+
+module Stream : sig
+  include module type of Stream
+
+  val of_bytes : bytes -> char t
+end
+
+module Digest : sig
+  include module type of Digest
+
+  val equal : t -> t -> bool
+end
+
+module Nativeint : sig
+  include module type of Nativeint
+
+  val equal : t -> t -> bool
+
+  val of_string_opt : string -> t option
+end
+
+module Int32 : sig
+  include module type of Int32
+
+  val equal : t -> t -> bool
+
+  val of_string_opt : string -> t option
+end
+
+module Int64 : sig
+  include module type of Int64
+
+  val equal : t -> t -> bool
+
+  val of_string_opt : string -> t option
+end
+
+module List : sig
+  include module type of List
+
+  val iteri : (int -> 'a -> unit) -> 'a list -> unit
+
+  val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list
+
+  val sort_uniq : ('a -> 'a -> int) -> 'a list -> 'a list
+
+  val cons : 'a -> 'a list -> 'a list
+
+  val compare_lengths : 'a list -> 'a list -> int
+
+  val compare_length_with : 'a list -> int -> int
+
+  val nth_opt : 'a list -> int -> 'a option
+
+  val find_opt : ('a -> bool) -> 'a list -> 'a option
+
+  val assoc_opt : 'a -> ('a * 'b) list -> 'b option
+
+  val assq_opt : 'a -> ('a * 'b) list -> 'b option
+end
+
+module Filename : sig
+  include module type of Filename
+
+  val extension : string -> string
+
+  val remove_extension : string -> string
+end
+
+module Array : sig
+  val length : 'a array -> int
+
+  val get : 'a array -> int -> 'a
+
+  val set : 'a array -> int -> 'a -> unit
+
+  val make : int -> 'a -> 'a array
+
+  val init : int -> (int -> 'a) -> 'a array
+
+  val make_matrix : int -> int -> 'a -> 'a array array
+
+  val append : 'a array -> 'a array -> 'a array
+
+  val concat : 'a array list -> 'a array
+
+  val sub : 'a array -> int -> int -> 'a array
+
+  val copy : 'a array -> 'a array
+
+  val fill : 'a array -> int -> int -> 'a -> unit
+
+  val blit : 'a array -> int -> 'a array -> int -> int -> unit
+
+  val to_list : 'a array -> 'a list
+
+  val of_list : 'a list -> 'a array
+
+  val iter : ('a -> unit) -> 'a array -> unit
+
+  val iteri : (int -> 'a -> unit) -> 'a array -> unit
+
+  val map : ('a -> 'b) -> 'a array -> 'b array
+
+  val mapi : (int -> 'a -> 'b) -> 'a array -> 'b array
+
+  val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b array -> 'a
+
+  val fold_right : ('b -> 'a -> 'a) -> 'b array -> 'a -> 'a
+
+  val sort : ('a -> 'a -> int) -> 'a array -> unit
+
+  val stable_sort : ('a -> 'a -> int) -> 'a array -> unit
+
+  val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
+
+  val unsafe_get : 'a array -> int -> 'a
+
+  val unsafe_set : 'a array -> int -> 'a -> unit
+
+  val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
+
+  val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
+
+  val for_all : ('a -> bool) -> 'a array -> bool
+
+  val exists : ('a -> bool) -> 'a array -> bool
+
+  val mem : 'a -> 'a array -> bool
+
+  val memq : 'a -> 'a array -> bool
+
+  module Floatarray : sig
+    val create : int -> floatarray
+
+    val length : floatarray -> int
+
+    val get : floatarray -> int -> float
+
+    val set : floatarray -> int -> float -> unit
+
+    val unsafe_get : floatarray -> int -> float
+
+    val unsafe_set : floatarray -> int -> float -> unit
+  end
+end

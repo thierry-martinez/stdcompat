@@ -1,0 +1,8 @@
+*~
+*.[ao]
+*.cm[aiotx]
+*.cmti
+*.cmx[as]
+/doc/
+/stdcompat.mli
+/stdcompat.ml
