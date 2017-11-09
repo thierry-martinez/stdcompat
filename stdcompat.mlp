@@ -358,7 +358,7 @@ module Hashtbl = struct
           if rebuild || last_key = Some key then                               \
             (Some key, to_replace, to_add, to_remove, true, true)              \
           else                                                                 \
-            (Some key, to_replace, to_add, key :: to_remove, false, true)      \
+            (None, to_replace, to_add, key :: to_remove, false, true)      \
       | Some value0 ->                                                         \
           if value == value0 then                                              \
             (Some key, to_replace, (key, value0) :: to_add, to_remove, rebuild,\
