@@ -50,6 +50,8 @@ endif
 
 OCAMLVERSION := $(shell $(OCAMLC) -version | cut -c 1,3-4)
 
+CPP := cppo -D 'OCAMLVERSION $(OCAMLVERSION)'
+
 .PHONY : all
 all : bytecode $(patsubst %,native,$(filter true,$(OCAMLOPT_AVAILABLE))) doc
 
@@ -82,8 +84,7 @@ endif
 	$(OCAMLFIND) remove stdcompat
 
 stdcompat.ml stdcompat.mli: %: %p
-	gcc -DOCAMLVERSION=$(OCAMLVERSION) -E -Wno-invalid-pp-token -x c $^ \
-		>$@ || rm $@
+	$(CPP) $^ >$@ || rm $@
 
 stdcompat.cmo stdcompat.cmx: stdcompat.cmi
 
