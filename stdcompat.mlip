@@ -10,6 +10,8 @@ type bytes = string
 type bytes_ = bytes
 type bytes = bytes_
 #endif
+(** @since 4.02.0 alias to ``bytes``.
+    @before 4.02.0 alias to ``string``. *)
 
 val print_bytes : bytes -> unit
 
@@ -43,6 +45,8 @@ type floatarray = float array
 type floatarray_ = floatarray
 type floatarray = floatarray_
 #endif
+(** @since 4.06.0 alias to ``floatarray``.
+    @before 4.06.0 alias to ``float array``. *)
 
 module Arg : sig
   include module type of Arg
@@ -150,6 +154,7 @@ module Hashtbl : sig
   val create : ?random:bool -> int -> ('a, 'b) t
 
   val reset : ('a, 'b) t -> unit
+  (** @before 4.00.0 alias to [Hashtbl.clear]. *)
 
   val randomize : unit -> unit
 
@@ -169,6 +174,9 @@ module Hashtbl : sig
   val is_randomized : unit -> bool
 
   val filter_map_inplace : ('a -> 'b -> 'b option) -> ('a, 'b) t -> unit
+  (** @before 4.03.0 clear and rebuild the hash table when several values
+      have been associated to the same key and the updated values are not the
+      ones that are currently associated with the key. *)
 
   val find_opt : ('a, 'b) t -> 'a -> 'b option
 
@@ -254,15 +262,19 @@ module Set : sig
     val find_opt : elt -> t -> elt option
 
     val find_first : (elt -> bool) -> t -> elt
+    (** @before 4.05.0 linear time complexity. *)
 
     val find_first_opt : (elt -> bool) -> t -> elt option
+    (** @before 4.05.0 linear time complexity. *)
 
     val find_last : (elt -> bool) -> t -> elt
+    (** @before 4.05.0 linear time complexity. *)
 
     val find_last_opt : (elt -> bool) -> t -> elt option
+    (** @before 4.05.0 linear time complexity. *)
   end
 
-  module Make (Ord : OrderedType) : S with type elt = Ord.t  
+  module Make (Ord : OrderedType) : S with type elt = Ord.t
 end
 
 module Map : sig
@@ -284,7 +296,7 @@ module Map : sig
     val update : key -> ('a option -> 'a option) -> 'a t -> 'a t
   end
 
-  module Make (Ord : OrderedType) : S with type key = Ord.t  
+  module Make (Ord : OrderedType) : S with type key = Ord.t
 end
 
 module Sys : sig
