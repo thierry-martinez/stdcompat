@@ -401,10 +401,10 @@ module Hashtbl = struct
 #endif
 
 #if OCAMLVERSION < 400
-  let seeded_hash _seed x = Hashtbl.hash x
+  let seeded_hash seed x = Hashtbl.hash (seed, x)
 
-  let seeded_hash_param meaningful total _seed x =
-    Hashtbl.hash_param meaningful total x
+  let seeded_hash_param meaningful total seed x =
+    Hashtbl.hash_param meaningful total (seed, x)
 #else
   let seeded_hash = Hashtbl.seeded_hash
 
