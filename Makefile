@@ -50,7 +50,22 @@ endif
 
 OCAMLVERSION := $(shell $(OCAMLC) -version | cut -c 1,3-4)
 
-CPP := cppo -D 'OCAMLVERSION $(OCAMLVERSION)'
+CPPO := cppo
+CPP := cpp
+
+CPPO_AVAILABLE := $(shell \
+	if $(CPPO) -version >/dev/null 2>&1; then \
+		echo true; \
+	else \
+		echo false; \
+	fi \
+)
+
+ifeq ($(CPPO_AVAILABLE),true)
+	PP := $(CPPO) -D 'OCAMLVERSION $(OCAMLVERSION)'
+else
+	PP := $(CPP) -DOCAMLVERSION=$(OCAMLVERSION) -undef
+endif
 
 .PHONY : all
 all : bytecode $(patsubst %,native,$(filter true,$(OCAMLOPT_AVAILABLE))) doc
@@ -84,7 +99,7 @@ endif
 	$(OCAMLFIND) remove stdcompat
 
 stdcompat.ml stdcompat.mli: %: %p
-	$(CPP) $^ >$@ || rm $@
+	$(PP) $^ >$@ || rm $@
 
 stdcompat.cmo stdcompat.cmx: stdcompat.cmi
 
