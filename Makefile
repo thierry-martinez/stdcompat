@@ -80,11 +80,11 @@ native : stdcompat.cmxa stdcompat.cmxs
 clean :
 	rm -f stdcompat.ml stdcompat.mli \
 		stdcompat.cmo stdcompat.cmx stdcompat.o \
-		stdcompat.cma stdcompat.cmxs stdcompat.cmxa
+		stdcompat.cma stdcompat.cmxs stdcompat.cmxa stdcompat.a
 
 .PHONY : install
 install : META stdcompat.cma stdcompat.cmi \
-	$(patsubst %,stdcompat.cmxs stdcompat.cmxa, \
+	$(patsubst %,stdcompat.cmxs stdcompat.cmxa stdcompat.a, \
 		$(filter true,$(OCAMLOPT_AVAILABLE)))
 ifeq ($(HAVE_OCAMLFIND),no)
 	$(error ocamlfind is needed for 'make install')
