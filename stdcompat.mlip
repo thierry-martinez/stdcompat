@@ -157,6 +157,7 @@ module Hashtbl : sig
   (** @before 4.00.0 alias to [Hashtbl.clear]. *)
 
   val randomize : unit -> unit
+  (** @before 4.00.0 ignored: does nothing. *)
 
 #if OCAMLVERSION < 400
   type statistics = {
@@ -170,8 +171,11 @@ module Hashtbl : sig
 #endif
 
   val stats : ('a, 'b) t -> statistics
+  (** @before 4.00.0 returns void statistics (only the field [num_bindings] is
+      initialized correctly. *)
 
   val is_randomized : unit -> bool
+  (** @before 4.00.0 always false *)
 
   val filter_map_inplace : ('a -> 'b -> 'b option) -> ('a, 'b) t -> unit
   (** @before 4.03.0 clear and rebuild the hash table when several values
@@ -239,6 +243,8 @@ module Hashtbl : sig
   end
 
   module MakeSeeded (H : SeededHashedType) : SeededS with type key = H.t
+  (** before 4.00.0 a non-seeded hash table is created instead: the seed is
+      always 0. *)
 end
 
 module Set : sig
@@ -331,6 +337,7 @@ module Uchar : sig
 #else
   include module type of Uchar
 #endif
+  (** @before 4.03.0 the module [UChar] is redefined from scratch. *)
 
   val min : t
 
@@ -373,6 +380,7 @@ module Bytes : sig
 #else
   include module type of Bytes
 #endif
+  (** @before 4.02.0 the module [Bytes] is defined on top of the module [String]. *)
 
   val empty : t
 
@@ -549,6 +557,10 @@ module Array : sig
   val mem : 'a -> 'a array -> bool
 
   val memq : 'a -> 'a array -> bool
+
+  val create_float : int -> float array
+  (** @before 4.03.0 alias for [Array.make_float]
+      @before 4.02.0 implemented as [Array.make len 0]. *)
 
   module Floatarray : sig
     val create : int -> floatarray
