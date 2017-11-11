@@ -79,6 +79,7 @@ native : stdcompat.cmxa stdcompat.cmxs
 .PHONY : clean
 clean :
 	rm -f stdcompat.ml stdcompat.mli \
+		stdcompat.cmi \
 		stdcompat.cmo stdcompat.cmx stdcompat.o \
 		stdcompat.cma stdcompat.cmxs stdcompat.cmxa stdcompat.a
 
