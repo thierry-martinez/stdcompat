@@ -328,6 +328,15 @@ module Sys : sig
 
   val sigxfsz : int
 
+#if OCAMLVERSION < 404
+  type backend_type =
+    | Native
+    | Bytecode
+    | Other of string
+#endif
+
+  val backend_type : backend_type
+
   val getenv_opt : string -> string option
 end
 

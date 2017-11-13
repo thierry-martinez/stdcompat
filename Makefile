@@ -63,9 +63,15 @@ CPPO_AVAILABLE := $(shell \
 
 ifeq ($(CPPO_AVAILABLE),true)
 	PP := $(CPPO) -D 'OCAMLVERSION $(OCAMLVERSION)'
+	PP_NATIVE_ARGS := -D OCAMLNATIVE
 else
 	PP := $(CPP) -DOCAMLVERSION=$(OCAMLVERSION) -undef
+	PP_NATIVE_ARGS := -DOCAMLNATIVE
 endif
+
+PP_INTF := $(PP)
+PP_BYTECODE := $(PP)
+PP_NATIVE := $(PP) $(PP_NATIVE_ARGS)
 
 .PHONY : all
 all : bytecode $(patsubst %,native,$(filter true,$(OCAMLOPT_AVAILABLE))) doc
@@ -99,8 +105,8 @@ ifeq ($(HAVE_OCAMLFIND),no)
 endif
 	$(OCAMLFIND) remove stdcompat
 
-stdcompat.ml stdcompat.mli: %: %p
-	$(PP) $^ >$@ || rm $@
+stdcompat.mli: stdcompat.mlip
+	$(PP_INTF) $^ >$@ || rm $@
 
 stdcompat.cmo stdcompat.cmx: stdcompat.cmi
 
@@ -112,11 +118,11 @@ doc: stdcompat.mli
 %.cmi: %.mli
 	$(OCAMLC) -c $<
 
-%.cmo: %.ml
-	$(OCAMLC) -c $<
+stdcompat.cmo: stdcompat.mlp
+	$(OCAMLC) -pp "$(PP_BYTECODE)" -c -impl $<
 
-%.cmx: %.ml
-	$(OCAMLOPT) -c $<
+stdcompat.cmx: stdcompat.mlp
+	$(OCAMLOPT) -pp "$(PP_NATIVE)" -c -impl $<
 
 stdcompat.cma: stdcompat.cmo
 	$(OCAMLC) -a stdcompat.cmo -o $@

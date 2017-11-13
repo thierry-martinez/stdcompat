@@ -733,6 +733,19 @@ module Sys = struct
   let sigxfsz = -28
 #endif
 
+#if OCAMLVERSION < 404
+  type backend_type =
+    | Native
+    | Bytecode
+    | Other of string
+
+#ifdef OCAMLNATIVE
+  let backend_type = Native
+#else
+  let backend_type = Bytecode
+#endif
+#endif
+
 #if OCAMLVERSION < 405
   let getenv_opt var =
     option_find getenv var
