@@ -109,13 +109,13 @@ module String : sig
 
   val index_from_opt : string -> int -> char -> int option
 
-  val rindex_opt : string -> char -> int option
-
   val rindex_from_opt : string -> int -> char -> int option
 end
 
 module Stack : sig
-  include module type of Stack
+  include module type of struct
+    include Stack
+  end
 
   val fold : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 end
@@ -226,7 +226,13 @@ module Hashtbl : sig
     val stats : 'a t -> statistics
   end
 
-  module Make (H : HashedType) : S with type key = H.t
+  module Make (H : HashedType) : sig
+    include module type of struct
+      include (Hashtbl.Make (H))
+    end
+
+    include S with type 'a t := 'a t and type key := key
+  end
 
   module type SeededHashedType = sig
     type t
@@ -242,7 +248,17 @@ module Hashtbl : sig
     val create : ?random:bool -> int -> 'a t
   end
 
-  module MakeSeeded (H : SeededHashedType) : SeededS with type key = H.t
+  module MakeSeeded (H : SeededHashedType) : sig
+#if OCAMLVERSION < 400
+    include SeededS
+#else
+    include module type of struct
+      include Hashtbl.MakeSeeded (H)
+    end
+
+    include SeededS with type 'a t := 'a t and type key := key
+#endif
+  end
   (** before 4.00.0 a non-seeded hash table is created instead: the seed is
       always 0. *)
 end
@@ -280,7 +296,13 @@ module Set : sig
     (** @before 4.05.0 linear time complexity. *)
   end
 
-  module Make (Ord : OrderedType) : S with type elt = Ord.t
+  module Make (Ord : OrderedType) : sig
+    include module type of struct
+      include Set.Make (Ord)
+    end
+
+    include S with type elt := elt and type t := t
+  end
 end
 
 module Map : sig
@@ -302,11 +324,19 @@ module Map : sig
     val update : key -> ('a option -> 'a option) -> 'a t -> 'a t
   end
 
-  module Make (Ord : OrderedType) : S with type key = Ord.t
+  module Make (Ord : OrderedType) : sig
+    include module type of struct
+      include Map.Make (Ord)
+    end
+
+    include S with type 'a t := 'a t and type key := key
+  end
 end
 
 module Sys : sig
-  include module type of Sys
+  include module type of struct
+    include Sys
+  end
 
   val unix : bool
 
@@ -344,7 +374,9 @@ module Uchar : sig
 #if OCAMLVERSION < 403
   type t
 #else
-  include module type of Uchar
+  include module type of struct
+    include Uchar
+  end
 #endif
   (** @before 4.03.0 the module [UChar] is redefined from scratch. *)
 
@@ -385,9 +417,13 @@ end
 
 module Bytes : sig
 #if OCAMLVERSION < 402
-  include module type of String
+  include module type of struct
+    include String
+  end
 #else
-  include module type of Bytes
+  include module type of struct
+    include Bytes
+  end
 #endif
   (** @before 4.02.0 the module [Bytes] is defined on top of the module [String]. *)
 
@@ -421,7 +457,9 @@ module Bytes : sig
 end
 
 module Buffer : sig
-  include module type of Buffer
+  include module type of struct
+    include Buffer
+  end
 
   val to_bytes : t -> bytes
 
@@ -437,19 +475,25 @@ module Buffer : sig
 end
 
 module Stream : sig
-  include module type of Stream
+  include module type of struct
+    include Stream
+  end
 
   val of_bytes : bytes -> char t
 end
 
 module Digest : sig
-  include module type of Digest
+  include module type of struct
+    include Digest
+  end
 
   val equal : t -> t -> bool
 end
 
 module Nativeint : sig
-  include module type of Nativeint
+  include module type of struct
+    include Nativeint
+  end
 
   val equal : t -> t -> bool
 
@@ -457,7 +501,9 @@ module Nativeint : sig
 end
 
 module Int32 : sig
-  include module type of Int32
+  include module type of struct
+    include Int32
+  end
 
   val equal : t -> t -> bool
 
@@ -465,7 +511,9 @@ module Int32 : sig
 end
 
 module Int64 : sig
-  include module type of Int64
+  include module type of struct
+    include Int64
+  end
 
   val equal : t -> t -> bool
 
@@ -473,7 +521,9 @@ module Int64 : sig
 end
 
 module List : sig
-  include module type of List
+  include module type of struct
+    include List
+  end
 
   val iteri : (int -> 'a -> unit) -> 'a list -> unit
 
@@ -497,7 +547,9 @@ module List : sig
 end
 
 module Filename : sig
-  include module type of Filename
+  include module type of struct
+    include Filename
+  end
 
   val extension : string -> string
 
@@ -505,55 +557,32 @@ module Filename : sig
 end
 
 module Array : sig
-  val length : 'a array -> int
+  module Floatarray : sig
+#if OCAMLVERSION >= 406
+    include module type of struct
+      include Array.Floatarray
+    end
+#else
+    val create : int -> floatarray
 
-  val get : 'a array -> int -> 'a
+    val length : floatarray -> int
 
-  val set : 'a array -> int -> 'a -> unit
+    val get : floatarray -> int -> float
 
-  val make : int -> 'a -> 'a array
+    val set : floatarray -> int -> float -> unit
 
-  val init : int -> (int -> 'a) -> 'a array
+    val unsafe_get : floatarray -> int -> float
 
-  val make_matrix : int -> int -> 'a -> 'a array array
+    val unsafe_set : floatarray -> int -> float -> unit
+#endif
+  end
 
-  val append : 'a array -> 'a array -> 'a array
-
-  val concat : 'a array list -> 'a array
-
-  val sub : 'a array -> int -> int -> 'a array
-
-  val copy : 'a array -> 'a array
-
-  val fill : 'a array -> int -> int -> 'a -> unit
-
-  val blit : 'a array -> int -> 'a array -> int -> int -> unit
-
-  val to_list : 'a array -> 'a list
-
-  val of_list : 'a list -> 'a array
-
-  val iter : ('a -> unit) -> 'a array -> unit
-
-  val iteri : (int -> 'a -> unit) -> 'a array -> unit
-
-  val map : ('a -> 'b) -> 'a array -> 'b array
-
-  val mapi : (int -> 'a -> 'b) -> 'a array -> 'b array
-
-  val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b array -> 'a
-
-  val fold_right : ('b -> 'a -> 'a) -> 'b array -> 'a -> 'a
-
-  val sort : ('a -> 'a -> int) -> 'a array -> unit
-
-  val stable_sort : ('a -> 'a -> int) -> 'a array -> unit
-
-  val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
-
-  val unsafe_get : 'a array -> int -> 'a
-
-  val unsafe_set : 'a array -> int -> 'a -> unit
+  include module type of struct
+    include Array
+  end
+#if OCAMLVERSION >= 406
+    with module Floatarray := Floatarray
+#endif
 
   val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
 
@@ -570,18 +599,4 @@ module Array : sig
   val create_float : int -> float array
   (** @before 4.03.0 alias for [Array.make_float]
       @before 4.02.0 implemented as [Array.make len 0]. *)
-
-  module Floatarray : sig
-    val create : int -> floatarray
-
-    val length : floatarray -> int
-
-    val get : floatarray -> int -> float
-
-    val set : floatarray -> int -> float -> unit
-
-    val unsafe_get : floatarray -> int -> float
-
-    val unsafe_set : floatarray -> int -> float -> unit
-  end
 end

@@ -105,30 +105,42 @@ ifeq ($(HAVE_OCAMLFIND),no)
 endif
 	$(OCAMLFIND) remove stdcompat
 
-stdcompat.mli: stdcompat.mlip
+stdcompat.mli : stdcompat.mlip
 	$(PP_INTF) $^ >$@ || rm $@
 
-stdcompat.cmo stdcompat.cmx: stdcompat.cmi
+stdcompat.cmo stdcompat.cmx : stdcompat.cmi
 
-doc: stdcompat.mli
+doc : stdcompat.mli
 	mkdir -p doc
 	$(OCAMLDOC) -html -d $@ $^
 	touch doc
 
-%.cmi: %.mli
+%.cmi : %.mli
 	$(OCAMLC) -c $<
 
-stdcompat.cmo: stdcompat.mlp
+stdcompat.cmo : stdcompat.mlp
 	$(OCAMLC) -pp "$(PP_BYTECODE)" -c -impl $<
 
-stdcompat.cmx: stdcompat.mlp
+stdcompat.cmx : stdcompat.mlp
 	$(OCAMLOPT) -pp "$(PP_NATIVE)" -c -impl $<
 
-stdcompat.cma: stdcompat.cmo
+stdcompat.cma : stdcompat.cmo
 	$(OCAMLC) -a stdcompat.cmo -o $@
 
-stdcompat.cmxa: stdcompat.cmx
+stdcompat.cmxa : stdcompat.cmx
 	$(OCAMLOPT) -a stdcompat.cmx -o $@
 
-stdcompat.cmxs: stdcompat.cmx
+stdcompat.cmxs : stdcompat.cmx
 	$(OCAMLOPT) -shared stdcompat.cmx -o $@
+
+.PHONY : tests_bytecode
+tests_bytecode : tests.bytecode
+	./tests.bytecode
+
+tests.bytecode : stdcompat.cmo stdcompat_tests.cmo
+	$(OCAMLC) -o $@ $^
+
+stdcompat_tests.cmo : stdcompat.cmi
+
+%.cmo : %.ml
+	$(OCAMLC) -c $<
