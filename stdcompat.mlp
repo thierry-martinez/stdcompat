@@ -734,6 +734,29 @@ module Sys = struct
   let sigxcpu = -27
 
   let sigxfsz = -28
+
+  let int_size =
+     if 1 lsl word_size = 0 then
+       word_size
+     else if 1 lsl (word_size - 1) = 0 then
+       word_size - 1
+     else
+       assert false
+
+  let big_endian =
+#ifdef BIGENDIAN
+    true
+#else
+    false
+#endif
+
+  let runtime_variant () = ""
+
+  let runtime_parameters () = ""
+
+  let enable_runtime_warnings _ = ()
+
+  let runtime_warnings_enabled () = false
 #endif
 
 #if OCAMLVERSION < 404

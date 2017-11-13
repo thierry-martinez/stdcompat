@@ -367,6 +367,22 @@ module Sys : sig
 
   val backend_type : backend_type
 
+  val int_size : int
+
+  val big_endian : bool
+
+  val runtime_variant : unit -> string
+  (** @before 4.03.0 returns always the empty string *)
+
+  val runtime_parameters : unit -> string
+  (** @before 4.03.0 returns always the empty string *)
+
+  val enable_runtime_warnings : bool -> unit
+  (** @before 4.03.0 does nothing *)
+
+  val runtime_warnings_enabled : unit -> bool
+  (** @before 4.03.0 returns always false *)
+
   val getenv_opt : string -> string option
 end
 

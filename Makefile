@@ -61,12 +61,22 @@ CPPO_AVAILABLE := $(shell \
 	fi \
 )
 
+LITTLE_ENDIAN := $(shell \
+	echo -n I | hexdump -o | awk '{ print substr($2,6,1); exit }' \
+)
+
 ifeq ($(CPPO_AVAILABLE),true)
 	PP := $(CPPO) -D 'OCAMLVERSION $(OCAMLVERSION)'
 	PP_NATIVE_ARGS := -D OCAMLNATIVE
+ifeq ($(LITTLE_ENDIAN),0)
+	PP_NATIVE_ARGS += -D BIGENDIAN
+endif
 else
 	PP := $(CPP) -DOCAMLVERSION=$(OCAMLVERSION) -undef
 	PP_NATIVE_ARGS := -DOCAMLNATIVE
+ifeq ($(LITTLE_ENDIAN),0)
+	PP_NATIVE_ARGS += -DBIGENDIAN
+endif
 endif
 
 PP_INTF := $(PP)
