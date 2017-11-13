@@ -7,6 +7,7 @@ val ( |> ) : 'a -> ('a -> 'b) -> 'b
 val ( @@ ) : ('a -> 'b) -> 'a -> 'b
 
 val raise_notrace : exn -> 'a
+(** @before 4.02.0 equivalent to [raise]. *)
 
 #if OCAMLVERSION < 402
 type bytes = string
@@ -14,8 +15,8 @@ type bytes = string
 type bytes_ = bytes
 type bytes = bytes_
 #endif
-(** @since 4.02.0 alias to ``bytes``.
-    @before 4.02.0 alias to ``string``. *)
+(** @since 4.02.0 alias to [bytes].
+    @before 4.02.0 alias to [string]. *)
 
 val print_bytes : bytes -> unit
 
@@ -32,6 +33,7 @@ type ('a, 'b) result
    = ('a, 'b) Pervasives.result
 #endif
    = Ok of 'a | Error of 'b
+(** @since 4.03.0 alias to [Pervasives.result]. *)
 
 val bool_of_string_opt : string -> bool option
 
@@ -49,8 +51,8 @@ type floatarray = float array
 type floatarray_ = floatarray
 type floatarray = floatarray_
 #endif
-(** @since 4.06.0 alias to ``floatarray``.
-    @before 4.06.0 alias to ``float array``. *)
+(** @since 4.06.0 alias to [floatarray].
+    @before 4.06.0 alias to [float array]. *)
 
 module Arg : sig
   include module type of Arg
