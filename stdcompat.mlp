@@ -1119,6 +1119,39 @@ end
 module Filename = struct
   include Filename
 
+#if OCAMLVERSION < 400
+  let current_temp_dir_name = ref temp_dir_name
+
+  let get_temp_dir_name () =
+    !current_temp_dir_name
+
+  let set_temp_dir_name dir =
+    current_temp_dir_name := dir
+
+  let temp_file ?(temp_dir = !current_temp_dir_name) prefix suffix =
+    temp_file ~temp_dir prefix suffix
+
+  let prng = lazy (Random.State.make_self_init ())
+#endif
+
+#if OCAMLVERSION < 403
+  let open_temp_file ?(mode = [Open_text]) ?(perms = 0o600)
+      ?(temp_dir = !current_temp_dir_name) prefix suffix =
+    let rec try_name counter =
+      let name =
+        let rnd = Random.State.bits (Lazy.force prng) land 0xFFFFFF in
+        concat temp_dir (Printf.sprintf "%s%06x%s" prefix rnd suffix) in
+      try
+        name,
+        open_out_gen (Open_wronly :: Open_creat :: Open_excl :: mode) perms name
+      with Sys_error _ as e ->
+        if counter >= 1000 then
+          raise e
+        else
+          try_name (succ counter) in
+    try_name 0
+#endif
+
 #if OCAMLVERSION < 404
   let is_dir_sep c s i =
     if dir_sep.[0] <> c then

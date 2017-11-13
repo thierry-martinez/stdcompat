@@ -62,7 +62,7 @@ CPPO_AVAILABLE := $(shell \
 )
 
 LITTLE_ENDIAN := $(shell \
-	echo -n I | hexdump -o | awk '{ print substr($2,6,1); exit }' \
+	echo -n I | hexdump -o | awk '{ print substr($$2,6,1); exit }' \
 )
 
 ifeq ($(CPPO_AVAILABLE),true)
