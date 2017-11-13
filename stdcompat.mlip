@@ -553,6 +553,9 @@ module Buffer : sig
 
   val to_bytes : t -> bytes
 
+  val truncate : t -> int -> unit
+  (** @before 4.05.0 duplicates the prefix kept. *)
+
   val add_bytes : t -> bytes -> unit
 
   val add_subbytes : t -> bytes -> int -> int -> unit

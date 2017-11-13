@@ -1018,6 +1018,13 @@ module Buffer = struct
   let add_subbytes = add_substring
 #endif
 
+#if OCAMLVERSION < 405
+  let truncate b len =
+    let s = sub b 0 len in
+    clear b;
+    add_string b s
+#endif
+
 #if OCAMLVERSION < 406
   let add_utf_8_uchar b u =
     if Uchar.is_char u then
