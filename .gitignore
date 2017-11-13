@@ -6,3 +6,4 @@
 /doc/
 /stdcompat.mli
 /stdcompat.ml
+/tests.bytecode
