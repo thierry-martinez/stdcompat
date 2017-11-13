@@ -719,6 +719,41 @@ module Map = struct
   end
 end
 
+module Weak = struct
+  type 'a t = 'a Weak.t
+
+  let create = Weak.create
+
+  let length = Weak.length
+
+  let set = Weak.set
+
+  let get = Weak.get
+
+  let get_copy = Weak.get_copy
+
+  let check = Weak.check
+
+  let fill = Weak.fill
+
+  let blit = Weak.blit
+
+  module type S = sig
+    include Weak.S
+
+    val find_opt: t -> data -> data option
+  end
+
+  module Make (H : Hashtbl.HashedType) = struct
+    include Weak.Make (H)
+
+#if OCAMLVERSION < 405
+    let find_opt t d =
+      option_find (find t) d
+#endif
+  end
+end
+
 module Sys = struct
   include Sys
 
@@ -1210,13 +1245,13 @@ module Filename = struct
 
   let temp_file ?(temp_dir = !current_temp_dir_name) prefix suffix =
     temp_file ~temp_dir prefix suffix
-
-  let prng = lazy (Random.State.make_self_init ())
 #endif
 
 #if OCAMLVERSION < 403
+  let prng = lazy (Random.State.make_self_init ())
+
   let open_temp_file ?(mode = [Open_text]) ?(perms = 0o600)
-      ?(temp_dir = !current_temp_dir_name) prefix suffix =
+      ?(temp_dir = get_temp_dir_name ()) prefix suffix =
     let rec try_name counter =
       let name =
         let rnd = Random.State.bits (Lazy.force prng) land 0xFFFFFF in
