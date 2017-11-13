@@ -378,7 +378,7 @@ module Uchar : sig
     include Uchar
   end
 #endif
-  (** @before 4.03.0 the module [UChar] is redefined from scratch. *)
+  (** @before 4.03.0 the module [Uchar] is redefined from scratch. *)
 
   val min : t
 
