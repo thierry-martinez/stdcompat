@@ -1028,7 +1028,7 @@ module List = struct
   let rec uniq_rev_append cmp l accu =
     match l with
     | [] -> accu
-    | [item] -> [item]
+    | [item] -> item :: accu
     | hd :: (hd' :: _ as tl) ->
         if cmp hd hd' = 0 then uniq_rev_append cmp tl accu
         else uniq_rev_append cmp tl (hd :: accu)
@@ -1064,7 +1064,7 @@ module List = struct
       | _ :: tl -> compare_length_with tl (pred n)
 
   let nth_opt l n =
-    option_find (nth l) n
+    option_fail (nth l) n
 
   let find_opt p l =
     option_find (find p) l

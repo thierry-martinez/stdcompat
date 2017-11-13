@@ -92,6 +92,39 @@ let () =
     let module M = Stdcompat.Hashtbl.Make (H) in
     M.find_opt t 1 = Some 1 &&
     M.find_opt t 3 = None);
+  assert (
+    let l = ref [] in
+    let f a b =
+      l := (a, b) :: !l in
+    Stdcompat.List.iteri f [1; 2; 3];
+    !l = [2, 3; 1, 2; 0, 1]);
+  assert (
+    let f a b =
+      (a, b) in
+    Stdcompat.List.mapi f  [1; 2; 3] = [0, 1; 1, 2; 2, 3]);
+  assert (
+    Stdcompat.List.sort_uniq compare  [2; 1; 3; 2; 1; 3]
+    = [1; 2; 3]);
+  assert (Stdcompat.List.cons 1 [2; 3] = [1; 2; 3]);
+  assert (Stdcompat.List.compare_lengths [1] [2; 3] < 0);
+  assert (Stdcompat.List.compare_lengths [1; 2] [2; 3] = 0);
+  assert (Stdcompat.List.compare_lengths [1; 2; 3] [2; 3] > 0);
+  assert (Stdcompat.List.compare_length_with [1] 2 < 0);
+  assert (Stdcompat.List.compare_length_with [1; 2] 2 = 0);
+  assert (Stdcompat.List.compare_length_with [1; 2; 3] 2 > 0);;
+  assert (Stdcompat.List.nth_opt [1; 2; 3] 2 = Some 3);
+  assert (Stdcompat.List.nth_opt [1; 2; 3] 3 = None);
+  assert (
+    try
+      ignore (Stdcompat.List.nth_opt [1; 2; 3] (-1));
+      false
+    with Invalid_argument _ -> true);
+  assert (Stdcompat.List.find_opt (fun i -> i mod 2 = 0) [1; 2; 3] = Some 2);
+  assert (Stdcompat.List.find_opt (fun i -> i mod 4 = 0) [1; 2; 3] = None);
+  assert (Stdcompat.List.assoc_opt 2 [1, 0; 2, 1; 3, 2] = Some 1);
+  assert (Stdcompat.List.assoc_opt 4 [1, 0; 2, 1; 3, 2] = None);
+  assert (Stdcompat.List.assq_opt 2 [1, 0; 2, 1; 3, 2] = Some 1);
+  assert (Stdcompat.List.assq_opt "a" ["a", 1; "b", 2; "c", 3] = None);
   assert (Stdcompat.Filename.extension "a.b/c.de" = ".de");
   assert (Stdcompat.Filename.extension "a.b/cd" = "");
   assert (Stdcompat.Filename.remove_extension "a.b/c.de" = "a.b/c");
