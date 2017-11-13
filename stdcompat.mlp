@@ -71,11 +71,11 @@ let output_substring = output_substring
 let really_input_string = really_input_string
 #endif
 
-#if OCAMLVERSION < 403
-type ('a, 'b) result = Ok of 'a | Error of 'b
-#else
-type ('a, 'b) result = ('a, 'b) Pervasives.result
+type ('a, 'b) result
+#if OCAMLVERSION >= 403
+   = ('a, 'b) Pervasives.result
 #endif
+   = Ok of 'a | Error of 'b
 
 #if OCAMLVERSION < 405
 let bool_of_string_opt s =

@@ -27,11 +27,11 @@ val output_substring : out_channel -> string -> int -> int -> unit
 
 val really_input_string : in_channel -> int -> string
 
-#if OCAMLVERSION < 403
-type ('a, 'b) result = Ok of 'a | Error of 'b
-#else
-type ('a, 'b) result = ('a, 'b) Pervasives.result
+type ('a, 'b) result
+#if OCAMLVERSION >= 403
+   = ('a, 'b) Pervasives.result
 #endif
+   = Ok of 'a | Error of 'b
 
 val bool_of_string_opt : string -> bool option
 
