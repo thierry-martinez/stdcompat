@@ -86,12 +86,37 @@ let () =
       let hash : int -> int = fun x -> x
     end in
     let module M = Hashtbl.Make (H) in
+    let module M' = Stdcompat.Hashtbl.Make (H) in
     let t = M.create 17 in
     M.add t 1 1;
     M.add t 2 2;
-    let module M = Stdcompat.Hashtbl.Make (H) in
-    M.find_opt t 1 = Some 1 &&
-    M.find_opt t 3 = None);
+    M'.find_opt t 1 = Some 1 &&
+    M'.find_opt t 3 = None);
+  assert (
+    let module S = Set.Make (String) in
+    let module S' = Stdcompat.Set.Make (String) in
+    let s = S'.of_list ["a"; "b"; "c"] in
+    S.compare
+      (S'.map (fun s -> s ^ ".") s)
+      (S'.of_list ["a."; "b."; "c."]) = 0 &&
+    S'.find_opt "a" s = Some "a" &&
+    S'.find_opt "d" s = None &&
+    S'.find_first (fun s -> s >= "b") s = "b" &&
+    S'.find_last (fun s -> s <= "b") s = "b");
+  assert (
+    let module M = Map.Make (String) in
+    let module M' = Stdcompat.Map.Make (String) in
+    let m = M.add "1" 2 M.empty in
+    M.compare compare (
+      M'.update "1" (function None -> Some 0 | Some i -> Some (i + 1))
+      (M'.update "2" (function None -> Some 0 | Some _ -> None)
+         (M'.update "3" (function None -> None | Some i -> Some i) m)))
+      (M.add "1" 3 (M.add "2" 0 M.empty)) = 0);
+  assert (
+    let b = Stdcompat.Bytes.of_string "hello" in
+    let b = Stdcompat.Bytes.extend b (-1) 2 in
+    Stdcompat.Bytes.sub_string b 0 4 = "ello" &&
+    Stdcompat.Bytes.length b = 6);
   assert (
     let l = ref [] in
     let f a b =
