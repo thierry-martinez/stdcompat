@@ -27,6 +27,16 @@ let hypot = hypot
 let copysign = copysign
 #endif
 
+#if OCAMLVERSION < 401
+let ( |> ) x f = f x
+
+let ( @@ ) f x = f x
+#else
+let ( |> ) = ( |> )
+
+let ( @@ ) = ( @@ )
+#endif
+
 #if OCAMLVERSION < 402
 let raise_notrace = raise
 

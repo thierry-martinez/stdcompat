@@ -2,6 +2,10 @@ val hypot : float -> float -> float
 
 val copysign : float -> float -> float
 
+val ( |> ) : 'a -> ('a -> 'b) -> 'b
+
+val ( @@ ) : ('a -> 'b) -> 'a -> 'b
+
 val raise_notrace : exn -> 'a
 
 #if OCAMLVERSION < 402
