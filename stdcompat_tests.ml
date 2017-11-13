@@ -28,8 +28,8 @@ let () =
        (fun i c -> char_of_int (i + int_of_char c)) "abc" = "ace");
   assert (
     let s = Stdcompat.Bytes.create 3 in
-    Stdcompat.String.iteri (fun i c -> s.[i] <- c) "abc";
-    s = "abc");
+    Stdcompat.String.iteri (fun i c -> Stdcompat.Bytes.set s i c) "abc";
+    s = Stdcompat.Bytes.of_string "abc");
   assert (Stdcompat.String.map Stdcompat.Char.uppercase_ascii "abc" = "ABC");
   assert (Stdcompat.String.trim " \t abc\n" = "abc");
   assert (Stdcompat.String.lowercase_ascii "AbcD" = "abcd");
@@ -91,4 +91,32 @@ let () =
     M.add t 2 2;
     let module M = Stdcompat.Hashtbl.Make (H) in
     M.find_opt t 1 = Some 1 &&
-    M.find_opt t 3 = None)
+    M.find_opt t 3 = None);
+  assert (Stdcompat.Filename.extension "a.b/c.de" = ".de");
+  assert (Stdcompat.Filename.extension "a.b/cd" = "");
+  assert (Stdcompat.Filename.remove_extension "a.b/c.de" = "a.b/c");
+  assert (Stdcompat.Filename.remove_extension "a.b/cd" = "a.b/cd");
+  assert (
+    let array = Stdcompat.Array.Floatarray.create 2 in
+    Stdcompat.Array.Floatarray.set array 0 1.;
+    Stdcompat.Array.Floatarray.set array 1 2.;
+    Stdcompat.Array.Floatarray.get array 0 = 1. &&
+    Stdcompat.Array.Floatarray.get array 1 = 2.);
+  assert (
+    let l = ref [] in
+    let f a b =
+      l := (a, b) :: !l in
+    Stdcompat.Array.iter2 f [| 0; 1 |] [| 2; 3 |];
+    !l = [1, 3; 0, 2]);
+  assert (
+    let f a b =
+      (a, b) in
+    Stdcompat.Array.map2 f  [| 0; 1 |] [| 2; 3 |] = [| 0, 2; 1, 3 |]);
+  assert (Stdcompat.Array.for_all (fun x -> x > 0) [| 1; 2; 3 |]);
+  assert (not (Stdcompat.Array.for_all (fun x -> x > 0) [| 1; 2; 0; 3 |]));
+  assert (Stdcompat.Array.exists (fun x -> x > 2) [| 1; 2; 3 |]);
+  assert (not (Stdcompat.Array.exists (fun x -> x > 3) [| 1; 2; 3 |]));
+  assert (Stdcompat.Array.mem "a" [| "a"; "b"; "c" |]);
+  assert (not (Stdcompat.Array.mem "d" [| "a"; "b"; "c" |]));
+  assert (Stdcompat.Array.memq 2 [| 1; 2; 3 |]);
+  assert (not (Stdcompat.Array.memq "a" [| "a"; "b"; "c" |]))

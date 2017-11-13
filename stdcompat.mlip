@@ -159,16 +159,16 @@ module Hashtbl : sig
   val randomize : unit -> unit
   (** @before 4.00.0 ignored: does nothing. *)
 
-#if OCAMLVERSION < 400
-  type statistics = {
+  type statistics
+#if OCAMLVERSION >= 400
+     = Hashtbl.statistics
+#endif
+     = {
       num_bindings : int;
       num_buckets : int;
       max_bucket_length : int;
       bucket_histogram : int array;
     }
-#else
-  type statistics = Hashtbl.statistics
-#endif
 
   val stats : ('a, 'b) t -> statistics
   (** @before 4.00.0 returns void statistics (only the field [num_bindings] is

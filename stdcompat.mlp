@@ -318,19 +318,23 @@ module Hashtbl = struct
 
   let hash_param = Hashtbl.hash_param
 
+  type statistics
+#if OCAMLVERSION >= 400
+    = Hashtbl.statistics
+#endif
+    = {
+      num_bindings : int;
+      num_buckets : int;
+      max_bucket_length : int;
+      bucket_histogram : int array;
+    }
+
 #if OCAMLVERSION < 400
   let create ?random n = Hashtbl.create n
 
   let reset = clear
 
   let randomize () = ()
-
-  type statistics = {
-      num_bindings : int;
-      num_buckets : int;
-      max_bucket_length : int;
-      bucket_histogram : int array;
-    }
 
   let stats tbl = {
       num_bindings = length tbl;
@@ -344,8 +348,6 @@ module Hashtbl = struct
   let reset = Hashtbl.clear
 
   let randomize = Hashtbl.randomize
-
-  type statistics = Hashtbl.statistics
 
   let stats = Hashtbl.stats
 #endif
@@ -1145,7 +1147,7 @@ module Array = struct
   let iter2 f array1 array2 =
     if length array1 <> length array2 then
       invalid_arg "Array.iter2";
-    for i = 0 to length array1 do
+    for i = 0 to length array1 - 1 do
       f (unsafe_get array1 i) (unsafe_get array2 i)
     done
 
