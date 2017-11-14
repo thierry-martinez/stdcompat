@@ -1287,11 +1287,19 @@ module ListLabels = struct
     List.mapi_aux 0 f l
 #endif
 
-#if OCAMLVERSION < 402
+#if OCAMLVERSION < 403
+  let rec uniq_rev_append cmp l accu =
+    match l with
+    | [] -> accu
+    | [item] -> item :: accu
+    | hd :: (hd' :: _ as tl) ->
+        if cmp hd hd' = 0 then uniq_rev_append cmp tl accu
+        else uniq_rev_append cmp tl (hd :: accu)
+
   let sort_uniq ~cmp l =
     let cmp' a b = - (cmp a b) in
     let rev_l = sort cmp' l in
-    List.uniq_rev_append cmp rev_l []
+    uniq_rev_append cmp rev_l []
 #endif
 
 #if OCAMLVERSION < 405
