@@ -1443,3 +1443,29 @@ module Array = struct
   end
 #endif
 end
+
+module ArrayLabels = struct
+  include ArrayLabels
+
+#if OCAMLVERSION < 403
+  let create_float = Array.create_float
+
+  let exists ~f a = Array.exists f a
+
+  let for_all ~f a = Array.for_all f a
+
+  let mem item ~set = Array.mem item set
+
+  let memq item ~set = Array.memq item set
+#endif
+
+#if OCAMLVERSION < 405
+  let iter2 ~f a b = Array.iter2 f a b
+
+  let map2 ~f a b = Array.map2 f a b
+#endif
+
+#if OCAMLVERSION < 406
+  module Floatarray = Array.Floatarray
+#endif
+end

@@ -684,12 +684,12 @@ module Filename : sig
 end
 
 module Array : sig
+  include module type of struct
+    include Array
+  end
+
+#if OCAMLVERSION < 406
   module Floatarray : sig
-#if OCAMLVERSION >= 406
-    include module type of struct
-      include Array.Floatarray
-    end
-#else
     val create : int -> floatarray
 
     val length : floatarray -> int
@@ -701,14 +701,7 @@ module Array : sig
     val unsafe_get : floatarray -> int -> float
 
     val unsafe_set : floatarray -> int -> float -> unit
-#endif
   end
-
-  include module type of struct
-    include Array
-  end
-#if OCAMLVERSION >= 406
-    with module Floatarray := Floatarray
 #endif
 
   val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
@@ -722,6 +715,32 @@ module Array : sig
   val mem : 'a -> 'a array -> bool
 
   val memq : 'a -> 'a array -> bool
+
+  val create_float : int -> float array
+  (** @before 4.03.0 alias for [Array.make_float]
+      @before 4.02.0 implemented as [Array.make len 0]. *)
+end
+
+module ArrayLabels : sig
+  include module type of struct
+    include ArrayLabels
+  end
+
+#if OCAMLVERSION < 406
+  module Floatarray : module type of Array.Floatarray
+#endif
+
+  val iter2 : f:('a -> 'b -> unit) -> 'a array -> 'b array -> unit
+
+  val map2 : f:('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
+
+  val for_all : f:('a -> bool) -> 'a array -> bool
+
+  val exists : f:('a -> bool) -> 'a array -> bool
+
+  val mem : 'a -> set:'a array -> bool
+
+  val memq : 'a -> set:'a array -> bool
 
   val create_float : int -> float array
   (** @before 4.03.0 alias for [Array.make_float]
