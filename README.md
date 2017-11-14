@@ -32,8 +32,9 @@ instance, ``Stdcompat.List.find_opt`` is an alias for
 otherwise. Definitions from the standard library are reexported so that
 ``Stdcompat`` can be open without hiding unchanged definitions.
 
-Functors ``Set.Make``, ``Map.Make`` and ``Hashtbl.Make`` are redefined
-to provide the additional definitions appeared on recent OCaml releases.
+Functors ``Set.Make``, ``Map.Make``, ``Hashtbl.Make``, ``Weak.Make``
+are redefined to provide the additional definitions appeared on recent
+OCaml releases.
 
 Note that redefinitions can have bad time complexity since the
 redefinitions do not try to access to the internal representation of
@@ -43,3 +44,11 @@ table, and ``Set.Make(Ord).find`` has a linear-time complexity.
 
 Redefinitions cannot even guarantee some security fixes: for instance,
 seeds and randomization are ignored with ``Hashtbl`` prior to 4.00.0.
+
+See the generated documentation (in ``doc/``) for available
+definitions.
+
+``Stdcompat`` uses ``cppo`` by Martin Jambon to preprocess the source
+files in order to generate the module suited for the current OCaml
+compiler version. If ``cppo`` is unavailable, ``Makefile`` will
+try to use ``cpp`` as fallback.
