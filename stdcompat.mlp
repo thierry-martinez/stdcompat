@@ -962,7 +962,6 @@ module Uchar = struct
 #endif
 end
 
-
 module Bytes = struct
 #if OCAMLVERSION < 402
   include String
@@ -995,6 +994,50 @@ module Bytes = struct
 #endif
 
 #if OCAMLVERSION < 403
+  let uppercase_ascii = uppercase
+
+  let lowercase_ascii = lowercase
+
+  let capitalize_ascii = capitalize
+
+  let uncapitalize_ascii = uncapitalize
+
+  let equal : t -> t -> bool = ( = )
+#endif
+end
+
+module BytesLabels = struct
+#if OCAMLVERSION < 402
+  include StringLabels
+
+  let empty = ""
+
+  let of_string = copy
+
+  let to_string = copy
+
+  let sub_string = sub
+
+  let unsafe_of_string s = s
+
+  let unsafe_to_string s = s
+#else
+  include BytesLabels
+
+#if OCAMLVERSION < 406
+  let sub_string b ~pos ~len =
+    sub_string b pos len
+#endif
+#endif
+
+#if OCAMLVERSION < 405
+  let extend s ~left ~right =
+    Bytes.extend s left right
+
+  let blit_string = blit
+
+  let cat = ( ^ )
+
   let uppercase_ascii = uppercase
 
   let lowercase_ascii = lowercase

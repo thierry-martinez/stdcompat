@@ -515,7 +515,8 @@ module Bytes : sig
     include Bytes
   end
 #endif
-  (** @before 4.02.0 the module [Bytes] is defined on top of the module [String]. *)
+  (** @before 4.02.0 the module [Bytes] is defined on top of the module
+      [String]. *)
 
   val empty : t
 
@@ -528,6 +529,49 @@ module Bytes : sig
   val extend : t -> int -> int -> t
 
   val blit_string : string -> int -> t -> int -> int -> unit
+
+  val cat : t -> t -> t
+
+  val unsafe_of_string : string -> t
+
+  val unsafe_to_string : t -> string
+
+  val uppercase_ascii : t -> t
+
+  val lowercase_ascii : t -> t
+
+  val capitalize_ascii : t -> t
+
+  val uncapitalize_ascii : t -> t
+
+  val equal : t -> t -> bool
+end
+
+module BytesLabels : sig
+#if OCAMLVERSION < 402
+  include module type of struct
+    include StringLabels
+  end
+#else
+  include module type of struct
+    include BytesLabels
+  end
+#endif
+  (** @before 4.02.0 the module [BytesLabels] is defined on top of the module
+      [StringLabels]. *)
+
+  val empty : t
+
+  val of_string : string -> t
+
+  val to_string : t -> string
+
+  val sub_string : t -> pos:int -> len:int -> string
+
+  val extend : t -> left:int -> right:int -> t
+
+  val blit_string :
+    src:string -> src_pos:int -> dst:t -> dst_pos:int -> len:int -> unit
 
   val cat : t -> t -> t
 
