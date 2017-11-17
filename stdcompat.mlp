@@ -24,24 +24,16 @@ module Pervasives = struct
       x
     else
       -. x
-#else
-  let hypot = hypot
-
-  let copysign = copysign
 #endif
 
 #if OCAMLVERSION < 401
   let ( |> ) x f = f x
 
   let ( @@ ) f x = f x
-#else
-  let ( |> ) = ( |> )
-
-  let ( @@ ) = ( @@ )
 #endif
 
 #if OCAMLVERSION < 402
-  let raise_notrace = raise
+  external raise_notrace : exn -> 'a = "%raise"
 
   type bytes = string
 
@@ -58,8 +50,6 @@ module Pervasives = struct
     really_input channel s 0 len;
     s
 #else
-  let raise_notrace = raise_notrace
-
   let print_bytes = print_bytes
 
   let prerr_bytes = prerr_bytes
@@ -90,7 +80,7 @@ module Pervasives = struct
 
   let read_float_opt () =
     option_fail read_float ()
-  #else
+#else
   let bool_of_string_opt = bool_of_string_opt
 
   let int_of_string_opt = int_of_string_opt

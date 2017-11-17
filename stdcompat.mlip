@@ -3,15 +3,21 @@ module Pervasives : sig
     include Pervasives
   end
 
+#if OCAMLVERSION < 400
   val hypot : float -> float -> float
 
   val copysign : float -> float -> float
+#endif
 
+#if OCAMLVERSION < 401
   val ( |> ) : 'a -> ('a -> 'b) -> 'b
 
   val ( @@ ) : ('a -> 'b) -> 'a -> 'b
+#endif
 
-  val raise_notrace : exn -> 'a
+#if OCAMLVERSION < 402
+  external raise_notrace : exn -> 'a = "%raise"
+#endif
   (** @before 4.02.0 equivalent to [raise]. *)
 
 #if OCAMLVERSION < 402
