@@ -101,7 +101,7 @@ clean :
 
 .PHONY : install
 install : META stdcompat.cma stdcompat.cmi \
-	$(patsubst %,stdcompat.cmxs stdcompat.cmxa stdcompat.a, \
+	$(patsubst %,stdcompat.cmx stdcompat.cmxs stdcompat.cmxa stdcompat.a, \
 		$(filter true,$(OCAMLOPT_AVAILABLE)))
 ifeq ($(HAVE_OCAMLFIND),no)
 	$(error ocamlfind is needed for 'make install')
