@@ -1,0 +1,7 @@
+* Version 2
+- Redefinitions for Pervasives are now in Stdcompat.Pervasives (they were
+  previously defined at the root of Stdcompat), and the module
+  Stdcompat.Pervasives is included in Stdcompat, so that opening Stdcompat
+  makes the redefinitions visible in the scope.
+
+* Version 1 : initial release
