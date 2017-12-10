@@ -1,7 +1,7 @@
 module Pervasives = struct
   include Pervasives
 
-  #if OCAMLVERSION < 405
+#if OCAMLVERSION < 405
   let option_find f x =
     try Some (f x)
     with Not_found -> None
@@ -13,9 +13,9 @@ module Pervasives = struct
   let option_invalid f x =
     try Some (f x)
     with Invalid_argument _ -> None
-  #endif
+#endif
 
-  #if OCAMLVERSION < 400
+#if OCAMLVERSION < 400
   let hypot x y =
     sqrt (x *. x +. y *. y)
 
@@ -24,23 +24,23 @@ module Pervasives = struct
       x
     else
       -. x
-  #else
+#else
   let hypot = hypot
 
   let copysign = copysign
-  #endif
+#endif
 
-  #if OCAMLVERSION < 401
+#if OCAMLVERSION < 401
   let ( |> ) x f = f x
 
   let ( @@ ) f x = f x
-  #else
+#else
   let ( |> ) = ( |> )
 
   let ( @@ ) = ( @@ )
-  #endif
+#endif
 
-  #if OCAMLVERSION < 402
+#if OCAMLVERSION < 402
   let raise_notrace = raise
 
   type bytes = string
@@ -57,11 +57,8 @@ module Pervasives = struct
     let s = String.create len in
     really_input channel s 0 len;
     s
-  #else
+#else
   let raise_notrace = raise_notrace
-
-  type bytes_ = bytes
-  type bytes = bytes_
 
   let print_bytes = print_bytes
 
@@ -72,15 +69,13 @@ module Pervasives = struct
   let output_substring = output_substring
 
   let really_input_string = really_input_string
-  #endif
+#endif
 
-  type ('a, 'b) result
-  #if OCAMLVERSION >= 403
-     = ('a, 'b) Pervasives.result
-  #endif
-     = Ok of 'a | Error of 'b
+#if OCAMLVERSION < 403
+  type ('a, 'b) result = Ok of 'a | Error of 'b
+#endif
 
-  #if OCAMLVERSION < 405
+#if OCAMLVERSION < 405
   let bool_of_string_opt s =
     option_invalid bool_of_string s
 
@@ -105,14 +100,11 @@ module Pervasives = struct
   let read_int_opt = read_int_opt
 
   let read_float_opt = read_float_opt
-  #endif
+#endif
 
-  #if OCAMLVERSION < 406
+#if OCAMLVERSION < 406
   type floatarray = float array
-  #else
-  type floatarray_ = floatarray
-  type floatarray = floatarray_
-  #endif
+#endif
 end
 
 include Pervasives

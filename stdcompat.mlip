@@ -1,5 +1,7 @@
 module Pervasives : sig
-  include module type of Pervasives
+  include module type of struct
+    include Pervasives
+  end
 
   val hypot : float -> float -> float
 
@@ -12,14 +14,10 @@ module Pervasives : sig
   val raise_notrace : exn -> 'a
   (** @before 4.02.0 equivalent to [raise]. *)
 
-  #if OCAMLVERSION < 402
+#if OCAMLVERSION < 402
   type bytes = string
-  #else
-  type bytes_ = bytes
-  type bytes = bytes_
-  #endif
-  (** @since 4.02.0 alias to [bytes].
-      @before 4.02.0 alias to [string]. *)
+#endif
+  (** @before 4.02.0 alias to [string]. *)
 
   val print_bytes : bytes -> unit
 
@@ -31,12 +29,9 @@ module Pervasives : sig
 
   val really_input_string : in_channel -> int -> string
 
-  type ('a, 'b) result
-#if OCAMLVERSION >= 403
-     = ('a, 'b) Pervasives.result
+#if OCAMLVERSION < 403
+  type ('a, 'b) result = Ok of 'a | Error of 'b
 #endif
-     = Ok of 'a | Error of 'b
-  (** @since 4.03.0 alias to [Pervasives.result]. *)
 
   val bool_of_string_opt : string -> bool option
 
@@ -48,17 +43,15 @@ module Pervasives : sig
 
   val read_float_opt : unit -> float option
 
-  #if OCAMLVERSION < 406
+#if OCAMLVERSION < 406
   type floatarray = float array
-  #else
-  type floatarray_ = floatarray
-  type floatarray = floatarray_
-  #endif
-  (** @since 4.06.0 alias to [floatarray].
-      @before 4.06.0 alias to [float array]. *)
+#endif
+  (** @before 4.06.0 alias to [float array]. *)
 end
 
-include module type of Pervasives
+include module type of struct
+  include Pervasives
+end
 
 module Arg : sig
   include module type of Arg
