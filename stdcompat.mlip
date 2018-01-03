@@ -1,3 +1,19 @@
+#if OCAMLVERSION < 402
+  type bytes = string
+#else
+  type bytes_ = bytes
+  type bytes = bytes_
+#endif
+(** @before 4.02.0 alias to [string]. *)
+
+#if OCAMLVERSION < 406
+  type floatarray = float array
+#else
+  type floatarray_ = floatarray
+  type floatarray = floatarray_
+#endif
+(** @before 4.06.0 alias to [float array]. *)
+
 module Pervasives : sig
   include module type of struct
     include Pervasives
@@ -19,11 +35,6 @@ module Pervasives : sig
   external raise_notrace : exn -> 'a = "%raise"
 #endif
   (** @before 4.02.0 equivalent to [raise]. *)
-
-#if OCAMLVERSION < 402
-  type bytes = string
-#endif
-  (** @before 4.02.0 alias to [string]. *)
 
   val print_bytes : bytes -> unit
 
@@ -48,11 +59,6 @@ module Pervasives : sig
   val read_int_opt : unit -> int option
 
   val read_float_opt : unit -> float option
-
-#if OCAMLVERSION < 406
-  type floatarray = float array
-#endif
-  (** @before 4.06.0 alias to [float array]. *)
 end
 
 include module type of struct

@@ -1,3 +1,17 @@
+#if OCAMLVERSION < 402
+  type bytes = string
+#else
+  type bytes_ = bytes
+  type bytes = bytes_
+#endif
+
+#if OCAMLVERSION < 406
+  type floatarray = float array
+#else
+  type floatarray_ = floatarray
+  type floatarray = floatarray_
+#endif
+
 module Pervasives = struct
   include Pervasives
 
@@ -35,8 +49,6 @@ module Pervasives = struct
 #if OCAMLVERSION < 402
   external raise_notrace : exn -> 'a = "%raise"
 
-  type bytes = string
-
   let print_bytes = print_string
 
   let prerr_bytes = prerr_string
@@ -70,10 +82,6 @@ module Pervasives = struct
 
   let read_float_opt () =
     option_fail read_float ()
-#endif
-
-#if OCAMLVERSION < 406
-  type floatarray = float array
 #endif
 end
 
