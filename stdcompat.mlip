@@ -40,7 +40,7 @@ module Pervasives : sig
 
   val prerr_bytes : bytes -> unit
 
-  val output_subbytes : out_channel -> bytes -> int -> int -> unit
+  val output : out_channel -> bytes -> int -> int -> unit
 
   val output_substring : out_channel -> string -> int -> int -> unit
 

@@ -53,8 +53,6 @@ module Pervasives = struct
 
   let prerr_bytes = prerr_string
 
-  let output_subbytes = output
-
   let output_substring = output
 
   let really_input_string channel len =
