@@ -12,22 +12,31 @@
   type floatarray = floatarray_
 #endif
 
-module Pervasives = struct
-  include Pervasives
 
 #if OCAMLVERSION < 405
-  let option_find f x =
-    try Some (f x)
-    with Not_found -> None
+let option_find f x =
+  try Some (f x)
+  with Not_found -> None
 
-  let option_fail f x =
-    try Some (f x)
-    with Failure _ -> None
+let option_fail f x =
+  try Some (f x)
+  with Failure _ -> None
 
-  let option_invalid f x =
-    try Some (f x)
-    with Invalid_argument _ -> None
+let option_invalid f x =
+  try Some (f x)
+  with Invalid_argument _ -> None
+
+exception Predicate_not_found
+
+let pickle_predicate_not_found p x =
+  try
+    p x
+  with Not_found ->
+    raise Predicate_not_found
 #endif
+
+module Pervasives = struct
+  include Pervasives
 
 #if OCAMLVERSION < 400
   let hypot x y =
@@ -661,6 +670,14 @@ module Set = struct
 
     exception Find of elt
 
+    let find_first_opt p s =
+      try
+        iter (fun x ->
+          if p x then
+            raise (Find x)) s;
+        None
+      with Find x -> Some x
+
     let find_first p s =
       try
         iter (fun x ->
@@ -669,8 +686,7 @@ module Set = struct
         raise Not_found
       with Find x -> x
 
-    let find_first_opt x s =
-      option_find (find_first x) s
+    exception Local_not_found
 
     let find_last_opt p s =
       let last = ref None in
@@ -680,11 +696,11 @@ module Set = struct
             last := Some x
           else
             match !last with
-            | None -> raise Not_found
+            | None -> raise Local_not_found
             | Some x -> raise (Find x)) s;
         !last
       with
-      | Not_found -> None
+      | Local_not_found -> None
       | Find x -> !last
 
     let find_last p s =
@@ -1224,7 +1240,8 @@ module List = struct
     option_fail (nth l) n
 
   let find_opt p l =
-    option_find (find p) l
+    try option_find (find (pickle_predicate_not_found p)) l
+    with Predicate_not_found -> raise Not_found
 
   let assoc_opt key l =
     option_find (assoc key) l
@@ -1302,7 +1319,8 @@ module ListLabels = struct
     option_find (nth l) n
 
   let find_opt ~f l =
-    option_find (find ~f) l
+    try option_find (find ~f:(pickle_predicate_not_found f)) l
+    with Predicate_not_found -> raise Not_found
 
   let assoc_opt key l =
     option_find (assoc key) l
