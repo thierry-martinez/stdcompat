@@ -95,6 +95,35 @@ module Char : sig
   val equal : t -> t -> bool
 end
 
+module Seq : sig
+#if OCAMLVERSION < 407
+  type 'a t = unit -> 'a node
+  and +'a node =
+    | Nil
+    | Cons of 'a * 'a t
+
+  val empty : 'a t
+
+  val return : 'a -> 'a t
+
+  val map : ('a -> 'b) -> 'a t -> 'b t
+
+  val filter : ('a -> bool) -> 'a t -> 'a t
+
+  val filter_map : ('a -> 'b option) -> 'a t -> 'b t
+
+  val flat_map : ('a -> 'b t) -> 'a t -> 'b t
+
+  val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+
+  val iter : ('a -> unit) -> 'a t -> unit
+#else
+  include module type of struct
+    include Seq
+  end
+#endif
+end
+
 module String : sig
   include module type of String
 
@@ -127,6 +156,12 @@ module String : sig
   val index_from_opt : string -> int -> char -> int option
 
   val rindex_from_opt : string -> int -> char -> int option
+
+  val of_seq : char Seq.t -> t
+
+  val to_seq : t -> char Seq.t
+
+  val to_seqi : t -> (int * char) Seq.t
 end
 
 module StringLabels : sig
@@ -161,6 +196,12 @@ module StringLabels : sig
   val index_from_opt : string -> int -> char -> int option
 
   val rindex_from_opt : string -> int -> char -> int option
+
+  val of_seq : char Seq.t -> t
+
+  val to_seq : t -> char Seq.t
+
+  val to_seqi : t -> (int * char) Seq.t
 end
 
 module Stack : sig
@@ -169,6 +210,12 @@ module Stack : sig
   end
 
   val fold : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+
+  val of_seq : 'a Seq.t -> 'a t
+
+  val add_seq : 'a t -> 'a Seq.t -> unit
+
+  val to_seq : 'a t -> 'a Seq.t
 end
 
 module Hashtbl : sig
@@ -239,6 +286,18 @@ module Hashtbl : sig
 
   val seeded_hash_param : int -> int -> int -> 'a -> int
 
+  val of_seq : ('a * 'b) Seq.t -> ('a, 'b) t
+
+  val add_seq : ('a, 'b) t -> ('a * 'b) Seq.t -> unit
+
+  val replace_seq : ('a, 'b) t -> ('a * 'b) Seq.t -> unit
+
+  val to_seq : ('a, 'b) t -> ('a * 'b) Seq.t
+
+  val to_seq_keys : ('a, 'b) t -> 'a Seq.t
+
+  val to_seq_values : ('a, 'b) t -> 'b Seq.t
+
   module type S = sig
     type 'a t
 
@@ -275,6 +334,18 @@ module Hashtbl : sig
     val find_opt : 'a t -> key -> 'a option
 
     val stats : 'a t -> statistics
+
+    val of_seq : (key * 'a) Seq.t -> 'a t
+
+    val add_seq : 'a t -> (key * 'a) Seq.t -> unit
+
+    val replace_seq : 'a t -> (key * 'a) Seq.t -> unit
+
+    val to_seq : 'a t -> (key * 'a) Seq.t
+
+    val to_seq_keys : 'a t -> key Seq.t
+
+    val to_seq_values : 'a t -> 'a Seq.t
   end
 
   module Make (H : HashedType) : sig
@@ -345,6 +416,14 @@ module Set : sig
 
     val find_last_opt : (elt -> bool) -> t -> elt option
     (** @before 4.05.0 linear time complexity. *)
+
+    val of_seq : elt Seq.t -> t
+
+    val add_seq : elt Seq.t -> t -> t
+
+    val to_seq : t -> elt Seq.t
+
+    val to_seq_from : elt -> t -> elt Seq.t
   end
 
   module Make (Ord : OrderedType) : sig
@@ -373,6 +452,14 @@ module Map : sig
     val choose_opt : 'a t -> (key * 'a) option
 
     val update : key -> ('a option -> 'a option) -> 'a t -> 'a t
+
+    val of_seq : (key * 'a) Seq.t -> 'a t
+
+    val add_seq : (key * 'a) Seq.t -> 'a t -> 'a t
+
+    val to_seq : 'a t -> (key * 'a) Seq.t
+
+    val to_seq_from : key -> 'a t -> (key * 'a) Seq.t
   end
 
   module Make (Ord : OrderedType) : sig
@@ -556,6 +643,12 @@ module Bytes : sig
   val uncapitalize_ascii : t -> t
 
   val equal : t -> t -> bool
+
+  val of_seq : char Seq.t -> t
+
+  val to_seq : t -> char Seq.t
+
+  val to_seqi : t -> (int * char) Seq.t
 end
 
 module BytesLabels : sig
@@ -599,6 +692,12 @@ module BytesLabels : sig
   val uncapitalize_ascii : t -> t
 
   val equal : t -> t -> bool
+
+  val of_seq : char Seq.t -> t
+
+  val to_seq : t -> char Seq.t
+
+  val to_seqi : t -> (int * char) Seq.t
 end
 
 module Buffer : sig
@@ -620,6 +719,14 @@ module Buffer : sig
   val add_utf_16be_uchar : t -> Uchar.t -> unit
 
   val add_utf_16le_uchar : t -> Uchar.t -> unit
+
+  val of_seq : char Seq.t -> t
+
+  val add_seq : t -> char Seq.t -> unit
+
+  val to_seq : t -> char Seq.t
+
+  val to_seqi : t -> (int * char) Seq.t
 end
 
 module Stream : sig
@@ -774,6 +881,12 @@ module Array : sig
   val create_float : int -> float array
   (** @before 4.03.0 alias for [Array.make_float]
       @before 4.02.0 implemented as [Array.make len 0]. *)
+
+  val of_seq : 'a Seq.t -> 'a array
+
+  val to_seq : 'a array -> 'a Seq.t
+
+  val to_seqi : 'a array -> (int * 'a) Seq.t
 end
 
 module ArrayLabels : sig
@@ -800,4 +913,181 @@ module ArrayLabels : sig
   val create_float : int -> float array
   (** @before 4.03.0 alias for [Array.make_float]
       @before 4.02.0 implemented as [Array.make len 0]. *)
+
+  val of_seq : 'a Seq.t -> 'a array
+
+  val to_seq : 'a array -> 'a Seq.t
+
+  val to_seqi : 'a array -> (int * 'a) Seq.t
+end
+
+#if OCAMLVERSION < 402
+#define UNBOXED
+#define NOALLOC
+#define _UNBOXED
+#define _UNTAGGED
+#else
+#define UNBOXED [@@unboxed]
+#define NOALLOC [@@noalloc]
+#define _UNBOXED [@unboxed]
+#define _UNTAGGED [@untagged]
+#endif
+
+module Float : sig
+#if OCAMLVERSION < 407
+  external neg : float -> float = "%negfloat"
+
+  external add : float -> float -> float = "%addfloat"
+
+  external sub : float -> float -> float = "%subfloat"
+
+  external mul : float -> float -> float = "%mulfloat"
+
+  external div : float -> float -> float = "%divfloat"
+
+  external rem : float -> float -> float = "caml_fmod_float" "fmod"
+    UNBOXED NOALLOC
+
+  external abs : float -> float = "%absfloat"
+
+  val infinity : float
+
+  val neg_infinity : float
+
+  val nan : float
+
+  val pi : float
+
+  val max_float : float
+
+  val min_float : float
+
+  val epsilon : float
+
+  external of_int : int -> float = "%floatofint"
+
+  external to_int : float -> int = "%intoffloat"
+
+  external of_string : string -> float = "caml_float_of_string"
+
+  val of_string_opt: string -> float option
+
+  val to_string : float -> string
+
+  type fpclass = Pervasives.fpclass =
+      FP_normal
+    | FP_subnormal
+    | FP_zero
+    | FP_infinite
+    | FP_nan
+
+  external classify_float : (float _UNBOXED) -> fpclass =
+    "caml_classify_float" "caml_classify_float_unboxed" NOALLOC
+
+  external pow : float -> float -> float = "caml_power_float" "pow"
+    UNBOXED NOALLOC
+
+  external sqrt : float -> float = "caml_sqrt_float" "sqrt"
+    UNBOXED NOALLOC
+
+  external exp : float -> float = "caml_exp_float" "exp"
+    UNBOXED NOALLOC
+
+  external log : float -> float = "caml_log_float" "log"
+    UNBOXED NOALLOC
+
+  external log10 : float -> float = "caml_log10_float" "log10"
+    UNBOXED NOALLOC
+
+  external expm1 : float -> float = "caml_expm1_float" "caml_expm1"
+    UNBOXED NOALLOC
+
+  external log1p : float -> float = "caml_log1p_float" "caml_log1p"
+    UNBOXED NOALLOC
+
+  external cos : float -> float = "caml_cos_float" "cos"
+    UNBOXED NOALLOC
+
+  external sin : float -> float = "caml_sin_float" "sin"
+    UNBOXED NOALLOC
+
+  external tan : float -> float = "caml_tan_float" "tan"
+    UNBOXED NOALLOC
+
+  external acos : float -> float = "caml_acos_float" "acos"
+    UNBOXED NOALLOC
+
+  external asin : float -> float = "caml_asin_float" "asin"
+    UNBOXED NOALLOC
+
+  external atan : float -> float = "caml_atan_float" "atan"
+    UNBOXED NOALLOC
+
+  external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
+    UNBOXED NOALLOC
+
+  external hypot : float -> float -> float = "caml_hypot_float" "caml_hypot"
+    UNBOXED NOALLOC
+
+  external cosh : float -> float = "caml_cosh_float" "cosh"
+    UNBOXED NOALLOC
+
+  external sinh : float -> float = "caml_sinh_float" "sinh"
+    UNBOXED NOALLOC
+
+  external tanh : float -> float = "caml_tanh_float" "tanh"
+    UNBOXED NOALLOC
+
+  external ceil : float -> float = "caml_ceil_float" "ceil"
+    UNBOXED NOALLOC
+
+  external floor : float -> float = "caml_floor_float" "floor"
+    UNBOXED NOALLOC
+
+  external copysign : float -> float -> float
+    = "caml_copysign_float" "caml_copysign"
+    UNBOXED NOALLOC
+
+  external frexp : float -> float * int = "caml_frexp_float"
+
+  external ldexp :
+    (float _UNBOXED) -> (int _UNTAGGED) -> (float _UNBOXED) =
+    "caml_ldexp_float" "caml_ldexp_float_unboxed" NOALLOC
+
+  external modf : float -> float * float = "caml_modf_float"
+
+  type t = float
+
+  val compare: t -> t -> int
+
+  val equal: t -> t -> bool
+
+  val hash: t -> int
+
+  module Array : sig
+    type t = floatarray
+    external create : int -> t = "caml_floatarray_create"
+    external length : t -> int = "%floatarray_length"
+    external get : t -> int -> float = "%floatarray_safe_get"
+    external set : t -> int -> float -> unit = "%floatarray_safe_set"
+    external unsafe_get : t -> int -> float = "%floatarray_unsafe_get"
+    external unsafe_set : t -> int -> float -> unit = "%floatarray_unsafe_set"
+  end
+#else
+  include module type of struct
+    include Float
+  end
+#endif
+end
+
+module Queue : sig
+  include module type of struct
+    include Queue
+  end
+
+  val of_seq : 'a Seq.t -> 'a t
+
+  val add_seq : 'a t -> 'a Seq.t -> unit
+
+  val to_seq : 'a t -> 'a Seq.t
 end
