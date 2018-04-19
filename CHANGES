@@ -1,11 +1,12 @@
 * Version 3
-- Float module (OCaml 4.07.0)
-- Seq module and of_seq/to_seq/...
+- Missing List.of_seq/List.to_seq
 
 * Version 2
 - Redefinitions for Pervasives are now in Stdcompat.Pervasives (they were
   previously defined at the root of Stdcompat), and the module
   Stdcompat.Pervasives is included in Stdcompat, so that opening Stdcompat
   makes the redefinitions visible in the scope.
+- Float module (OCaml 4.07.0)
+- Seq module and of_seq/to_seq/...
 
 * Version 1 : initial release

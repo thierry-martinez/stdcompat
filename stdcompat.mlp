@@ -862,24 +862,20 @@ module ListLabels = struct
   let assoc_opt key l =
     option_find (assoc key) l
 
-  let assq_opt key l=
+  let assq_opt key l =
     option_find (assq key) l
 #endif
 
 #if OCAMLVERSION < 406
-  let rec init_aux i len f accu =
-    if i >= len then
-      accu
-    else
-      init_aux (succ i) len f (f i :: accu)
+  let init_aux = List.init_aux
 
-  let rec init len f =
-    if len < 0 then
-      invalid_arg "List.init"
-    else if len = 0 then
-      []
-    else
-      rev (init_aux 0 len f [])
+  let init = List.init
+#endif
+
+#if OCAMLVERSION < 407
+  let to_seq = List.to_seq
+
+  let of_seq = List.of_seq
 #endif
 end
 

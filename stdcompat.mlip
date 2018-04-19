@@ -799,6 +799,10 @@ module List : sig
   val assoc_opt : 'a -> ('a * 'b) list -> 'b option
 
   val assq_opt : 'a -> ('a * 'b) list -> 'b option
+
+  val to_seq : 'a list -> 'a Seq.t
+
+  val of_seq : 'a Seq.t -> 'a list
 end
 
 module ListLabels : sig
@@ -825,6 +829,10 @@ module ListLabels : sig
   val assoc_opt : 'a -> ('a * 'b) list -> 'b option
 
   val assq_opt : 'a -> ('a * 'b) list -> 'b option
+
+  val to_seq : 'a list -> 'a Seq.t
+
+  val of_seq : 'a Seq.t -> 'a list
 end
 
 module Filename : sig
