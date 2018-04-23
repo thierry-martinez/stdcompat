@@ -11,5 +11,7 @@ build-doc: [ "jbuilder" "build" "@doc" ]
 depends: [
   "jbuilder" {build}
   "cppo" {build}
+  "result"
+  "seq"
 ]
 available: [ocaml-version >= "3.12.1" & ocaml-version < "4.08.0"]

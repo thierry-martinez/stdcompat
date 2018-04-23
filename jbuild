@@ -4,7 +4,7 @@
  ((name stdcompat)
   (public_name stdcompat)
   (modules (stdcompat))
-  (libraries ())))
+  (libraries (result seq))))
 
 (executable
  ((name stdcompat_tests)

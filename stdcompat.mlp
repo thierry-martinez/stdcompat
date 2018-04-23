@@ -71,7 +71,7 @@ module Pervasives = struct
 #endif
 
 #if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
-  type ('a, 'b) result = Ok of 'a | Error of 'b
+  type ('a, 'b) result = Result.result = Ok of 'a | Error of 'b
 #endif
 
 #if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
@@ -179,7 +179,7 @@ end
 
 module Seq = struct
 #if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
-  type +'a node =
+  type +'a node = 'a Seq.node =
     | Nil
     | Cons of 'a * 'a t
   and 'a t = unit -> 'a node

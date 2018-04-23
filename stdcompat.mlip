@@ -47,7 +47,7 @@ module Pervasives : sig
   val really_input_string : in_channel -> int -> string
 
 #if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
-  type ('a, 'b) result = Ok of 'a | Error of 'b
+  type ('a, 'b) result = Result.result = Ok of 'a | Error of 'b
 #endif
 
   val bool_of_string_opt : string -> bool option
@@ -98,7 +98,7 @@ end
 module Seq : sig
 #if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   type 'a t = unit -> 'a node
-  and +'a node =
+  and +'a node = 'a Seq.node =
     | Nil
     | Cons of 'a * 'a t
 
