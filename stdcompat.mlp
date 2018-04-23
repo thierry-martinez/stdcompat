@@ -1897,7 +1897,6 @@ module Float = struct
   type t = float
   external compare : float -> float -> int = "%compare"
   let equal x y = compare x y = 0
-  let seeded_hash_param = Hashtbl.seeded_hash_param
   let hash = Hashtbl.hash
 
   module Array = Array.Floatarray
