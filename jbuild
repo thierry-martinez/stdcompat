@@ -1,0 +1,22 @@
+(jbuild_version 1)
+
+(library
+ ((name stdcompat)
+  (public_name stdcompat)
+  (modules (stdcompat))
+  (libraries ())))
+
+(executable
+ ((name stdcompat_tests)
+  (modules (stdcompat_tests))
+  (libraries (stdcompat))))
+
+(rule
+ ((targets (stdcompat.ml))
+  (deps (stdcompat.mlp))
+  (action (run ${bin:cppo} -V OCAML:${ocaml_version} ${<} -o ${@}))))
+
+(rule
+ ((targets (stdcompat.mli))
+  (deps (stdcompat.mlip))
+  (action (run ${bin:cppo} -V OCAML:${ocaml_version} ${<} -o ${@}))))

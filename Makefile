@@ -144,9 +144,11 @@ native : stdcompat.cmxa stdcompat.cmxs
 .PHONY : clean
 clean :
 	rm -f META stdcompat.ml_byte stdcompat.ml_native stdcompat.mli \
-		stdcompat.cmi \
+		stdcompat.cmi stdcompat.cmt stdcompat.cmti \
 		stdcompat.cmo stdcompat.cmx stdcompat.o \
-		stdcompat.cma stdcompat.cmxs stdcompat.cmxa stdcompat.a
+		stdcompat.cma stdcompat.cmxs stdcompat.cmxa stdcompat.a \
+		stdcompat_tests.cmt stdcompat_tests.cmti \
+		stdcompat_tests.cmi stdcompat_tests.cmo
 
 .PHONY : install
 install : META stdcompat.cma stdcompat.cmi \
