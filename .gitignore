@@ -1,9 +1,4 @@
+_build/
+*.install
+.merlin
 *~
-*.[ao]
-*.cm[aiotx]
-*.cmti
-*.cmx[as]
-/doc/
-/stdcompat.mli
-/stdcompat.ml
-/tests.bytecode

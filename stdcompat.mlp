@@ -1,11 +1,11 @@
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
   type bytes = string
 #else
   type bytes_ = bytes
   type bytes = bytes_
 #endif
 
-#if OCAMLVERSION < 406
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 06
   type floatarray = float array
 #else
   type floatarray_ = floatarray
@@ -13,7 +13,7 @@
 #endif
 
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
 let option_find f x =
   try Some (f x)
   with Not_found -> None
@@ -38,7 +38,7 @@ let pickle_predicate_not_found p x =
 module Pervasives = struct
   include Pervasives
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
   let hypot x y =
     sqrt (x *. x +. y *. y)
 
@@ -49,13 +49,13 @@ module Pervasives = struct
       -. x
 #endif
 
-#if OCAMLVERSION < 401
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 01
   let ( |> ) x f = f x
 
   let ( @@ ) f x = f x
 #endif
 
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
   external raise_notrace : exn -> 'a = "%raise"
 
   let print_bytes = print_string
@@ -70,11 +70,11 @@ module Pervasives = struct
     s
 #endif
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   type ('a, 'b) result = Ok of 'a | Error of 'b
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let bool_of_string_opt s =
     option_invalid bool_of_string s
 
@@ -97,7 +97,7 @@ include Pervasives
 module Arg = struct
   include Arg
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let read_aux trim sep file =
     let channel = open_in_bin file in
     try
@@ -157,7 +157,7 @@ end
 module Lazy = struct
   include Lazy
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
   let from_fun = lazy_from_fun
 
   let from_val v =
@@ -168,7 +168,7 @@ end
 module Char = struct
   include Char
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let lowercase_ascii = Char.lowercase
 
   let uppercase_ascii = Char.uppercase
@@ -178,7 +178,7 @@ module Char = struct
 end
 
 module Seq = struct
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   type +'a node =
     | Nil
     | Cons of 'a * 'a t
@@ -238,7 +238,7 @@ module Seq = struct
 end
 
 module Uchar = struct
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   type t = int
 
   let min = 0
@@ -304,7 +304,7 @@ module Uchar = struct
   include Uchar
 #endif
 
-#if OCAMLVERSION < 406
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 06
   let bom = unsafe_of_int 0xFEFF
 
   let rep = unsafe_of_int 0xFFFD
@@ -332,7 +332,7 @@ let vec_to_seqi length get v =
 module Buffer = struct
   include Buffer
 
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
   let to_bytes = contents
 
   let add_bytes = add_string
@@ -340,14 +340,14 @@ module Buffer = struct
   let add_subbytes = add_substring
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let truncate b len =
     let s = sub b 0 len in
     clear b;
     add_string b s
 #endif
 
-#if OCAMLVERSION < 406
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 06
   let add_utf_8_uchar b u =
     if Uchar.is_char u then
       add_char b (Uchar.unsafe_to_char u)
@@ -405,7 +405,7 @@ module Buffer = struct
       add_char b (Char.unsafe_chr (lo lsr 8))
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let add_seq b seq =
     Seq.iter (add_char b) seq
 
@@ -423,7 +423,7 @@ end
 module String = struct
   include String
 
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
   let init n f =
     let s = create n in
     for i = 0 to n - 1 do
@@ -435,7 +435,7 @@ module String = struct
     init (length s) (fun i -> f i (unsafe_get s i))
 #endif
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
   let iteri f s =
     for i = 0 to length s - 1 do
       f i (unsafe_get s i)
@@ -471,7 +471,7 @@ module String = struct
       sub s off_start (off_end - off_start + 1)
 #endif
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let lowercase_ascii = lowercase
 
   let uppercase_ascii = uppercase
@@ -483,7 +483,7 @@ module String = struct
   let equal : t -> t -> bool = ( = )
 #endif
 
-#if OCAMLVERSION < 404
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 04
   let split_on_char c s =
     let previous_index = ref (length s) in
     let accu = ref [] in
@@ -497,7 +497,7 @@ module String = struct
     sub s 0 !previous_index :: !accu
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let index_opt s c =
     option_find (index s) c
 
@@ -511,7 +511,7 @@ module String = struct
     option_find (rindex_from s i) c
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let of_seq g = Buffer.contents (Buffer.of_seq g)
 
   let to_seq s = vec_to_seq length unsafe_get s
@@ -523,7 +523,7 @@ end
 module StringLabels = struct
   include StringLabels
 
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
   let init n ~f =
     let s = create n in
     for i = 0 to n - 1 do
@@ -535,7 +535,7 @@ module StringLabels = struct
     init (length s) (fun i -> f i (unsafe_get s i))
 #endif
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
   let iteri ~f s =
     for i = 0 to length s - 1 do
       f i (unsafe_get s i)
@@ -548,7 +548,7 @@ module StringLabels = struct
     String.trim s
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let lowercase_ascii = lowercase
 
   let uppercase_ascii = uppercase
@@ -584,7 +584,7 @@ module StringLabels = struct
     option_find (rindex_from s i) c
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let of_seq g = Buffer.contents (Buffer.of_seq g)
 
   let to_seq s = vec_to_seq length unsafe_get s
@@ -594,7 +594,7 @@ module StringLabels = struct
 end
 
 module Bytes = struct
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
   include String
 
   let empty = ""
@@ -624,7 +624,7 @@ module Bytes = struct
   include Bytes
 #endif
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let uppercase_ascii = uppercase
 
   let lowercase_ascii = lowercase
@@ -636,7 +636,7 @@ module Bytes = struct
   let equal : t -> t -> bool = ( = )
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let of_seq g =
     Buffer.to_bytes (Buffer.of_seq g)
 
@@ -647,7 +647,7 @@ module Bytes = struct
 end
 
 module BytesLabels = struct
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
   include StringLabels
 
   let empty = ""
@@ -664,13 +664,13 @@ module BytesLabels = struct
 #else
   include BytesLabels
 
-#if OCAMLVERSION < 406
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 06
   let sub_string b ~pos ~len =
     sub_string b pos len
 #endif
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let extend s ~left ~right =
     Bytes.extend s left right
 
@@ -689,7 +689,7 @@ module BytesLabels = struct
   let equal : t -> t -> bool = ( = )
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let of_seq g =
     Buffer.to_bytes (Buffer.of_seq g)
 
@@ -702,7 +702,7 @@ end
 module List = struct
   include List
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
   let rec iteri_aux i f l =
     match l with
     | [] -> ()
@@ -724,7 +724,7 @@ module List = struct
     mapi_aux 0 f l
 #endif
 
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
   let rec uniq_rev_append cmp l accu =
     match l with
     | [] -> accu
@@ -739,12 +739,12 @@ module List = struct
     uniq_rev_append cmp rev_l []
 #endif
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let cons x xs =
     x :: xs
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let rec compare_lengths l l' =
     match l, l' with
     | [], [] -> 0
@@ -777,7 +777,7 @@ module List = struct
     option_find (assq key) l
 #endif
 
-#if OCAMLVERSION < 406
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 06
   let rec init_aux i len f accu =
     if i >= len then
       accu
@@ -793,7 +793,7 @@ module List = struct
       rev (init_aux 0 len f [])
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let of_seq seq =
     rev (Seq.fold_left (fun accu x -> x :: accu) [] seq)
 
@@ -807,7 +807,7 @@ end
 module ListLabels = struct
   include ListLabels
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
   let iteri ~f l =
     List.iteri_aux 0 f l
 
@@ -815,7 +815,7 @@ module ListLabels = struct
     List.mapi_aux 0 f l
 #endif
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let rec uniq_rev_append cmp l accu =
     match l with
     | [] -> accu
@@ -830,7 +830,7 @@ module ListLabels = struct
     uniq_rev_append cmp rev_l []
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let cons x xs =
     x :: xs
 
@@ -866,13 +866,13 @@ module ListLabels = struct
     option_find (assq key) l
 #endif
 
-#if OCAMLVERSION < 406
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 06
   let init_aux = List.init_aux
 
   let init = List.init
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let to_seq = List.to_seq
 
   let of_seq = List.of_seq
@@ -882,14 +882,14 @@ end
 module Stack = struct
   include Stack
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let fold f v s =
     let r = ref v in
     iter (fun item -> r := f !r item) s;
     !r
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let to_list q =
     fold (fun accu content -> content :: accu) [] q
 
@@ -937,7 +937,7 @@ module Hashtbl = struct
   let hash_param = Hashtbl.hash_param
 
   type statistics
-#if OCAMLVERSION >= 400
+#if OCAML_MAJOR >= 4
     = Hashtbl.statistics
 #endif
     = {
@@ -947,7 +947,7 @@ module Hashtbl = struct
       bucket_histogram : int array;
     }
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
   let create ?random n = Hashtbl.create n
 
   let reset = clear
@@ -1004,7 +1004,7 @@ module Hashtbl = struct
         List.iter (fun (key, value) -> replace hashtbl key value) to_replace   \
       end
 
-#if OCAMLVERSION <  403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let is_randomized () = false
 
   FILTER_MAP_INPLACE
@@ -1014,14 +1014,14 @@ module Hashtbl = struct
   let filter_map_inplace = Hashtbl.filter_map_inplace
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let find_opt tbl key =
     option_find (find tbl) key
 #else
   let find_opt = Hashtbl.find_opt
 #endif
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
   let seeded_hash seed x = Hashtbl.hash (seed, x)
 
   let seeded_hash_param meaningful total seed x =
@@ -1054,7 +1054,7 @@ module Hashtbl = struct
     replace_seq tbl g;                                       \
     tbl
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   SEQ
 #endif
 
@@ -1111,7 +1111,7 @@ module Hashtbl = struct
   module Make (H : HashedType) = struct
     include Hashtbl.Make (H)
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
     let create capacity = create capacity
 
     let reset = clear
@@ -1124,15 +1124,15 @@ module Hashtbl = struct
       }
 #endif
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
     FILTER_MAP_INPLACE
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
     let find_opt tbl key =
       option_find (find tbl) key
 #endif
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
     SEQ
 #endif
   end
@@ -1152,7 +1152,7 @@ module Hashtbl = struct
   end
 
   module MakeSeeded (H : SeededHashedType) = struct
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
     include Hashtbl.Make (struct
       type t = H.t
 
@@ -1164,7 +1164,7 @@ module Hashtbl = struct
     include Hashtbl.MakeSeeded (H)
 #endif
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
     let create ?random capacity = create capacity
 
     let reset = clear
@@ -1177,16 +1177,16 @@ module Hashtbl = struct
       }
 #endif
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
     FILTER_MAP_INPLACE
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
     let find_opt tbl key =
       option_find (find tbl) key
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
     let to_list tbl =
       fold (fun key value accu -> (key, value) :: accu) tbl []
 
@@ -1251,7 +1251,7 @@ module Set = struct
   module Make (Ord : OrderedType) = struct
     include Set.Make (Ord)
 
-#if OCAMLVERSION < 401
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 01
     exception Find of elt
 
     let find x s =
@@ -1263,11 +1263,11 @@ module Set = struct
       with Find y -> y
 #endif
 
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
     let of_list l = List.fold_left (fun s item -> add item s) empty l
 #endif
 
-#if OCAMLVERSION < 404
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 04
     type map_changed =
       | Changed of t
       | Unchanged of elt list
@@ -1287,7 +1287,7 @@ module Set = struct
       | Unchanged _ -> s
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
     let min_elt_opt s =
       option_find min_elt s
 
@@ -1341,7 +1341,7 @@ module Set = struct
       | Some x -> x
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
     let add_seq i m =
       Seq.fold_left (fun s x -> add x s) m i
 
@@ -1397,7 +1397,7 @@ module Map = struct
   module Make (Ord : OrderedType) = struct
     include Map.Make (Ord)
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
     let union f map map' =
       let f' key v v' =
         match v, v' with
@@ -1410,7 +1410,7 @@ module Map = struct
       merge f' map map'
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
     let find_opt key m =
       option_find (find key) m
 
@@ -1424,7 +1424,7 @@ module Map = struct
       option_find choose m
 #endif
 
-#if OCAMLVERSION < 406
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 06
     let update key f map =
       let o = find_opt key map in
       match o, f o with
@@ -1436,7 +1436,7 @@ module Map = struct
           else add key fv map
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
     let add_seq g m =
       Seq.fold_left (fun m (k, v) -> add k v m) m g
 
@@ -1490,7 +1490,7 @@ module Weak = struct
   module Make (H : Hashtbl.HashedType) = struct
     include Weak.Make (H)
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
     let find_opt t d =
       option_find (find t) d
 #endif
@@ -1500,7 +1500,7 @@ end
 module Sys = struct
   include Sys
 
-#if OCAMLVERSION < 401
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 01
   let unix = os_type = "Unix"
 
   let win32 = os_type = "Win32"
@@ -1508,7 +1508,7 @@ module Sys = struct
   let cygwin = os_type = "Cygwin"
 #endif
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let sigbus = -22
 
   let sigpoll = -23
@@ -1547,7 +1547,7 @@ module Sys = struct
   let runtime_warnings_enabled () = false
 #endif
 
-#if OCAMLVERSION < 404
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 04
   type backend_type =
     | Native
     | Bytecode
@@ -1560,7 +1560,7 @@ module Sys = struct
 #endif
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let getenv_opt var =
     option_find getenv var
 #endif
@@ -1569,7 +1569,7 @@ end
 module Stream = struct
   include Stream
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let of_bytes = of_string
 #endif
 end
@@ -1577,7 +1577,7 @@ end
 module Digest = struct
   include Digest
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let equal : t -> t -> bool = ( = )
 #endif
 end
@@ -1585,11 +1585,11 @@ end
 module Nativeint = struct
   include Nativeint
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let equal : t -> t -> bool = ( = )
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let of_string_opt s =
     option_fail of_string s
 #endif
@@ -1598,11 +1598,11 @@ end
 module Int32 = struct
   include Int32
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let equal : t -> t -> bool = ( = )
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let of_string_opt s =
     option_fail of_string s
 #endif
@@ -1611,11 +1611,11 @@ end
 module Int64 = struct
   include Int64
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let equal : t -> t -> bool = ( = )
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let of_string_opt s =
     option_fail of_string s
 #endif
@@ -1624,7 +1624,7 @@ end
 module Filename = struct
   include Filename
 
-#if OCAMLVERSION < 400
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 00
   let current_temp_dir_name = ref temp_dir_name
 
   let get_temp_dir_name () =
@@ -1637,7 +1637,7 @@ module Filename = struct
     temp_file ~temp_dir prefix suffix
 #endif
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let prng = lazy (Random.State.make_self_init ())
 
   let open_temp_file ?(mode = [Open_text]) ?(perms = 0o600)
@@ -1657,7 +1657,7 @@ module Filename = struct
     try_name 0
 #endif
 
-#if OCAMLVERSION < 404
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 04
   let is_dir_sep c s i =
     if dir_sep.[0] <> c then
       false
@@ -1698,13 +1698,13 @@ end
 module Array = struct
   include Array
 
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
   let create_float l = Array.make l 0.
-#elif OCAMLVERSION < 403
+#elif OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let create_float = Array.make_float
 #endif
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let iter2 f array1 array2 =
     if length array1 <> length array2 then
       invalid_arg "Array.iter2";
@@ -1745,7 +1745,7 @@ module Array = struct
     exists (( == ) item)
 #endif
 
-#if OCAMLVERSION < 406
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 06
   module Floatarray = struct
     let create = create_float
 
@@ -1761,7 +1761,7 @@ module Array = struct
   end
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let of_seq g =
     of_list (List.of_seq g)
 
@@ -1774,7 +1774,7 @@ end
 module ArrayLabels = struct
   include ArrayLabels
 
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let create_float = Array.create_float
 
   let exists ~f a = Array.exists f a
@@ -1786,17 +1786,17 @@ module ArrayLabels = struct
   let memq item ~set = Array.memq item set
 #endif
 
-#if OCAMLVERSION < 405
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 05
   let iter2 ~f a b = Array.iter2 f a b
 
   let map2 ~f a b = Array.map2 f a b
 #endif
 
-#if OCAMLVERSION < 406
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 06
   module Floatarray = Array.Floatarray
 #endif
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let of_seq g =
     of_list (List.of_seq g)
 
@@ -1806,7 +1806,7 @@ module ArrayLabels = struct
 #endif
 end
 
-#if OCAMLVERSION < 402
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 02
 #define UNBOXED
 #define NOALLOC
 #define _UNBOXED
@@ -1819,7 +1819,7 @@ end
 #endif
 
 module Float = struct
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   external neg : float -> float = "%negfloat"
   external add : float -> float -> float = "%addfloat"
   external sub : float -> float -> float = "%subfloat"
@@ -1831,7 +1831,7 @@ module Float = struct
   let infinity = Pervasives.infinity
   let neg_infinity = Pervasives.neg_infinity
   let nan = Pervasives.nan
-#if OCAMLVERSION < 403
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 03
   let pi = 4. *. atan 1.
 #else
   let pi = 0x1.921fb54442d18p+1
@@ -1909,7 +1909,7 @@ end
 module Queue = struct
   include Queue
 
-#if OCAMLVERSION < 407
+#if OCAML_MAJOR < 4 || OCAML_MAJOR = 4 && OCAML_MINOR < 07
   let to_list q =
     fold (fun accu content -> content :: accu) [] q
 
