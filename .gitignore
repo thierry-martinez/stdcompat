@@ -5,5 +5,7 @@
 *.cmx[as]
 /doc/
 /stdcompat.mli
-/stdcompat.ml
 /tests.bytecode
+/META
+/stdcompat.ml_byte
+/stdcompat.ml_native

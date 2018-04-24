@@ -1,4 +1,4 @@
-#if OCAMLVERSION < 402
+#if OCAML_VERSION < (4,02,0)
   type bytes = string
 #else
   type bytes_ = bytes
@@ -6,7 +6,7 @@
 #endif
 (** @before 4.02.0 alias to [string]. *)
 
-#if OCAMLVERSION < 406
+#if OCAML_VERSION < (4,06,0)
   type floatarray = float array
 #else
   type floatarray_ = floatarray
@@ -19,19 +19,19 @@ module Pervasives : sig
     include Pervasives
   end
 
-#if OCAMLVERSION < 400
+#if OCAML_VERSION < (4,00,0)
   val hypot : float -> float -> float
 
   val copysign : float -> float -> float
 #endif
 
-#if OCAMLVERSION < 401
+#if OCAML_VERSION < (4,01,0)
   val ( |> ) : 'a -> ('a -> 'b) -> 'b
 
   val ( @@ ) : ('a -> 'b) -> 'a -> 'b
 #endif
 
-#if OCAMLVERSION < 402
+#if OCAML_VERSION < (4,02,0)
   external raise_notrace : exn -> 'a = "%raise"
 #endif
   (** @before 4.02.0 equivalent to [raise]. *)
@@ -46,7 +46,7 @@ module Pervasives : sig
 
   val really_input_string : in_channel -> int -> string
 
-#if OCAMLVERSION < 403
+#if OCAML_VERSION < (4,03,0)
   type ('a, 'b) result
 #ifdef HAS_RESULT_PKG
     = ('a, 'b) Result.result
@@ -100,7 +100,7 @@ module Char : sig
 end
 
 module Seq : sig
-#if OCAMLVERSION < 407
+#if OCAML_VERSION < (4,07,0)
 #ifdef HAS_SEQ_PKG
   include module type of struct
     include Seq
@@ -268,7 +268,7 @@ module Hashtbl : sig
   (** @before 4.00.0 ignored: does nothing. *)
 
   type statistics
-#if OCAMLVERSION >= 400
+#if OCAML_VERSION >= (4,00,0)
      = Hashtbl.statistics
 #endif
      = {
@@ -381,7 +381,7 @@ module Hashtbl : sig
   end
 
   module MakeSeeded (H : SeededHashedType) : sig
-#if OCAMLVERSION < 400
+#if OCAML_VERSION < (4,00,0)
     include SeededS
 #else
     include module type of struct
@@ -540,7 +540,7 @@ module Sys : sig
 
   val sigxfsz : int
 
-#if OCAMLVERSION < 404
+#if OCAML_VERSION < (4,04,0)
   type backend_type =
     | Native
     | Bytecode
@@ -569,7 +569,7 @@ module Sys : sig
 end
 
 module Uchar : sig
-#if OCAMLVERSION < 403
+#if OCAML_VERSION < (4,03,0)
   type t
 #else
   include module type of struct
@@ -614,7 +614,7 @@ module Uchar : sig
 end
 
 module Bytes : sig
-#if OCAMLVERSION < 402
+#if OCAML_VERSION < (4,02,0)
   include module type of struct
     include String
   end
@@ -662,7 +662,7 @@ module Bytes : sig
 end
 
 module BytesLabels : sig
-#if OCAMLVERSION < 402
+#if OCAML_VERSION < (4,02,0)
   include module type of struct
     include StringLabels
   end
@@ -868,7 +868,7 @@ module Array : sig
     include Array
   end
 
-#if OCAMLVERSION < 406
+#if OCAML_VERSION < (4,06,0)
   module Floatarray : sig
     val create : int -> floatarray
 
@@ -912,7 +912,7 @@ module ArrayLabels : sig
     include ArrayLabels
   end
 
-#if OCAMLVERSION < 406
+#if OCAML_VERSION < (4,06,0)
   module Floatarray : module type of Array.Floatarray
 #endif
 
@@ -939,7 +939,7 @@ module ArrayLabels : sig
   val to_seqi : 'a array -> (int * 'a) Seq.t
 end
 
-#if OCAMLVERSION < 402
+#if OCAML_VERSION < (4,02,0)
 #define UNBOXED
 #define NOALLOC
 #define _UNBOXED
@@ -952,7 +952,7 @@ end
 #endif
 
 module Float : sig
-#if OCAMLVERSION < 407
+#if OCAML_VERSION < (4,07,0)
   external neg : float -> float = "%negfloat"
 
   external add : float -> float -> float = "%addfloat"

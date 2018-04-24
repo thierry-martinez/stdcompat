@@ -65,15 +65,15 @@ else
 	)
 endif
 
-OCAMLVERSION := $(shell $(OCAMLC) -version | cut -c 1,3-4)
+OCAML_VERSION := $(shell $(OCAMLC) -version | cut -c 1-6)
 
-ifeq (407,$(word 1,$(sort 407 $(OCAMLVERSION))))
+ifeq (4.07.0,$(word 1,$(sort 4.07.0 $(OCAML_VERSION))))
 	USE_SEQ_PKG := false
 else
 	USE_SEQ_PKG := $(SEQ_PKG_AVAILABLE)
 endif
 
-ifeq (403,$(word 1,$(sort 403 $(OCAMLVERSION))))
+ifeq (4.03.0,$(word 1,$(sort 4.03.0 $(OCAML_VERSION))))
 	USE_RESULT_PKG := false
 else
 	USE_RESULT_PKG := $(RESULT_PKG_AVAILABLE)
@@ -103,11 +103,11 @@ LITTLE_ENDIAN := $(shell \
 )
 
 ifeq ($(CPPO_AVAILABLE),true)
-	PP := $(CPPO) -D 'OCAMLVERSION $(OCAMLVERSION)'
-	PP_EQ := ' '
+	PP := $(CPPO) -V 'OCAML:$(OCAML_VERSION)'
 else
-	PP := $(CPP) -DOCAMLVERSION=$(OCAMLVERSION) -undef -w
-	PP_EQ := =
+	OCAML_VERSION_STRIPPED := $(subst .,,$(OCAML_VERSION))
+	PP := sed -e '/^\#/s/(\(.\),\(..\),\(.\))/\1\2\3/' | \
+		$(CPP) -DOCAML_VERSION=$(OCAML_VERSION_STRIPPED) -undef -w
 endif
 PP_NATIVE_ARGS := -D OCAMLNATIVE
 ifeq ($(LITTLE_ENDIAN),0)
@@ -125,7 +125,12 @@ endif
 PP_INTF := $(PP)
 PP_BYTECODE := $(PP)
 PP_NATIVE := $(PP) $(PP_NATIVE_ARGS)
-PP_META += $(PP) -D 'REQUIRES$(PP_EQ)"$(REQUIRES)"'
+
+ifeq ($(CPPO_AVAILABLE),true)
+  PP_META += $(PP) -D 'REQUIRES "$(REQUIRES)"'
+else
+  PP_META += $(PP) -D 'REQUIRES="$(REQUIRES)"'
+endif
 
 .PHONY : all
 all : bytecode $(patsubst %,native,$(filter true,$(OCAMLOPT_AVAILABLE))) doc
@@ -138,7 +143,7 @@ native : stdcompat.cmxa stdcompat.cmxs
 
 .PHONY : clean
 clean :
-	rm -f META stdcompat.ml stdcompat.mli \
+	rm -f META stdcompat.ml_byte stdcompat.ml_native stdcompat.mli \
 		stdcompat.cmi \
 		stdcompat.cmo stdcompat.cmx stdcompat.o \
 		stdcompat.cma stdcompat.cmxs stdcompat.cmxa stdcompat.a
@@ -160,7 +165,7 @@ endif
 	$(OCAMLFIND) remove stdcompat
 
 stdcompat.mli : stdcompat.mlip
-	$(PP_INTF) $^ >$@ || rm $@
+	<$^ $(PP_INTF) >$@ || rm $@
 
 stdcompat.cmo stdcompat.cmx : stdcompat.cmi
 
@@ -172,11 +177,17 @@ doc : stdcompat.mli
 %.cmi : %.mli
 	$(OCAMLC) $(OCAMLFLAGS) -c $<
 
-stdcompat.cmo : stdcompat.mlp
-	$(OCAMLC) $(OCAMLFLAGS) -pp "$(PP_BYTECODE)" -c -impl $<
+stdcompat.ml_byte : stdcompat.mlp
+	<$< $(PP_BYTECODE) >$@ || rm $@
 
-stdcompat.cmx : stdcompat.mlp
-	$(OCAMLOPT) $(OCAMLFLAGS) -pp "$(PP_NATIVE)" -c -impl $<
+stdcompat.cmo : stdcompat.ml_byte
+	$(OCAMLC) $(OCAMLFLAGS) -c -impl $<
+
+stdcompat.ml_native : stdcompat.mlp
+	<$< $(PP_NATIVE) >$@ || rm $@
+
+stdcompat.cmx : stdcompat.ml_native
+	$(OCAMLOPT) $(OCAMLFLAGS) -c -impl $<
 
 stdcompat.cma : stdcompat.cmo
 	$(OCAMLC) -a stdcompat.cmo -o $@
@@ -200,4 +211,4 @@ stdcompat_tests.cmo : stdcompat.cmi
 	$(OCAMLC) $(OCAMLFLAGS) -c $<
 
 META : META.pp
-	$(PP_META) <$< >$@
+	<$< $(PP_META) >$@ || rm $@
