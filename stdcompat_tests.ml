@@ -177,4 +177,11 @@ let () =
   assert (Stdcompat.Array.mem "a" [| "a"; "b"; "c" |]);
   assert (not (Stdcompat.Array.mem "d" [| "a"; "b"; "c" |]));
   assert (Stdcompat.Array.memq 2 [| 1; 2; 3 |]);
-  assert (not (Stdcompat.Array.memq "a" [| "a"; "b"; "c" |]))
+  assert (not (Stdcompat.Array.memq "a" [| "a"; "b"; "c" |]));
+  assert (
+    let q = Stdcompat.Queue.create () in
+    Stdcompat.Array.of_seq (Stdcompat.Queue.to_seq q) = [| |]);
+  assert (
+    let q = Stdcompat.Queue.create () in
+    Stdcompat.Queue.add_seq q (Stdcompat.List.to_seq ["a"; "b"; "c"]);
+    Stdcompat.Array.of_seq (Stdcompat.Queue.to_seq q) = [| "a"; "b"; "c" |])

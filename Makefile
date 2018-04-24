@@ -1,3 +1,4 @@
+USE_MAGIC := true
 OCAMLFIND := ocamlfind
 
 OCAMLFIND_AVAILABLE := $(shell \
@@ -87,6 +88,10 @@ ifeq ($(USE_RESULT_PKG),true)
 	OCAMLFLAGS += -package result
 endif
 
+ifeq ($(OCAMLFIND_AVAILABLE),true)
+	OCAMLFLAGS_TESTS += -linkpkg
+endif
+
 CPPO := cppo
 CPP := cpp
 
@@ -120,6 +125,9 @@ endif
 ifeq ($(USE_RESULT_PKG),true)
 	PP += -D 'HAS_RESULT_PKG'
 	REQUIRES += result
+endif
+ifeq ($(USE_MAGIC),true)
+	PP += -D 'USE_MAGIC'
 endif
 
 PP_INTF := $(PP)
@@ -205,7 +213,7 @@ tests_bytecode : tests.bytecode
 	./tests.bytecode
 
 tests.bytecode : stdcompat.cmo stdcompat_tests.cmo
-	$(OCAMLC) $(OCAMLFLAGS) -o $@ $^
+	$(OCAMLC) $(OCAMLFLAGS) $(OCAMLFLAGS_TESTS) -o $@ $^
 
 stdcompat_tests.cmo : stdcompat.cmi
 

@@ -12,7 +12,6 @@
   type floatarray = floatarray_
 #endif
 
-
 #if OCAML_VERSION < (4,05,0)
 let option_find f x =
   try Some (f x)
@@ -890,19 +889,37 @@ end
 module Stack = struct
   include Stack
 
+#if OCAML_VERSION < (4,07,0)
+#ifdef USE_MAGIC
+type 'a internal = { mutable c : 'a list; mutable len : int; }
+#endif
+#endif
+
 #if OCAML_VERSION < (4,03,0)
-  let fold f v s =
-    let r = ref v in
+#ifdef USE_MAGIC
+  let fold f acc (s : 'a t) =
+    let s : 'a internal = Obj.magic s in
+    List.fold_left f acc s.c
+#else
+  let fold f acc s =
+    let r = ref acc in
     iter (fun item -> r := f !r item) s;
     !r
 #endif
+#endif
 
 #if OCAML_VERSION < (4,07,0)
-  let to_list q =
-    fold (fun accu content -> content :: accu) [] q
+#ifdef USE_MAGIC
+  let to_seq s =
+    let s : 'a internal = Obj.magic s in
+    List.to_seq s.c
+#else
+  let to_list s =
+    fold (fun accu content -> content :: accu) [] s
 
-  let to_seq q =
-    List.to_seq (List.rev (to_list q))
+  let to_seq s =
+    List.to_seq (List.rev (to_list s))
+#endif
 
   let add_seq s i = Seq.iter (fun x -> push x s) i
 
@@ -1917,11 +1934,60 @@ module Queue = struct
   include Queue
 
 #if OCAML_VERSION < (4,07,0)
+#ifdef USE_MAGIC
+#if OCAML_VERSION < (4,03,0)
+  type 'a cell = {
+      content: 'a;
+      mutable next: 'a cell
+    }
+
+  type 'a internal = {
+      mutable length: int;
+      mutable tail: 'a cell
+    }
+
+  let to_seq (q : 'a t) =
+    let q : 'a internal = Obj.magic q in
+    if q.length = 0 then
+      Seq.empty
+    else
+      begin
+        let tail = q.tail in
+        let rec aux cell () =
+          let tail' =
+            if cell == tail then
+              Seq.empty
+            else
+              aux cell.next in
+          Seq.Cons (cell.content, tail') in
+        aux tail.next
+      end
+#else
+  type 'a cell =
+    | Nil
+    | Cons of { content: 'a; mutable next: 'a cell }
+
+  type 'a internal = {
+    mutable length: int;
+    mutable first: 'a cell;
+    mutable last: 'a cell
+  }
+
+  let to_seq (q : 'a t) =
+    let q : 'a internal = Obj.magic q in
+    let rec aux c () = match c with
+      | Nil -> Seq.Nil
+      | Cons { content=x; next; } -> Seq.Cons (x, aux next)
+    in
+    aux q.first
+#endif
+#else
   let to_list q =
     fold (fun accu content -> content :: accu) [] q
 
   let to_seq q =
     List.to_seq (List.rev (to_list q))
+#endif
 
   let add_seq q i = Seq.iter (fun x -> push x q) i
 
