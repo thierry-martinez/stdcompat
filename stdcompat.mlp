@@ -71,7 +71,11 @@ module Pervasives = struct
 #endif
 
 #if OCAMLVERSION < 403
-  type ('a, 'b) result = Ok of 'a | Error of 'b
+  type ('a, 'b) result
+#ifdef HAS_RESULT_PKG
+    = ('a, 'b) Result.result
+#endif
+    = Ok of 'a | Error of 'b
 #endif
 
 #if OCAMLVERSION < 405
@@ -179,6 +183,9 @@ end
 
 module Seq = struct
 #if OCAMLVERSION < 407
+#ifdef HAS_SEQ_PKG
+   include Seq
+#else
   type +'a node =
     | Nil
     | Cons of 'a * 'a t
@@ -232,6 +239,7 @@ module Seq = struct
           aux next
     in
     aux seq
+#endif
 #else
    include Seq
 #endif

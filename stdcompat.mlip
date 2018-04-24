@@ -47,7 +47,11 @@ module Pervasives : sig
   val really_input_string : in_channel -> int -> string
 
 #if OCAMLVERSION < 403
-  type ('a, 'b) result = Ok of 'a | Error of 'b
+  type ('a, 'b) result
+#ifdef HAS_RESULT_PKG
+    = ('a, 'b) Result.result
+#endif
+    = Ok of 'a | Error of 'b
 #endif
 
   val bool_of_string_opt : string -> bool option
@@ -97,6 +101,11 @@ end
 
 module Seq : sig
 #if OCAMLVERSION < 407
+#ifdef HAS_SEQ_PKG
+  include module type of struct
+    include Seq
+  end
+#else
   type 'a t = unit -> 'a node
   and +'a node =
     | Nil
@@ -117,6 +126,7 @@ module Seq : sig
   val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 
   val iter : ('a -> unit) -> 'a t -> unit
+#endif
 #else
   include module type of struct
     include Seq

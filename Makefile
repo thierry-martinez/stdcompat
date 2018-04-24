@@ -12,6 +12,20 @@ ifeq ($(OCAMLFIND_AVAILABLE),true)
 	OCAMLOPT := $(OCAMLFIND) ocamlopt
 	OCAMLC := $(OCAMLFIND) ocamlc
 	OCAMLDOC := $(OCAMLFIND) ocamldoc
+	RESULT_PKG_AVAILABLE := $(shell \
+	if $(OCAMLFIND) query result >/dev/null 2>&1; then \
+		echo true; \
+	else \
+		echo false; \
+	fi \
+)
+	SEQ_PKG_AVAILABLE := $(shell \
+	if $(OCAMLFIND) query seq >/dev/null 2>&1; then \
+		echo true; \
+	else \
+		echo false; \
+	fi \
+)
 else
 	OCAMLOPT := $(shell \
 		if ocamlopt.opt -version >/dev/null 2>&1; then \
@@ -19,7 +33,7 @@ else
 		elif ocamlopt -version >/dev/null 2>&1; then \
 			echo ocamlopt; \
 		fi \
-	)
+	) $(OCAMLFLAGS)
 
 	OCAMLC := $(shell \
 		if ocamlc.opt -version >/dev/null 2>&1; then \
@@ -27,9 +41,12 @@ else
 		elif ocamlc -version >/dev/null 2>&1; then \
 			echo ocamlc; \
 		fi \
-	)
+	) $(OCAMLFLAGS)
 
-	OCAMLDOC := ocamldoc
+	OCAMLDOC := ocamldoc $(OCAMLFLAGS)
+
+	RESULT_PKG_AVAILABLE := false
+	SEQ_PKG_AVAILABLE := false
 endif
 
 ifeq ($(OCAMLC),)
@@ -50,6 +67,26 @@ endif
 
 OCAMLVERSION := $(shell $(OCAMLC) -version | cut -c 1,3-4)
 
+ifeq (407,$(word 1,$(sort 407 $(OCAMLVERSION))))
+	USE_SEQ_PKG := false
+else
+	USE_SEQ_PKG := $(SEQ_PKG_AVAILABLE)
+endif
+
+ifeq (403,$(word 1,$(sort 403 $(OCAMLVERSION))))
+	USE_RESULT_PKG := false
+else
+	USE_RESULT_PKG := $(RESULT_PKG_AVAILABLE)
+endif
+
+ifeq ($(USE_SEQ_PKG),true)
+	OCAMLFLAGS += -package seq
+endif
+
+ifeq ($(USE_RESULT_PKG),true)
+	OCAMLFLAGS += -package result
+endif
+
 CPPO := cppo
 CPP := cpp
 
@@ -67,16 +104,18 @@ LITTLE_ENDIAN := $(shell \
 
 ifeq ($(CPPO_AVAILABLE),true)
 	PP := $(CPPO) -D 'OCAMLVERSION $(OCAMLVERSION)'
-	PP_NATIVE_ARGS := -D OCAMLNATIVE
-ifeq ($(LITTLE_ENDIAN),0)
-	PP_NATIVE_ARGS += -D BIGENDIAN
-endif
 else
-	PP := $(CPP) -DOCAMLVERSION=$(OCAMLVERSION) -undef
-	PP_NATIVE_ARGS := -DOCAMLNATIVE
-ifeq ($(LITTLE_ENDIAN),0)
-	PP_NATIVE_ARGS += -DBIGENDIAN
+	PP := $(CPP) -DOCAMLVERSION=$(OCAMLVERSION) -undef -w
 endif
+PP_NATIVE_ARGS := -D OCAMLNATIVE
+ifeq ($(LITTLE_ENDIAN),0)
+	PP += -D BIGENDIAN
+endif
+ifeq ($(USE_SEQ_PKG),true)
+	PP += -D HAS_SEQ_PKG
+endif
+ifeq ($(USE_RESULT_PKG),true)
+	PP += -D HAS_RESULT_PKG
 endif
 
 PP_INTF := $(PP)
@@ -122,17 +161,17 @@ stdcompat.cmo stdcompat.cmx : stdcompat.cmi
 
 doc : stdcompat.mli
 	mkdir -p doc
-	$(OCAMLDOC) -html -d $@ $^
+	$(OCAMLDOC) $(OCAMLFLAGS) -html -d $@ $^
 	touch doc
 
 %.cmi : %.mli
-	$(OCAMLC) -c $<
+	$(OCAMLC) $(OCAMLFLAGS) -c $<
 
 stdcompat.cmo : stdcompat.mlp
-	$(OCAMLC) -pp "$(PP_BYTECODE)" -c -impl $<
+	$(OCAMLC) $(OCAMLFLAGS) -pp "$(PP_BYTECODE)" -c -impl $<
 
 stdcompat.cmx : stdcompat.mlp
-	$(OCAMLOPT) -pp "$(PP_NATIVE)" -c -impl $<
+	$(OCAMLOPT) $(OCAMLFLAGS) -pp "$(PP_NATIVE)" -c -impl $<
 
 stdcompat.cma : stdcompat.cmo
 	$(OCAMLC) -a stdcompat.cmo -o $@
@@ -148,9 +187,9 @@ tests_bytecode : tests.bytecode
 	./tests.bytecode
 
 tests.bytecode : stdcompat.cmo stdcompat_tests.cmo
-	$(OCAMLC) -o $@ $^
+	$(OCAMLC) $(OCAMLFLAGS) -o $@ $^
 
 stdcompat_tests.cmo : stdcompat.cmi
 
 %.cmo : %.ml
-	$(OCAMLC) -c $<
+	$(OCAMLC) $(OCAMLFLAGS) -c $<
