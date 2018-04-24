@@ -1212,26 +1212,7 @@ module Hashtbl = struct
 #endif
 
 #if OCAML_VERSION < (4,07,0)
-    let to_list tbl =
-      fold (fun key value accu -> (key, value) :: accu) tbl []
-
-    let to_seq tbl =
-      List.to_seq (to_list tbl)
-
-    let to_seq_keys m = Seq.map fst (to_seq m)
-
-    let to_seq_values m = Seq.map snd (to_seq m)
-
-    let add_seq tbl g =
-      Seq.iter (fun (k, v) -> add tbl k v) g
-
-    let replace_seq tbl g =
-      Seq.iter (fun (k, v) -> replace tbl k v) g
-
-    let of_seq g =
-      let tbl = create 17 in
-      replace_seq tbl g;
-      tbl
+    SEQ
 #endif
   end
 end
@@ -1275,6 +1256,19 @@ module Set = struct
 
   module Make (Ord : OrderedType) = struct
     include Set.Make (Ord)
+
+#if OCAML_VERSION < (4,07,0)
+#ifdef USE_MAGIC
+    type internal = Empty | Node of internal * elt * internal * int
+
+    type enumeration = End | More of elt * internal * enumeration
+
+    let rec cons_enum s e =
+      match s with
+        Empty -> e
+      | Node (l, v, r, _h) -> cons_enum l (More(v, r, e))
+#endif
+#endif
 
 #if OCAML_VERSION < (4,01,0)
     exception Find of elt
@@ -1372,6 +1366,28 @@ module Set = struct
 
     let of_seq i = add_seq i empty
 
+#ifdef USE_MAGIC
+    let rec seq_of_enum_ c () = match c with
+      | End -> Seq.Nil
+      | More (x, t, rest) -> Seq.Cons (x, seq_of_enum_ (cons_enum t rest))
+
+    let to_seq (s : t) =
+      let s : internal = Obj.magic s in
+      seq_of_enum_ (cons_enum s End)
+
+    let to_seq_from low s =
+      let s : internal = Obj.magic s in
+      let rec aux low s c = match s with
+        | Empty -> c
+        | Node (l, v, r, _h) ->
+            begin match Ord.compare v low with
+              | 0 -> More (v, r, c)
+              | n when n<0 -> aux low r c
+              | _ -> aux low l (More (v, r, c))
+            end
+      in
+      seq_of_enum_ (aux low s End)
+#else
     let to_seq s =
       List.to_seq (elements s)
 
@@ -1388,6 +1404,7 @@ module Set = struct
 
     let to_seq_from low s =
       List.to_seq (elements_from low s)
+#endif
 #endif
   end
 end
