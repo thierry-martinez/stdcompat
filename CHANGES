@@ -1,8 +1,11 @@
 * Version 3
 - Missing List.of_seq/List.to_seq
-- Remove spurious Float.seeded_hash_param (suggested by Hezekiah M. Carty)
+- Remove spurious Float.seeded_hash_param
+  (suggested by Hezekiah M. Carty:
+   https://github.com/thierry-martinez/stdcompat/pull/2)
 - Compatibility with seq and result packages
-  (suggested by Hezekiah M. Carty)
+  (suggested by Hezekiah M. Carty:
+   https://github.com/thierry-martinez/stdcompat/issues/1)
 
 * Version 2
 - Redefinitions for Pervasives are now in Stdcompat.Pervasives (they were
