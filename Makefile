@@ -112,7 +112,7 @@ ifeq ($(CPPO_AVAILABLE),true)
 else
 	OCAML_VERSION_STRIPPED := $(subst .,,$(OCAML_VERSION))
 	PP := sed -e '/^\#/s/(\(.\),\(..\),\(.\))/\1\2\3/' | \
-		$(CPP) -DOCAML_VERSION=$(OCAML_VERSION_STRIPPED) -undef -w
+		$(CPP) -DOCAML_VERSION=$(OCAML_VERSION_STRIPPED) -undef -w -
 endif
 PP_NATIVE_ARGS := -D OCAMLNATIVE
 ifeq ($(LITTLE_ENDIAN),0)
