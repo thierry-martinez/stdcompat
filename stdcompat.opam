@@ -5,11 +5,13 @@ homepage: "https://github.com/thierry-martinez/stdcompat"
 bug-reports: "https://github.com/thierry-martinez/stdcompat/issues"
 license: "BSD"
 dev-repo: "https://github.com/thierry-martinez/stdcompat.git"
-build: [make "all" "PREFIX=%{prefix}%"]
-install: [make "install" "PREFIX=%{prefix}%"]
-remove: [make "uninstall" "PREFIX=%{prefix}%"]
+build: ["jbuilder" "build" "-p" name "-j" jobs]
+build-test: ["jbuilder" "runtest" "-p" name]
+build-doc: [ "jbuilder" "build" "@doc" ]
 depends: [
-  "ocamlfind" {build}
+  "jbuilder" {build}
   "cppo" {build}
+  "result"
+  "seq"
 ]
 available: [ocaml-version >= "3.12.1" & ocaml-version < "4.08.0"]
