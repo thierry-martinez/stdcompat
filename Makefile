@@ -104,23 +104,28 @@ LITTLE_ENDIAN := $(shell \
 
 ifeq ($(CPPO_AVAILABLE),true)
 	PP := $(CPPO) -D 'OCAMLVERSION $(OCAMLVERSION)'
+	PP_EQ := ' '
 else
 	PP := $(CPP) -DOCAMLVERSION=$(OCAMLVERSION) -undef -w
+	PP_EQ := =
 endif
 PP_NATIVE_ARGS := -D OCAMLNATIVE
 ifeq ($(LITTLE_ENDIAN),0)
 	PP += -D BIGENDIAN
 endif
 ifeq ($(USE_SEQ_PKG),true)
-	PP += -D HAS_SEQ_PKG
+	PP += -D 'HAS_SEQ_PKG'
+	REQUIRES += seq
 endif
 ifeq ($(USE_RESULT_PKG),true)
-	PP += -D HAS_RESULT_PKG
+	PP += -D 'HAS_RESULT_PKG'
+	REQUIRES += result
 endif
 
 PP_INTF := $(PP)
 PP_BYTECODE := $(PP)
 PP_NATIVE := $(PP) $(PP_NATIVE_ARGS)
+PP_META += $(PP) -D 'REQUIRES$(PP_EQ)"$(REQUIRES)"'
 
 .PHONY : all
 all : bytecode $(patsubst %,native,$(filter true,$(OCAMLOPT_AVAILABLE))) doc
@@ -133,7 +138,7 @@ native : stdcompat.cmxa stdcompat.cmxs
 
 .PHONY : clean
 clean :
-	rm -f stdcompat.ml stdcompat.mli \
+	rm -f META stdcompat.ml stdcompat.mli \
 		stdcompat.cmi \
 		stdcompat.cmo stdcompat.cmx stdcompat.o \
 		stdcompat.cma stdcompat.cmxs stdcompat.cmxa stdcompat.a
@@ -193,3 +198,6 @@ stdcompat_tests.cmo : stdcompat.cmi
 
 %.cmo : %.ml
 	$(OCAMLC) $(OCAMLFLAGS) -c $<
+
+META : META.pp
+	$(PP_META) <$< >$@
