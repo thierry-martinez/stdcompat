@@ -109,25 +109,40 @@ LITTLE_ENDIAN := $(shell \
 
 ifeq ($(CPPO_AVAILABLE),true)
 	PP := $(CPPO) -V 'OCAML:$(OCAML_VERSION)'
+	PP_NATIVE_ARGS := -D OCAMLNATIVE
+	ifeq ($(LITTLE_ENDIAN),0)
+		PP += -D BIGENDIAN
+	endif
+	ifeq ($(USE_SEQ_PKG),true)
+		PP += -D 'HAS_SEQ_PKG'
+		REQUIRES += seq
+	endif
+	ifeq ($(USE_RESULT_PKG),true)
+		PP += -D 'HAS_RESULT_PKG'
+		REQUIRES += result
+	endif
+	ifeq ($(USE_MAGIC),true)
+		PP += -D 'USE_MAGIC'
+	endif
 else
 	OCAML_VERSION_STRIPPED := $(subst .,,$(OCAML_VERSION))
 	PP := sed -e '/^\#/s/(\(.\),\(..\),\(.\))/\1\2\3/' | \
 		$(CPP) -DOCAML_VERSION=$(OCAML_VERSION_STRIPPED) -undef -w -
-endif
-PP_NATIVE_ARGS := -D OCAMLNATIVE
-ifeq ($(LITTLE_ENDIAN),0)
-	PP += -D BIGENDIAN
-endif
-ifeq ($(USE_SEQ_PKG),true)
-	PP += -D 'HAS_SEQ_PKG'
-	REQUIRES += seq
-endif
-ifeq ($(USE_RESULT_PKG),true)
-	PP += -D 'HAS_RESULT_PKG'
-	REQUIRES += result
-endif
-ifeq ($(USE_MAGIC),true)
-	PP += -D 'USE_MAGIC'
+	PP_NATIVE_ARGS := -DOCAMLNATIVE
+	ifeq ($(LITTLE_ENDIAN),0)
+		PP += -DBIGENDIAN
+	endif
+	ifeq ($(USE_SEQ_PKG),true)
+		PP += -DHAS_SEQ_PKG
+		REQUIRES += seq
+	endif
+	ifeq ($(USE_RESULT_PKG),true)
+		PP += -DHAS_RESULT_PKG
+		REQUIRES += result
+	endif
+	ifeq ($(USE_MAGIC),true)
+		PP += -DUSE_MAGIC
+	endif
 endif
 
 PP_INTF := $(PP)
