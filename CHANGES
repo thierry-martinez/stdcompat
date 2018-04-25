@@ -11,6 +11,7 @@
   Set.find*, Set.map.
   Pure implementations are available by building with
   "make USE_MAGIC=false"
+- jbuild script (Hezekiah M. Carty)
 
 * Version 2
 - Redefinitions for Pervasives are now in Stdcompat.Pervasives (they were
