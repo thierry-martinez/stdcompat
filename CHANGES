@@ -6,6 +6,11 @@
 - Compatibility with seq and result packages
   (suggested by Hezekiah M. Carty:
    https://github.com/thierry-martinez/stdcompat/issues/1)
+- Magic implementations of {Set,Map,Hashtbl,Queue,Stack}.to_seq*,
+  Hashtbl.filter_map_inplace, Hashtbl.stats, Stack.fold,
+  Set.find*, Set.map.
+  Pure implementations are available by building with
+  "make USE_MAGIC=false"
 
 * Version 2
 - Redefinitions for Pervasives are now in Stdcompat.Pervasives (they were

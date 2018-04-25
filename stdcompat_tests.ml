@@ -184,4 +184,11 @@ let () =
   assert (
     let q = Stdcompat.Queue.create () in
     Stdcompat.Queue.add_seq q (Stdcompat.List.to_seq ["a"; "b"; "c"]);
-    Stdcompat.Array.of_seq (Stdcompat.Queue.to_seq q) = [| "a"; "b"; "c" |])
+    Stdcompat.Array.of_seq (Stdcompat.Queue.to_seq q) = [| "a"; "b"; "c" |]);
+  assert (
+    let l = Stdcompat.List.to_seq ["a", 1; "b", 2; "c", 3] in
+    let module M = Stdcompat.Map.Make (String) in
+    let q = Stdcompat.Hashtbl.of_seq (M.to_seq (M.of_seq l)) in
+    let m = M.of_seq (Stdcompat.Hashtbl.to_seq q) in
+    M.cardinal m = 3 && M.find "a" m = 1 && M.find "b" m = 2
+      && M.find "c" m = 3)
