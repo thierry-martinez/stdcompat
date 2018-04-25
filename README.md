@@ -48,7 +48,7 @@ should then appear before ``Stdcompat`` in the linking chain).
 Some redefinitions access to the internal representation of
 the data structures when they are abstracted: it is the case for
 ``{Set,Map,Hashtbl,Queue,Stack}.to_seq*``,
-``Hashtbl.filter_map_inplace``, ``Hashtbl.stats``, `Stack.fold``,
+``Hashtbl.filter_map_inplace``, ``Hashtbl.stats``, ``Stack.fold``,
 ``Set.find*``, ``Set.map``.
 Pure (but less efficient) implementations are available by building
 ``Stdcompat`` with ``make USE_MAGIC=false``.
