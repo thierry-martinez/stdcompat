@@ -1,3 +1,6 @@
+* Version 4
+- Fix link problems with hypot, copy_sign, ldexp and classify_float
+
 * Version 3
 - Missing List.of_seq/List.to_seq
 - Remove spurious Float.seeded_hash_param

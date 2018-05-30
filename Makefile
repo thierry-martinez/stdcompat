@@ -230,10 +230,22 @@ tests_bytecode : tests.bytecode
 tests.bytecode : stdcompat.cmo stdcompat_tests.cmo
 	$(OCAMLC) $(OCAMLFLAGS) $(OCAMLFLAGS_TESTS) -o $@ $^
 
+.PHONY : tests_native
+tests_native : tests.native
+	./tests.native
+
+tests.native : stdcompat.cmx stdcompat_tests.cmx
+	$(OCAMLOPT) $(OCAMLFLAGS) $(OCAMLFLAGS_TESTS) -o $@ $^
+
 stdcompat_tests.cmo : stdcompat.cmi
+
+stdcompat_tests.cmx : stdcompat.cmi
 
 %.cmo : %.ml
 	$(OCAMLC) $(OCAMLFLAGS) -c $<
+
+%.cmx : %.ml
+	$(OCAMLOPT) $(OCAMLFLAGS) -c $<
 
 META : META.pp
 	<$< $(PP_META) >$@ || rm $@

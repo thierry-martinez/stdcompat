@@ -9,6 +9,7 @@ _build/
 /doc/
 /stdcompat.mli
 /tests.bytecode
+/tests.native
 /META
 /stdcompat.ml_byte
 /stdcompat.ml_native

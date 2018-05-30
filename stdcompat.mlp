@@ -2155,8 +2155,12 @@ module Float = struct
     | FP_zero
     | FP_infinite
     | FP_nan
+#if OCAML_VERSION < (4,03,0)
+  external classify_float : float -> fpclass = "caml_classify_float"
+#else
   external classify_float : (float _UNBOXED) -> fpclass =
     "caml_classify_float" "caml_classify_float_unboxed" NOALLOC
+#endif
   external pow : float -> float -> float = "caml_power_float" "pow"
     UNBOXED NOALLOC
   external sqrt : float -> float = "caml_sqrt_float" "sqrt"
@@ -2180,8 +2184,6 @@ module Float = struct
     UNBOXED NOALLOC
   external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
     UNBOXED NOALLOC
-  external hypot : float -> float -> float
-                 = "caml_hypot_float" "caml_hypot" UNBOXED NOALLOC
   external cosh : float -> float = "caml_cosh_float" "cosh"
     UNBOXED NOALLOC
   external sinh : float -> float = "caml_sinh_float" "sinh"
@@ -2192,12 +2194,30 @@ module Float = struct
     UNBOXED NOALLOC
   external floor : float -> float = "caml_floor_float" "floor"
   UNBOXED NOALLOC
+
+#if OCAML_VERSION < (4,00,0)
+  let copysign = copysign
+
+  let hypot = hypot
+#else
   external copysign : float -> float -> float
                     = "caml_copysign_float" "caml_copysign"
                     UNBOXED NOALLOC
+
+  external hypot : float -> float -> float
+                 = "caml_hypot_float" "caml_hypot" UNBOXED NOALLOC
+#endif
+
   external frexp : float -> float * int = "caml_frexp_float"
-  external ldexp : (float _UNBOXED) -> (int _UNTAGGED) -> (float _UNBOXED) =
+
+#if OCAML_VERSION < (4,03,0)
+  external ldexp : float -> int -> float = "caml_ldexp_float"
+#else
+  external ldexp :
+    (float _UNBOXED) -> (int _UNTAGGED) -> (float _UNBOXED) =
     "caml_ldexp_float" "caml_ldexp_float_unboxed" NOALLOC
+#endif
+
   external modf : float -> float * float = "caml_modf_float"
   type t = float
   external compare : float -> float -> int = "%compare"
