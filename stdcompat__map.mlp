@@ -1,0 +1,125 @@
+module type OrderedType = Map.OrderedType
+
+module type S = sig
+  include Map.S
+
+  val union : (key -> 'a -> 'a -> 'a option) -> 'a t -> 'a t -> 'a t
+
+  val find_opt : key -> 'a t -> 'a option
+
+  val min_binding_opt : 'a t -> (key * 'a) option
+
+  val max_binding_opt : 'a t -> (key * 'a) option
+
+  val choose_opt : 'a t -> (key * 'a) option
+
+  val update : key -> ('a option -> 'a option) -> 'a t -> 'a t
+
+  val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
+
+  val add_seq : (key * 'a) Stdcompat__seq.t -> 'a t -> 'a t
+
+  val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
+
+  val to_seq_from : key -> 'a t -> (key * 'a) Stdcompat__seq.t
+end
+
+module Make (Ord : OrderedType) = struct
+  include Map.Make (Ord)
+
+#if OCAML_VERSION < (4,03,0)
+  let union f map map' =
+    let f' key v v' =
+      match v, v' with
+      | None, None ->
+          None
+      | Some v, None | None, Some v ->
+          Some v
+      | Some v, Some v' ->
+          f key v v' in
+    merge f' map map'
+#endif
+
+#if OCAML_VERSION < (4,05,0)
+  let find_opt key m =
+    Stdcompat__tools.option_find (find key) m
+
+  let min_binding_opt m =
+    Stdcompat__tools.option_find min_binding m
+
+  let max_binding_opt m =
+    Stdcompat__tools.option_find max_binding m
+
+  let choose_opt m =
+    Stdcompat__tools.option_find choose m
+#endif
+
+#if OCAML_VERSION < (4,06,0)
+  let update key f map =
+    let o = find_opt key map in
+    match o, f o with
+    | None, None -> map
+    | None, Some fv -> add key fv map
+    | Some _, None -> remove key map
+    | Some v, Some fv ->
+        if v == fv then map
+        else add key fv map
+#endif
+
+#if OCAML_VERSION < (4,07,0)
+#ifdef USE_MAGIC
+  type 'a internal =
+      Empty
+    | Node of 'a internal * key * 'a * 'a internal * int
+
+  type 'a enumeration = End | More of key * 'a * 'a internal * 'a enumeration
+
+  let rec cons_enum m e =
+    match m with
+      Empty -> e
+    | Node (l, v, d, r, _h) -> cons_enum l (More (v, d, r, e))
+
+  let rec seq_of_enum_ c () = match c with
+    | End -> Stdcompat__seq.Nil
+    | More (k,v,t,rest) -> Stdcompat__seq.Cons ((k,v), seq_of_enum_ (cons_enum t rest))
+
+  let to_seq (m : 'a t) =
+    let m : 'a internal = Obj.magic m in
+    seq_of_enum_ (cons_enum m End)
+
+  let to_seq_from low (m : 'a t) =
+    let m : 'a internal = Obj.magic m in
+    let rec aux low m c = match m with
+      | Empty -> c
+      | Node (l, v, d, r, _h) ->
+          begin match Ord.compare v low with
+            | 0 -> More (v, d, r, c)
+            | n when n<0 -> aux low r c
+            | _ -> aux low l (More (v, d, r, c))
+          end
+    in
+    seq_of_enum_ (aux low m End)
+#else
+  let to_seq m =
+    Stdcompat__list.to_seq (bindings m)
+
+  let bindings_from low s =
+    let rec cut l =
+      match l with
+      | [] -> []
+      | (key, _) :: tl ->
+        if Ord.compare low key < 0 then
+          cut tl
+        else
+          l in
+     cut (bindings s)
+
+  let to_seq_from low s =
+    Stdcompat__list.to_seq (bindings_from low s)
+#endif
+  let add_seq g m =
+    Stdcompat__seq.fold_left (fun m (k, v) -> add k v m) m g
+
+  let of_seq g = add_seq g empty
+#endif
+end

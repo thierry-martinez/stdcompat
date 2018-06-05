@@ -108,7 +108,7 @@ LITTLE_ENDIAN := $(shell \
 )
 
 ifeq ($(CPPO_AVAILABLE),true)
-	PP := $(CPPO) -V 'OCAML:$(OCAML_VERSION)'
+	PP = $(CPPO) -V 'OCAML:$(OCAML_VERSION)' $<
 	PP_NATIVE_ARGS := -D OCAMLNATIVE
 	ifeq ($(LITTLE_ENDIAN),0)
 		PP += -D BIGENDIAN
@@ -126,7 +126,7 @@ ifeq ($(CPPO_AVAILABLE),true)
 	endif
 else
 	OCAML_VERSION_STRIPPED := $(subst .,,$(OCAML_VERSION))
-	PP := sed -e '/^\#/s/(\(.\),\(..\),\(.\))/\1\2\3/' | \
+	PP = <$< sed -e '/^\#/s/(\(.\),\(..\),\(.\))/\1\2\3/' | \
 		$(CPP) -DOCAML_VERSION=$(OCAML_VERSION_STRIPPED) -undef -w -
 	PP_NATIVE_ARGS := -DOCAMLNATIVE
 	ifeq ($(LITTLE_ENDIAN),0)
@@ -145,15 +145,28 @@ else
 	endif
 endif
 
-PP_INTF := $(PP)
-PP_BYTECODE := $(PP)
-PP_NATIVE := $(PP) $(PP_NATIVE_ARGS)
+PP_INTF = $(PP)
+PP_IMPL = $(PP)
+PP_BYTECODE = $(PP)
+PP_NATIVE = $(PP) $(PP_NATIVE_ARGS)
 
 ifeq ($(CPPO_AVAILABLE),true)
   PP_META += $(PP) -D 'REQUIRES "$(REQUIRES)"'
 else
   PP_META += $(PP) -D 'REQUIRES="$(REQUIRES)"'
 endif
+
+MODULES := stdcompat__root stdcompat__seq stdcompat__tools		\
+	stdcompat__pervasives stdcompat__arg stdcompat__lazy		\
+	stdcompat__char stdcompat__uchar stdcompat__buffer		\
+	stdcompat__string stdcompat__stringLabels stdcompat__bytes	\
+	stdcompat__bytesLabels stdcompat__list stdcompat__listLabels	\
+	stdcompat__stack stdcompat__hashtbl stdcompat__set		\
+	stdcompat__map stdcompat__weak stdcompat__sys			\
+	stdcompat__stream stdcompat__digest stdcompat__nativeint	\
+	stdcompat__int32 stdcompat__int64 stdcompat__filename		\
+	stdcompat__array stdcompat__arrayLabels	\
+	stdcompat__float stdcompat__queue
 
 .PHONY : all
 all : bytecode $(patsubst %,native,$(filter true,$(OCAMLOPT_AVAILABLE))) doc
@@ -166,17 +179,24 @@ native : stdcompat.cmxa stdcompat.cmxs
 
 .PHONY : clean
 clean :
-	rm -f META stdcompat.ml_byte stdcompat.ml_native stdcompat.mli \
-		stdcompat.cmi stdcompat.cmt stdcompat.cmti \
-		stdcompat.cmo stdcompat.cmx stdcompat.o \
+	rm -f META $(foreach module, $(MODULES) stdcompat__native stdcompat, \
+			$(foreach ext, .cmi .cmt .cmti .cmo .cmx .o .a, \
+				$(module)$(ext))) \
+		$(foreach module, $(MODULES), \
+			$(patsubst %.mlp, %.ml, $(wildcard $(module).mlp)) \
+			$(patsubst %.mlip, %.mli, \
+				$(wildcard $(module).mlip))) \
 		stdcompat.cma stdcompat.cmxs stdcompat.cmxa stdcompat.a \
 		stdcompat_tests.cmt stdcompat_tests.cmti \
-		stdcompat_tests.cmi stdcompat_tests.cmo
+		stdcompat_tests.cmi stdcompat_tests.cmo .depend
 
 .PHONY : install
-install : META stdcompat.cma stdcompat.cmi \
-	$(patsubst %,stdcompat.cmx stdcompat.cmxs stdcompat.cmxa stdcompat.a, \
-		$(filter true,$(OCAMLOPT_AVAILABLE)))
+install : META stdcompat.cma stdcompat.cmxs stdcompat.cmxa stdcompat.a \
+	$(patsubst %, \
+	  $(foreach module,$(MODULES) stdcompat__native stdcompat, \
+	    $(foreach ext,.cmi .cmx, \
+	      $(module)$(ext))), \
+	  $(filter true,$(OCAMLOPT_AVAILABLE)))
 ifeq ($(HAVE_OCAMLFIND),no)
 	$(error ocamlfind is needed for 'make install')
 endif
@@ -189,12 +209,29 @@ ifeq ($(HAVE_OCAMLFIND),no)
 endif
 	$(OCAMLFIND) remove stdcompat
 
-stdcompat.mli : stdcompat.mlip
-	<$^ $(PP_INTF) >$@ || rm $@
+.PHONY : depend
+depend : .depend
 
-stdcompat.cmo stdcompat.cmx : stdcompat.cmi
+ocaml_files := $(foreach module, $(MODULES), \
+	    $(foreach ext, .ml .mli, \
+	      $(module)$(ext))) stdcompat.ml stdcompat__native.ml_byte
 
-doc : stdcompat.mli
+.depend : $(ocaml_files)
+	ocamldep -ml-synonym .ml_byte $(ocaml_files) >$@
+
+ifneq ($(MAKECMDGOALS),clean)
+include .depend
+endif
+
+stdcompat__list.cmo stdcompat__list.cmx : stdcompat__list.cmi
+
+%.mli : %.mlip
+	$(PP_INTF) >$@ || rm $@
+
+%.ml : %.mlp
+	$(PP_IMPL) >$@ || rm $@
+
+doc :
 	mkdir -p doc
 	$(OCAMLDOC) $(OCAMLFLAGS) -html -d $@ $^
 	touch doc
@@ -202,50 +239,44 @@ doc : stdcompat.mli
 %.cmi : %.mli
 	$(OCAMLC) $(OCAMLFLAGS) -c $<
 
-stdcompat.ml_byte : stdcompat.mlp
-	<$< $(PP_BYTECODE) >$@ || rm $@
-
-stdcompat.cmo : stdcompat.ml_byte
-	$(OCAMLC) $(OCAMLFLAGS) -c -impl $<
-
-stdcompat.ml_native : stdcompat.mlp
-	<$< $(PP_NATIVE) >$@ || rm $@
-
-stdcompat.cmx : stdcompat.ml_native
-	$(OCAMLOPT) $(OCAMLFLAGS) -c -impl $<
-
-stdcompat.cma : stdcompat.cmo
-	$(OCAMLC) -a stdcompat.cmo -o $@
-
-stdcompat.cmxa : stdcompat.cmx
-	$(OCAMLOPT) -a stdcompat.cmx -o $@
-
-stdcompat.cmxs : stdcompat.cmx
-	$(OCAMLOPT) -shared stdcompat.cmx -o $@
-
-.PHONY : tests_bytecode
-tests_bytecode : tests.bytecode
-	./tests.bytecode
-
-tests.bytecode : stdcompat.cmo stdcompat_tests.cmo
-	$(OCAMLC) $(OCAMLFLAGS) $(OCAMLFLAGS_TESTS) -o $@ $^
-
-.PHONY : tests_native
-tests_native : tests.native
-	./tests.native
-
-tests.native : stdcompat.cmx stdcompat_tests.cmx
-	$(OCAMLOPT) $(OCAMLFLAGS) $(OCAMLFLAGS_TESTS) -o $@ $^
-
-stdcompat_tests.cmo : stdcompat.cmi
-
-stdcompat_tests.cmx : stdcompat.cmi
-
 %.cmo : %.ml
 	$(OCAMLC) $(OCAMLFLAGS) -c $<
 
 %.cmx : %.ml
 	$(OCAMLOPT) $(OCAMLFLAGS) -c $<
 
+stdcompat__native.cmo : stdcompat__native.ml_byte
+	$(OCAMLC) $(OCAMLFLAGS) -c -impl $<
+
+stdcompat__native.cmx : stdcompat__native.ml_native
+	$(OCAMLOPT) $(OCAMLFLAGS) -c -impl $<
+
+stdcompat.cma : $(addsuffix .cmo, stdcompat__native $(MODULES) stdcompat)
+	$(OCAMLC) -a $^ -o $@
+
+stdcompat.cmxa : $(addsuffix .cmx, stdcompat__native $(MODULES) stdcompat)
+	$(OCAMLOPT) -a $^ -o $@
+
+stdcompat.cmxs : $(addsuffix .cmx, stdcompat__native $(MODULES) stdcompat)
+	$(OCAMLOPT) -shared $^ -o $@
+
+.PHONY : tests_bytecode
+tests_bytecode : tests.bytecode
+	./tests.bytecode
+
+tests.bytecode : stdcompat.cma stdcompat_tests.cmo
+	$(OCAMLC) $(OCAMLFLAGS) $(OCAMLFLAGS_TESTS) -o $@ $^
+
+.PHONY : tests_native
+tests_native : tests.native
+	./tests.native
+
+tests.native : stdcompat.cmxa stdcompat_tests.cmx
+	$(OCAMLOPT) $(OCAMLFLAGS) $(OCAMLFLAGS_TESTS) -o $@ $^
+
+stdcompat_tests.cmo : stdcompat.cmi
+
+stdcompat_tests.cmx : stdcompat.cmi
+
 META : META.pp
-	<$< $(PP_META) >$@ || rm $@
+	$(PP_META) >$@ || rm $@

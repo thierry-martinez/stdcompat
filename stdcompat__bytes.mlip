@@ -1,0 +1,45 @@
+#if OCAML_VERSION < (4,02,0)
+include module type of struct
+  include String
+end
+#else
+include module type of struct
+  include Bytes
+end
+#endif
+(** @before 4.02.0 the module [Bytes] is defined on top of the module
+    [String]. *)
+
+val empty : t
+
+val of_string : string -> t
+
+val to_string : t -> string
+
+val sub_string : t -> int -> int -> string
+
+val extend : t -> int -> int -> t
+
+val blit_string : string -> int -> t -> int -> int -> unit
+
+val cat : t -> t -> t
+
+val unsafe_of_string : string -> t
+
+val unsafe_to_string : t -> string
+
+val uppercase_ascii : t -> t
+
+val lowercase_ascii : t -> t
+
+val capitalize_ascii : t -> t
+
+val uncapitalize_ascii : t -> t
+
+val equal : t -> t -> bool
+
+val of_seq : char Stdcompat__seq.t -> t
+
+val to_seq : t -> char Stdcompat__seq.t
+
+val to_seqi : t -> (int * char) Stdcompat__seq.t

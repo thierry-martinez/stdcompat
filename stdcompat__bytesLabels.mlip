@@ -1,0 +1,46 @@
+#if OCAML_VERSION < (4,02,0)
+include module type of struct
+  include StringLabels
+end
+#else
+include module type of struct
+  include BytesLabels
+end
+#endif
+(** @before 4.02.0 the module [BytesLabels] is defined on top of the module
+    [StringLabels]. *)
+
+val empty : t
+
+val of_string : string -> t
+
+val to_string : t -> string
+
+val sub_string : t -> pos:int -> len:int -> string
+
+val extend : t -> left:int -> right:int -> t
+
+val blit_string :
+  src:string -> src_pos:int -> dst:t -> dst_pos:int -> len:int -> unit
+
+val cat : t -> t -> t
+
+val unsafe_of_string : string -> t
+
+val unsafe_to_string : t -> string
+
+val uppercase_ascii : t -> t
+
+val lowercase_ascii : t -> t
+
+val capitalize_ascii : t -> t
+
+val uncapitalize_ascii : t -> t
+
+val equal : t -> t -> bool
+
+val of_seq : char Stdcompat__seq.t -> t
+
+val to_seq : t -> char Stdcompat__seq.t
+
+val to_seqi : t -> (int * char) Stdcompat__seq.t

@@ -1,0 +1,9 @@
+include Char
+
+#if OCAML_VERSION < (4,03,0)
+let lowercase_ascii = Char.lowercase
+
+let uppercase_ascii = Char.uppercase
+
+let equal : t -> t -> bool = ( = )
+#endif

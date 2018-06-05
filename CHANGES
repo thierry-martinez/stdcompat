@@ -1,3 +1,8 @@
+* Version 5
+- Split implementation into one module for each standard library module
+  (suggested by Yotam Barnoy:
+   https://github.com/thierry-martinez/stdcompat/issues/4)
+
 * Version 4
 - Fix link problems with hypot, copy_sign, ldexp and classify_float
 

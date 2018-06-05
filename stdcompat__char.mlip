@@ -1,0 +1,7 @@
+include module type of Char
+
+val lowercase_ascii : t -> t
+
+val uppercase_ascii : t -> t
+
+val equal : t -> t -> bool

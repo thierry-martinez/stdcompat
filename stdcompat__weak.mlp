@@ -1,0 +1,32 @@
+type 'a t = 'a Weak.t
+
+let create = Weak.create
+
+let length = Weak.length
+
+let set = Weak.set
+
+let get = Weak.get
+
+let get_copy = Weak.get_copy
+
+let check = Weak.check
+
+let fill = Weak.fill
+
+let blit = Weak.blit
+
+module type S = sig
+  include Weak.S
+
+  val find_opt: t -> data -> data option
+end
+
+module Make (H : Hashtbl.HashedType) = struct
+  include Weak.Make (H)
+
+#if OCAML_VERSION < (4,05,0)
+  let find_opt t d =
+    Stdcompat__tools.option_find (find t) d
+#endif
+end

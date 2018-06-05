@@ -1,0 +1,31 @@
+include module type of struct
+  include ArrayLabels
+end
+
+#if OCAML_VERSION < (4,06,0)
+module Floatarray : module type of struct
+  include Stdcompat__array.Floatarray
+end
+#endif
+
+val iter2 : f:('a -> 'b -> unit) -> 'a array -> 'b array -> unit
+
+val map2 : f:('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
+
+val for_all : f:('a -> bool) -> 'a array -> bool
+
+val exists : f:('a -> bool) -> 'a array -> bool
+
+val mem : 'a -> set:'a array -> bool
+
+val memq : 'a -> set:'a array -> bool
+
+val create_float : int -> float array
+(** @before 4.03.0 alias for [Array.make_float]
+    @before 4.02.0 implemented as [Array.make len 0]. *)
+
+val of_seq : 'a Stdcompat__seq.t -> 'a array
+
+val to_seq : 'a array -> 'a Stdcompat__seq.t
+
+val to_seqi : 'a array -> (int * 'a) Stdcompat__seq.t

@@ -1,0 +1,8 @@
+include Lazy
+
+#if OCAML_VERSION < (4,00,0)
+let from_fun = lazy_from_fun
+
+let from_val v =
+  lazy v
+#endif

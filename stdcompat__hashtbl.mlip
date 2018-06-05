@@ -1,0 +1,164 @@
+type ('a, 'b) t = ('a, 'b) Hashtbl.t
+
+val clear : ('a, 'b) t -> unit
+
+val copy : ('a, 'b) t -> ('a, 'b) t
+
+val add : ('a, 'b) t -> 'a -> 'b -> unit
+
+val find : ('a, 'b) t -> 'a -> 'b
+
+val find_all : ('a, 'b) t -> 'a -> 'b list
+
+val mem : ('a, 'b) t -> 'a -> bool
+
+val remove : ('a, 'b) t -> 'a -> unit
+
+val replace : ('a, 'b) t -> 'a -> 'b -> unit
+
+val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
+
+val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
+
+val length : ('a, 'b) t -> int
+
+module type HashedType = Hashtbl.HashedType
+
+val hash : 'a -> int
+
+val hash_param : int -> int -> 'a -> int
+
+val create : ?random:bool -> int -> ('a, 'b) t
+
+val reset : ('a, 'b) t -> unit
+(** @before 4.00.0 alias to [Hashtbl.clear]. *)
+
+val randomize : unit -> unit
+(** @before 4.00.0 ignored: does nothing. *)
+
+type statistics
+#if OCAML_VERSION >= (4,00,0)
+   = Hashtbl.statistics
+#endif
+   = {
+    num_bindings : int;
+    num_buckets : int;
+    max_bucket_length : int;
+    bucket_histogram : int array;
+  }
+
+val stats : ('a, 'b) t -> statistics
+(** @before 4.00.0 returns void statistics (only the field [num_bindings] is
+    initialized correctly. *)
+
+val is_randomized : unit -> bool
+(** @before 4.00.0 always false *)
+
+val filter_map_inplace : ('a -> 'b -> 'b option) -> ('a, 'b) t -> unit
+(** @before 4.03.0 clear and rebuild the hash table when several values
+    have been associated to the same key and the updated values are not the
+    ones that are currently associated with the key. *)
+
+val find_opt : ('a, 'b) t -> 'a -> 'b option
+
+val seeded_hash : int -> 'a -> int
+
+val seeded_hash_param : int -> int -> int -> 'a -> int
+
+val of_seq : ('a * 'b) Stdcompat__seq.t -> ('a, 'b) t
+
+val add_seq : ('a, 'b) t -> ('a * 'b) Stdcompat__seq.t -> unit
+
+val replace_seq : ('a, 'b) t -> ('a * 'b) Stdcompat__seq.t -> unit
+
+val to_seq : ('a, 'b) t -> ('a * 'b) Stdcompat__seq.t
+
+val to_seq_keys : ('a, 'b) t -> 'a Stdcompat__seq.t
+
+val to_seq_values : ('a, 'b) t -> 'b Stdcompat__seq.t
+
+module type S = sig
+  type 'a t
+
+  type key
+
+  val clear : 'a t -> unit
+
+  val copy : 'a t -> 'a t
+
+  val add : 'a t -> key -> 'a -> unit
+
+  val find : 'a t -> key -> 'a
+
+  val find_all : 'a t -> key -> 'a list
+
+  val mem : 'a t -> key -> bool
+
+  val remove : 'a t -> key -> unit
+
+  val replace : 'a t -> key -> 'a -> unit
+
+  val iter : (key -> 'a -> unit) -> 'a t -> unit
+
+  val fold : (key -> 'a -> 'c -> 'c) -> 'a t -> 'c -> 'c
+
+  val length : 'a t -> int
+
+  val create : int -> 'a t
+
+  val reset : 'a t -> unit
+
+  val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
+
+  val find_opt : 'a t -> key -> 'a option
+
+  val stats : 'a t -> statistics
+
+  val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
+
+  val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
+
+  val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
+
+  val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
+
+  val to_seq_keys : 'a t -> key Stdcompat__seq.t
+
+  val to_seq_values : 'a t -> 'a Stdcompat__seq.t
+end
+
+module Make (H : HashedType) : sig
+  include module type of struct
+    include (Hashtbl.Make (H))
+  end
+
+  include S with type 'a t := 'a t and type key := key
+end
+
+module type SeededHashedType = sig
+  type t
+
+  val equal : t -> t -> bool
+
+  val hash : int -> t -> int
+end
+
+module type SeededS = sig
+  include S
+
+  val create : ?random:bool -> int -> 'a t
+end
+
+module MakeSeeded (H : SeededHashedType) : sig
+#if OCAML_VERSION < (4,00,0)
+  include SeededS
+#else
+  include module type of struct
+    include Hashtbl.MakeSeeded (H)
+  end
+
+  include SeededS with type 'a t := 'a t and type key := key
+#endif
+end
+(** before 4.00.0 a non-seeded hash table is created instead: the seed is
+    always 0. *)

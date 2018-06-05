@@ -1,0 +1,41 @@
+include module type of struct
+  include Array
+end
+
+#if OCAML_VERSION < (4,06,0)
+module Floatarray : sig
+  val create : int -> Stdcompat__root.floatarray
+
+  val length : Stdcompat__root.floatarray -> int
+
+  val get : Stdcompat__root.floatarray -> int -> float
+
+  val set : Stdcompat__root.floatarray -> int -> float -> unit
+
+  val unsafe_get : Stdcompat__root.floatarray -> int -> float
+
+  val unsafe_set : Stdcompat__root.floatarray -> int -> float -> unit
+end
+#endif
+
+val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
+
+val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
+
+val for_all : ('a -> bool) -> 'a array -> bool
+
+val exists : ('a -> bool) -> 'a array -> bool
+
+val mem : 'a -> 'a array -> bool
+
+val memq : 'a -> 'a array -> bool
+
+val create_float : int -> float array
+(** @before 4.03.0 alias for [Array.make_float]
+    @before 4.02.0 implemented as [Array.make len 0]. *)
+
+val of_seq : 'a Stdcompat__seq.t -> 'a array
+
+val to_seq : 'a array -> 'a Stdcompat__seq.t
+
+val to_seqi : 'a array -> (int * 'a) Stdcompat__seq.t

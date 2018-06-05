@@ -1,0 +1,381 @@
+type ('a, 'b) t = ('a, 'b) Hashtbl.t
+
+#ifdef USE_MAGIC
+#if OCAML_VERSION < (4,07,0)
+type ('a, 'b) bucketlist =
+    Empty
+  | Cons of 'a * 'b * ('a, 'b) bucketlist
+
+type ('a, 'b) internal =
+  { mutable size: int;
+    mutable data: ('a, 'b) bucketlist array;
+    mutable seed: int;
+    mutable initial_size: int;
+  }
+#endif
+#endif
+
+let clear = Hashtbl.clear
+
+let copy = Hashtbl.copy
+
+let add = Hashtbl.add
+
+let find = Hashtbl.find
+
+let find_all = Hashtbl.find_all
+
+let mem = Hashtbl.mem
+
+let remove = Hashtbl.remove
+
+let replace = Hashtbl.replace
+
+let iter = Hashtbl.iter
+
+let fold = Hashtbl.fold
+
+let length = Hashtbl.length
+
+module type HashedType = Hashtbl.HashedType
+
+let hash = Hashtbl.hash
+
+let hash_param = Hashtbl.hash_param
+
+type statistics
+#if OCAML_VERSION >= (4,00,0)
+  = Hashtbl.statistics
+#endif
+  = {
+    num_bindings : int;
+    num_buckets : int;
+    max_bucket_length : int;
+    bucket_histogram : int array;
+  }
+
+#if OCAML_VERSION < (4,00,0)
+let create ?random n = Hashtbl.create n
+
+let reset = clear
+
+let randomize () = ()
+
+#ifdef USE_MAGIC
+let rec bucket_length accu = function
+  | Empty -> accu
+  | Cons (_, _, rest) -> bucket_length (accu + 1) rest
+
+let stats_internal h =
+  let mbl =
+    Array.fold_left (fun m b -> max m (bucket_length 0 b)) 0 h.data in
+  let histo = Array.make (mbl + 1) 0 in
+  Array.iter
+    (fun b ->
+      let l = bucket_length 0 b in
+      histo.(l) <- histo.(l) + 1)
+    h.data;
+  { num_bindings = h.size;
+    num_buckets = Array.length h.data;
+    max_bucket_length = mbl;
+    bucket_histogram = histo }
+
+let stats (h : ('a, 'b) t) =
+  let h : ('a, 'b) internal = Obj.magic h in
+  stats_internal h
+#else
+let stats tbl = {
+    num_bindings = length tbl;
+    num_buckets = 0;
+    max_bucket_length = 0;
+    bucket_histogram = [| |];
+  }
+#endif
+#else
+let create = Hashtbl.create
+
+let reset = Hashtbl.clear
+
+let randomize = Hashtbl.randomize
+
+let stats = Hashtbl.stats
+#endif
+
+#ifdef USE_MAGIC
+#define FILTER_MAP_INPLACE(TYPE, INTERNAL)                                     \
+  let filter_map_inplace f (h : TYPE) =                                        \
+    let h : INTERNAL = Obj.magic h in                                          \
+    let rec do_bucket = function                                               \
+      | Empty ->                                                               \
+          Empty                                                                \
+      | Cons(k, d, rest) ->                                                    \
+          match f k d with                                                     \
+          | None -> h.size <- h.size - 1; do_bucket rest                       \
+          | Some new_d -> Cons(k, new_d, do_bucket rest)                       \
+    in                                                                         \
+    let d = h.data in                                                          \
+    for i = 0 to Array.length d - 1 do                                         \
+      d.(i) <- do_bucket d.(i)                                                 \
+    done
+#else
+#define FILTER_MAP_INPLACE(TYPE, INTERNAL)                                     \
+  let filter_map_inplace filter hashtbl =                                      \
+    let filter key value                                                       \
+        (last_key, to_replace, to_add, to_remove, rebuild, changed) =          \
+      match filter key value with                                              \
+      | None ->                                                                \
+          if rebuild || last_key = Some key then                               \
+            (Some key, to_replace, to_add, to_remove, true, true)              \
+          else                                                                 \
+            (None, to_replace, to_add, key :: to_remove, false, true)          \
+      | Some value0 ->                                                         \
+          if value == value0 then                                              \
+            (Some key, to_replace, (key, value0) :: to_add, to_remove, rebuild,\
+             changed)                                                          \
+          else if rebuild || last_key = Some key then                          \
+            (Some key, to_replace, (key, value0) :: to_add, to_remove, true,   \
+             true)                                                             \
+          else                                                                 \
+            (Some key, (key, value0) :: to_replace, to_add, to_remove, false,  \
+             true) in                                                          \
+    let _last_key, to_replace, to_add, to_remove, rebuild, changed =           \
+      fold filter hashtbl (None, [], [], [], false, false) in                  \
+    if rebuild then                                                            \
+      begin                                                                    \
+        clear hashtbl;                                                         \
+        List.iter (fun (key, value) -> add hashtbl key value) to_add;          \
+        List.iter (fun (key, value) -> add hashtbl key value) to_replace       \
+      end                                                                      \
+    else if changed then                                                       \
+      begin                                                                    \
+        List.iter (fun key -> remove hashtbl key) to_remove;                   \
+        List.iter (fun (key, value) -> replace hashtbl key value) to_replace   \
+      end
+#endif
+
+#if OCAML_VERSION < (4,03,0)
+let is_randomized () = false
+
+FILTER_MAP_INPLACE(('key', 'value') t, ('key', 'value') internal)
+#else
+let is_randomized = Hashtbl.is_randomized
+
+let filter_map_inplace = Hashtbl.filter_map_inplace
+#endif
+
+#if OCAML_VERSION < (4,05,0)
+let find_opt tbl key =
+  Stdcompat__tools.option_find (find tbl) key
+#else
+let find_opt = Hashtbl.find_opt
+#endif
+
+#if OCAML_VERSION < (4,00,0)
+let seeded_hash seed x = Hashtbl.hash (seed, x)
+
+let seeded_hash_param meaningful total seed x =
+  Hashtbl.hash_param meaningful total (seed, x)
+#else
+let seeded_hash = Hashtbl.seeded_hash
+
+let seeded_hash_param = Hashtbl.seeded_hash_param
+#endif
+
+#ifdef USE_MAGIC
+#define TO_SEQ(TYPE, INTERNAL)                                                 \
+let to_seq (tbl : TYPE) =                                                    \
+  let tbl : INTERNAL = Obj.magic tbl in                                      \
+  let tbl_data = tbl.data in                                                 \
+  let rec aux i buck () = match buck with                                    \
+    | Empty ->                                                               \
+        if i = Array.length tbl_data                                         \
+        then Stdcompat__seq.Nil                                               \
+        else aux(i+1) tbl_data.(i) ()                                        \
+    | Cons (key, data, next) ->                                              \
+        Stdcompat__seq.Cons ((key, data), aux i next) in                      \
+  aux 0 Empty
+#else
+#define TO_SEQ(TYPE, INTERNAL)                                                 \
+let to_list tbl =                                                            \
+  fold (fun key value accu -> (key, value) :: accu) tbl []                   \
+                                                                             \
+let to_seq tbl =                                                             \
+  Stdcompat__list.to_seq (to_list tbl)
+#endif
+
+#define SEQ                                                  \
+  let to_seq_keys m = Stdcompat__seq.map fst (to_seq m)                 \
+                                                             \
+  let to_seq_values m = Stdcompat__seq.map snd (to_seq m)               \
+                                                             \
+  let add_seq tbl g =                                        \
+    Stdcompat__seq.iter (fun (k, v) -> add tbl k v) g                   \
+                                                             \
+  let replace_seq tbl g =                                    \
+    Stdcompat__seq.iter (fun (k, v) -> replace tbl k v) g               \
+                                                             \
+  let of_seq g =                                             \
+    let tbl = create 17 in                                   \
+    replace_seq tbl g;                                       \
+    tbl
+
+#if OCAML_VERSION < (4,07,0)
+TO_SEQ(('key', 'value') t, ('key', 'value') internal)
+
+SEQ
+#else
+let to_seq = Hashtbl.to_seq
+
+let to_seq_values = Hashtbl.to_seq_values
+
+let to_seq_keys = Hashtbl.to_seq_keys
+
+let replace_seq = Hashtbl.replace_seq
+
+let add_seq = Hashtbl.add_seq
+
+let of_seq = Hashtbl.of_seq
+#endif
+
+module type S = sig
+  type 'a t
+
+  type key
+
+  val clear : 'a t -> unit
+
+  val copy : 'a t -> 'a t
+
+  val add : 'a t -> key -> 'a -> unit
+
+  val find : 'a t -> key -> 'a
+
+  val find_all : 'a t -> key -> 'a list
+
+  val mem : 'a t -> key -> bool
+
+  val remove : 'a t -> key -> unit
+
+  val replace : 'a t -> key -> 'a -> unit
+
+  val iter : (key -> 'a -> unit) -> 'a t -> unit
+
+  val fold : (key -> 'a -> 'c -> 'c) -> 'a t -> 'c -> 'c
+
+  val length : 'a t -> int
+
+  val create : int -> 'a t
+
+  val reset : 'a t -> unit
+
+  val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
+
+  val find_opt : 'a t -> key -> 'a option
+
+  val stats : 'a t -> statistics
+
+  val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
+
+  val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
+
+  val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
+
+  val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
+
+  val to_seq_keys : 'a t -> key Stdcompat__seq.t
+
+  val to_seq_values : 'a t -> 'a Stdcompat__seq.t
+end
+
+module Make (H : HashedType) = struct
+  include Hashtbl.Make (H)
+
+#if OCAML_VERSION < (4,00,0)
+  let create capacity = create capacity
+
+  let reset = clear
+
+#ifdef USE_MAGIC
+  let stats (h : 'a t) =
+    let h : (key, 'a) internal = Obj.magic h in
+    stats_internal h
+#else
+  let stats tbl = {
+      num_bindings = length tbl;
+      num_buckets = 0;
+      max_bucket_length = 0;
+      bucket_histogram = [| |];
+    }
+#endif
+#endif
+
+#if OCAML_VERSION < (4,03,0)
+  FILTER_MAP_INPLACE('value' t, (key, 'value') internal)
+#endif
+
+#if OCAML_VERSION < (4,05,0)
+  let find_opt tbl key =
+    Stdcompat__tools.option_find (find tbl) key
+#endif
+#if OCAML_VERSION < (4,07,0)
+  TO_SEQ('value' t, (key, 'value') internal)
+
+  SEQ
+#endif
+end
+
+module type SeededHashedType = sig
+  type t
+
+  val equal : t -> t -> bool
+
+  val hash : int -> t -> int
+end
+
+module type SeededS = sig
+  include S
+
+  val create : ?random:bool -> int -> 'a t
+end
+
+module MakeSeeded (H : SeededHashedType) = struct
+#if OCAML_VERSION < (4,00,0)
+  include Hashtbl.Make (struct
+    type t = H.t
+
+    let equal = H.equal
+
+    let hash x = H.hash 0 x
+  end)
+#else
+  include Hashtbl.MakeSeeded (H)
+#endif
+
+#if OCAML_VERSION < (4,00,0)
+  let create ?random capacity = create capacity
+
+  let reset = clear
+
+  let stats tbl = {
+      num_bindings = length tbl;
+      num_buckets = 0;
+      max_bucket_length = 0;
+      bucket_histogram = [| |];
+    }
+#endif
+
+#if OCAML_VERSION < (4,03,0)
+  FILTER_MAP_INPLACE('value' t, (key, 'value') internal)
+#endif
+
+#if OCAML_VERSION < (4,05,0)
+  let find_opt tbl key =
+    Stdcompat__tools.option_find (find tbl) key
+#endif
+
+#if OCAML_VERSION < (4,07,0)
+  TO_SEQ('value' t, (key, 'value') internal)
+
+  SEQ
+#endif
+end
