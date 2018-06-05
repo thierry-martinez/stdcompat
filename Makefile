@@ -215,10 +215,10 @@ depend : .depend
 
 ocaml_files := $(foreach module, $(MODULES), \
 	    $(foreach ext, .ml .mli, \
-	      $(module)$(ext))) stdcompat.ml stdcompat__native.ml_byte
+	      $(module)$(ext))) stdcompat.ml
 
 .depend : $(ocaml_files)
-	ocamldep -ml-synonym .ml_byte $(ocaml_files) >$@
+	ocamldep -impl stdcompat__native.ml_byte $(ocaml_files) >$@
 
 ifneq ($(MAKECMDGOALS),clean)
 include .depend
