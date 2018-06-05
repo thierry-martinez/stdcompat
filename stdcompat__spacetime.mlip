@@ -1,0 +1,6 @@
+#if OCAML_VERSION < (4,04,0)
+#else
+include module type of struct
+  include Spacetime
+end
+#endif

@@ -166,7 +166,8 @@ MODULES := stdcompat__root stdcompat__seq stdcompat__tools		\
 	stdcompat__stream stdcompat__digest stdcompat__nativeint	\
 	stdcompat__int32 stdcompat__int64 stdcompat__filename		\
 	stdcompat__array stdcompat__arrayLabels	\
-	stdcompat__float stdcompat__queue
+	stdcompat__float stdcompat__queue stdcompat__ephemeron \
+	stdcompat__spacetime
 
 .PHONY : all
 all : bytecode $(patsubst %,native,$(filter true,$(OCAMLOPT_AVAILABLE))) doc

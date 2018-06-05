@@ -4,16 +4,17 @@
  ((name stdcompat)
   (public_name stdcompat)
   (modules (stdcompat__native stdcompat__root stdcompat__seq stdcompat__tools
-	stdcompat__pervasives stdcompat__arg stdcompat__lazy
-	stdcompat__char stdcompat__uchar stdcompat__buffer
-	stdcompat__string stdcompat__stringLabels stdcompat__bytes
-	stdcompat__bytesLabels stdcompat__list stdcompat__listLabels
-	stdcompat__stack stdcompat__hashtbl stdcompat__set
-	stdcompat__map stdcompat__weak stdcompat__sys
-	stdcompat__stream stdcompat__digest stdcompat__nativeint
-	stdcompat__int32 stdcompat__int64 stdcompat__filename
-	stdcompat__array stdcompat__arrayLabels
-	stdcompat__float stdcompat__queue stdcompat))
+    stdcompat__pervasives stdcompat__arg stdcompat__lazy
+    stdcompat__char stdcompat__uchar stdcompat__buffer
+    stdcompat__string stdcompat__stringLabels stdcompat__bytes
+    stdcompat__bytesLabels stdcompat__list stdcompat__listLabels
+    stdcompat__stack stdcompat__hashtbl stdcompat__set
+    stdcompat__map stdcompat__weak stdcompat__sys
+    stdcompat__stream stdcompat__digest stdcompat__nativeint
+    stdcompat__int32 stdcompat__int64 stdcompat__filename
+    stdcompat__array stdcompat__arrayLabels
+    stdcompat__float stdcompat__queue stdcompat__ephemeron
+    stdcompat__spacetime stdcompat))
   (libraries ())))
 
 (executable
@@ -89,6 +90,16 @@
 (rule
  ((targets (stdcompat__uchar.mli))
   (deps (stdcompat__uchar.mlip))
+  (action (run ${bin:cppo} -V OCAML:${ocaml_version} ${<} -o ${@}))))
+
+(rule
+ ((targets (stdcompat__ephemeron.mli))
+  (deps (stdcompat__ephemeron.mlip))
+  (action (run ${bin:cppo} -V OCAML:${ocaml_version} ${<} -o ${@}))))
+
+(rule
+ ((targets (stdcompat__spacetime.mli))
+  (deps (stdcompat__spacetime.mlip))
   (action (run ${bin:cppo} -V OCAML:${ocaml_version} ${<} -o ${@}))))
 
 (rule
@@ -189,6 +200,16 @@
 (rule
  ((targets (stdcompat__queue.ml))
   (deps (stdcompat__queue.mlp))
+  (action (run ${bin:cppo} -V OCAML:${ocaml_version} ${<} -o ${@}))))
+
+(rule
+ ((targets (stdcompat__ephemeron.ml))
+  (deps (stdcompat__ephemeron.mlp))
+  (action (run ${bin:cppo} -V OCAML:${ocaml_version} ${<} -o ${@}))))
+
+(rule
+ ((targets (stdcompat__spacetime.ml))
+  (deps (stdcompat__spacetime.mlp))
   (action (run ${bin:cppo} -V OCAML:${ocaml_version} ${<} -o ${@}))))
 
 (rule

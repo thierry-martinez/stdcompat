@@ -1,62 +1,108 @@
 include Stdcompat__root
 
-module Pervasives = Stdcompat__pervasives
+module Stdlib = struct
+  module Pervasives = Stdcompat__pervasives
+  
+  include Pervasives
 
-include Pervasives
+  module Arg = Stdcompat__arg
 
-module Arg = Stdcompat__arg
+  module Array = Stdcompat__array
 
-module Lazy = Stdcompat__lazy
+  module ArrayLabels = Stdcompat__arrayLabels
 
-module Char = Stdcompat__char
+(* (* Bigarray is not exported to allow programs not
+  to be compiled with this module, this may change in the future. *)
+  module Bigarray = Bigarray
+*)
 
-module Seq = Stdcompat__seq
+  module Buffer = Stdcompat__buffer
 
-module Uchar = Stdcompat__uchar
+  module Bytes = Stdcompat__bytes
 
-module Buffer = Stdcompat__buffer
+  module BytesLabels = Stdcompat__bytesLabels
 
-module String = Stdcompat__string
+  module Callback = Callback
 
-module StringLabels = Stdcompat__stringLabels
+  module Char = Stdcompat__char
 
-module Bytes = Stdcompat__bytes
+  module Complex = Complex
 
-module BytesLabels = Stdcompat__bytesLabels
+  module Digest = Stdcompat__digest
 
-module List = Stdcompat__list
+  module Ephemeron = Stdcompat__ephemeron
 
-module ListLabels = Stdcompat__listLabels
+  module Filename = Stdcompat__filename
 
-module Stack = Stdcompat__stack
+  module Float = Stdcompat__float
 
-module Hashtbl = Stdcompat__hashtbl
+  module Format = Format
 
-module Set = Stdcompat__set
+  module Gc = Gc
 
-module Map = Stdcompat__map
+  module Genlex = Genlex
 
-module Weak = Stdcompat__weak
+  module Hashtbl = Stdcompat__hashtbl
 
-module Sys = Stdcompat__sys
+  module Int32 = Stdcompat__int32
 
-module Stream = Stdcompat__stream
+  module Int64 = Stdcompat__int64
 
-module Digest = Stdcompat__digest
+  module Lazy = Stdcompat__lazy
 
-module Nativeint = Stdcompat__nativeint
+  module Lexing = Lexing
 
-module Int32 = Stdcompat__int32
+  module List = Stdcompat__list
 
-module Int64 = Stdcompat__int64
+  module ListLabels = Stdcompat__listLabels
 
-module Filename = Stdcompat__filename
+  module Map = Stdcompat__map
 
-module Array = Stdcompat__array
+  module Marshal = Marshal
 
-module ArrayLabels = Stdcompat__arrayLabels
+  module MoreLabels = MoreLabels
 
-module Float = Stdcompat__float
+  module Nativeint = Stdcompat__nativeint
 
-module Queue = Stdcompat__queue
+  module Obj = Obj
 
+  module Oo = Oo
+
+  module Parsing = Parsing
+
+  module Printexc = Printexc
+
+  module Printf = Printf
+
+  module Queue = Stdcompat__queue
+
+  module Random = Random
+
+  module Scanf = Scanf
+
+  module Seq = Stdcompat__seq
+
+  module Set = Stdcompat__set
+
+  module Sort = Sort
+
+  module Spacetime = Stdcompat__spacetime
+
+  module Stack = Stdcompat__stack
+
+  module StdLabels = StdLabels
+
+  module Stream = Stdcompat__stream
+
+  module String = Stdcompat__string
+
+  module StringLabels = Stdcompat__stringLabels
+
+  module Sys = Stdcompat__sys
+
+  module Uchar = Stdcompat__uchar
+
+  module Weak = Stdcompat__weak
+end
+
+include Stdlib

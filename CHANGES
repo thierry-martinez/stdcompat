@@ -3,6 +3,12 @@
   (suggested by Yotam Barnoy:
    https://github.com/thierry-martinez/stdcompat/issues/4)
 
+- All modules are now exported as sub-modules of Stdlib module
+  (as in OCaml 4.07) -- Bigarray is not exported to allow programs not
+  to be compiled with this module, this may change in the future.
+  (suggested by Yotam Barnoy:
+   https://github.com/thierry-martinez/stdcompat/issues/4)
+
 * Version 4
 - Fix link problems with hypot, copy_sign, ldexp and classify_float
 
