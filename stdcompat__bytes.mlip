@@ -1,45 +1,76 @@
-#if OCAML_VERSION < (4,02,0)
-include module type of struct
-  include String
-end
+type t = Stdcompat__root.bytes
+
+#if OCAML_VERSION < (4,04,0)
+external length : string -> int = "%string_length"
+external get : string -> int -> char = "%string_safe_get"
+external set : string -> int -> char -> unit = "%string_safe_set"
+external create : int -> string = "caml_create_string"
 #else
-include module type of struct
-  include Bytes
-end
+external length : t -> int = "%bytes_length"
+external get : t -> int -> char = "%bytes_safe_get"
+external set : t -> int -> char -> unit = "%bytes_safe_set"
+external create : int -> t = "caml_create_bytes"
 #endif
-(** @before 4.02.0 the module [Bytes] is defined on top of the module
-    [String]. *)
 
+val make : int -> char -> t
+val init : int -> (int -> char) -> t
 val empty : t
-
+val copy : t -> t
 val of_string : string -> t
-
 val to_string : t -> string
-
+val sub : t -> int -> int -> t
 val sub_string : t -> int -> int -> string
-
 val extend : t -> int -> int -> t
-
+val fill : t -> int -> int -> char -> unit
+val blit : t -> int -> t -> int -> int -> unit
 val blit_string : string -> int -> t -> int -> int -> unit
-
+val concat : t -> t list -> t
 val cat : t -> t -> t
-
-val unsafe_of_string : string -> t
-
-val unsafe_to_string : t -> string
-
+val iter : (char -> unit) -> t -> unit
+val iteri : (int -> char -> unit) -> t -> unit
+val map : (char -> char) -> t -> t
+val mapi : (int -> char -> char) -> t -> t
+val trim : t -> t
+val escaped : t -> t
+val index : t -> char -> int
+val index_opt : t -> char -> int option
+val rindex : t -> char -> int
+val rindex_opt : t -> char -> int option
+val index_from : t -> int -> char -> int
+val index_from_opt : t -> int -> char -> int option
+val rindex_from : t -> int -> char -> int
+val rindex_from_opt : t -> int -> char -> int option
+val contains : t -> char -> bool
+val contains_from : t -> int -> char -> bool
+val rcontains_from : t -> int -> char -> bool
+val uppercase : t -> t
+val lowercase : t -> t
+val capitalize : t -> t
+val uncapitalize : t -> t
 val uppercase_ascii : t -> t
-
 val lowercase_ascii : t -> t
-
 val capitalize_ascii : t -> t
-
 val uncapitalize_ascii : t -> t
-
+val compare : t -> t -> int
 val equal : t -> t -> bool
-
+val unsafe_to_string : t -> string
+val unsafe_of_string : string -> t
+val to_seq : t -> char Stdcompat__seq.t
+val to_seqi : t -> (int * char) Stdcompat__seq.t
 val of_seq : char Stdcompat__seq.t -> t
 
-val to_seq : t -> char Stdcompat__seq.t
-
-val to_seqi : t -> (int * char) Stdcompat__seq.t
+#if OCAML_VERSION < (4,04,0)
+external unsafe_get : string -> int -> char = "%string_unsafe_get"
+external unsafe_set : string -> int -> char -> unit = "%string_unsafe_set"
+external unsafe_blit : string -> int -> string -> int -> int -> unit
+  = "caml_blit_string" "noalloc"
+external unsafe_fill : string -> int -> int -> char -> unit
+  = "caml_fill_string" "noalloc"
+#else
+external unsafe_get : t -> int -> char = "%bytes_unsafe_get"
+external unsafe_set : t -> int -> char -> unit = "%bytes_unsafe_set"
+external unsafe_blit : t -> int -> t -> int -> int -> unit
+  = "caml_blit_bytes" [@@noalloc]
+external unsafe_fill : t -> int -> int -> char -> unit
+  = "caml_fill_bytes" [@@noalloc]
+#endif
