@@ -1,3 +1,6 @@
+#ifdef HAS_UCHAR_PKG
+include Uchar
+#else
 #if OCAML_VERSION < (4,03,0)
 type t = int
 
@@ -62,6 +65,7 @@ let compare : t -> t -> int = compare
 let hash = to_int
 #else
 include Uchar
+#endif
 #endif
 
 #if OCAML_VERSION < (4,06,0)

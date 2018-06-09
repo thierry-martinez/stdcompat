@@ -27,6 +27,13 @@ ifeq ($(OCAMLFIND_AVAILABLE),true)
 		echo false; \
 	fi \
 )
+	UCHAR_PKG_AVAILABLE := $(shell \
+	if $(OCAMLFIND) query uchar >/dev/null 2>&1; then \
+		echo true; \
+	else \
+		echo false; \
+	fi \
+)
 else
 	OCAMLOPT := $(shell \
 		if ocamlopt.opt -version >/dev/null 2>&1; then \
@@ -48,6 +55,7 @@ else
 
 	RESULT_PKG_AVAILABLE := false
 	SEQ_PKG_AVAILABLE := false
+	UCHAR_PKG_AVAILABLE := false
 endif
 
 ifeq ($(OCAMLC),)
@@ -80,12 +88,22 @@ else
 	USE_RESULT_PKG := $(RESULT_PKG_AVAILABLE)
 endif
 
+ifeq (4.03.0,$(word 1,$(sort 4.03.0 $(OCAML_VERSION))))
+	USE_UCHAR_PKG := false
+else
+	USE_UCHAR_PKG := $(UCHAR_PKG_AVAILABLE)
+endif
+
 ifeq ($(USE_SEQ_PKG),true)
 	OCAMLFLAGS += -package seq
 endif
 
 ifeq ($(USE_RESULT_PKG),true)
 	OCAMLFLAGS += -package result
+endif
+
+ifeq ($(USE_UCHAR_PKG),true)
+	OCAMLFLAGS += -package uchar
 endif
 
 ifeq ($(OCAMLFIND_AVAILABLE),true)
@@ -121,6 +139,10 @@ ifeq ($(CPPO_AVAILABLE),true)
 		PP += -D 'HAS_RESULT_PKG'
 		REQUIRES += result
 	endif
+	ifeq ($(USE_UCHAR_PKG),true)
+		PP += -D 'HAS_UCHAR_PKG'
+		REQUIRES += uchar
+	endif
 	ifeq ($(USE_MAGIC),true)
 		PP += -D 'USE_MAGIC'
 	endif
@@ -139,6 +161,10 @@ else
 	ifeq ($(USE_RESULT_PKG),true)
 		PP += -DHAS_RESULT_PKG
 		REQUIRES += result
+	endif
+	ifeq ($(USE_UCHAR_PKG),true)
+		PP += -DHAS_UCHAR_PKG
+		REQUIRES += uchar
 	endif
 	ifeq ($(USE_MAGIC),true)
 		PP += -DUSE_MAGIC
@@ -281,3 +307,6 @@ stdcompat_tests.cmx : stdcompat.cmi
 
 META : META.pp
 	$(PP_META) >$@ || rm $@
+
+interface_generator : interface_generator.ml
+	ocamlfind ocamlopt -package unix,compiler-libs.common -linkpkg $< -o $@

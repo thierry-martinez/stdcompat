@@ -9,6 +9,8 @@
   (suggested by Yotam Barnoy:
    https://github.com/thierry-martinez/stdcompat/issues/4)
 
+- Compatibility with uchar package
+
 * Version 4
 - Fix link problems with hypot, copy_sign, ldexp and classify_float
 
