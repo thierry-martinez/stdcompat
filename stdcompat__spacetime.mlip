@@ -1,6 +1,33 @@
-#if OCAML_VERSION < (4,04,0)
+#if OCAML_VERSION >= (4,07,0)
+module Series :
+sig
+  type t = Spacetime.Series.t
+  val create : path:string -> t
+  val save_event : ?time:float -> t -> event_name:string -> unit
+  val save_and_close : ?time:float -> t -> unit
+end
 #else
-include module type of struct
-  include Spacetime
+module Series :
+sig
+  type t
+  val create : path:string -> t
+  val save_event : ?time:float -> t -> event_name:string -> unit
+  val save_and_close : ?time:float -> t -> unit
 end
 #endif
+(** @since 4.07.0:
+    module Series :
+    sig
+      type t = Spacetime.Series.t
+      val create : path:string -> t
+      val save_event : ?time:float -> t -> event_name:string -> unit
+      val save_and_close : ?time:float -> t -> unit
+    end *)
+module Snapshot : sig val take : ?time:float -> Series.t -> unit end
+(** @since 4.07.0:
+    module Snapshot : sig val take : ?time:float -> Series.t -> unit end *)
+val enabled : bool
+(** @since 4.05.0: val enabled : bool *)
+val save_event_for_automatic_snapshots : event_name:string -> unit
+(** @since 4.04.0:
+    val save_event_for_automatic_snapshots : event_name:string -> unit *)

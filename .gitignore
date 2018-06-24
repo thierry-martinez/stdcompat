@@ -13,3 +13,4 @@ _build/
 /META
 /stdcompat.ml_byte
 /stdcompat.ml_native
+/interface_generator

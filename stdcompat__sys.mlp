@@ -64,3 +64,7 @@ let backend_type =
 let getenv_opt var =
   Stdcompat__tools.option_find getenv var
 #endif
+
+#if OCAML_VERSION < (4,03,0)
+let opaque_identity x = x
+#endif

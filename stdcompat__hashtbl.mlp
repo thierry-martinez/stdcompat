@@ -41,7 +41,12 @@ module type HashedType = Hashtbl.HashedType
 
 let hash = Hashtbl.hash
 
+#if OCAML_VERSION >= (4,00,0)
 let hash_param = Hashtbl.hash_param
+#else
+external hash_param :
+  int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
+#endif
 
 type statistics
 #if OCAML_VERSION >= (4,00,0)
@@ -101,62 +106,23 @@ let randomize = Hashtbl.randomize
 let stats = Hashtbl.stats
 #endif
 
-#ifdef USE_MAGIC
-#define FILTER_MAP_INPLACE(TYPE, INTERNAL)                                     \
-  let filter_map_inplace f (h : TYPE) =                                        \
-    let h : INTERNAL = Obj.magic h in                                          \
-    let rec do_bucket = function                                               \
-      | Empty ->                                                               \
-          Empty                                                                \
-      | Cons(k, d, rest) ->                                                    \
-          match f k d with                                                     \
-          | None -> h.size <- h.size - 1; do_bucket rest                       \
-          | Some new_d -> Cons(k, new_d, do_bucket rest)                       \
-    in                                                                         \
-    let d = h.data in                                                          \
-    for i = 0 to Array.length d - 1 do                                         \
-      d.(i) <- do_bucket d.(i)                                                 \
-    done
-#else
-#define FILTER_MAP_INPLACE(TYPE, INTERNAL)                                     \
-  let filter_map_inplace filter hashtbl =                                      \
-    let filter key value                                                       \
-        (last_key, to_replace, to_add, to_remove, rebuild, changed) =          \
-      match filter key value with                                              \
-      | None ->                                                                \
-          if rebuild || last_key = Some key then                               \
-            (Some key, to_replace, to_add, to_remove, true, true)              \
-          else                                                                 \
-            (None, to_replace, to_add, key :: to_remove, false, true)          \
-      | Some value0 ->                                                         \
-          if value == value0 then                                              \
-            (Some key, to_replace, (key, value0) :: to_add, to_remove, rebuild,\
-             changed)                                                          \
-          else if rebuild || last_key = Some key then                          \
-            (Some key, to_replace, (key, value0) :: to_add, to_remove, true,   \
-             true)                                                             \
-          else                                                                 \
-            (Some key, (key, value0) :: to_replace, to_add, to_remove, false,  \
-             true) in                                                          \
-    let _last_key, to_replace, to_add, to_remove, rebuild, changed =           \
-      fold filter hashtbl (None, [], [], [], false, false) in                  \
-    if rebuild then                                                            \
-      begin                                                                    \
-        clear hashtbl;                                                         \
-        List.iter (fun (key, value) -> add hashtbl key value) to_add;          \
-        List.iter (fun (key, value) -> add hashtbl key value) to_replace       \
-      end                                                                      \
-    else if changed then                                                       \
-      begin                                                                    \
-        List.iter (fun key -> remove hashtbl key) to_remove;                   \
-        List.iter (fun (key, value) -> replace hashtbl key value) to_replace   \
-      end
-#endif
-
 #if OCAML_VERSION < (4,03,0)
 let is_randomized () = false
 
-FILTER_MAP_INPLACE(('key', 'value') t, ('key', 'value') internal)
+#ifdef USE_MAGIC
+let filter_map_inplace filter table =
+  Stdcompat_hashtbl_ext.filter_map_inplace filter table
+#else
+let filter_map_inplace filter table =
+  let dict = {
+    Stdcompat_hashtbl_ext.clear = clear;
+    fold = fold;
+    add = add;
+    remove = remove;
+    replace = replace;
+  } in
+  Stdcompat_hashtbl_ext.filter_map_inplace dict filter table
+#endif
 #else
 let is_randomized = Hashtbl.is_randomized
 
@@ -203,27 +169,7 @@ let to_seq tbl =                                                             \
   Stdcompat__list.to_seq (to_list tbl)
 #endif
 
-#define SEQ                                                  \
-  let to_seq_keys m = Stdcompat__seq.map fst (to_seq m)                 \
-                                                             \
-  let to_seq_values m = Stdcompat__seq.map snd (to_seq m)               \
-                                                             \
-  let add_seq tbl g =                                        \
-    Stdcompat__seq.iter (fun (k, v) -> add tbl k v) g                   \
-                                                             \
-  let replace_seq tbl g =                                    \
-    Stdcompat__seq.iter (fun (k, v) -> replace tbl k v) g               \
-                                                             \
-  let of_seq g =                                             \
-    let tbl = create 17 in                                   \
-    replace_seq tbl g;                                       \
-    tbl
-
-#if OCAML_VERSION < (4,07,0)
-TO_SEQ(('key', 'value') t, ('key', 'value') internal)
-
-SEQ
-#else
+#if OCAML_VERSION >= (4,07,0)
 let to_seq = Hashtbl.to_seq
 
 let to_seq_values = Hashtbl.to_seq_values
@@ -235,56 +181,53 @@ let replace_seq = Hashtbl.replace_seq
 let add_seq = Hashtbl.add_seq
 
 let of_seq = Hashtbl.of_seq
+#else
+#ifdef USE_MAGIC
+let to_seq = Stdcompat_hashtbl_ext.to_seq
+
+let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+
+let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+#else
+let to_seq tbl = Stdcompat_hashtbl_ext.to_seq Hashtbl.fold tbl
+
+let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys Hashtbl.fold tbl
+
+let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values Hashtbl.fold tbl
+#endif
+
+let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq Hashtbl.add tbl g
+
+let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq Hashtbl.replace tbl g
+
+let of_seq g = Stdcompat_hashtbl_ext.of_seq Hashtbl.create Hashtbl.replace g
 #endif
 
 module type S = sig
-  type 'a t
-
   type key
-
-  val clear : 'a t -> unit
-
-  val copy : 'a t -> 'a t
-
-  val add : 'a t -> key -> 'a -> unit
-
-  val find : 'a t -> key -> 'a
-
-  val find_all : 'a t -> key -> 'a list
-
-  val mem : 'a t -> key -> bool
-
-  val remove : 'a t -> key -> unit
-
-  val replace : 'a t -> key -> 'a -> unit
-
-  val iter : (key -> 'a -> unit) -> 'a t -> unit
-
-  val fold : (key -> 'a -> 'c -> 'c) -> 'a t -> 'c -> 'c
-
-  val length : 'a t -> int
-
+  type 'a t
   val create : int -> 'a t
-
+  val clear : 'a t -> unit
   val reset : 'a t -> unit
-
-  val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-
+  val copy : 'a t -> 'a t
+  val add : 'a t -> key -> 'a -> unit
+  val remove : 'a t -> key -> unit
+  val find : 'a t -> key -> 'a
   val find_opt : 'a t -> key -> 'a option
-
+  val find_all : 'a t -> key -> 'a list
+  val replace : 'a t -> key -> 'a -> unit
+  val mem : 'a t -> key -> bool
+  val iter : (key -> 'a -> unit) -> 'a t -> unit
+  val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
+  val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val length : 'a t -> int
   val stats : 'a t -> statistics
-
-  val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
-
-  val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
-
-  val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
-
   val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-
   val to_seq_keys : 'a t -> key Stdcompat__seq.t
-
   val to_seq_values : 'a t -> 'a Stdcompat__seq.t
+  val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
+  val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
+  val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
 end
 
 module Make (H : HashedType) = struct
@@ -310,17 +253,47 @@ module Make (H : HashedType) = struct
 #endif
 
 #if OCAML_VERSION < (4,03,0)
-  FILTER_MAP_INPLACE('value' t, (key, 'value') internal)
+#ifdef USE_MAGIC
+  let filter_map_inplace filter table =
+    Stdcompat_hashtbl_ext.filter_map_inplace filter table
+#else
+  let filter_map_inplace filter table =
+    let dict = {
+      Stdcompat_hashtbl_ext.clear = clear;
+      fold = fold;
+      add = add;
+      remove = remove;
+      replace = replace;
+    } in
+    Stdcompat_hashtbl_ext.filter_map_inplace dict filter table
+#endif
 #endif
 
 #if OCAML_VERSION < (4,05,0)
   let find_opt tbl key =
     Stdcompat__tools.option_find (find tbl) key
 #endif
-#if OCAML_VERSION < (4,07,0)
-  TO_SEQ('value' t, (key, 'value') internal)
 
-  SEQ
+#if OCAML_VERSION < (4,07,0)
+#ifdef USE_MAGIC
+  let to_seq = Stdcompat_hashtbl_ext.to_seq
+
+  let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+
+  let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+#else
+  let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+
+  let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+
+  let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+#endif
+
+  let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+
+  let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+
+  let of_seq g = Stdcompat_hashtbl_ext.of_seq create replace g
 #endif
 end
 
@@ -333,9 +306,30 @@ module type SeededHashedType = sig
 end
 
 module type SeededS = sig
-  include S
-
+  type key
+  type 'a t
   val create : ?random:bool -> int -> 'a t
+  val clear : 'a t -> unit
+  val reset : 'a t -> unit
+  val copy : 'a t -> 'a t
+  val add : 'a t -> key -> 'a -> unit
+  val remove : 'a t -> key -> unit
+  val find : 'a t -> key -> 'a
+  val find_opt : 'a t -> key -> 'a option
+  val find_all : 'a t -> key -> 'a list
+  val replace : 'a t -> key -> 'a -> unit
+  val mem : 'a t -> key -> bool
+  val iter : (key -> 'a -> unit) -> 'a t -> unit
+  val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
+  val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val length : 'a t -> int
+  val stats : 'a t -> statistics
+  val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
+  val to_seq_keys : 'a t -> key Stdcompat__seq.t
+  val to_seq_values : 'a t -> 'a Stdcompat__seq.t
+  val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
+  val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
+  val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
 end
 
 module MakeSeeded (H : SeededHashedType) = struct
@@ -365,7 +359,20 @@ module MakeSeeded (H : SeededHashedType) = struct
 #endif
 
 #if OCAML_VERSION < (4,03,0)
-  FILTER_MAP_INPLACE('value' t, (key, 'value') internal)
+#ifdef USE_MAGIC
+  let filter_map_inplace filter table =
+    Stdcompat_hashtbl_ext.filter_map_inplace filter table
+#else
+  let filter_map_inplace filter table =
+    let dict = {
+      Stdcompat_hashtbl_ext.clear = clear;
+      fold = fold;
+      add = add;
+      remove = remove;
+      replace = replace;
+    } in
+    Stdcompat_hashtbl_ext.filter_map_inplace dict filter table
+#endif
 #endif
 
 #if OCAML_VERSION < (4,05,0)
@@ -374,8 +381,24 @@ module MakeSeeded (H : SeededHashedType) = struct
 #endif
 
 #if OCAML_VERSION < (4,07,0)
-  TO_SEQ('value' t, (key, 'value') internal)
+#ifdef USE_MAGIC
+  let to_seq = Stdcompat_hashtbl_ext.to_seq
 
-  SEQ
+  let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+
+  let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+#else
+  let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+
+  let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+
+  let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+#endif
+
+  let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+
+  let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+
+  let of_seq g = Stdcompat_hashtbl_ext.of_seq create replace g
 #endif
 end

@@ -2,6 +2,8 @@ include Array
 
 #if OCAML_VERSION < (4,02,0)
 let create_float l = Array.make l 0.
+
+let make_float = create_float
 #elif OCAML_VERSION < (4,03,0)
 let create_float = Array.make_float
 #endif

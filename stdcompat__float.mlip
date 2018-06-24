@@ -1,165 +1,379 @@
-
-#if OCAML_VERSION < (4,02,0)
-#define UNBOXED
-#define NOALLOC
-#define _UNBOXED
-#define _UNTAGGED
+#if OCAML_VERSION >= (4,07,0)
+type fpclass = Float.fpclass =
+  | FP_normal 
+  | FP_subnormal 
+  | FP_zero 
+  | FP_infinite 
+  | FP_nan 
 #else
-#define UNBOXED [@@unboxed]
-#define NOALLOC [@@noalloc]
-#define _UNBOXED [@unboxed]
-#define _UNTAGGED [@untagged]
+type fpclass =
+  | FP_normal 
+  | FP_subnormal 
+  | FP_zero 
+  | FP_infinite 
+  | FP_nan 
 #endif
-
-#if OCAML_VERSION < (4,07,0)
-external neg : float -> float = "%negfloat"
-
-external add : float -> float -> float = "%addfloat"
-
-external sub : float -> float -> float = "%subfloat"
-
-external mul : float -> float -> float = "%mulfloat"
-
-external div : float -> float -> float = "%divfloat"
-
-external rem : float -> float -> float = "caml_fmod_float" "fmod"
-  UNBOXED NOALLOC
-
-external abs : float -> float = "%absfloat"
-
-val infinity : float
-
-val neg_infinity : float
-
-val nan : float
-
-val pi : float
-
-val max_float : float
-
-val min_float : float
-
-val epsilon : float
-
-external of_int : int -> float = "%floatofint"
-
-external to_int : float -> int = "%intoffloat"
-
-external of_string : string -> float = "caml_float_of_string"
-
-val of_string_opt: string -> float option
-
-val to_string : float -> string
-
-type fpclass = Pervasives.fpclass =
-    FP_normal
-  | FP_subnormal
-  | FP_zero
-  | FP_infinite
-  | FP_nan
-
-#if OCAML_VERSION < (4,03,0)
-external classify_float : float -> fpclass = "caml_classify_float"
+(** @since 4.07.0:
+    type fpclass = Float.fpclass =
+      | FP_normal 
+      | FP_subnormal 
+      | FP_zero 
+      | FP_infinite 
+      | FP_nan  *)
+#if OCAML_VERSION >= (4,07,0)
+type t = Float.float
 #else
-external classify_float : (float _UNBOXED) -> fpclass =
-  "caml_classify_float" "caml_classify_float_unboxed" NOALLOC
-#endif
-
-external pow : float -> float -> float = "caml_power_float" "pow"
-  UNBOXED NOALLOC
-
-external sqrt : float -> float = "caml_sqrt_float" "sqrt"
-  UNBOXED NOALLOC
-
-external exp : float -> float = "caml_exp_float" "exp"
-  UNBOXED NOALLOC
-
-external log : float -> float = "caml_log_float" "log"
-  UNBOXED NOALLOC
-
-external log10 : float -> float = "caml_log10_float" "log10"
-  UNBOXED NOALLOC
-
-external expm1 : float -> float = "caml_expm1_float" "caml_expm1"
-  UNBOXED NOALLOC
-
-external log1p : float -> float = "caml_log1p_float" "caml_log1p"
-  UNBOXED NOALLOC
-
-external cos : float -> float = "caml_cos_float" "cos"
-  UNBOXED NOALLOC
-
-external sin : float -> float = "caml_sin_float" "sin"
-  UNBOXED NOALLOC
-
-external tan : float -> float = "caml_tan_float" "tan"
-  UNBOXED NOALLOC
-
-external acos : float -> float = "caml_acos_float" "acos"
-  UNBOXED NOALLOC
-
-external asin : float -> float = "caml_asin_float" "asin"
-  UNBOXED NOALLOC
-
-external atan : float -> float = "caml_atan_float" "atan"
-  UNBOXED NOALLOC
-
-external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
-  UNBOXED NOALLOC
-
-external cosh : float -> float = "caml_cosh_float" "cosh"
-  UNBOXED NOALLOC
-
-external sinh : float -> float = "caml_sinh_float" "sinh"
-  UNBOXED NOALLOC
-
-external tanh : float -> float = "caml_tanh_float" "tanh"
-  UNBOXED NOALLOC
-
-external ceil : float -> float = "caml_ceil_float" "ceil"
-  UNBOXED NOALLOC
-
-external floor : float -> float = "caml_floor_float" "floor"
-  UNBOXED NOALLOC
-
-#if OCAML_VERSION < (4,00,0)
-val hypot : float -> float -> float
-
-val copysign : float -> float -> float
-#else
-external hypot : float -> float -> float = "caml_hypot_float" "caml_hypot"
-  UNBOXED NOALLOC
-
-external copysign : float -> float -> float
-  = "caml_copysign_float" "caml_copysign"
-  UNBOXED NOALLOC
-#endif
-
-external frexp : float -> float * int = "caml_frexp_float"
-
-#if OCAML_VERSION < (4,03,0)
-external ldexp : float -> int -> float = "caml_ldexp_float"
-#else
-external ldexp :
-  (float _UNBOXED) -> (int _UNTAGGED) -> (float _UNBOXED) =
-  "caml_ldexp_float" "caml_ldexp_float_unboxed" NOALLOC
-#endif
-
-external modf : float -> float * float = "caml_modf_float"
-
 type t = float
-
-val compare: t -> t -> int
-
-val equal: t -> t -> bool
-
-val hash: t -> int
-
-module Array : module type of struct
-  include Stdcompat__array.Floatarray
+#endif
+(** @since 4.07.0: type t = Float.float *)
+#if OCAML_VERSION >= (4,07,0)
+module Array :
+sig
+  type t = floatarray
+  external create : int -> t = "caml_floatarray_create"
+  external length : t -> int = "%floatarray_length"
+  external get : t -> int -> float = "%floatarray_safe_get"
+  external set : t -> int -> float -> unit = "%floatarray_safe_set"
+  external unsafe_get : t -> int -> float = "%floatarray_unsafe_get"
+  external unsafe_set : t -> int -> float -> unit = "%floatarray_unsafe_set"
 end
 #else
-include module type of struct
-  include Float
+module Array :
+sig
+  type t = Stdcompat__init.floatarray
+  val create : int -> t
+  val length : t -> int
+  val get : t -> int -> float
+  val set : t -> int -> float -> unit
+  val unsafe_get : t -> int -> float
+  val unsafe_set : t -> int -> float -> unit
 end
 #endif
+(** @since 4.07.0:
+    module Array :
+    sig
+      type t = floatarray
+      external create : int -> t = "caml_floatarray_create"
+      external length : t -> int = "%floatarray_length"
+      external get : t -> int -> float = "%floatarray_safe_get"
+      external set : t -> int -> float -> unit = "%floatarray_safe_set"
+      external unsafe_get : t -> int -> float = "%floatarray_unsafe_get"
+      external unsafe_set :
+        t -> int -> float -> unit = "%floatarray_unsafe_set"
+    end *)
+#if OCAML_VERSION >= (4,07,0)
+external neg : float -> float = "%negfloat"
+#else
+val neg : float -> float
+#endif
+(** @since 4.07.0: external neg : float -> float = "%negfloat" *)
+#if OCAML_VERSION >= (4,07,0)
+external add : float -> float -> float = "%addfloat"
+#else
+val add : float -> float -> float
+#endif
+(** @since 4.07.0: external add : float -> float -> float = "%addfloat" *)
+#if OCAML_VERSION >= (4,07,0)
+external sub : float -> float -> float = "%subfloat"
+#else
+val sub : float -> float -> float
+#endif
+(** @since 4.07.0: external sub : float -> float -> float = "%subfloat" *)
+#if OCAML_VERSION >= (4,07,0)
+external mul : float -> float -> float = "%mulfloat"
+#else
+val mul : float -> float -> float
+#endif
+(** @since 4.07.0: external mul : float -> float -> float = "%mulfloat" *)
+#if OCAML_VERSION >= (4,07,0)
+external div : float -> float -> float = "%divfloat"
+#else
+val div : float -> float -> float
+#endif
+(** @since 4.07.0: external div : float -> float -> float = "%divfloat" *)
+#if OCAML_VERSION >= (4,07,0)
+external rem : float -> float -> float = "caml_fmod_float" "fmod"[@@unboxed ]
+[@@noalloc ]
+#else
+val rem : float -> float -> float
+#endif
+(** @since 4.07.0:
+    external rem : float -> float -> float = "caml_fmod_float" "fmod"
+    [@@unboxed ][@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external abs : float -> float = "%absfloat"
+#else
+val abs : float -> float
+#endif
+(** @since 4.07.0: external abs : float -> float = "%absfloat" *)
+val infinity : float
+(** @since 4.07.0: val infinity : float *)
+val neg_infinity : float
+(** @since 4.07.0: val neg_infinity : float *)
+val nan : float
+(** @since 4.07.0: val nan : float *)
+val pi : float
+(** @since 4.07.0: val pi : float *)
+val max_float : float
+(** @since 4.07.0: val max_float : float *)
+val min_float : float
+(** @since 4.07.0: val min_float : float *)
+val epsilon : float
+(** @since 4.07.0: val epsilon : float *)
+#if OCAML_VERSION >= (4,07,0)
+external of_int : int -> float = "%floatofint"
+#else
+val of_int : int -> float
+#endif
+(** @since 4.07.0: external of_int : int -> float = "%floatofint" *)
+#if OCAML_VERSION >= (4,07,0)
+external to_int : float -> int = "%intoffloat"
+#else
+val to_int : float -> int
+#endif
+(** @since 4.07.0: external to_int : float -> int = "%intoffloat" *)
+#if OCAML_VERSION >= (4,07,0)
+external of_string : string -> float = "caml_float_of_string"
+#else
+val of_string : string -> float
+#endif
+(** @since 4.07.0:
+    external of_string : string -> float = "caml_float_of_string" *)
+val of_string_opt : string -> float option
+(** @since 4.07.0: val of_string_opt : string -> float option *)
+val to_string : float -> string
+(** @since 4.07.0: val to_string : float -> string *)
+#if OCAML_VERSION >= (4,07,0)
+external classify_float :
+  ((float)[@unboxed ]) -> fpclass = "caml_classify_float"
+    "caml_classify_float_unboxed"[@@noalloc ]
+#else
+val classify_float : float -> fpclass
+#endif
+(** @since 4.07.0:
+    external classify_float :
+      ((float)[@unboxed ]) -> fpclass = "caml_classify_float"
+        "caml_classify_float_unboxed"[@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external pow : float -> float -> float = "caml_power_float" "pow"[@@unboxed ]
+[@@noalloc ]
+#else
+val pow : float -> float -> float
+#endif
+(** @since 4.07.0:
+    external pow : float -> float -> float = "caml_power_float" "pow"
+    [@@unboxed ][@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external sqrt : float -> float = "caml_sqrt_float" "sqrt"[@@unboxed ]
+[@@noalloc ]
+#else
+val sqrt : float -> float
+#endif
+(** @since 4.07.0:
+    external sqrt : float -> float = "caml_sqrt_float" "sqrt"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external exp : float -> float = "caml_exp_float" "exp"[@@unboxed ][@@noalloc
+                                                                    ]
+#else
+val exp : float -> float
+#endif
+(** @since 4.07.0:
+    external exp : float -> float = "caml_exp_float" "exp"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external log : float -> float = "caml_log_float" "log"[@@unboxed ][@@noalloc
+                                                                    ]
+#else
+val log : float -> float
+#endif
+(** @since 4.07.0:
+    external log : float -> float = "caml_log_float" "log"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external log10 : float -> float = "caml_log10_float" "log10"[@@unboxed ]
+[@@noalloc ]
+#else
+val log10 : float -> float
+#endif
+(** @since 4.07.0:
+    external log10 : float -> float = "caml_log10_float" "log10"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external expm1 : float -> float = "caml_expm1_float" "caml_expm1"[@@unboxed ]
+[@@noalloc ]
+#else
+val expm1 : float -> float
+#endif
+(** @since 4.07.0:
+    external expm1 : float -> float = "caml_expm1_float" "caml_expm1"
+    [@@unboxed ][@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external log1p : float -> float = "caml_log1p_float" "caml_log1p"[@@unboxed ]
+[@@noalloc ]
+#else
+val log1p : float -> float
+#endif
+(** @since 4.07.0:
+    external log1p : float -> float = "caml_log1p_float" "caml_log1p"
+    [@@unboxed ][@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external cos : float -> float = "caml_cos_float" "cos"[@@unboxed ][@@noalloc
+                                                                    ]
+#else
+val cos : float -> float
+#endif
+(** @since 4.07.0:
+    external cos : float -> float = "caml_cos_float" "cos"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external sin : float -> float = "caml_sin_float" "sin"[@@unboxed ][@@noalloc
+                                                                    ]
+#else
+val sin : float -> float
+#endif
+(** @since 4.07.0:
+    external sin : float -> float = "caml_sin_float" "sin"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external tan : float -> float = "caml_tan_float" "tan"[@@unboxed ][@@noalloc
+                                                                    ]
+#else
+val tan : float -> float
+#endif
+(** @since 4.07.0:
+    external tan : float -> float = "caml_tan_float" "tan"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external acos : float -> float = "caml_acos_float" "acos"[@@unboxed ]
+[@@noalloc ]
+#else
+val acos : float -> float
+#endif
+(** @since 4.07.0:
+    external acos : float -> float = "caml_acos_float" "acos"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external asin : float -> float = "caml_asin_float" "asin"[@@unboxed ]
+[@@noalloc ]
+#else
+val asin : float -> float
+#endif
+(** @since 4.07.0:
+    external asin : float -> float = "caml_asin_float" "asin"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external atan : float -> float = "caml_atan_float" "atan"[@@unboxed ]
+[@@noalloc ]
+#else
+val atan : float -> float
+#endif
+(** @since 4.07.0:
+    external atan : float -> float = "caml_atan_float" "atan"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
+[@@unboxed ][@@noalloc ]
+#else
+val atan2 : float -> float -> float
+#endif
+(** @since 4.07.0:
+    external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
+    [@@unboxed ][@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external hypot : float -> float -> float = "caml_hypot_float" "caml_hypot"
+[@@unboxed ][@@noalloc ]
+#else
+val hypot : float -> float -> float
+#endif
+(** @since 4.07.0:
+    external hypot :
+      float -> float -> float = "caml_hypot_float" "caml_hypot"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external cosh : float -> float = "caml_cosh_float" "cosh"[@@unboxed ]
+[@@noalloc ]
+#else
+val cosh : float -> float
+#endif
+(** @since 4.07.0:
+    external cosh : float -> float = "caml_cosh_float" "cosh"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external sinh : float -> float = "caml_sinh_float" "sinh"[@@unboxed ]
+[@@noalloc ]
+#else
+val sinh : float -> float
+#endif
+(** @since 4.07.0:
+    external sinh : float -> float = "caml_sinh_float" "sinh"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external tanh : float -> float = "caml_tanh_float" "tanh"[@@unboxed ]
+[@@noalloc ]
+#else
+val tanh : float -> float
+#endif
+(** @since 4.07.0:
+    external tanh : float -> float = "caml_tanh_float" "tanh"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external ceil : float -> float = "caml_ceil_float" "ceil"[@@unboxed ]
+[@@noalloc ]
+#else
+val ceil : float -> float
+#endif
+(** @since 4.07.0:
+    external ceil : float -> float = "caml_ceil_float" "ceil"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external floor : float -> float = "caml_floor_float" "floor"[@@unboxed ]
+[@@noalloc ]
+#else
+val floor : float -> float
+#endif
+(** @since 4.07.0:
+    external floor : float -> float = "caml_floor_float" "floor"[@@unboxed ]
+    [@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external copysign :
+  float -> float -> float = "caml_copysign_float" "caml_copysign"[@@unboxed ]
+[@@noalloc ]
+#else
+val copysign : float -> float -> float
+#endif
+(** @since 4.07.0:
+    external copysign :
+      float -> float -> float = "caml_copysign_float" "caml_copysign"
+    [@@unboxed ][@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external frexp : float -> (float * int) = "caml_frexp_float"
+#else
+val frexp : float -> (float * int)
+#endif
+(** @since 4.07.0:
+    external frexp : float -> (float * int) = "caml_frexp_float" *)
+#if OCAML_VERSION >= (4,07,0)
+external ldexp :
+  ((float)[@unboxed ]) -> ((int)[@untagged ]) -> ((float)[@unboxed ]) =
+    "caml_ldexp_float" "caml_ldexp_float_unboxed"[@@noalloc ]
+#else
+val ldexp : float -> int -> float
+#endif
+(** @since 4.07.0:
+    external ldexp :
+      ((float)[@unboxed ]) -> ((int)[@untagged ]) -> ((float)[@unboxed ]) =
+        "caml_ldexp_float" "caml_ldexp_float_unboxed"[@@noalloc ] *)
+#if OCAML_VERSION >= (4,07,0)
+external modf : float -> (float * float) = "caml_modf_float"
+#else
+val modf : float -> (float * float)
+#endif
+(** @since 4.07.0:
+    external modf : float -> (float * float) = "caml_modf_float" *)
+val compare : t -> t -> int
+(** @since 4.07.0: val compare : t -> t -> int *)
+val equal : t -> t -> bool
+(** @since 4.07.0: val equal : t -> t -> bool *)
+val hash : t -> int
+(** @since 4.07.0: val hash : t -> int *)

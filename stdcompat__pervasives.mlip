@@ -1,308 +1,756 @@
-#if OCAML_VERSION < (4,02,0)
-#define FLOAT_PRIMITIVE "float"
+type fpclass =
+  | FP_normal 
+  | FP_subnormal 
+  | FP_zero 
+  | FP_infinite 
+  | FP_nan 
+(** @since 4.02.0:
+    type fpclass =
+      | FP_normal 
+      | FP_subnormal 
+      | FP_zero 
+      | FP_infinite 
+      | FP_nan  *)
+type in_channel
+(** @since 4.02.0: type in_channel *)
+type out_channel
+(** @since 4.02.0: type out_channel *)
+type open_flag =
+  | Open_rdonly 
+  | Open_wronly 
+  | Open_append 
+  | Open_creat 
+  | Open_trunc 
+  | Open_excl 
+  | Open_binary 
+  | Open_text 
+  | Open_nonblock 
+(** @since 4.02.0:
+    type open_flag =
+      | Open_rdonly 
+      | Open_wronly 
+      | Open_append 
+      | Open_creat 
+      | Open_trunc 
+      | Open_excl 
+      | Open_binary 
+      | Open_text 
+      | Open_nonblock  *)
+module LargeFile :
+sig
+  val seek_out : out_channel -> int64 -> unit
+  val pos_out : out_channel -> int64
+  val out_channel_length : out_channel -> int64
+  val seek_in : in_channel -> int64 -> unit
+  val pos_in : in_channel -> int64
+  val in_channel_length : in_channel -> int64
+end
+(** @since 4.07.0:
+    module LargeFile :
+    sig
+      val seek_out : out_channel -> int64 -> unit
+      val pos_out : out_channel -> int64
+      val out_channel_length : out_channel -> int64
+      val seek_in : in_channel -> int64 -> unit
+      val pos_in : in_channel -> int64
+      val in_channel_length : in_channel -> int64
+    end *)
+type 'a ref = {
+  mutable contents: 'a }
+(** @since 4.02.0: type 'a ref = {
+                     mutable contents: 'a } *)
+type ('a, 'b) result =
+  | Ok of 'a 
+  | Error of 'b 
+(** @since 4.03.0: type ('a, 'b) result =
+                     | Ok of 'a 
+                     | Error of 'b  *)
+#if OCAML_VERSION >= (4,02,0)
+type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
+  ('a, 'b, 'c, 'd, 'e, 'f) CamlinternalFormatBasics.format6
 #else
-#define FLOAT_PRIMITIVE [@@unboxed] [@@noalloc]
+type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
+  ('a, 'b, 'c, 'd, 'e, 'f) Stdcompat__init.format6
 #endif
-
-external raise : exn -> 'a = "%raise"
-
-#if OCAML_VERSION < (4,02,0)
-external raise_notrace : exn -> 'a = "%raise"
-#else
+(** @since 4.02.0:
+    type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
+      ('a, 'b, 'c, 'd, 'e, 'f) CamlinternalFormatBasics.format6 *)
+type ('a, 'b, 'c, 'd) format4 = ('a, 'b, 'c, 'c, 'c, 'd) format6
+(** Alias for {!Pervasives.format4} *)
+type ('a, 'b, 'c) format = ('a, 'b, 'c, 'c) Pervasives.format4
+(** Alias for {!Pervasives.format} *)
+val bool_of_string_opt : string -> bool option
+(** @since 4.05.0: val bool_of_string_opt : string -> bool option *)
+val int_of_string_opt : string -> int option
+(** @since 4.05.0: val int_of_string_opt : string -> int option *)
+val float_of_string_opt : string -> float option
+(** @since 4.05.0: val float_of_string_opt : string -> float option *)
+val read_int_opt : unit -> int option
+(** @since 4.05.0: val read_int_opt : unit -> int option *)
+val read_float_opt : unit -> float option
+(** @since 4.05.0: val read_float_opt : unit -> float option *)
+#if OCAML_VERSION >= (4,02,0)
 external raise_notrace : exn -> 'a = "%raise_notrace"
+#else
+external raise_notrace : exn -> 'a = "%raise"
 #endif
-(** @before 4.02.0 equivalent to [raise]. *)
-
-val invalid_arg : string -> 'a
-val failwith : string -> 'a
-exception Exit
-external ( = ) : 'a -> 'a -> bool = "%equal"
-external ( <> ) : 'a -> 'a -> bool = "%notequal"
-external ( < ) : 'a -> 'a -> bool = "%lessthan"
-external ( > ) : 'a -> 'a -> bool = "%greaterthan"
-external ( <= ) : 'a -> 'a -> bool = "%lessequal"
-external ( >= ) : 'a -> 'a -> bool = "%greaterequal"
-external compare : 'a -> 'a -> int = "%compare"
-val min : 'a -> 'a -> 'a
-val max : 'a -> 'a -> 'a
-external ( == ) : 'a -> 'a -> bool = "%eq"
-external ( != ) : 'a -> 'a -> bool = "%noteq"
-external not : bool -> bool = "%boolnot"
-external ( && ) : bool -> bool -> bool = "%sequand"
-external ( & ) : bool -> bool -> bool = "%sequand"
-external ( || ) : bool -> bool -> bool = "%sequor"
-external ( or ) : bool -> bool -> bool = "%sequor"
+(** @since 4.02.0: external raise_notrace : exn -> 'a = "%raise_notrace" *)
 #if OCAML_VERSION >= (4,02,0)
 external __LOC__ : string = "%loc_LOC"
-#if OCAML_VERSION >= (4,07,0)
-external __FILE__ : string = "%loc_FILE"
-external __LINE__ : int = "%loc_LINE"
+#else
+val __LOC__ : string
 #endif
+(** @since 4.02.0: external __LOC__ : string = "%loc_LOC" *)
+#if OCAML_VERSION >= (4,02,0)
 external __MODULE__ : string = "%loc_MODULE"
-external __POS__ : string * int * int * int = "%loc_POS"
-external __LOC_OF__ : 'a -> string * 'a = "%loc_LOC"
-external __LINE_OF__ : 'a -> int * 'a = "%loc_LINE"
-external __POS_OF__ : 'a -> (string * int * int * int) * 'a = "%loc_POS"
-#endif
-
-#if OCAML_VERSION < (4,01,0)
-val ( |> ) : 'a -> ('a -> 'b) -> 'b
-
-val ( @@ ) : ('a -> 'b) -> 'a -> 'b
 #else
-external ( |> ) : 'a -> ('a -> 'b) -> 'b = "%revapply"
-
-external ( @@ ) : ('a -> 'b) -> 'a -> 'b = "%apply"
+val __MODULE__ : string
 #endif
-
-external ( ~- ) : int -> int = "%negint"
-external ( ~+ ) : int -> int = "%identity"
-external succ : int -> int = "%succint"
-external pred : int -> int = "%predint"
-external ( + ) : int -> int -> int = "%addint"
-external ( - ) : int -> int -> int = "%subint"
-external ( * ) : int -> int -> int = "%mulint"
-external ( / ) : int -> int -> int = "%divint"
-external ( mod ) : int -> int -> int = "%modint"
-val abs : int -> int
-val max_int : int
-val min_int : int
-external ( land ) : int -> int -> int = "%andint"
-external ( lor ) : int -> int -> int = "%orint"
-external ( lxor ) : int -> int -> int = "%xorint"
-val lnot : int -> int
-external ( lsl ) : int -> int -> int = "%lslint"
-external ( lsr ) : int -> int -> int = "%lsrint"
-external ( asr ) : int -> int -> int = "%asrint"
-external ( ~-. ) : float -> float = "%negfloat"
-external ( ~+. ) : float -> float = "%identity"
-external ( +. ) : float -> float -> float = "%addfloat"
-external ( -. ) : float -> float -> float = "%subfloat"
-external ( *. ) : float -> float -> float = "%mulfloat"
-external ( /. ) : float -> float -> float = "%divfloat"
-external ( ** ) : float -> float -> float = "caml_power_float" "pow"
-  FLOAT_PRIMITIVE
-external sqrt : float -> float = "caml_sqrt_float" "sqrt"
-  FLOAT_PRIMITIVE
-external exp : float -> float = "caml_exp_float" "exp"
-  FLOAT_PRIMITIVE
-external log : float -> float = "caml_log_float" "log"
-  FLOAT_PRIMITIVE
-external log10 : float -> float = "caml_log10_float" "log10"
-  FLOAT_PRIMITIVE
-external expm1 : float -> float = "caml_expm1_float" "caml_expm1"
-  FLOAT_PRIMITIVE
-external log1p : float -> float = "caml_log1p_float" "caml_log1p"
-  FLOAT_PRIMITIVE
-external cos : float -> float = "caml_cos_float" "cos"
-  FLOAT_PRIMITIVE
-external sin : float -> float = "caml_sin_float" "sin"
-  FLOAT_PRIMITIVE
-external tan : float -> float = "caml_tan_float" "tan"
-  FLOAT_PRIMITIVE
-external acos : float -> float = "caml_acos_float" "acos"
-  FLOAT_PRIMITIVE
-external asin : float -> float = "caml_asin_float" "asin"
-  FLOAT_PRIMITIVE
-external atan : float -> float = "caml_atan_float" "atan"
-  FLOAT_PRIMITIVE
-external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
-  FLOAT_PRIMITIVE
-
-#if OCAML_VERSION < (4,00,0)
-val hypot : float -> float -> float
+(** @since 4.02.0: external __MODULE__ : string = "%loc_MODULE" *)
+#if OCAML_VERSION >= (4,02,0)
+external __POS__ : (string * int * int * int) = "%loc_POS"
 #else
-external hypot : float -> float -> float = "caml_hypot_float"
-  "caml_hypot" FLOAT_PRIMITIVE
+val __POS__ : (string * int * int * int)
 #endif
-
-external cosh : float -> float = "caml_cosh_float" "cosh"
-  FLOAT_PRIMITIVE
-external sinh : float -> float = "caml_sinh_float" "sinh"
-  FLOAT_PRIMITIVE
-external tanh : float -> float = "caml_tanh_float" "tanh"
-  FLOAT_PRIMITIVE
-external ceil : float -> float = "caml_ceil_float" "ceil"
-  FLOAT_PRIMITIVE
-external floor : float -> float = "caml_floor_float" "floor"
-  FLOAT_PRIMITIVE
-external abs_float : float -> float = "%absfloat"
-
-#if OCAML_VERSION < (4,00,0)
-val copysign : float -> float -> float
+(** @since 4.02.0: external __POS__ : (string * int * int * int) = "%loc_POS" *)
+#if OCAML_VERSION >= (4,02,0)
+external __LOC_OF__ : 'a -> (string * 'a) = "%loc_LOC"
 #else
-external copysign : float -> float -> float = "caml_copysign_float"
-  "caml_copysign" FLOAT_PRIMITIVE
+val __LOC_OF__ : 'a -> (string * 'a)
 #endif
-
-external mod_float : float -> float -> float = "caml_fmod_float" "fmod"
-  FLOAT_PRIMITIVE
-external frexp : float -> float * int = "caml_frexp_float"
-#if OCAML_VERSION < (4,02,0)
-external ldexp : float -> int -> float = "caml_ldexp_float"
+(** @since 4.02.0: external __LOC_OF__ : 'a -> (string * 'a) = "%loc_LOC" *)
+#if OCAML_VERSION >= (4,02,0)
+external __LINE_OF__ : 'a -> (int * 'a) = "%loc_LINE"
 #else
-external ldexp :
-  (float [@unboxed]) -> (int [@untagged]) -> (float [@unboxed])
-  = "caml_ldexp_float" "caml_ldexp_float_unboxed" [@@noalloc]
+val __LINE_OF__ : 'a -> (int * 'a)
 #endif
-external modf : float -> float * float = "caml_modf_float"
-external float : int -> float = "%floatofint"
-external float_of_int : int -> float = "%floatofint"
-external truncate : float -> int = "%intoffloat"
-external int_of_float : float -> int = "%intoffloat"
-val infinity : float
-val neg_infinity : float
-val nan : float
-val max_float : float
-val min_float : float
-val epsilon_float : float
-type fpclass =
-  Pervasives.fpclass =
-    FP_normal
-  | FP_subnormal
-  | FP_zero
-  | FP_infinite
-  | FP_nan
-#if OCAML_VERSION < (4,02,0)
-external classify_float : float -> fpclass = "caml_classify_float"
+(** @since 4.02.0: external __LINE_OF__ : 'a -> (int * 'a) = "%loc_LINE" *)
+#if OCAML_VERSION >= (4,02,0)
+external __POS_OF__ : 'a -> ((string * int * int * int) * 'a) = "%loc_POS"
 #else
-external classify_float : (float [@unboxed]) -> fpclass
-  = "caml_classify_float" "caml_classify_float_unboxed" [@@noalloc]
+val __POS_OF__ : 'a -> ((string * int * int * int) * 'a)
 #endif
-val ( ^ ) : string -> string -> string
-external int_of_char : char -> int = "%identity"
-val char_of_int : int -> char
-external ignore : 'a -> unit = "%ignore"
-val string_of_bool : bool -> string
-val bool_of_string : string -> bool
-val bool_of_string_opt : string -> bool option
-val string_of_int : int -> string
-external int_of_string : string -> int = "caml_int_of_string"
-val int_of_string_opt : string -> int option
-val string_of_float : float -> string
-external float_of_string : string -> float = "caml_float_of_string"
-val float_of_string_opt : string -> float option
-external fst : 'a * 'b -> 'a = "%field0"
-external snd : 'a * 'b -> 'b = "%field1"
-val ( @ ) : 'a list -> 'a list -> 'a list
-type in_channel = Pervasives.in_channel
-type out_channel = Pervasives.out_channel
-val stdin : in_channel
-val stdout : out_channel
-val stderr : out_channel
-val print_char : char -> unit
-val print_string : string -> unit
-val print_bytes : Stdcompat__root.bytes -> unit
-val print_int : int -> unit
-val print_float : float -> unit
-val print_endline : string -> unit
-val print_newline : unit -> unit
-
-val prerr_string : string -> unit
-val prerr_bytes : Stdcompat__root.bytes -> unit
-val prerr_int : int -> unit
-val prerr_float : float -> unit
-val prerr_endline : string -> unit
-val prerr_newline : unit -> unit
-val read_line : unit -> string
-val read_int : unit -> int
-val read_int_opt : unit -> int option
-val read_float : unit -> float
-val read_float_opt : unit -> float option
-type open_flag =
-  Pervasives.open_flag =
-    Open_rdonly
-  | Open_wronly
-  | Open_append
-  | Open_creat
-  | Open_trunc
-  | Open_excl
-  | Open_binary
-  | Open_text
-  | Open_nonblock
-val open_out : string -> out_channel
-val open_out_bin : string -> out_channel
-val open_out_gen : open_flag list -> int -> string -> out_channel
-val flush : out_channel -> unit
-val flush_all : unit -> unit
-val output_char : out_channel -> char -> unit
-val output_string : out_channel -> string -> unit
-val output_bytes : out_channel -> Stdcompat__root.bytes -> unit
-val output : out_channel -> Stdcompat__root.bytes -> int -> int -> unit
+(** @since 4.02.0:
+    external __POS_OF__ :
+      'a -> ((string * int * int * int) * 'a) = "%loc_POS" *)
+#if OCAML_VERSION >= (4,02,0)
+val print_bytes : bytes -> unit
+#else
+val print_bytes : Stdcompat__init.bytes -> unit
+#endif
+(** @since 4.02.0: val print_bytes : bytes -> unit *)
+#if OCAML_VERSION >= (4,02,0)
+val prerr_bytes : bytes -> unit
+#else
+val prerr_bytes : Stdcompat__init.bytes -> unit
+#endif
+(** @since 4.02.0: val prerr_bytes : bytes -> unit *)
+#if OCAML_VERSION >= (4,02,0)
+val output_bytes : out_channel -> bytes -> unit
+#else
+val output_bytes : out_channel -> Stdcompat__init.bytes -> unit
+#endif
+(** @since 4.02.0: val output_bytes : out_channel -> bytes -> unit *)
+#if OCAML_VERSION >= (4,02,0)
+val output : out_channel -> bytes -> int -> int -> unit
+#else
+val output : out_channel -> Stdcompat__init.bytes -> int -> int -> unit
+#endif
+(** @since 4.02.0: val output : out_channel -> bytes -> int -> int -> unit *)
 val output_substring : out_channel -> string -> int -> int -> unit
-val output_byte : out_channel -> int -> unit
-val output_binary_int : out_channel -> int -> unit
-val output_value : out_channel -> 'a -> unit
-val seek_out : out_channel -> int -> unit
-val pos_out : out_channel -> int
-val out_channel_length : out_channel -> int
-val close_out : out_channel -> unit
-val close_out_noerr : out_channel -> unit
-val set_binary_mode_out : out_channel -> bool -> unit
-val open_in : string -> in_channel
-val open_in_bin : string -> in_channel
-val open_in_gen : open_flag list -> int -> string -> in_channel
-val input_char : in_channel -> char
-val input_line : in_channel -> string
-val input : in_channel -> Stdcompat__root.bytes -> int -> int -> int
-val really_input : in_channel -> Stdcompat__root.bytes -> int -> int -> unit
+(** @since 4.02.0:
+    val output_substring : out_channel -> string -> int -> int -> unit *)
+#if OCAML_VERSION >= (4,02,0)
+val input : in_channel -> bytes -> int -> int -> int
+#else
+val input : in_channel -> Stdcompat__init.bytes -> int -> int -> int
+#endif
+(** @since 4.02.0: val input : in_channel -> bytes -> int -> int -> int *)
+#if OCAML_VERSION >= (4,02,0)
+val really_input : in_channel -> bytes -> int -> int -> unit
+#else
+val really_input : in_channel -> Stdcompat__init.bytes -> int -> int -> unit
+#endif
+(** @since 4.02.0:
+    val really_input : in_channel -> bytes -> int -> int -> unit *)
 val really_input_string : in_channel -> int -> string
-val input_byte : in_channel -> int
-val input_binary_int : in_channel -> int
-val input_value : in_channel -> 'a
-val seek_in : in_channel -> int -> unit
-val pos_in : in_channel -> int
-val in_channel_length : in_channel -> int
-val close_in : in_channel -> unit
-val close_in_noerr : in_channel -> unit
-val set_binary_mode_in : in_channel -> bool -> unit
-module LargeFile :
-  sig
-    val seek_out : out_channel -> int64 -> unit
-    val pos_out : out_channel -> int64
-    val out_channel_length : out_channel -> int64
-    val seek_in : in_channel -> int64 -> unit
-    val pos_in : in_channel -> int64
-    val in_channel_length : in_channel -> int64
-  end
-type 'a ref = 'a Pervasives.ref = { mutable contents : 'a; }
-external ref : 'a -> 'a ref = "%makemutable"
-external ( ! ) : 'a ref -> 'a = "%field0"
-external ( := ) : 'a ref -> 'a -> unit = "%setfield0"
-external incr : int ref -> unit = "%incr"
-external decr : int ref -> unit = "%decr"
-
-type ('a, 'b) result
-#if OCAML_VERSION < (4,03,0)
-#ifdef HAS_RESULT_PKG
-  = ('a, 'b) Result.result
-#endif
+(** @since 4.02.0: val really_input_string : in_channel -> int -> string *)
+#if OCAML_VERSION >= (4,02,0)
+val unsafe_really_input : in_channel -> bytes -> int -> int -> unit
 #else
-  = ('a, 'b) Pervasives.result
-#endif
-  = Ok of 'a | Error of 'b
-
-#if OCAML_VERSION < (4,02,0)
-type ('a, 'b, 'c, 'd, 'e, 'f) format6_ =
-    ('a, 'b, 'c, 'd, 'e, 'f) format6
-type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
-    ('a, 'b, 'c, 'd, 'e, 'f) format6_
-#else
-type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
-    ('a, 'b, 'c, 'd, 'e, 'f) CamlinternalFormatBasics.format6
-#endif
-type ('a, 'b, 'c, 'd) format4 = ('a, 'b, 'c, 'c, 'c, 'd) format6
-type ('a, 'b, 'c) format = ('a, 'b, 'c, 'c) format4
-val string_of_format : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> string
-external format_of_string :
-  ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6
-  = "%identity"
-val ( ^^ ) :
-  ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
-  ('f, 'b, 'c, 'e, 'g, 'h) format6 -> ('a, 'b, 'c, 'd, 'g, 'h) format6
-val exit : int -> 'a
-val at_exit : (unit -> unit) -> unit
-val valid_float_lexem : string -> string
 val unsafe_really_input :
-  in_channel -> Stdcompat__root.bytes -> int -> int -> unit
+  in_channel -> Stdcompat__init.bytes -> int -> int -> unit
+#endif
+(** @since 4.02.0:
+    val unsafe_really_input : in_channel -> bytes -> int -> int -> unit *)
+#if OCAML_VERSION >= (4,01,0)
+external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply"
+#else
+val (|>) : 'a -> ('a -> 'b) -> 'b
+#endif
+(** @since 4.01.0: external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply" *)
+#if OCAML_VERSION >= (4,01,0)
+external (@@) : ('a -> 'b) -> 'a -> 'b = "%apply"
+#else
+val (@@) : ('a -> 'b) -> 'a -> 'b
+#endif
+(** @since 4.01.0: external (@@) : ('a -> 'b) -> 'a -> 'b = "%apply" *)
+#if OCAML_VERSION >= (4,03,0)
+external hypot : float -> float -> float = "caml_hypot_float" "caml_hypot"
+[@@unboxed ][@@noalloc ]
+#elif OCAML_VERSION >= (4,00,0)
+external hypot :
+  float -> float -> float = "caml_hypot_float" "caml_hypot" "float"
+#else
+val hypot : float -> float -> float
+#endif
+(** @since 4.03.0:
+    external hypot :
+      float -> float -> float = "caml_hypot_float" "caml_hypot"[@@unboxed ]
+    [@@noalloc ]@since 4.00.0:
+                external hypot :
+                  float -> float -> float = "caml_hypot_float" "caml_hypot"
+                    "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external copysign :
+  float -> float -> float = "caml_copysign_float" "caml_copysign"[@@unboxed ]
+[@@noalloc ]
+#elif OCAML_VERSION >= (4,00,0)
+external copysign :
+  float -> float -> float = "caml_copysign_float" "caml_copysign" "float"
+#else
+val copysign : float -> float -> float
+#endif
+(** @since 4.03.0:
+    external copysign :
+      float -> float -> float = "caml_copysign_float" "caml_copysign"
+    [@@unboxed ][@@noalloc ]@since 4.00.0:
+                            external copysign :
+                              float -> float -> float = "caml_copysign_float"
+                                "caml_copysign" "float" *)
+external (~+) : int -> int = "%identity"
+(** @since 3.12.0: external (~+) : int -> int = "%identity" *)
+external (~+.) : float -> float = "%identity"
+(** @since 3.12.0: external (~+.) : float -> float = "%identity" *)
+#if OCAML_VERSION >= (4,03,0)
+external expm1 : float -> float = "caml_expm1_float" "caml_expm1"[@@unboxed ]
+[@@noalloc ]
+#elif OCAML_VERSION >= (3,12,0)
+external expm1 : float -> float = "caml_expm1_float" "caml_expm1" "float"
+#else
+val expm1 : float -> float
+#endif
+(** @since 4.03.0:
+    external expm1 : float -> float = "caml_expm1_float" "caml_expm1"
+    [@@unboxed ][@@noalloc ]@since 3.12.0:
+                            external expm1 :
+                              float -> float = "caml_expm1_float"
+                                "caml_expm1" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external log1p : float -> float = "caml_log1p_float" "caml_log1p"[@@unboxed ]
+[@@noalloc ]
+#elif OCAML_VERSION >= (3,12,0)
+external log1p : float -> float = "caml_log1p_float" "caml_log1p" "float"
+#else
+val log1p : float -> float
+#endif
+(** @since 4.03.0:
+    external log1p : float -> float = "caml_log1p_float" "caml_log1p"
+    [@@unboxed ][@@noalloc ]@since 3.12.0:
+                            external log1p :
+                              float -> float = "caml_log1p_float"
+                                "caml_log1p" "float" *)
+external raise : exn -> 'a = "%raise"
+(** Alias for {!Pervasives.raise} *)
+val invalid_arg : string -> 'a
+(** Alias for {!Pervasives.invalid_arg} *)
+val failwith : string -> 'a
+(** Alias for {!Pervasives.failwith} *)
+external (=) : 'a -> 'a -> bool = "%equal"
+(** Alias for {!Pervasives.=} *)
+external (<>) : 'a -> 'a -> bool = "%notequal"
+(** Alias for {!Pervasives.<>} *)
+external (<) : 'a -> 'a -> bool = "%lessthan"
+(** Alias for {!Pervasives.<} *)
+external (>) : 'a -> 'a -> bool = "%greaterthan"
+(** Alias for {!Pervasives.>} *)
+external (<=) : 'a -> 'a -> bool = "%lessequal"
+(** Alias for {!Pervasives.<=} *)
+external (>=) : 'a -> 'a -> bool = "%greaterequal"
+(** Alias for {!Pervasives.>=} *)
+external compare : 'a -> 'a -> int = "%compare"
+(** Alias for {!Pervasives.compare} *)
+val min : 'a -> 'a -> 'a
+(** Alias for {!Pervasives.min} *)
+val max : 'a -> 'a -> 'a
+(** Alias for {!Pervasives.max} *)
+external (==) : 'a -> 'a -> bool = "%eq"
+(** Alias for {!Pervasives.==} *)
+external (!=) : 'a -> 'a -> bool = "%noteq"
+(** Alias for {!Pervasives.!=} *)
+external not : bool -> bool = "%boolnot"
+(** Alias for {!Pervasives.not} *)
+external (&&) : bool -> bool -> bool = "%sequand"
+(** Alias for {!Pervasives.&&} *)
+external (&) : bool -> bool -> bool = "%sequand"
+(** Alias for {!Pervasives.&} *)
+external (||) : bool -> bool -> bool = "%sequor"
+(** Alias for {!Pervasives.||} *)
+external (or) : bool -> bool -> bool = "%sequor"
+(** Alias for {!Pervasives.or} *)
+external (~-) : int -> int = "%negint"
+(** Alias for {!Pervasives.~-} *)
+external succ : int -> int = "%succint"
+(** Alias for {!Pervasives.succ} *)
+external pred : int -> int = "%predint"
+(** Alias for {!Pervasives.pred} *)
+external (+) : int -> int -> int = "%addint"
+(** Alias for {!Pervasives.+} *)
+external (-) : int -> int -> int = "%subint"
+(** Alias for {!Pervasives.-} *)
+external ( * ) : int -> int -> int = "%mulint"
+(** Alias for {!Pervasives.*} *)
+external (/) : int -> int -> int = "%divint"
+(** Alias for {!Pervasives./} *)
+external (mod) : int -> int -> int = "%modint"
+(** Alias for {!Pervasives.mod} *)
+val abs : int -> int
+(** Alias for {!Pervasives.abs} *)
+val max_int : int
+(** Alias for {!Pervasives.max_int} *)
+val min_int : int
+(** Alias for {!Pervasives.min_int} *)
+external (land) : int -> int -> int = "%andint"
+(** Alias for {!Pervasives.land} *)
+external (lor) : int -> int -> int = "%orint"
+(** Alias for {!Pervasives.lor} *)
+external (lxor) : int -> int -> int = "%xorint"
+(** Alias for {!Pervasives.lxor} *)
+val lnot : int -> int
+(** Alias for {!Pervasives.lnot} *)
+external (lsl) : int -> int -> int = "%lslint"
+(** Alias for {!Pervasives.lsl} *)
+external (lsr) : int -> int -> int = "%lsrint"
+(** Alias for {!Pervasives.lsr} *)
+external (asr) : int -> int -> int = "%asrint"
+(** Alias for {!Pervasives.asr} *)
+external (~-.) : float -> float = "%negfloat"
+(** Alias for {!Pervasives.~-.} *)
+external (+.) : float -> float -> float = "%addfloat"
+(** Alias for {!Pervasives.+.} *)
+external (-.) : float -> float -> float = "%subfloat"
+(** Alias for {!Pervasives.-.} *)
+external ( *. ) : float -> float -> float = "%mulfloat"
+(** Alias for {!Pervasives.*.} *)
+external (/.) : float -> float -> float = "%divfloat"
+(** Alias for {!Pervasives./.} *)
+#if OCAML_VERSION >= (4,03,0)
+external ( ** ) : float -> float -> float = "caml_power_float" "pow"[@@unboxed
+                                                                    ]
+[@@noalloc ]
+#else
+external ( ** ) : float -> float -> float = "caml_power_float" "pow" "float"
+#endif
+(** @since 4.03.0:
+    external ( ** ) : float -> float -> float = "caml_power_float" "pow"
+    [@@unboxed ][@@noalloc ]@since 3.11.0:
+                            external ( ** ) :
+                              float -> float -> float = "caml_power_float"
+                                "pow" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external sqrt : float -> float = "caml_sqrt_float" "sqrt"[@@unboxed ]
+[@@noalloc ]
+#else
+external sqrt : float -> float = "caml_sqrt_float" "sqrt" "float"
+#endif
+(** @since 4.03.0:
+    external sqrt : float -> float = "caml_sqrt_float" "sqrt"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external sqrt :
+                  float -> float = "caml_sqrt_float" "sqrt" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external exp : float -> float = "caml_exp_float" "exp"[@@unboxed ][@@noalloc
+                                                                    ]
+#else
+external exp : float -> float = "caml_exp_float" "exp" "float"
+#endif
+(** @since 4.03.0:
+    external exp : float -> float = "caml_exp_float" "exp"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external exp :
+                  float -> float = "caml_exp_float" "exp" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external log : float -> float = "caml_log_float" "log"[@@unboxed ][@@noalloc
+                                                                    ]
+#else
+external log : float -> float = "caml_log_float" "log" "float"
+#endif
+(** @since 4.03.0:
+    external log : float -> float = "caml_log_float" "log"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external log :
+                  float -> float = "caml_log_float" "log" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external log10 : float -> float = "caml_log10_float" "log10"[@@unboxed ]
+[@@noalloc ]
+#else
+external log10 : float -> float = "caml_log10_float" "log10" "float"
+#endif
+(** @since 4.03.0:
+    external log10 : float -> float = "caml_log10_float" "log10"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external log10 :
+                  float -> float = "caml_log10_float" "log10" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external cos : float -> float = "caml_cos_float" "cos"[@@unboxed ][@@noalloc
+                                                                    ]
+#else
+external cos : float -> float = "caml_cos_float" "cos" "float"
+#endif
+(** @since 4.03.0:
+    external cos : float -> float = "caml_cos_float" "cos"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external cos :
+                  float -> float = "caml_cos_float" "cos" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external sin : float -> float = "caml_sin_float" "sin"[@@unboxed ][@@noalloc
+                                                                    ]
+#else
+external sin : float -> float = "caml_sin_float" "sin" "float"
+#endif
+(** @since 4.03.0:
+    external sin : float -> float = "caml_sin_float" "sin"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external sin :
+                  float -> float = "caml_sin_float" "sin" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external tan : float -> float = "caml_tan_float" "tan"[@@unboxed ][@@noalloc
+                                                                    ]
+#else
+external tan : float -> float = "caml_tan_float" "tan" "float"
+#endif
+(** @since 4.03.0:
+    external tan : float -> float = "caml_tan_float" "tan"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external tan :
+                  float -> float = "caml_tan_float" "tan" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external acos : float -> float = "caml_acos_float" "acos"[@@unboxed ]
+[@@noalloc ]
+#else
+external acos : float -> float = "caml_acos_float" "acos" "float"
+#endif
+(** @since 4.03.0:
+    external acos : float -> float = "caml_acos_float" "acos"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external acos :
+                  float -> float = "caml_acos_float" "acos" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external asin : float -> float = "caml_asin_float" "asin"[@@unboxed ]
+[@@noalloc ]
+#else
+external asin : float -> float = "caml_asin_float" "asin" "float"
+#endif
+(** @since 4.03.0:
+    external asin : float -> float = "caml_asin_float" "asin"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external asin :
+                  float -> float = "caml_asin_float" "asin" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external atan : float -> float = "caml_atan_float" "atan"[@@unboxed ]
+[@@noalloc ]
+#else
+external atan : float -> float = "caml_atan_float" "atan" "float"
+#endif
+(** @since 4.03.0:
+    external atan : float -> float = "caml_atan_float" "atan"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external atan :
+                  float -> float = "caml_atan_float" "atan" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
+[@@unboxed ][@@noalloc ]
+#else
+external atan2 : float -> float -> float = "caml_atan2_float" "atan2" "float"
+#endif
+(** @since 4.03.0:
+    external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
+    [@@unboxed ][@@noalloc ]@since 3.11.0:
+                            external atan2 :
+                              float -> float -> float = "caml_atan2_float"
+                                "atan2" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external cosh : float -> float = "caml_cosh_float" "cosh"[@@unboxed ]
+[@@noalloc ]
+#else
+external cosh : float -> float = "caml_cosh_float" "cosh" "float"
+#endif
+(** @since 4.03.0:
+    external cosh : float -> float = "caml_cosh_float" "cosh"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external cosh :
+                  float -> float = "caml_cosh_float" "cosh" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external sinh : float -> float = "caml_sinh_float" "sinh"[@@unboxed ]
+[@@noalloc ]
+#else
+external sinh : float -> float = "caml_sinh_float" "sinh" "float"
+#endif
+(** @since 4.03.0:
+    external sinh : float -> float = "caml_sinh_float" "sinh"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external sinh :
+                  float -> float = "caml_sinh_float" "sinh" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external tanh : float -> float = "caml_tanh_float" "tanh"[@@unboxed ]
+[@@noalloc ]
+#else
+external tanh : float -> float = "caml_tanh_float" "tanh" "float"
+#endif
+(** @since 4.03.0:
+    external tanh : float -> float = "caml_tanh_float" "tanh"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external tanh :
+                  float -> float = "caml_tanh_float" "tanh" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external ceil : float -> float = "caml_ceil_float" "ceil"[@@unboxed ]
+[@@noalloc ]
+#else
+external ceil : float -> float = "caml_ceil_float" "ceil" "float"
+#endif
+(** @since 4.03.0:
+    external ceil : float -> float = "caml_ceil_float" "ceil"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external ceil :
+                  float -> float = "caml_ceil_float" "ceil" "float" *)
+#if OCAML_VERSION >= (4,03,0)
+external floor : float -> float = "caml_floor_float" "floor"[@@unboxed ]
+[@@noalloc ]
+#else
+external floor : float -> float = "caml_floor_float" "floor" "float"
+#endif
+(** @since 4.03.0:
+    external floor : float -> float = "caml_floor_float" "floor"[@@unboxed ]
+    [@@noalloc ]@since 3.11.0:
+                external floor :
+                  float -> float = "caml_floor_float" "floor" "float" *)
+external abs_float : float -> float = "%absfloat"
+(** Alias for {!Pervasives.abs_float} *)
+#if OCAML_VERSION >= (4,03,0)
+external mod_float : float -> float -> float = "caml_fmod_float" "fmod"
+[@@unboxed ][@@noalloc ]
+#else
+external mod_float :
+  float -> float -> float = "caml_fmod_float" "fmod" "float"
+#endif
+(** @since 4.03.0:
+    external mod_float : float -> float -> float = "caml_fmod_float" "fmod"
+    [@@unboxed ][@@noalloc ]@since 3.11.0:
+                            external mod_float :
+                              float -> float -> float = "caml_fmod_float"
+                                "fmod" "float" *)
+external frexp : float -> (float * int) = "caml_frexp_float"
+(** Alias for {!Pervasives.frexp} *)
+#if OCAML_VERSION >= (4,03,0)
+external ldexp :
+  ((float)[@unboxed ]) -> ((int)[@untagged ]) -> ((float)[@unboxed ]) =
+    "caml_ldexp_float" "caml_ldexp_float_unboxed"[@@noalloc ]
+#else
+external ldexp : float -> int -> float = "caml_ldexp_float"
+#endif
+(** @since 4.03.0:
+    external ldexp :
+      ((float)[@unboxed ]) -> ((int)[@untagged ]) -> ((float)[@unboxed ]) =
+        "caml_ldexp_float" "caml_ldexp_float_unboxed"[@@noalloc ]@since 3.11.0:
+                                                                 external
+                                                                   ldexp :
+                                                                   float ->
+                                                                    int ->
+                                                                    float =
+                                                                    "caml_ldexp_float" *)
+external modf : float -> (float * float) = "caml_modf_float"
+(** Alias for {!Pervasives.modf} *)
+external float : int -> float = "%floatofint"
+(** Alias for {!Pervasives.float} *)
+external float_of_int : int -> float = "%floatofint"
+(** Alias for {!Pervasives.float_of_int} *)
+external truncate : float -> int = "%intoffloat"
+(** Alias for {!Pervasives.truncate} *)
+external int_of_float : float -> int = "%intoffloat"
+(** Alias for {!Pervasives.int_of_float} *)
+val infinity : float
+(** Alias for {!Pervasives.infinity} *)
+val neg_infinity : float
+(** Alias for {!Pervasives.neg_infinity} *)
+val nan : float
+(** Alias for {!Pervasives.nan} *)
+val max_float : float
+(** Alias for {!Pervasives.max_float} *)
+val min_float : float
+(** Alias for {!Pervasives.min_float} *)
+val epsilon_float : float
+(** Alias for {!Pervasives.epsilon_float} *)
+#if OCAML_VERSION >= (4,03,0)
+external classify_float :
+  ((float)[@unboxed ]) -> fpclass = "caml_classify_float"
+    "caml_classify_float_unboxed"[@@noalloc ]
+#else
+external classify_float : float -> fpclass = "caml_classify_float"
+#endif
+(** @since 4.03.0:
+    external classify_float :
+      ((float)[@unboxed ]) -> fpclass = "caml_classify_float"
+        "caml_classify_float_unboxed"[@@noalloc ]@since 3.11.0:
+                                                 external classify_float :
+                                                   float -> fpclass =
+                                                     "caml_classify_float" *)
+val (^) : string -> string -> string
+(** Alias for {!Pervasives.^} *)
+external int_of_char : char -> int = "%identity"
+(** Alias for {!Pervasives.int_of_char} *)
+val char_of_int : int -> char
+(** Alias for {!Pervasives.char_of_int} *)
+external ignore : 'a -> unit = "%ignore"
+(** Alias for {!Pervasives.ignore} *)
+val string_of_bool : bool -> string
+(** Alias for {!Pervasives.string_of_bool} *)
+val bool_of_string : string -> bool
+(** Alias for {!Pervasives.bool_of_string} *)
+val string_of_int : int -> string
+(** Alias for {!Pervasives.string_of_int} *)
+external int_of_string : string -> int = "caml_int_of_string"
+(** Alias for {!Pervasives.int_of_string} *)
+val string_of_float : float -> string
+(** Alias for {!Pervasives.string_of_float} *)
+external float_of_string : string -> float = "caml_float_of_string"
+(** Alias for {!Pervasives.float_of_string} *)
+external fst : ('a * 'b) -> 'a = "%field0"
+(** Alias for {!Pervasives.fst} *)
+external snd : ('a * 'b) -> 'b = "%field1"
+(** Alias for {!Pervasives.snd} *)
+val (@) : 'a list -> 'a list -> 'a list
+(** Alias for {!Pervasives.@} *)
+val stdin : in_channel
+(** Alias for {!Pervasives.stdin} *)
+val stdout : out_channel
+(** Alias for {!Pervasives.stdout} *)
+val stderr : out_channel
+(** Alias for {!Pervasives.stderr} *)
+val print_char : char -> unit
+(** Alias for {!Pervasives.print_char} *)
+val print_string : string -> unit
+(** Alias for {!Pervasives.print_string} *)
+val print_int : int -> unit
+(** Alias for {!Pervasives.print_int} *)
+val print_float : float -> unit
+(** Alias for {!Pervasives.print_float} *)
+val print_endline : string -> unit
+(** Alias for {!Pervasives.print_endline} *)
+val print_newline : unit -> unit
+(** Alias for {!Pervasives.print_newline} *)
+val prerr_char : char -> unit
+(** Alias for {!Pervasives.prerr_char} *)
+val prerr_string : string -> unit
+(** Alias for {!Pervasives.prerr_string} *)
+val prerr_int : int -> unit
+(** Alias for {!Pervasives.prerr_int} *)
+val prerr_float : float -> unit
+(** Alias for {!Pervasives.prerr_float} *)
+val prerr_endline : string -> unit
+(** Alias for {!Pervasives.prerr_endline} *)
+val prerr_newline : unit -> unit
+(** Alias for {!Pervasives.prerr_newline} *)
+val read_line : unit -> string
+(** Alias for {!Pervasives.read_line} *)
+val read_int : unit -> int
+(** Alias for {!Pervasives.read_int} *)
+val read_float : unit -> float
+(** Alias for {!Pervasives.read_float} *)
+val open_out : string -> out_channel
+(** Alias for {!Pervasives.open_out} *)
+val open_out_bin : string -> out_channel
+(** Alias for {!Pervasives.open_out_bin} *)
+val open_out_gen : open_flag list -> int -> string -> out_channel
+(** Alias for {!Pervasives.open_out_gen} *)
+val flush : out_channel -> unit
+(** Alias for {!Pervasives.flush} *)
+val flush_all : unit -> unit
+(** Alias for {!Pervasives.flush_all} *)
+val output_char : out_channel -> char -> unit
+(** Alias for {!Pervasives.output_char} *)
+val output_string : out_channel -> string -> unit
+(** Alias for {!Pervasives.output_string} *)
+val output_byte : out_channel -> int -> unit
+(** Alias for {!Pervasives.output_byte} *)
+val output_binary_int : out_channel -> int -> unit
+(** Alias for {!Pervasives.output_binary_int} *)
+val output_value : out_channel -> 'a -> unit
+(** Alias for {!Pervasives.output_value} *)
+val seek_out : out_channel -> int -> unit
+(** Alias for {!Pervasives.seek_out} *)
+val pos_out : out_channel -> int
+(** Alias for {!Pervasives.pos_out} *)
+val out_channel_length : out_channel -> int
+(** Alias for {!Pervasives.out_channel_length} *)
+val close_out : out_channel -> unit
+(** Alias for {!Pervasives.close_out} *)
+val close_out_noerr : out_channel -> unit
+(** Alias for {!Pervasives.close_out_noerr} *)
+val set_binary_mode_out : out_channel -> bool -> unit
+(** Alias for {!Pervasives.set_binary_mode_out} *)
+val open_in : string -> in_channel
+(** Alias for {!Pervasives.open_in} *)
+val open_in_bin : string -> in_channel
+(** Alias for {!Pervasives.open_in_bin} *)
+val open_in_gen : open_flag list -> int -> string -> in_channel
+(** Alias for {!Pervasives.open_in_gen} *)
+val input_char : in_channel -> char
+(** Alias for {!Pervasives.input_char} *)
+val input_line : in_channel -> string
+(** Alias for {!Pervasives.input_line} *)
+val input_byte : in_channel -> int
+(** Alias for {!Pervasives.input_byte} *)
+val input_binary_int : in_channel -> int
+(** Alias for {!Pervasives.input_binary_int} *)
+val input_value : in_channel -> 'a
+(** Alias for {!Pervasives.input_value} *)
+val seek_in : in_channel -> int -> unit
+(** Alias for {!Pervasives.seek_in} *)
+val pos_in : in_channel -> int
+(** Alias for {!Pervasives.pos_in} *)
+val in_channel_length : in_channel -> int
+(** Alias for {!Pervasives.in_channel_length} *)
+val close_in : in_channel -> unit
+(** Alias for {!Pervasives.close_in} *)
+val close_in_noerr : in_channel -> unit
+(** Alias for {!Pervasives.close_in_noerr} *)
+val set_binary_mode_in : in_channel -> bool -> unit
+(** Alias for {!Pervasives.set_binary_mode_in} *)
+external ref : 'a -> 'a ref = "%makemutable"
+(** Alias for {!Pervasives.ref} *)
+external (!) : 'a ref -> 'a = "%field0"
+(** Alias for {!Pervasives.!} *)
+external (:=) : 'a ref -> 'a -> unit = "%setfield0"
+(** Alias for {!Pervasives.:=} *)
+external incr : int ref -> unit = "%incr"
+(** Alias for {!Pervasives.incr} *)
+external decr : int ref -> unit = "%decr"
+(** Alias for {!Pervasives.decr} *)
+val string_of_format : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> string
+(** Alias for {!Pervasives.string_of_format} *)
+external format_of_string :
+  ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6 =
+    "%identity"
+(** Alias for {!Pervasives.format_of_string} *)
+val (^^) :
+  ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
+    ('f, 'b, 'c, 'e, 'g, 'h) format6 -> ('a, 'b, 'c, 'd, 'g, 'h) format6
+(** Alias for {!Pervasives.^^} *)
+val exit : int -> 'a
+(** Alias for {!Pervasives.exit} *)
+val at_exit : (unit -> unit) -> unit
+(** Alias for {!Pervasives.at_exit} *)
+val valid_float_lexem : string -> string
+(** Alias for {!Pervasives.valid_float_lexem} *)
 val do_at_exit : unit -> unit
+(** Alias for {!Pervasives.do_at_exit} *)

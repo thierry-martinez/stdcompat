@@ -1,5 +1,5 @@
 #if OCAML_VERSION < (4,02,0)
-include StringLabels
+include Stdcompat__stringLabels
 
 let empty = ""
 

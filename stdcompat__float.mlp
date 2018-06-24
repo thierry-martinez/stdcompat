@@ -110,7 +110,11 @@ external compare : float -> float -> int = "%compare"
 let equal x y = compare x y = 0
 let hash = Hashtbl.hash
 
-module Array = Stdcompat__array.Floatarray
+module Array = struct
+  type t = Stdcompat__init.floatarray
+
+  include Stdcompat__array.Floatarray
+end
 #else
  include Float
 #endif

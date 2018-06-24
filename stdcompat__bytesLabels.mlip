@@ -1,46 +1,426 @@
-#if OCAML_VERSION < (4,02,0)
-include module type of struct
-  include StringLabels
-end
+#if OCAML_VERSION >= (4,02,0)
+type t = bytes
 #else
-include module type of struct
-  include BytesLabels
-end
+type t = Stdcompat__init.bytes
 #endif
-(** @before 4.02.0 the module [BytesLabels] is defined on top of the module
-    [StringLabels]. *)
-
-val empty : t
-
-val of_string : string -> t
-
-val to_string : t -> string
-
-val sub_string : t -> pos:int -> len:int -> string
-
-val extend : t -> left:int -> right:int -> t
-
-val blit_string :
-  src:string -> src_pos:int -> dst:t -> dst_pos:int -> len:int -> unit
-
-val cat : t -> t -> t
-
-val unsafe_of_string : string -> t
-
-val unsafe_to_string : t -> string
-
-val uppercase_ascii : t -> t
-
-val lowercase_ascii : t -> t
-
-val capitalize_ascii : t -> t
-
-val uncapitalize_ascii : t -> t
-
-val equal : t -> t -> bool
-
-val of_seq : char Stdcompat__seq.t -> t
-
+(** @since 4.02.0: type t = bytes *)
+#if OCAML_VERSION >= (4,07,0)
+val to_seq : t -> char Seq.t
+#else
 val to_seq : t -> char Stdcompat__seq.t
-
+#endif
+(** @since 4.07.0: val to_seq : t -> char Seq.t *)
+#if OCAML_VERSION >= (4,07,0)
+val to_seqi : t -> (int * char) Seq.t
+#else
 val to_seqi : t -> (int * char) Stdcompat__seq.t
+#endif
+(** @since 4.07.0: val to_seqi : t -> (int * char) Seq.t *)
+#if OCAML_VERSION >= (4,07,0)
+val of_seq : char Seq.t -> t
+#else
+val of_seq : char Stdcompat__seq.t -> t
+#endif
+(** @since 4.07.0: val of_seq : char Seq.t -> t *)
+#if OCAML_VERSION >= (4,06,0)
+val sub_string : bytes -> pos:int -> len:int -> string
+#else
+val sub_string : Stdcompat__init.bytes -> pos:int -> len:int -> string
+#endif
+(** @since 4.06.0: val sub_string : bytes -> pos:int -> len:int -> string *)
+#if OCAML_VERSION >= (4,05,0)
+val extend : bytes -> left:int -> right:int -> bytes
+#else
+val extend :
+  Stdcompat__init.bytes -> left:int -> right:int -> Stdcompat__init.bytes
+#endif
+(** @since 4.05.0: val extend : bytes -> left:int -> right:int -> bytes *)
+#if OCAML_VERSION >= (4,05,0)
+val blit_string :
+  src:string -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int -> unit
+#else
+val blit_string :
+  src:string ->
+    src_pos:int ->
+      dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
+#endif
+(** @since 4.05.0:
+    val blit_string :
+      src:string ->
+        src_pos:int -> dst:bytes -> dst_pos:int -> len:int -> unit *)
+#if OCAML_VERSION >= (4,05,0)
+val cat : bytes -> bytes -> bytes
+#else
+val cat :
+  Stdcompat__init.bytes -> Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.05.0: val cat : bytes -> bytes -> bytes *)
+#if OCAML_VERSION >= (4,05,0)
+val index_opt : bytes -> char -> int option
+#else
+val index_opt : Stdcompat__init.bytes -> char -> int option
+#endif
+(** @since 4.05.0: val index_opt : bytes -> char -> int option *)
+#if OCAML_VERSION >= (4,05,0)
+val rindex_opt : bytes -> char -> int option
+#else
+val rindex_opt : Stdcompat__init.bytes -> char -> int option
+#endif
+(** @since 4.05.0: val rindex_opt : bytes -> char -> int option *)
+#if OCAML_VERSION >= (4,05,0)
+val index_from_opt : bytes -> int -> char -> int option
+#else
+val index_from_opt : Stdcompat__init.bytes -> int -> char -> int option
+#endif
+(** @since 4.05.0: val index_from_opt : bytes -> int -> char -> int option *)
+#if OCAML_VERSION >= (4,05,0)
+val rindex_from_opt : bytes -> int -> char -> int option
+#else
+val rindex_from_opt : Stdcompat__init.bytes -> int -> char -> int option
+#endif
+(** @since 4.05.0: val rindex_from_opt : bytes -> int -> char -> int option *)
+#if OCAML_VERSION >= (4,05,0)
+val uppercase_ascii : bytes -> bytes
+#else
+val uppercase_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.05.0: val uppercase_ascii : bytes -> bytes *)
+#if OCAML_VERSION >= (4,05,0)
+val lowercase_ascii : bytes -> bytes
+#else
+val lowercase_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.05.0: val lowercase_ascii : bytes -> bytes *)
+#if OCAML_VERSION >= (4,05,0)
+val capitalize_ascii : bytes -> bytes
+#else
+val capitalize_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.05.0: val capitalize_ascii : bytes -> bytes *)
+#if OCAML_VERSION >= (4,05,0)
+val uncapitalize_ascii : bytes -> bytes
+#else
+val uncapitalize_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.05.0: val uncapitalize_ascii : bytes -> bytes *)
+val equal : t -> t -> bool
+(** @since 4.05.0: val equal : t -> t -> bool *)
+#if OCAML_VERSION >= (4,04,0)
+external length : bytes -> int = "%bytes_length"
+#elif OCAML_VERSION >= (4,02,0)
+external length : bytes -> int = "%string_length"
+#else
+val length : Stdcompat__init.bytes -> int
+#endif
+(** @since 4.04.0: external length : bytes -> int = "%bytes_length"@since 4.02.0:
+                                                                   external
+                                                                    length :
+                                                                    bytes ->
+                                                                    int =
+                                                                    "%string_length" *)
+#if OCAML_VERSION >= (4,04,0)
+external get : bytes -> int -> char = "%bytes_safe_get"
+#elif OCAML_VERSION >= (4,02,0)
+external get : bytes -> int -> char = "%string_safe_get"
+#else
+val get : Stdcompat__init.bytes -> int -> char
+#endif
+(** @since 4.04.0: external get : bytes -> int -> char = "%bytes_safe_get"
+    @since 4.02.0: external get : bytes -> int -> char = "%string_safe_get" *)
+#if OCAML_VERSION >= (4,04,0)
+external set : bytes -> int -> char -> unit = "%bytes_safe_set"
+#elif OCAML_VERSION >= (4,02,0)
+external set : bytes -> int -> char -> unit = "%string_safe_set"
+#else
+val set : Stdcompat__init.bytes -> int -> char -> unit
+#endif
+(** @since 4.04.0:
+    external set : bytes -> int -> char -> unit = "%bytes_safe_set"@since 4.02.0:
+                                                                   external
+                                                                    set :
+                                                                    bytes ->
+                                                                    int ->
+                                                                    char ->
+                                                                    unit =
+                                                                    "%string_safe_set" *)
+#if OCAML_VERSION >= (4,04,0)
+external create : int -> bytes = "caml_create_bytes"
+#elif OCAML_VERSION >= (4,02,0)
+external create : int -> bytes = "caml_create_string"
+#else
+val create : int -> Stdcompat__init.bytes
+#endif
+(** @since 4.04.0: external create : int -> bytes = "caml_create_bytes"
+    @since 4.02.0: external create : int -> bytes = "caml_create_string" *)
+#if OCAML_VERSION >= (4,02,0)
+val make : int -> char -> bytes
+#else
+val make : int -> char -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val make : int -> char -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val init : int -> f:(int -> char) -> bytes
+#else
+val init : int -> f:(int -> char) -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val init : int -> f:(int -> char) -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val empty : bytes
+#else
+val empty : Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val empty : bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val copy : bytes -> bytes
+#else
+val copy : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val copy : bytes -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val of_string : string -> bytes
+#else
+val of_string : string -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val of_string : string -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val to_string : bytes -> string
+#else
+val to_string : Stdcompat__init.bytes -> string
+#endif
+(** @since 4.02.0: val to_string : bytes -> string *)
+#if OCAML_VERSION >= (4,02,0)
+val sub : bytes -> pos:int -> len:int -> bytes
+#else
+val sub :
+  Stdcompat__init.bytes -> pos:int -> len:int -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val sub : bytes -> pos:int -> len:int -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val fill : bytes -> pos:int -> len:int -> char -> unit
+#else
+val fill : Stdcompat__init.bytes -> pos:int -> len:int -> char -> unit
+#endif
+(** @since 4.02.0: val fill : bytes -> pos:int -> len:int -> char -> unit *)
+#if OCAML_VERSION >= (4,02,0)
+val blit :
+  src:bytes -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int -> unit
+#else
+val blit :
+  src:Stdcompat__init.bytes ->
+    src_pos:int ->
+      dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
+#endif
+(** @since 4.02.0:
+    val blit :
+      src:bytes -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int -> unit *)
+#if OCAML_VERSION >= (4,02,0)
+val concat : sep:bytes -> bytes list -> bytes
+#else
+val concat :
+  sep:Stdcompat__init.bytes ->
+    Stdcompat__init.bytes list -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val concat : sep:bytes -> bytes list -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val iter : f:(char -> unit) -> bytes -> unit
+#else
+val iter : f:(char -> unit) -> Stdcompat__init.bytes -> unit
+#endif
+(** @since 4.02.0: val iter : f:(char -> unit) -> bytes -> unit *)
+#if OCAML_VERSION >= (4,02,0)
+val iteri : f:(int -> char -> unit) -> bytes -> unit
+#else
+val iteri : f:(int -> char -> unit) -> Stdcompat__init.bytes -> unit
+#endif
+(** @since 4.02.0: val iteri : f:(int -> char -> unit) -> bytes -> unit *)
+#if OCAML_VERSION >= (4,02,0)
+val map : f:(char -> char) -> bytes -> bytes
+#else
+val map : f:(char -> char) -> Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val map : f:(char -> char) -> bytes -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val mapi : f:(int -> char -> char) -> bytes -> bytes
+#else
+val mapi :
+  f:(int -> char -> char) -> Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val mapi : f:(int -> char -> char) -> bytes -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val trim : bytes -> bytes
+#else
+val trim : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val trim : bytes -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val escaped : bytes -> bytes
+#else
+val escaped : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val escaped : bytes -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val index : bytes -> char -> int
+#else
+val index : Stdcompat__init.bytes -> char -> int
+#endif
+(** @since 4.02.0: val index : bytes -> char -> int *)
+#if OCAML_VERSION >= (4,02,0)
+val rindex : bytes -> char -> int
+#else
+val rindex : Stdcompat__init.bytes -> char -> int
+#endif
+(** @since 4.02.0: val rindex : bytes -> char -> int *)
+#if OCAML_VERSION >= (4,02,0)
+val index_from : bytes -> int -> char -> int
+#else
+val index_from : Stdcompat__init.bytes -> int -> char -> int
+#endif
+(** @since 4.02.0: val index_from : bytes -> int -> char -> int *)
+#if OCAML_VERSION >= (4,02,0)
+val rindex_from : bytes -> int -> char -> int
+#else
+val rindex_from : Stdcompat__init.bytes -> int -> char -> int
+#endif
+(** @since 4.02.0: val rindex_from : bytes -> int -> char -> int *)
+#if OCAML_VERSION >= (4,02,0)
+val contains : bytes -> char -> bool
+#else
+val contains : Stdcompat__init.bytes -> char -> bool
+#endif
+(** @since 4.02.0: val contains : bytes -> char -> bool *)
+#if OCAML_VERSION >= (4,02,0)
+val contains_from : bytes -> int -> char -> bool
+#else
+val contains_from : Stdcompat__init.bytes -> int -> char -> bool
+#endif
+(** @since 4.02.0: val contains_from : bytes -> int -> char -> bool *)
+#if OCAML_VERSION >= (4,02,0)
+val rcontains_from : bytes -> int -> char -> bool
+#else
+val rcontains_from : Stdcompat__init.bytes -> int -> char -> bool
+#endif
+(** @since 4.02.0: val rcontains_from : bytes -> int -> char -> bool *)
+#if OCAML_VERSION >= (4,02,0)
+val uppercase : bytes -> bytes
+#else
+val uppercase : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val uppercase : bytes -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val lowercase : bytes -> bytes
+#else
+val lowercase : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val lowercase : bytes -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val capitalize : bytes -> bytes
+#else
+val capitalize : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val capitalize : bytes -> bytes *)
+#if OCAML_VERSION >= (4,02,0)
+val uncapitalize : bytes -> bytes
+#else
+val uncapitalize : Stdcompat__init.bytes -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val uncapitalize : bytes -> bytes *)
+val compare : t -> t -> int
+(** @since 4.02.0: val compare : t -> t -> int *)
+#if OCAML_VERSION >= (4,04,0)
+external unsafe_get : bytes -> int -> char = "%bytes_unsafe_get"
+#elif OCAML_VERSION >= (4,02,0)
+external unsafe_get : bytes -> int -> char = "%string_unsafe_get"
+#else
+val unsafe_get : Stdcompat__init.bytes -> int -> char
+#endif
+(** @since 4.04.0:
+    external unsafe_get : bytes -> int -> char = "%bytes_unsafe_get"@since 4.02.0:
+                                                                    external
+                                                                    unsafe_get
+                                                                    :
+                                                                    bytes ->
+                                                                    int ->
+                                                                    char =
+                                                                    "%string_unsafe_get" *)
+#if OCAML_VERSION >= (4,04,0)
+external unsafe_set : bytes -> int -> char -> unit = "%bytes_unsafe_set"
+#elif OCAML_VERSION >= (4,02,0)
+external unsafe_set : bytes -> int -> char -> unit = "%string_unsafe_set"
+#else
+val unsafe_set : Stdcompat__init.bytes -> int -> char -> unit
+#endif
+(** @since 4.04.0:
+    external unsafe_set : bytes -> int -> char -> unit = "%bytes_unsafe_set"
+    @since 4.02.0:
+    external unsafe_set : bytes -> int -> char -> unit = "%string_unsafe_set" *)
+#if OCAML_VERSION >= (4,04,0)
+external unsafe_blit :
+  src:bytes -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int -> unit =
+    "caml_blit_bytes"[@@noalloc ]
+#elif OCAML_VERSION >= (4,03,0)
+external unsafe_blit :
+  src:bytes -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int -> unit =
+    "caml_blit_string"[@@noalloc ]
+#elif OCAML_VERSION >= (4,02,0)
+external unsafe_blit :
+  src:bytes -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int -> unit =
+    "caml_blit_string" "noalloc"
+#else
+val unsafe_blit :
+  src:Stdcompat__init.bytes ->
+    src_pos:int ->
+      dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
+#endif
+(** @since 4.04.0:
+    external unsafe_blit :
+      src:bytes -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int -> unit
+        = "caml_blit_bytes"[@@noalloc ]@since 4.03.0:
+                                       external unsafe_blit :
+                                         src:bytes ->
+                                           src_pos:int ->
+                                             dst:bytes ->
+                                               dst_pos:int -> len:int -> unit
+                                           = "caml_blit_string"[@@noalloc ]
+    @since 4.02.0:
+    external unsafe_blit :
+      src:bytes -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int -> unit
+        = "caml_blit_string" "noalloc" *)
+#if OCAML_VERSION >= (4,04,0)
+external unsafe_fill :
+  bytes -> pos:int -> len:int -> char -> unit = "caml_fill_bytes"[@@noalloc ]
+#elif OCAML_VERSION >= (4,03,0)
+external unsafe_fill :
+  bytes -> pos:int -> len:int -> char -> unit = "caml_fill_string"[@@noalloc
+                                                                    ]
+#elif OCAML_VERSION >= (4,02,0)
+external unsafe_fill :
+  bytes -> pos:int -> len:int -> char -> unit = "caml_fill_string" "noalloc"
+#else
+val unsafe_fill : Stdcompat__init.bytes -> pos:int -> len:int -> char -> unit
+#endif
+(** @since 4.04.0:
+    external unsafe_fill :
+      bytes -> pos:int -> len:int -> char -> unit = "caml_fill_bytes"
+    [@@noalloc ]@since 4.03.0:
+                external unsafe_fill :
+                  bytes -> pos:int -> len:int -> char -> unit =
+                    "caml_fill_string"[@@noalloc ]@since 4.02.0:
+                                                  external unsafe_fill :
+                                                    bytes ->
+                                                      pos:int ->
+                                                        len:int ->
+                                                          char -> unit =
+                                                      "caml_fill_string"
+                                                      "noalloc" *)
+#if OCAML_VERSION >= (4,02,0)
+val unsafe_to_string : bytes -> string
+#else
+val unsafe_to_string : Stdcompat__init.bytes -> string
+#endif
+(** @since 4.02.0: val unsafe_to_string : bytes -> string *)
+#if OCAML_VERSION >= (4,02,0)
+val unsafe_of_string : string -> bytes
+#else
+val unsafe_of_string : string -> Stdcompat__init.bytes
+#endif
+(** @since 4.02.0: val unsafe_of_string : string -> bytes *)

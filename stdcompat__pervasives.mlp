@@ -60,8 +60,28 @@ let read_float_opt () =
 #endif
 
 #if OCAML_VERSION < (4,02,0)
-type ('a, 'b, 'c, 'd, 'e, 'f) format6_ =
-    ('a, 'b, 'c, 'd, 'e, 'f) format6
 type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
-    ('a, 'b, 'c, 'd, 'e, 'f) format6_
+  ('a, 'b, 'c, 'd, 'e, 'f) Stdcompat__init.format6
+
+let __LOC__ = ""
+
+let __MODULE__ = ""
+
+let __POS__ = ("", 0, 0, 0)
+
+let __LOC_OF__ x = (__LOC__, x)
+
+let __LINE_OF__ x = (0, x)
+
+let __POS_OF__ x = (__POS__, x)
+#endif
+
+#if OCAML_VERSION < (3,12,0)
+external (~+) : int -> int = "%identity"
+
+external (~+.) : float -> float = "%identity"
+
+let expm1 x = exp x -. 1.0
+
+let log1p x = log (1.0 +. x)
 #endif

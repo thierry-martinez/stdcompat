@@ -3,6 +3,8 @@ include ArrayLabels
 #if OCAML_VERSION < (4,03,0)
 let create_float = Stdcompat__array.create_float
 
+let make_float = create_float
+
 let exists ~f a = Stdcompat__array.exists f a
 
 let for_all ~f a = Stdcompat__array.for_all f a
