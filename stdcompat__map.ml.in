@@ -1,0 +1,242 @@
+module type OrderedType = Map.OrderedType
+
+module type S = sig
+  type key
+  type +'a t
+  val empty : 'a t
+  val is_empty : 'a t -> bool
+  val mem : key -> 'a t -> bool
+  val add : key -> 'a -> 'a t -> 'a t
+  val update : key -> ('a option -> 'a option) -> 'a t -> 'a t
+  val singleton : key -> 'a -> 'a t
+  val remove : key -> 'a t -> 'a t
+  val merge :
+    (key -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
+  val union : (key -> 'a -> 'a -> 'a option) -> 'a t -> 'a t -> 'a t
+  val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
+  val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+  val iter : (key -> 'a -> unit) -> 'a t -> unit
+  val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val for_all : (key -> 'a -> bool) -> 'a t -> bool
+  val exists : (key -> 'a -> bool) -> 'a t -> bool
+  val filter : (key -> 'a -> bool) -> 'a t -> 'a t
+  val partition : (key -> 'a -> bool) -> 'a t -> ('a t * 'a t)
+  val cardinal : 'a t -> int
+  val bindings : 'a t -> (key * 'a) list
+  val min_binding : 'a t -> (key * 'a)
+  val min_binding_opt : 'a t -> (key * 'a) option
+  val max_binding : 'a t -> (key * 'a)
+  val max_binding_opt : 'a t -> (key * 'a) option
+  val choose : 'a t -> (key * 'a)
+  val choose_opt : 'a t -> (key * 'a) option
+  val split : key -> 'a t -> ('a t * 'a option * 'a t)
+  val find : key -> 'a t -> 'a
+  val find_opt : key -> 'a t -> 'a option
+  val find_first : (key -> bool) -> 'a t -> (key * 'a)
+  val find_first_opt : (key -> bool) -> 'a t -> (key * 'a) option
+  val find_last : (key -> bool) -> 'a t -> (key * 'a)
+  val find_last_opt : (key -> bool) -> 'a t -> (key * 'a) option
+  val map : ('a -> 'b) -> 'a t -> 'b t
+  val mapi : (key -> 'a -> 'b) -> 'a t -> 'b t
+  val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
+  val to_seq_from : key -> 'a t -> (key * 'a) Stdcompat__seq.t
+  val add_seq : (key * 'a) Stdcompat__seq.t -> 'a t -> 'a t
+  val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
+end
+
+@BEGIN_FROM_4_07_0@
+module Make = Map.Make
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+module Make (Ord : OrderedType) = struct
+  include Map.Make (Ord)
+
+@BEGIN_BEFORE_3_12_0@
+  let union f map map' =
+    failwith "Not implemented"
+
+  let min_binding map =
+    failwith "Not implemented"
+
+  let max_binding map =
+    failwith "Not implemented"
+
+  let choose map =
+    failwith "Not implemented"
+
+  let split map =
+    failwith "Not implemented"
+
+  let bindings map =
+    failwith "Not implemented"
+
+  let cardinal map =
+    failwith "Not implemented"
+
+  let partition map =
+    failwith "Not implemented"
+
+  let filter map =
+    failwith "Not implemented"
+
+  let exists map =
+    failwith "Not implemented"
+
+  let for_all map =
+    failwith "Not implemented"
+
+  let merge map =
+    failwith "Not implemented"
+
+  let singleton map =
+    failwith "Not implemented"
+
+  let of_seq map =
+    failwith "Not implemented"
+
+  let add_seq map =
+    failwith "Not implemented"
+
+  let to_seq_from map =
+    failwith "Not implemented"
+
+  let to_seq map =
+    failwith "Not implemented"
+
+  let find_last_opt map =
+    failwith "Not implemented"
+
+  let find_last map =
+    failwith "Not implemented"
+
+  let find_first_opt map =
+    failwith "Not implemented"
+
+  let find_first map =
+    failwith "Not implemented"
+
+  let find_opt map =
+    failwith "Not implemented"
+
+  let choose_opt map =
+    failwith "Not implemented"
+
+  let max_binding_opt map =
+    failwith "Not implemented"
+
+  let min_binding_opt map =
+    failwith "Not implemented"
+
+  let update map =
+    failwith "Not implemented"
+@END_BEFORE_3_12_0@
+@BEGIN_FROM_3_12_0@
+@BEGIN_BEFORE_4_03_0@
+  let union f map map' =
+    let f' key v v' =
+      match v, v' with
+      | None, None ->
+          None
+      | Some v, None | None, Some v ->
+          Some v
+      | Some v, Some v' ->
+          f key v v' in
+    merge f' map map'
+@END_BEFORE_4_03_0@
+
+@BEGIN_BEFORE_4_05_0@
+  let find_opt key m =
+    Stdcompat__tools.option_find (find key) m
+
+  let min_binding_opt m =
+    Stdcompat__tools.option_find min_binding m
+
+  let max_binding_opt m =
+    Stdcompat__tools.option_find max_binding m
+
+  let choose_opt m =
+    Stdcompat__tools.option_find choose m
+
+  let find_first f m =
+    failwith "Not implemented"
+
+  let find_first_opt f m =
+    failwith "Not implemented"
+
+  let find_last f m =
+    failwith "Not implemented"
+
+  let find_last_opt f m =
+    failwith "Not implemented"
+@END_BEFORE_4_05_0@
+
+@BEGIN_BEFORE_4_06_0@
+  let update key f map =
+    let o = find_opt key map in
+    match o, f o with
+    | None, None -> map
+    | None, Some fv -> add key fv map
+    | Some _, None -> remove key map
+    | Some v, Some fv ->
+        if v == fv then map
+        else add key fv map
+@END_BEFORE_4_06_0@
+
+@BEGIN_WITH_MAGIC@
+  type 'a internal =
+      Empty
+    | Node of 'a internal * key * 'a * 'a internal * int
+
+  type 'a enumeration = End | More of key * 'a * 'a internal * 'a enumeration
+
+  let rec cons_enum m e =
+    match m with
+      Empty -> e
+    | Node (l, v, d, r, _h) -> cons_enum l (More (v, d, r, e))
+
+  let rec seq_of_enum_ c () = match c with
+    | End -> Stdcompat__seq.Nil
+    | More (k,v,t,rest) -> Stdcompat__seq.Cons ((k,v), seq_of_enum_ (cons_enum t rest))
+
+  let to_seq (m : 'a t) =
+    let m : 'a internal = Obj.magic m in
+    seq_of_enum_ (cons_enum m End)
+
+  let to_seq_from low (m : 'a t) =
+    let m : 'a internal = Obj.magic m in
+    let rec aux low m c = match m with
+      | Empty -> c
+      | Node (l, v, d, r, _h) ->
+          begin match Ord.compare v low with
+            | 0 -> More (v, d, r, c)
+            | n when n<0 -> aux low r c
+            | _ -> aux low l (More (v, d, r, c))
+          end
+    in
+    seq_of_enum_ (aux low m End)
+@END_WITH_MAGIC@
+@BEGIN_WITHOUT_MAGIC@
+  let to_seq m =
+    Stdcompat__list.to_seq (bindings m)
+
+  let bindings_from low s =
+    let rec cut l =
+      match l with
+      | [] -> []
+      | (key, _) :: tl ->
+        if Ord.compare low key < 0 then
+          cut tl
+        else
+          l in
+     cut (bindings s)
+
+  let to_seq_from low s =
+    Stdcompat__list.to_seq (bindings_from low s)
+@END_WITHOUT_MAGIC@
+  let add_seq g m =
+    Stdcompat__seq.fold_left (fun m (k, v) -> add k v m) m g
+
+  let of_seq g = add_seq g empty
+@END_FROM_3_12_0@
+end
+@END_BEFORE_4_07_0@

@@ -1,0 +1,275 @@
+@BEGIN_FROM_4_07_0@
+module Array = StdLabels.Array
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+module Array :
+sig
+  val length : 'a array -> int
+  val get : 'a array -> int -> 'a
+  val set : 'a array -> int -> 'a -> unit
+  val make : int -> 'a -> 'a array
+  val create : int -> 'a -> 'a array
+  val init : int -> f:(int -> 'a) -> 'a array
+  val make_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
+  val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
+  val append : 'a array -> 'a array -> 'a array
+  val concat : 'a array list -> 'a array
+  val sub : 'a array -> pos:int -> len:int -> 'a array
+  val copy : 'a array -> 'a array
+  val fill : 'a array -> pos:int -> len:int -> 'a -> unit
+  val blit :
+    src:'a array ->
+      src_pos:int -> dst:'a array -> dst_pos:int -> len:int -> unit
+  val to_list : 'a array -> 'a list
+  val of_list : 'a list -> 'a array
+  val iter : f:('a -> unit) -> 'a array -> unit
+  val map : f:('a -> 'b) -> 'a array -> 'b array
+  val iteri : f:(int -> 'a -> unit) -> 'a array -> unit
+  val mapi : f:(int -> 'a -> 'b) -> 'a array -> 'b array
+  val fold_left : f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
+  val fold_right : f:('b -> 'a -> 'a) -> 'b array -> init:'a -> 'a
+  val iter2 : f:('a -> 'b -> unit) -> 'a array -> 'b array -> unit
+  val map2 : f:('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
+  val exists : f:('a -> bool) -> 'a array -> bool
+  val for_all : f:('a -> bool) -> 'a array -> bool
+  val mem : 'a -> set:'a array -> bool
+  val memq : 'a -> set:'a array -> bool
+  val create_float : int -> float array
+  val make_float : int -> float array
+  val sort : cmp:('a -> 'a -> int) -> 'a array -> unit
+  val stable_sort : cmp:('a -> 'a -> int) -> 'a array -> unit
+  val fast_sort : cmp:('a -> 'a -> int) -> 'a array -> unit
+  val to_seq : 'a array -> 'a Stdcompat__seq.t
+  val to_seqi : 'a array -> (int * 'a) Stdcompat__seq.t
+  val of_seq : 'a Stdcompat__seq.t -> 'a array
+  val unsafe_get : 'a array -> int -> 'a
+  val unsafe_set : 'a array -> int -> 'a -> unit
+  module Floatarray :
+  sig
+    val create : int -> Stdcompat__init.floatarray
+    val length : Stdcompat__init.floatarray -> int
+    val get : Stdcompat__init.floatarray -> int -> float
+    val set : Stdcompat__init.floatarray -> int -> float -> unit
+    val unsafe_get : Stdcompat__init.floatarray -> int -> float
+    val unsafe_set : Stdcompat__init.floatarray -> int -> float -> unit
+  end
+end
+@END_BEFORE_4_07_0@
+(** @since 4.07.0: module Array = StdLabels.Array
+ *)
+@BEGIN_FROM_4_07_0@
+module Bytes = StdLabels.Bytes
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+module Bytes :
+sig
+  val length : Stdcompat__init.bytes -> int
+  val get : Stdcompat__init.bytes -> int -> char
+  val set : Stdcompat__init.bytes -> int -> char -> unit
+  val create : int -> Stdcompat__init.bytes
+  val make : int -> char -> Stdcompat__init.bytes
+  val init : int -> f:(int -> char) -> Stdcompat__init.bytes
+  val empty : Stdcompat__init.bytes
+  val copy : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val of_string : string -> Stdcompat__init.bytes
+  val to_string : Stdcompat__init.bytes -> string
+  val sub :
+    Stdcompat__init.bytes -> pos:int -> len:int -> Stdcompat__init.bytes
+  val sub_string : Stdcompat__init.bytes -> pos:int -> len:int -> string
+  val extend :
+    Stdcompat__init.bytes -> left:int -> right:int -> Stdcompat__init.bytes
+  val fill : Stdcompat__init.bytes -> pos:int -> len:int -> char -> unit
+  val blit :
+    src:Stdcompat__init.bytes ->
+      src_pos:int ->
+        dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
+  val blit_string :
+    src:string ->
+      src_pos:int ->
+        dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
+  val concat :
+    sep:Stdcompat__init.bytes ->
+      Stdcompat__init.bytes list -> Stdcompat__init.bytes
+  val cat :
+    Stdcompat__init.bytes -> Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val iter : f:(char -> unit) -> Stdcompat__init.bytes -> unit
+  val iteri : f:(int -> char -> unit) -> Stdcompat__init.bytes -> unit
+  val map :
+    f:(char -> char) -> Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val mapi :
+    f:(int -> char -> char) -> Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val trim : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val escaped : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val index : Stdcompat__init.bytes -> char -> int
+  val index_opt : Stdcompat__init.bytes -> char -> int option
+  val rindex : Stdcompat__init.bytes -> char -> int
+  val rindex_opt : Stdcompat__init.bytes -> char -> int option
+  val index_from : Stdcompat__init.bytes -> int -> char -> int
+  val index_from_opt : Stdcompat__init.bytes -> int -> char -> int option
+  val rindex_from : Stdcompat__init.bytes -> int -> char -> int
+  val rindex_from_opt : Stdcompat__init.bytes -> int -> char -> int option
+  val contains : Stdcompat__init.bytes -> char -> bool
+  val contains_from : Stdcompat__init.bytes -> int -> char -> bool
+  val rcontains_from : Stdcompat__init.bytes -> int -> char -> bool
+  val uppercase : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val lowercase : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val capitalize : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val uncapitalize : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val uppercase_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val lowercase_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val capitalize_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  val uncapitalize_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+  type t = Stdcompat__init.bytes
+  val compare : t -> t -> int
+  val equal : t -> t -> bool
+  val to_seq : t -> char Stdcompat__seq.t
+  val to_seqi : t -> (int * char) Stdcompat__seq.t
+  val of_seq : char Stdcompat__seq.t -> t
+  val unsafe_get : Stdcompat__init.bytes -> int -> char
+  val unsafe_set : Stdcompat__init.bytes -> int -> char -> unit
+  val unsafe_blit :
+    src:Stdcompat__init.bytes ->
+      src_pos:int ->
+        dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
+  val unsafe_fill :
+    Stdcompat__init.bytes -> pos:int -> len:int -> char -> unit
+  val unsafe_to_string : Stdcompat__init.bytes -> string
+  val unsafe_of_string : string -> Stdcompat__init.bytes
+end
+@END_BEFORE_4_07_0@
+(** @since 4.07.0: module Bytes = StdLabels.Bytes
+ *)
+@BEGIN_FROM_4_07_0@
+module List = StdLabels.List
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+module List :
+sig
+  val length : 'a list -> int
+  val hd : 'a list -> 'a
+  val compare_lengths : 'a list -> 'b list -> int
+  val compare_length_with : 'a list -> len:int -> int
+  val cons : 'a -> 'a list -> 'a list
+  val tl : 'a list -> 'a list
+  val nth : 'a list -> int -> 'a
+  val nth_opt : 'a list -> int -> 'a option
+  val rev : 'a list -> 'a list
+  val init : len:int -> f:(int -> 'a) -> 'a list
+  val append : 'a list -> 'a list -> 'a list
+  val rev_append : 'a list -> 'a list -> 'a list
+  val concat : 'a list list -> 'a list
+  val flatten : 'a list list -> 'a list
+  val iter : f:('a -> unit) -> 'a list -> unit
+  val iteri : f:(int -> 'a -> unit) -> 'a list -> unit
+  val map : f:('a -> 'b) -> 'a list -> 'b list
+  val mapi : f:(int -> 'a -> 'b) -> 'a list -> 'b list
+  val rev_map : f:('a -> 'b) -> 'a list -> 'b list
+  val fold_left : f:('a -> 'b -> 'a) -> init:'a -> 'b list -> 'a
+  val fold_right : f:('a -> 'b -> 'b) -> 'a list -> init:'b -> 'b
+  val iter2 : f:('a -> 'b -> unit) -> 'a list -> 'b list -> unit
+  val map2 : f:('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
+  val rev_map2 : f:('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
+  val fold_left2 :
+    f:('a -> 'b -> 'c -> 'a) -> init:'a -> 'b list -> 'c list -> 'a
+  val fold_right2 :
+    f:('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> init:'c -> 'c
+  val for_all : f:('a -> bool) -> 'a list -> bool
+  val exists : f:('a -> bool) -> 'a list -> bool
+  val for_all2 : f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool
+  val exists2 : f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool
+  val mem : 'a -> set:'a list -> bool
+  val memq : 'a -> set:'a list -> bool
+  val find : f:('a -> bool) -> 'a list -> 'a
+  val find_opt : f:('a -> bool) -> 'a list -> 'a option
+  val filter : f:('a -> bool) -> 'a list -> 'a list
+  val find_all : f:('a -> bool) -> 'a list -> 'a list
+  val partition : f:('a -> bool) -> 'a list -> ('a list * 'a list)
+  val assoc : 'a -> ('a * 'b) list -> 'b
+  val assoc_opt : 'a -> ('a * 'b) list -> 'b option
+  val assq : 'a -> ('a * 'b) list -> 'b
+  val assq_opt : 'a -> ('a * 'b) list -> 'b option
+  val mem_assoc : 'a -> map:('a * 'b) list -> bool
+  val mem_assq : 'a -> map:('a * 'b) list -> bool
+  val remove_assoc : 'a -> ('a * 'b) list -> ('a * 'b) list
+  val remove_assq : 'a -> ('a * 'b) list -> ('a * 'b) list
+  val split : ('a * 'b) list -> ('a list * 'b list)
+  val combine : 'a list -> 'b list -> ('a * 'b) list
+  val sort : cmp:('a -> 'a -> int) -> 'a list -> 'a list
+  val stable_sort : cmp:('a -> 'a -> int) -> 'a list -> 'a list
+  val fast_sort : cmp:('a -> 'a -> int) -> 'a list -> 'a list
+  val sort_uniq : cmp:('a -> 'a -> int) -> 'a list -> 'a list
+  val merge : cmp:('a -> 'a -> int) -> 'a list -> 'a list -> 'a list
+  val to_seq : 'a list -> 'a Stdcompat__seq.t
+  val of_seq : 'a Stdcompat__seq.t -> 'a list
+end
+@END_BEFORE_4_07_0@
+(** @since 4.07.0: module List = StdLabels.List
+ *)
+@BEGIN_FROM_4_07_0@
+module String = StdLabels.String
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+module String :
+sig
+  val length : string -> int
+  val get : string -> int -> char
+  external set :
+    Stdcompat__init.bytes -> int -> char -> unit = "%string_safe_set"
+  external create : int -> Stdcompat__init.bytes = "caml_create_string"
+  val make : int -> char -> string
+  val init : int -> f:(int -> char) -> string
+  val copy : string -> string
+  val sub : string -> pos:int -> len:int -> string
+  val fill : Stdcompat__init.bytes -> pos:int -> len:int -> char -> unit
+  val blit :
+    src:string ->
+      src_pos:int ->
+        dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
+  val concat : sep:string -> string list -> string
+  val iter : f:(char -> unit) -> string -> unit
+  val iteri : f:(int -> char -> unit) -> string -> unit
+  val map : f:(char -> char) -> string -> string
+  val mapi : f:(int -> char -> char) -> string -> string
+  val trim : string -> string
+  val escaped : string -> string
+  val index : string -> char -> int
+  val index_opt : string -> char -> int option
+  val rindex : string -> char -> int
+  val rindex_opt : string -> char -> int option
+  val index_from : string -> int -> char -> int
+  val index_from_opt : string -> int -> char -> int option
+  val rindex_from : string -> int -> char -> int
+  val rindex_from_opt : string -> int -> char -> int option
+  val contains : string -> char -> bool
+  val contains_from : string -> int -> char -> bool
+  val rcontains_from : string -> int -> char -> bool
+  val uppercase : string -> string
+  val lowercase : string -> string
+  val capitalize : string -> string
+  val uncapitalize : string -> string
+  val uppercase_ascii : string -> string
+  val lowercase_ascii : string -> string
+  val capitalize_ascii : string -> string
+  val uncapitalize_ascii : string -> string
+  type t = string
+  val compare : t -> t -> int
+  val equal : t -> t -> bool
+  val split_on_char : sep:char -> string -> string list
+  val to_seq : t -> char Stdcompat__seq.t
+  val to_seqi : t -> (int * char) Stdcompat__seq.t
+  val of_seq : char Stdcompat__seq.t -> t
+  val unsafe_get : string -> int -> char
+  external unsafe_set :
+    Stdcompat__init.bytes -> int -> char -> unit = "%string_unsafe_set"
+  external unsafe_blit :
+    src:string ->
+      src_pos:int ->
+        dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit =
+      "caml_blit_string" "noalloc"
+  external unsafe_fill :
+    Stdcompat__init.bytes -> pos:int -> len:int -> char -> unit =
+      "caml_fill_string" "noalloc"
+end
+@END_BEFORE_4_07_0@
+(** @since 4.07.0: module String = StdLabels.String
+ *)

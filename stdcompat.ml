@@ -2,7 +2,7 @@ include Stdcompat__root
 
 module Stdlib = struct
   module Pervasives = Stdcompat__pervasives
-  
+
   include Pervasives
 
   module Arg = Stdcompat__arg

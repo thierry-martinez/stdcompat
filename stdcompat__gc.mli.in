@@ -1,0 +1,203 @@
+@BEGIN_FROM_3_12_0@
+type stat = Gc.stat =
+  {
+  minor_words: float ;
+  promoted_words: float ;
+  major_words: float ;
+  minor_collections: int ;
+  major_collections: int ;
+  heap_words: int ;
+  heap_chunks: int ;
+  live_words: int ;
+  live_blocks: int ;
+  free_words: int ;
+  free_blocks: int ;
+  largest_free: int ;
+  fragments: int ;
+  compactions: int ;
+  top_heap_words: int ;
+  stack_size: int }
+@END_FROM_3_12_0@
+@BEGIN_BEFORE_3_12_0@
+type stat =
+  {
+  minor_words: float ;
+  promoted_words: float ;
+  major_words: float ;
+  minor_collections: int ;
+  major_collections: int ;
+  heap_words: int ;
+  heap_chunks: int ;
+  live_words: int ;
+  live_blocks: int ;
+  free_words: int ;
+  free_blocks: int ;
+  largest_free: int ;
+  fragments: int ;
+  compactions: int ;
+  top_heap_words: int ;
+  stack_size: int }
+@END_BEFORE_3_12_0@
+(** @since 3.12.0:
+    type stat = Gc.stat =
+      {
+      minor_words: float ;
+      promoted_words: float ;
+      major_words: float ;
+      minor_collections: int ;
+      major_collections: int ;
+      heap_words: int ;
+      heap_chunks: int ;
+      live_words: int ;
+      live_blocks: int ;
+      free_words: int ;
+      free_blocks: int ;
+      largest_free: int ;
+      fragments: int ;
+      compactions: int ;
+      top_heap_words: int ;
+      stack_size: int }
+ *)
+@BEGIN_FROM_4_07_0@
+type control = Gc.control =
+  {
+  mutable minor_heap_size: int ;
+  mutable major_heap_increment: int ;
+  mutable space_overhead: int ;
+  mutable verbose: int ;
+  mutable max_overhead: int ;
+  mutable stack_limit: int ;
+  mutable allocation_policy: int ;
+  window_size: int }
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+type control =
+  {
+  mutable minor_heap_size: int ;
+  mutable major_heap_increment: int ;
+  mutable space_overhead: int ;
+  mutable verbose: int ;
+  mutable max_overhead: int ;
+  mutable stack_limit: int ;
+  mutable allocation_policy: int ;
+  window_size: int }
+@END_BEFORE_4_07_0@
+(** @since 4.07.0:
+    type control = Gc.control =
+      {
+      mutable minor_heap_size: int ;
+      mutable major_heap_increment: int ;
+      mutable space_overhead: int ;
+      mutable verbose: int ;
+      mutable max_overhead: int ;
+      mutable stack_limit: int ;
+      mutable allocation_policy: int ;
+      window_size: int }
+ *)
+type alarm = Gc.alarm
+(** Alias for {!Gc.alarm} *)
+@BEGIN_FROM_4_05_0@
+external minor_words :
+  unit -> ((float)[@unboxed ]) = "caml_gc_minor_words"
+    "caml_gc_minor_words_unboxed"
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+@BEGIN_FROM_4_04_0@
+external minor_words :
+  unit -> ((float)[@unboxed ]) = "caml_gc_minor_words"
+    "caml_gc_minor_words_unboxed"[@@noalloc ]
+@END_FROM_4_04_0@
+@BEGIN_BEFORE_4_04_0@
+val minor_words : unit -> float
+@END_BEFORE_4_04_0@
+
+@END_BEFORE_4_05_0@
+(** @since 4.05.0:
+    external minor_words :
+      unit -> ((float)[@unboxed ]) = "caml_gc_minor_words"
+        "caml_gc_minor_words_unboxed"
+@since 4.04.0:
+external minor_words :
+  unit -> ((float)[@unboxed ]) = "caml_gc_minor_words"
+    "caml_gc_minor_words_unboxed"[@@noalloc ]
+ *)
+val finalise_last : (unit -> unit) -> 'a -> unit
+(** @since 4.04.0: val finalise_last : (unit -> unit) -> 'a -> unit
+ *)
+@BEGIN_FROM_4_05_0@
+external get_minor_free : unit -> int = "caml_get_minor_free"
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+@BEGIN_FROM_4_03_0@
+external get_minor_free : unit -> int = "caml_get_minor_free"[@@noalloc ]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val get_minor_free : unit -> int
+@END_BEFORE_4_03_0@
+
+@END_BEFORE_4_05_0@
+(** @since 4.05.0:
+    external get_minor_free : unit -> int = "caml_get_minor_free"
+@since 4.03.0:
+external get_minor_free : unit -> int = "caml_get_minor_free"[@@noalloc ]
+ *)
+@BEGIN_FROM_4_03_0@
+external get_bucket : int -> int = "caml_get_major_bucket"[@@noalloc ]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val get_bucket : int -> int
+@END_BEFORE_4_03_0@
+(** @since 4.03.0:
+    external get_bucket : int -> int = "caml_get_major_bucket"[@@noalloc ]
+ *)
+@BEGIN_FROM_4_03_0@
+external get_credit : unit -> int = "caml_get_major_credit"[@@noalloc ]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val get_credit : unit -> int
+@END_BEFORE_4_03_0@
+(** @since 4.03.0:
+    external get_credit : unit -> int = "caml_get_major_credit"[@@noalloc ]
+ *)
+@BEGIN_FROM_4_03_0@
+external huge_fallback_count : unit -> int = "caml_gc_huge_fallback_count"
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val huge_fallback_count : unit -> int
+@END_BEFORE_4_03_0@
+(** @since 4.03.0:
+    external huge_fallback_count :
+      unit -> int = "caml_gc_huge_fallback_count"
+ *)
+external stat : unit -> stat = "caml_gc_stat"
+(** Alias for {!Gc.stat} *)
+external quick_stat : unit -> stat = "caml_gc_quick_stat"
+(** Alias for {!Gc.quick_stat} *)
+external counters : unit -> (float * float * float) = "caml_gc_counters"
+(** Alias for {!Gc.counters} *)
+external get : unit -> control = "caml_gc_get"
+(** Alias for {!Gc.get} *)
+external set : control -> unit = "caml_gc_set"
+(** Alias for {!Gc.set} *)
+external minor : unit -> unit = "caml_gc_minor"
+(** Alias for {!Gc.minor} *)
+external major_slice : int -> int = "caml_gc_major_slice"
+(** Alias for {!Gc.major_slice} *)
+external major : unit -> unit = "caml_gc_major"
+(** Alias for {!Gc.major} *)
+external full_major : unit -> unit = "caml_gc_full_major"
+(** Alias for {!Gc.full_major} *)
+external compact : unit -> unit = "caml_gc_compaction"
+(** Alias for {!Gc.compact} *)
+val print_stat : out_channel -> unit
+(** Alias for {!Gc.print_stat} *)
+val allocated_bytes : unit -> float
+(** Alias for {!Gc.allocated_bytes} *)
+val finalise : ('a -> unit) -> 'a -> unit
+(** Alias for {!Gc.finalise} *)
+val finalise_release : unit -> unit
+(** Alias for {!Gc.finalise_release} *)
+val create_alarm : (unit -> unit) -> alarm
+(** Alias for {!Gc.create_alarm} *)
+val delete_alarm : alarm -> unit
+(** Alias for {!Gc.delete_alarm} *)

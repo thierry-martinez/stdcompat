@@ -24,6 +24,8 @@ end
 module String = struct
   include String
 
+  let hash = Hashtbl.hash
+
   module Map = Map.Make (String)
 end
 
@@ -65,6 +67,16 @@ module Pair = struct
 
   let with_snd f (_x, y) =
     f y
+
+  module Hashed (X : Hashtbl.HashedType) (Y : Hashtbl.HashedType) = struct
+    type t = X.t * Y.t
+
+    let equal (x, y) (x', y') =
+      X.equal x x' && Y.equal y y'
+
+    let hash (x, y) =
+      Hashtbl.hash (X.hash x, Y.hash y)
+  end
 end
 
 type isomorphism_kind = Ignore_attributes | Attributes_equal
@@ -95,9 +107,27 @@ let rec is_core_type_isomorphic kind (t : Parsetree.core_type)
       c.txt = c'.txt && List.equal (is_core_type_isomorphic kind) args args'
   | Ptyp_alias (c, v), Ptyp_alias (c', v') ->
       is_core_type_isomorphic kind c c' && v = v'
-  | _ ->
-      Format.fprintf Format.err_formatter "%a@." Pprintast.core_type t;
+  | Ptyp_object (l, flag), Ptyp_object (l', flag') ->
+      List.equal (is_object_field_isomorphic kind) l l' && flag = flag'
+  | Ptyp_poly (l, t), Ptyp_poly (l', t') ->
+      List.equal Name.equal l l' && is_core_type_isomorphic kind t t'
+  | Ptyp_variant _, _ ->
+      Format.fprintf Format.err_formatter "Unknown isomorphism variant: %a@." Pprintast.core_type t;
       false
+  | _ ->
+      Format.fprintf Format.err_formatter "Unknown isomorphism: %a@." Pprintast.core_type t;
+      false
+
+and is_object_field_isomorphic kind (f : Parsetree.object_field)
+    (f' : Parsetree.object_field) =
+  match f, f' with
+  | Otag (l, a, t), Otag (l', a', t') ->
+      l.txt = l'.txt &&
+      is_attributes_isomorphic kind a a' &&
+      is_core_type_isomorphic kind t t'
+  | Oinherit t, Oinherit t' ->
+      is_core_type_isomorphic kind t t'
+  | _ -> false
 
 let is_label_declaration_isomorphic kind (l : Parsetree.label_declaration)
     (l' : Parsetree.label_declaration) =
@@ -123,12 +153,18 @@ let is_constructor_declaration_isomorphic kind
   is_constructor_arguments_isomorphic kind c.pcd_args c'.pcd_args &&
   Option.equal (is_core_type_isomorphic kind) c.pcd_res c'.pcd_res
 
+let no_self_manifest (d : Parsetree.type_declaration) =
+  match d.ptype_manifest with
+  | Some ({ ptyp_desc = Ptyp_constr ({ txt = Lident self }, _args)})
+    when self = d.ptype_name.txt -> None
+  | manifest -> manifest
+
 let is_type_declaration_isomorphic kind (d : Parsetree.type_declaration)
     (d' : Parsetree.type_declaration) =
   Name.equal d.ptype_name d'.ptype_name &&
   is_attributes_isomorphic kind d.ptype_attributes d'.ptype_attributes &&
   Option.equal (is_core_type_isomorphic kind)
-    d.ptype_manifest d'.ptype_manifest &&
+    (no_self_manifest d) (no_self_manifest d') &&
   match d.ptype_kind, d'.ptype_kind with
   | Ptype_abstract, Ptype_abstract
   | Ptype_open, Ptype_open ->
@@ -233,6 +269,15 @@ module Version = struct
       patch : int;
     }
 
+  let compare (v : t) (v' : t) =
+    compare v v'
+
+  let equal (v : t) (v' : t) =
+    v = v'
+
+  let hash (v : t) =
+    Hashtbl.hash v
+
   let of_version_line version_line =
     let version_line_length = String.length version_line in
     let version_last_index =
@@ -265,14 +310,8 @@ module Version = struct
       @@ fun () -> input_line in_channel in
     of_version_line version_line
 
-  let compare (v : t) (v' : t) =
-    compare v v'
-
-  let format formatter { major; minor; patch } =
-    Format.fprintf formatter "%d.%.2d.%d" major minor patch
-
-  let format_tuple formatter { major; minor; patch } =
-    Format.fprintf formatter "(%d,%.2d,%d)" major minor patch
+  let to_string ?(sep = ".") { major; minor; patch } =
+    Printf.sprintf "%d%s%.2d%s%d" major sep minor sep patch
 end
 
 type interpreter = {
@@ -310,7 +349,10 @@ let ask_interface ~interpreter ~module_name =
             loop () in
       loop ();
       Buffer.truncate buffer (Buffer.length buffer - 2);
-      Buffer.contents buffer
+      if Buffer.sub buffer 0 2 = "# " then
+        Buffer.sub buffer 2 (Buffer.length buffer - 2)
+      else
+        Buffer.contents buffer
 
 let lexbuf_set_filename (lexbuf : Lexing.lexbuf) filename =
   lexbuf.lex_curr_p <- { lexbuf.lex_curr_p with Lexing.pos_fname = filename }
@@ -333,46 +375,89 @@ let read_interface_file mli_filename =
       buf.lex_curr_p <- { buf.lex_curr_p with Lexing.pos_fname = mli_filename };
       buf |> Parse.interface
 
-let signature_of_module_name ~interpreter ~module_name =
-  let s = ask_interface ~interpreter ~module_name in
-  match
-    let signature = signature_of_lexbuf module_name (s |> Lexing.from_string) in
-    match signature with
-    | [{ psig_desc =
-         Psig_module
-           { pmd_type = { pmty_desc = Pmty_signature signature } } }] ->
-           signature
-    | [{ psig_desc =
-         Psig_modtype
-           { pmtd_type = Some { pmty_desc =Pmty_signature signature }}}] ->
-           signature
-    | _ -> failwith "Unexpected result"
-  with
-  | exception Syntaxerr.Error(s) ->
-      Syntaxerr.report_error Format.err_formatter s;
-      []
-  | exception e ->
-      prerr_endline (Printexc.to_string e);
-      []
-  | s ->
-      s
+module SignaturesTable = Hashtbl.Make (Pair.Hashed (Version) (String))
+
+let signatures = SignaturesTable.create 17
+
+let module_type_of_name ~interpreter ~module_name =
+  try
+    SignaturesTable.find signatures (interpreter.version, module_name)
+  with Not_found ->
+    let s = ask_interface ~interpreter ~module_name in
+    let signature =
+      match
+        match signature_of_lexbuf module_name (s |> Lexing.from_string) with
+        | [{ psig_desc =
+             Psig_module
+               { pmd_type = module_type } }] ->
+                 module_type
+        | [{ psig_desc =
+             Psig_modtype
+               { pmtd_type = Some module_type }}] ->
+                 module_type
+        | _ -> failwith "Unexpected result"
+      with
+      | exception Syntaxerr.Error(err) ->
+          prerr_endline s;
+          Syntaxerr.report_error Format.err_formatter err;
+          { pmty_desc = Pmty_signature []; pmty_loc = Location.none;
+            pmty_attributes = [] }
+      | exception e ->
+          prerr_endline s;
+          prerr_endline (Printexc.to_string e);
+          { pmty_desc = Pmty_signature []; pmty_loc = Location.none;
+            pmty_attributes = [] }
+      | s ->
+          s in
+    SignaturesTable.add signatures (interpreter.version, module_name) signature;
+    signature
+
+module VersionHashtbl = Hashtbl.Make (Version)
+
+let pervasives_externals = VersionHashtbl.create 17
+
+module StringHashtbl = Hashtbl.Make (String)
+
+let signature_of_module_type (modtype : Parsetree.module_type) =
+  match modtype.pmty_desc with
+  | Pmty_signature s -> s
+  | _ -> failwith "signature_of_module_type"
+
+let get_pervasives_externals interpreter =
+  try
+    VersionHashtbl.find pervasives_externals interpreter.version
+  with Not_found ->
+    let modtype = module_type_of_name interpreter "Pervasives" in
+    let externals = StringHashtbl.create 17 in
+    let add_external (item : Parsetree.signature_item) =
+      match item.psig_desc with
+      | Psig_value ({ pval_prim = prim :: _ } as value_description) ->
+          StringHashtbl.add externals prim value_description
+      | _ -> () in
+    modtype |> signature_of_module_type |> List.iter add_external;
+    VersionHashtbl.add pervasives_externals interpreter.version externals;
+    externals
 
 let string_of_longident longident =
   String.concat "." (Longident.flatten longident)
 
-let signature_of_longident ~interpreter longident =
+let module_type_of_longident ~interpreter longident =
   let module_name = string_of_longident longident in
-  signature_of_module_name ~interpreter ~module_name
+  module_type_of_name ~interpreter ~module_name
 
 let qualify_type_decl ~module_name (type_decl : Parsetree.type_declaration) =
   let ptype_manifest =
     type_decl.ptype_manifest |> Option.map @@ fun (ty : Parsetree.core_type) ->
       match ty.ptyp_desc with
+      | Ptyp_constr ({ txt = Lident "fpclass"; loc }, []) ->
+          let txt = Longident.Ldot (Lident "Pervasives", "fpclass") in
+          let ptyp_desc = Parsetree.Ptyp_constr ({ Location.txt; loc }, []) in
+          { ty with ptyp_desc }
       | Ptyp_constr ({ txt = Lident ident; loc }, args)
         when ident <> "char" && ident <> "string" && ident <> "lazy_t"
             && ident <> "nativeint" && ident <> "int32" && ident <> "int64"
-            && ident <> "format6" && ident <> "bytes" ->
-          let txt = Longident.Ldot (Lident module_name, ident) in
+            && ident <> "format6" && ident <> "bytes" && ident <> "float" ->
+          let txt = Longident.Ldot (module_name, ident) in
           let ptyp_desc = Parsetree.Ptyp_constr ({ Location.txt; loc }, args) in
           { ty with ptyp_desc }
       | _ -> ty in
@@ -382,7 +467,6 @@ let format_signature_item ~module_name ~signatures formatter
     (item : Parsetree.signature_item) =
   match item.psig_desc with
   | Psig_type (rec_flag, type_decl) ->
-      let type_decl = type_decl |> List.map (qualify_type_decl ~module_name) in
       let item =
         { item with psig_desc = Parsetree.Psig_type (rec_flag, type_decl) } in
       Format.fprintf formatter "%a@." Pprintast.signature [item]
@@ -428,7 +512,7 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
   | Ptyp_constr ({ loc; txt = Ldot (Lident "Hashtbl", "statistics") }, []) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__hashtbl", "statistics") },
+          ({ loc; txt = Ldot (Lident "Stdcompat_hashtbl_ext", "statistics") },
            []) in
       { core_type with ptyp_desc }
   | Ptyp_constr (constr, args) ->
@@ -588,8 +672,12 @@ and compat_module_type ~module_name ~reference_interpreter
   | Pmty_ident
       ({ txt = Ldot (Lident "Hashtbl", "SeededHashedType") } as longident) ->
         let longident =
-          { longident with
-            txt = Longident.Ldot (Lident "Stdcompat__hashtbl", "SeededHashedType") } in
+          { longident with txt =
+            if module_name = Ldot (Lident "Hashtbl", "MakeSeeded") then
+              Longident.Lident "SeededHashedType"
+            else
+              Longident.Ldot
+                (Lident "Stdcompat__hashtbl", "SeededHashedType") } in
         { module_type with pmty_desc = Pmty_ident longident }
   | Pmty_signature signature ->
       let signature =
@@ -606,11 +694,8 @@ and compat_module_type ~module_name ~reference_interpreter
       let body = compat_module_type ~module_name ~reference_interpreter body in
       { module_type with pmty_desc = Pmty_functor (var, arg, body) }
   | Pmty_alias ident ->
-      let s =
-        signature_of_longident ~interpreter:reference_interpreter ident.txt |>
-        List.map @@
-        compat_signature_item ~module_name ~reference_interpreter in
-      { module_type with pmty_desc = Pmty_signature s }
+      module_type_of_longident ~interpreter:reference_interpreter ident.txt |>
+      compat_module_type ~module_name ~reference_interpreter
   | _ -> module_type
 
 (*
@@ -647,7 +732,7 @@ let signature_of_module_type_desc interpreter
   match module_type_desc with
   | Pmty_signature s -> s
   | Pmty_alias ident ->
-      signature_of_longident ~interpreter ident.txt
+      signature_of_module_type (module_type_of_longident ~interpreter ident.txt)
   | _ -> failwith "signature_of_module_type_desc"
 
 let rec is_module_type_desc_isomorphic kind
@@ -656,6 +741,9 @@ let rec is_module_type_desc_isomorphic kind
   match module_type_desc, module_type_desc' with
   | Pmty_ident ident, Pmty_ident ident' ->
       ident.txt = ident'.txt
+  | (Pmty_signature _, Pmty_alias _
+  | Pmty_alias _, Pmty_signature _) when kind = Attributes_equal ->
+      false
   | (Pmty_signature _ | Pmty_alias _),
     (Pmty_signature _ | Pmty_alias _) ->
       let signature =
@@ -758,13 +846,25 @@ let version_signature_item ~interpreter ~module_name ~signatures
           (interpreter, item)) |>
         Option.some
   | Psig_value value_desc ->
-      if value_desc.pval_name.txt = "__FILE__" ||
-      value_desc.pval_name.txt = "__LINE__" then
-        None
-      else
       signatures |>
         List.filter_map (fun (interpreter, (s : Signature.t)) ->
-          match String.Map.find_opt value_desc.pval_name.txt s.values with
+          match
+            match String.Map.find_opt value_desc.pval_name.txt s.values with
+            | None ->
+                begin
+                  match value_desc.pval_prim with
+                  | [] -> None
+                  | prim :: _ ->
+                      let externals = get_pervasives_externals interpreter in
+                      match StringHashtbl.find_opt externals prim with
+                      | None -> None
+                      | Some value_desc' ->
+                          Some
+                            { value_desc' with
+                              pval_name = value_desc.pval_name }
+                end
+            | Some value_desc' -> Some value_desc'
+          with
           | None -> None
           | Some value_desc' ->
               if is_value_description_isomorphic Ignore_attributes value_desc
@@ -789,7 +889,22 @@ let version_signature_item ~interpreter ~module_name ~signatures
               if is_module_declaration_isomorphic Ignore_attributes
                   ~interpreter module_declaration
                   ~interpreter' module_declaration' then
-                Some (interpreter, module_declaration')
+                let module_declaration' =
+                  if
+                    Version.compare interpreter'.version
+                      { major = 4; minor = 2; patch = 0 } >= 0
+                  then
+                    { module_declaration with pmd_type = {
+                      pmty_desc =
+                        Pmty_alias
+                          { loc = Location.none; txt =
+                            Ldot
+                              (module_name, module_declaration.pmd_name.txt) };
+                      pmty_loc = Location.none;
+                      pmty_attributes = [] }}
+                  else
+                    module_declaration' in
+                Some (interpreter', module_declaration')
               else
                 None) |>
         make_version_range
@@ -840,6 +955,34 @@ let compare_versioned_signature versions versions' =
 let type_of_desc ptyp_desc : Parsetree.core_type =
   { ptyp_desc; ptyp_loc = Location.none; ptyp_attributes = [] }
 
+let format_block block sub formatter item =
+  Format.fprintf formatter "\
+    @@BEGIN_%s@@@.\
+    %a@.\
+    @@END_%s@@@.\
+  " block sub item block
+
+let format_block_prefix prefix block sub formatter item =
+  format_block (prefix ^ "_" ^ block) sub formatter item
+
+let format_with block = format_block_prefix "WITH" block
+
+let format_without block = format_block_prefix "WITHOUT" block
+
+let format_ver prefix ver =
+  format_block_prefix prefix (Version.to_string ~sep:"_" ver)
+
+let format_before ver = format_ver "BEFORE" ver
+
+let format_from ver = format_ver "FROM" ver
+
+let format_without block sub formatter item =
+  format_block ("WITHOUT_" ^ block) sub formatter item
+
+let format_with_without block sub formatter item_with item_without =
+  format_with block sub formatter item_with;
+  format_without block sub formatter item_without
+
 let format_default_item ~module_name formatter
     (item : Parsetree.signature_item) =
   match item.psig_desc with
@@ -851,8 +994,8 @@ let format_default_item ~module_name formatter
       let type_decl = { type_decl with ptype_manifest = Some manifest } in
       let psig_desc = Parsetree.Psig_type (rec_flag, [type_decl]) in
       let result_item = { item with psig_desc } in
-      Format.fprintf formatter "#ifdef HAS_RESULT_PKG@.%a@.#else@.%a@.#endif"
-        Pprintast.signature [result_item] Pprintast.signature [item]
+      format_with_without "RESULT_PKG"
+        Pprintast.signature formatter [result_item] [item]
   | Psig_type (rec_flag, [{ ptype_name = { txt = "t" }} as type_decl])
       when module_name = Longident.Lident "Uchar" ->
       let ptyp_desc = Parsetree.Ptyp_constr (
@@ -862,18 +1005,18 @@ let format_default_item ~module_name formatter
       let type_decl = { type_decl with ptype_manifest = Some manifest } in
       let psig_desc = Parsetree.Psig_type (rec_flag, [type_decl]) in
       let result_item = { item with psig_desc } in
-      Format.fprintf formatter "#ifdef HAS_UCHAR_PKG@.%a@.#else@.%a@.#endif"
-        Pprintast.signature [result_item] Pprintast.signature [item]
+      format_with_without "UCHAR_PKG"
+        Pprintast.signature formatter [result_item] [item]
   | Psig_type (_, _)
       when module_name = Longident.Lident "Seq" ->
       Format.fprintf formatter "\
 type 'a t = unit -> 'a node
 and 'a node =
-#ifdef HAS_SEQ_PKG
-  'a Seq.node =
-#endif
+%a
   | Nil
   | Cons of 'a * 'a t"
+        (format_with "SEQ_PKG" Format.pp_print_string)
+         "  'a Seq.node ="
   | _ ->
       Format.fprintf formatter "%a" Pprintast.signature [item]
 
@@ -891,60 +1034,113 @@ let item_name module_name (item : Parsetree.signature_item) =
     | _ -> assert false in
   Printf.sprintf "%s.%s" (string_of_longident module_name) name
 
+let add_self_type_manifest_to_type_decl ~module_name
+    (type_decl : Parsetree.type_declaration) =
+  match type_decl.ptype_manifest with
+  | None ->
+      { type_decl with ptype_manifest =
+        let params = type_decl.ptype_params |> List.map fst in
+        Some ({ ptyp_desc =
+          Ptyp_constr ({ loc = Location.none; txt =
+            Ldot (module_name, type_decl.ptype_name.txt) }, params);
+              ptyp_loc = Location.none; ptyp_attributes = [] })}
+  | Some manifest -> type_decl
+
+let rec add_self_type_manifest ~module_name (item : Parsetree.signature_item) =
+  match item.psig_desc with
+  | Psig_type (rec_flag, type_decl_list) ->
+      let type_decl_list = type_decl_list |>
+        List.map (add_self_type_manifest_to_type_decl ~module_name) in
+      { item with psig_desc = Psig_type (rec_flag, type_decl_list) }
+  | Psig_value _ | Psig_modtype _ -> item
+  | Psig_module module_declaration ->
+      { item with psig_desc = Psig_module { module_declaration with
+        pmd_type = module_declaration.pmd_type |>
+          (add_self_type_manifest_to_module_type ~module_name) }}
+(*  | Psig_modtype module_type_declaration ->
+      { item with psig_desc = Psig_modtype { module_type_declaration with
+        pmtd_type = module_type_declaration.pmtd_type |>
+          Option.map (add_self_type_manifest_to_module_type ~module_name) }} *)
+  | _ -> assert false
+
+and add_self_type_manifest_to_module_type ~module_name
+    (module_type : Parsetree.module_type) =
+  match module_type.pmty_desc with
+  | Pmty_signature signature ->
+      let signature = signature |>
+        List.map (add_self_type_manifest ~module_name) in
+      { module_type with pmty_desc = Pmty_signature signature }
+  | Pmty_functor (var, arg, body) ->
+(*
+      let arg = arg |> Option.map
+        (add_self_type_manifest_to_module_type ~module_name) in
+*)
+      let body = body |> add_self_type_manifest_to_module_type ~module_name in
+      { module_type with pmty_desc = Pmty_functor (var, arg, body) }
+  | Pmty_with (ty, cstr) ->
+      { module_type with pmty_desc =
+        Pmty_with
+          (add_self_type_manifest_to_module_type ~module_name ty, cstr) }
+  | _ -> module_type
+
+
 let format_versioned_signature ~module_name ~version_high ~version_low
     ~reference_interpreter formatter versions =
   match versions with
   | [last_interpreter, item] when last_interpreter.version = version_low ->
-      Format.fprintf formatter "%a@." Pprintast.signature [item];
+      let self_item = add_self_type_manifest ~module_name item in
+      Format.fprintf formatter "%a@." Pprintast.signature [self_item];
       let item_name = item_name module_name item in
       Format.fprintf formatter "(** Alias for {!%s} *)@." item_name
   | (last_interpreter, item) :: tail ->
+      let self_item = add_self_type_manifest ~module_name item in
       let default_item =
         compat_signature_item ~module_name ~reference_interpreter item in
       begin
-      if tail = [] &&
-        is_signature_item_isomorphic Attributes_equal
-          ~interpreter:last_interpreter item
-          ~interpreter':last_interpreter default_item then
-        Format.fprintf formatter "%a@." Pprintast.signature [item]
-      else
-        begin
-          Format.fprintf formatter "#if OCAML_VERSION >= %a@."
-            Version.format_tuple last_interpreter.version;
-          Format.fprintf formatter "%a@." Pprintast.signature [item];
-          let rec format_tail tail =
-            match tail with
-            | [] ->
-                Format.fprintf formatter "#else@.%a@.#endif@."
-                  (format_default_item ~module_name) default_item
-            | [last_interpreter, item] ->
-                if last_interpreter.version = version_low
-              || is_signature_item_isomorphic Attributes_equal
-                  ~interpreter:last_interpreter
-                  item ~interpreter':last_interpreter default_item then
-                  Format.fprintf formatter "#else@.%a@.#endif@."
-                    Pprintast.signature [item]
-                else
-                  Format.fprintf formatter
-                    "#elif OCAML_VERSION >= %a@.%a@.#else@.%a@.#endif@."
-                    Version.format_tuple last_interpreter.version
-                    Pprintast.signature [item]
-                    Pprintast.signature [default_item]
-            | (last_interpreter, item) :: tail ->
-                Format.fprintf formatter
-                  "#elif OCAML_VERSION >= %a@.%a@."
-                  Version.format_tuple last_interpreter.version
-                  Pprintast.signature [item];
-                format_tail tail in
-          format_tail tail
-        end
+        if tail = [] &&
+          is_signature_item_isomorphic Attributes_equal
+            ~interpreter:last_interpreter self_item
+            ~interpreter':last_interpreter default_item then
+          Format.fprintf formatter "%a@." Pprintast.signature [self_item]
+        else
+          begin
+            format_from last_interpreter.version Pprintast.signature
+              formatter [self_item];
+            let rec format_tail version tail =
+              let format formatter tail =
+                match tail with
+                | [] ->
+                    format_default_item ~module_name formatter default_item
+                | [last_interpreter, item] ->
+                    let self_item = add_self_type_manifest ~module_name item in
+                    if last_interpreter.version = version_low
+                  || is_signature_item_isomorphic Attributes_equal
+                      ~interpreter:last_interpreter
+                      self_item ~interpreter':last_interpreter default_item then
+                      Pprintast.signature formatter [self_item]
+                  else
+                    begin
+                      format_from last_interpreter.version
+                        Pprintast.signature formatter [self_item];
+                      format_before last_interpreter.version
+                        Pprintast.signature formatter [default_item]
+                    end
+              | (last_interpreter, item) :: tail ->
+                  let self_item = add_self_type_manifest ~module_name item in
+                  format_from last_interpreter.version
+                    Pprintast.signature formatter [self_item];
+                  format_tail last_interpreter.version tail in
+              format_before version format formatter tail in
+            format_tail last_interpreter.version tail
+          end
       end;
       let format_doc formatter versions =
         let format_doc_version (interpreter, item) =
-          Format.fprintf formatter "@[@since %a:@ %a@]" Version.format
-            interpreter.version Pprintast.signature [item] in
+          Format.fprintf formatter "@[@since %s:@ %a@]@."
+            (Version.to_string interpreter.version)
+            Pprintast.signature [item] in
         List.iter format_doc_version versions in
-      Format.fprintf formatter "(** @[%a@] *)@." format_doc versions
+      Format.fprintf formatter "(** @[<v>%a@] *)@." format_doc versions
   | [] ->
       prerr_endline "EMPTY!"
 
@@ -959,7 +1155,8 @@ let main argv =
     command_lines |> List.map @@ fun command_line ->
       let version = Version.of_command_line command_line in
       let interpreter = { command_line; version } in
-      let signature = signature_of_module_name ~interpreter ~module_name in
+      let signature = module_type_of_name ~interpreter ~module_name |>
+        signature_of_module_type in
       interpreter, signature in
   let reference_interpreter, reference_signature =
     match signatures with
@@ -967,6 +1164,7 @@ let main argv =
     | _ -> failwith "No reference version" in
   let signatures = signatures |> List.map @@ fun (interpreter, s) ->
     interpreter, Signature.of_parsetree s in
+  let module_name = Longident.Lident module_name in
   let versioned_signature =
     reference_signature |> List.filter_map @@
       version_signature_item ~interpreter:reference_interpreter
@@ -976,7 +1174,7 @@ let main argv =
   versioned_signature |>
     List.sort compare_versioned_signature |>
     List.iter @@
-      format_versioned_signature ~module_name:(Lident (module_name))
+      format_versioned_signature ~module_name
       ~version_high ~version_low
       ~reference_interpreter
       Format.std_formatter

@@ -1,0 +1,6 @@
+val list : ('a -> 'a -> bool) -> 'a list -> 'a list
+(** Alias for {!Sort.list} *)
+val array : ('a -> 'a -> bool) -> 'a array -> unit
+(** Alias for {!Sort.array} *)
+val merge : ('a -> 'a -> bool) -> 'a list -> 'a list -> 'a list
+(** Alias for {!Sort.merge} *)

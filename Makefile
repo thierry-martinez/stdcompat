@@ -1,185 +1,25 @@
-USE_MAGIC := true
-OCAMLFIND := ocamlfind
-
-OCAMLFIND_AVAILABLE := $(shell \
-	if $(OCAMLFIND) query -help >/dev/null 2>&1; then \
-		echo true; \
-	else \
-		echo false; \
-	fi \
-)
-
-ifeq ($(OCAMLFIND_AVAILABLE),true)
-	OCAMLOPT := $(OCAMLFIND) ocamlopt
-	OCAMLC := $(OCAMLFIND) ocamlc
-	OCAMLDOC := $(OCAMLFIND) ocamldoc
-	RESULT_PKG_AVAILABLE := $(shell \
-	if $(OCAMLFIND) query result >/dev/null 2>&1; then \
-		echo true; \
-	else \
-		echo false; \
-	fi \
-)
-	SEQ_PKG_AVAILABLE := $(shell \
-	if $(OCAMLFIND) query seq >/dev/null 2>&1; then \
-		echo true; \
-	else \
-		echo false; \
-	fi \
-)
-	UCHAR_PKG_AVAILABLE := $(shell \
-	if $(OCAMLFIND) query uchar >/dev/null 2>&1; then \
-		echo true; \
-	else \
-		echo false; \
-	fi \
-)
-else
-	OCAMLOPT := $(shell \
-		if ocamlopt.opt -version >/dev/null 2>&1; then \
-			echo ocamlopt.opt; \
-		elif ocamlopt -version >/dev/null 2>&1; then \
-			echo ocamlopt; \
-		fi \
-	) $(OCAMLFLAGS)
-
-	OCAMLC := $(shell \
-		if ocamlc.opt -version >/dev/null 2>&1; then \
-			echo ocamlc.opt; \
-		elif ocamlc -version >/dev/null 2>&1; then \
-			echo ocamlc; \
-		fi \
-	) $(OCAMLFLAGS)
-
-	OCAMLDOC := ocamldoc $(OCAMLFLAGS)
-
-	RESULT_PKG_AVAILABLE := false
-	SEQ_PKG_AVAILABLE := false
-	UCHAR_PKG_AVAILABLE := false
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
+include Makefile.config
+endif
 endif
 
 ifeq ($(OCAMLC),)
-$(error There is no OCaml compiler available in PATH)
+	OCAMLC_AVAILABLE := false
+else
+	OCAMLC_AVAILABLE := true
 endif
 
 ifeq ($(OCAMLOPT),)
 	OCAMLOPT_AVAILABLE := false
 else
-	OCAMLOPT_AVAILABLE := $(shell \
-		if $(OCAMLOPT) -version >/dev/null 2>&1; then \
-			echo true; \
-		else \
-			echo false; \
-		fi \
-	)
+	OCAMLOPT_AVAILABLE := true
 endif
 
-OCAML_VERSION := $(shell $(OCAMLC) -version | cut -c 1-6)
+OCAMLFLAGS += $(addprefix -package ,$(RESULT_PKG) $(SEQ_PKG) $(UCHAR_PKG))
 
-ifeq (4.07.0,$(word 1,$(sort 4.07.0 $(OCAML_VERSION))))
-	USE_SEQ_PKG := false
-else
-	USE_SEQ_PKG := $(SEQ_PKG_AVAILABLE)
-endif
-
-ifeq (4.03.0,$(word 1,$(sort 4.03.0 $(OCAML_VERSION))))
-	USE_RESULT_PKG := false
-else
-	USE_RESULT_PKG := $(RESULT_PKG_AVAILABLE)
-endif
-
-ifeq (4.03.0,$(word 1,$(sort 4.03.0 $(OCAML_VERSION))))
-	USE_UCHAR_PKG := false
-else
-	USE_UCHAR_PKG := $(UCHAR_PKG_AVAILABLE)
-endif
-
-ifeq ($(USE_SEQ_PKG),true)
-	OCAMLFLAGS += -package seq
-endif
-
-ifeq ($(USE_RESULT_PKG),true)
-	OCAMLFLAGS += -package result
-endif
-
-ifeq ($(USE_UCHAR_PKG),true)
-	OCAMLFLAGS += -package uchar
-endif
-
-ifeq ($(OCAMLFIND_AVAILABLE),true)
+ifneq ($(OCAMLFIND),)
 	OCAMLFLAGS_TESTS += -linkpkg
-endif
-
-CPPO := cppo
-CPP := cpp
-
-CPPO_AVAILABLE := $(shell \
-	if $(CPPO) -version >/dev/null 2>&1; then \
-		echo true; \
-	else \
-		echo false; \
-	fi \
-)
-
-LITTLE_ENDIAN := $(shell \
-	echo -n I | hexdump -o | awk '{ print substr($$2,6,1); exit }' \
-)
-
-ifeq ($(CPPO_AVAILABLE),true)
-	PP = $(CPPO) -V 'OCAML:$(OCAML_VERSION)' $<
-	PP_NATIVE_ARGS := -D OCAMLNATIVE
-	ifeq ($(LITTLE_ENDIAN),0)
-		PP += -D BIGENDIAN
-	endif
-	ifeq ($(USE_SEQ_PKG),true)
-		PP += -D 'HAS_SEQ_PKG'
-		REQUIRES += seq
-	endif
-	ifeq ($(USE_RESULT_PKG),true)
-		PP += -D 'HAS_RESULT_PKG'
-		REQUIRES += result
-	endif
-	ifeq ($(USE_UCHAR_PKG),true)
-		PP += -D 'HAS_UCHAR_PKG'
-		REQUIRES += uchar
-	endif
-	ifeq ($(USE_MAGIC),true)
-		PP += -D 'USE_MAGIC'
-	endif
-else
-	OCAML_VERSION_STRIPPED := $(subst .,,$(OCAML_VERSION))
-	PP = <$< sed -e '/^\#/s/(\(.\),\(..\),\(.\))/\1\2\3/' | \
-		$(CPP) -DOCAML_VERSION=$(OCAML_VERSION_STRIPPED) -undef -w -
-	PP_NATIVE_ARGS := -DOCAMLNATIVE
-	ifeq ($(LITTLE_ENDIAN),0)
-		PP += -DBIGENDIAN
-	endif
-	ifeq ($(USE_SEQ_PKG),true)
-		PP += -DHAS_SEQ_PKG
-		REQUIRES += seq
-	endif
-	ifeq ($(USE_RESULT_PKG),true)
-		PP += -DHAS_RESULT_PKG
-		REQUIRES += result
-	endif
-	ifeq ($(USE_UCHAR_PKG),true)
-		PP += -DHAS_UCHAR_PKG
-		REQUIRES += uchar
-	endif
-	ifeq ($(USE_MAGIC),true)
-		PP += -DUSE_MAGIC
-	endif
-endif
-
-PP_INTF = $(PP)
-PP_IMPL = $(PP)
-PP_BYTECODE = $(PP)
-PP_NATIVE = $(PP) $(PP_NATIVE_ARGS)
-
-ifeq ($(CPPO_AVAILABLE),true)
-  PP_META += $(PP) -D 'REQUIRES "$(REQUIRES)"'
-else
-  PP_META += $(PP) -D 'REQUIRES="$(REQUIRES)"'
 endif
 
 MODULES := stdcompat__init stdcompat__root stdcompat__seq \
@@ -198,7 +38,9 @@ MODULES := stdcompat__init stdcompat__root stdcompat__seq \
 	stdcompat__spacetime
 
 .PHONY : all
-all : bytecode $(patsubst %,native,$(filter true,$(OCAMLOPT_AVAILABLE))) doc
+all : \
+	$(patsubst %,bytecode,$(filter true,$(OCAMLC_AVAILABLE))) \
+	$(patsubst %,native,$(filter true,$(OCAMLOPT_AVAILABLE))) doc
 
 .PHONY : bytecode
 bytecode : stdcompat.cma
@@ -211,13 +53,16 @@ clean :
 	rm -f META $(foreach module, $(MODULES) stdcompat__native stdcompat, \
 			$(foreach ext, .cmi .cmt .cmti .cmo .cmx .o .a, \
 				$(module)$(ext))) \
-		$(foreach module, $(MODULES), \
-			$(patsubst %.mlp, %.ml, $(wildcard $(module).mlp)) \
-			$(patsubst %.mlip, %.mli, \
-				$(wildcard $(module).mlip))) \
 		stdcompat.cma stdcompat.cmxs stdcompat.cmxa stdcompat.a \
 		stdcompat_tests.cmt stdcompat_tests.cmti \
 		stdcompat_tests.cmi stdcompat_tests.cmo .depend
+
+.PHONY : distclean
+distclean : clean
+	rm -f $(foreach module, $(MODULES), \
+			$(patsubst %.ml.in, %.ml, $(wildcard $(module).ml.in)) \
+			$(patsubst %.mli.in, %.mli, \
+				$(wildcard $(module).mli.in)))
 
 .PHONY : install
 install : META stdcompat.cma stdcompat.cmxs stdcompat.cmxa stdcompat.a \
@@ -249,16 +94,12 @@ ocaml_files := $(foreach module, $(MODULES), \
 	ocamldep -impl stdcompat__native.ml_byte $(ocaml_files) >$@
 
 ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
 include .depend
+endif
 endif
 
 stdcompat__list.cmo stdcompat__list.cmx : stdcompat__list.cmi
-
-%.mli : %.mlip
-	$(PP_INTF) >$@ || rm $@
-
-%.ml : %.mlp
-	$(PP_IMPL) >$@ || rm $@
 
 doc :
 	mkdir -p doc
@@ -266,7 +107,7 @@ doc :
 	touch doc
 
 %.cmi : %.mli
-	$(OCAMLC) $(OCAMLFLAGS) -c $<
+	$(OCAMLBEST) $(OCAMLFLAGS) -c $<
 
 %.cmo : %.ml
 	$(OCAMLC) $(OCAMLFLAGS) -c $<
@@ -306,9 +147,6 @@ tests.native : stdcompat.cmxa stdcompat_tests.cmx
 stdcompat_tests.cmo : stdcompat.cmi
 
 stdcompat_tests.cmx : stdcompat.cmi
-
-META : META.pp
-	$(PP_META) >$@ || rm $@
 
 interface_generator : interface_generator.ml
 	eval `opam config env --switch=4.07.0+rc1` && \

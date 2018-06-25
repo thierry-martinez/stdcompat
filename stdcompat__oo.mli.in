@@ -1,0 +1,8 @@
+val copy : (< .. >  as 'a) -> 'a
+(** Alias for {!Oo.copy} *)
+external id : < .. >  -> int = "%field1"
+(** Alias for {!Oo.id} *)
+val new_method : string -> CamlinternalOO.tag
+(** Alias for {!Oo.new_method} *)
+val public_method_label : string -> CamlinternalOO.tag
+(** Alias for {!Oo.public_method_label} *)

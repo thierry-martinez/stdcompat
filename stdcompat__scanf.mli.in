@@ -1,0 +1,87 @@
+@BEGIN_FROM_4_07_0@
+module Scanning = Scanf.Scanning
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+module Scanning :
+sig
+  type in_channel
+  type scanbuf = in_channel
+  val stdin : in_channel
+  type file_name = string
+  val open_in : file_name -> in_channel
+  val open_in_bin : file_name -> in_channel
+  val close_in : in_channel -> unit
+  val from_file : file_name -> in_channel
+  val from_file_bin : string -> in_channel
+  val from_string : string -> in_channel
+  val from_function : (unit -> char) -> in_channel
+  val from_channel : Pervasives.in_channel -> in_channel
+  val end_of_input : in_channel -> bool
+  val beginning_of_input : in_channel -> bool
+  val name_of_input : in_channel -> string
+  val stdib : in_channel
+end
+@END_BEFORE_4_07_0@
+(** @since 4.07.0: module Scanning = Scanf.Scanning
+ *)
+type ('a, 'b, 'c, 'd) scanner =
+  ('a, Scanning.in_channel, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c
+(** @since 3.12.0:
+    type ('a, 'b, 'c, 'd) scanner =
+      ('a, Scanning.in_channel, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c
+ *)
+val ksscanf :
+  string -> (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+(** @since 4.02.0:
+    val ksscanf :
+      string ->
+        (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+ *)
+val kfscanf :
+  in_channel ->
+    (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+(** @since 4.02.0:
+    val kfscanf :
+      in_channel ->
+        (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+ *)
+val kscanf :
+  Scanning.in_channel ->
+    (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+(** @since 4.00.0:
+    val kscanf :
+      Scanning.in_channel ->
+        (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+ *)
+val unescaped : string -> string
+(** @since 4.00.0: val unescaped : string -> string
+ *)
+val bscanf : Scanning.in_channel -> ('a, 'b, 'c, 'd) scanner
+(** @since 3.12.0:
+    val bscanf : Scanning.in_channel -> ('a, 'b, 'c, 'd) scanner
+ *)
+val bscanf_format :
+  Scanning.in_channel ->
+    ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
+      (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g
+(** @since 3.12.0:
+    val bscanf_format :
+      Scanning.in_channel ->
+        ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
+          (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g
+ *)
+val sscanf : string -> ('a, 'b, 'c, 'd) scanner
+(** Alias for {!Scanf.sscanf} *)
+val scanf : ('a, 'b, 'c, 'd) scanner
+(** Alias for {!Scanf.scanf} *)
+val sscanf_format :
+  string ->
+    ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
+      (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g
+(** Alias for {!Scanf.sscanf_format} *)
+val format_from_string :
+  string ->
+    ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6
+(** Alias for {!Scanf.format_from_string} *)
+val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
+(** Alias for {!Scanf.fscanf} *)

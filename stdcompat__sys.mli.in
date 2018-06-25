@@ -1,0 +1,194 @@
+@BEGIN_FROM_4_07_0@
+type backend_type = Sys.backend_type =
+  | Native 
+  | Bytecode 
+  | Other of string 
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+type backend_type =
+  | Native 
+  | Bytecode 
+  | Other of string 
+@END_BEFORE_4_07_0@
+(** @since 4.07.0:
+    type backend_type = Sys.backend_type =
+      | Native 
+      | Bytecode 
+      | Other of string 
+ *)
+type signal_behavior = Sys.signal_behavior =
+  | Signal_default 
+  | Signal_ignore 
+  | Signal_handle of (int -> unit) 
+(** Alias for {!Sys.signal_behavior} *)
+val getenv_opt : string -> string option
+(** @since 4.05.0: val getenv_opt : string -> string option
+ *)
+val backend_type : backend_type
+(** @since 4.04.0: val backend_type : backend_type
+ *)
+val int_size : int
+(** @since 4.03.0: val int_size : int
+ *)
+@BEGIN_FROM_4_03_0@
+external runtime_variant : unit -> string = "caml_runtime_variant"
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val runtime_variant : unit -> string
+@END_BEFORE_4_03_0@
+(** @since 4.03.0:
+    external runtime_variant : unit -> string = "caml_runtime_variant"
+ *)
+@BEGIN_FROM_4_03_0@
+external runtime_parameters : unit -> string = "caml_runtime_parameters"
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val runtime_parameters : unit -> string
+@END_BEFORE_4_03_0@
+(** @since 4.03.0:
+    external runtime_parameters : unit -> string = "caml_runtime_parameters"
+ *)
+val sigbus : int
+(** @since 4.03.0: val sigbus : int
+ *)
+val sigpoll : int
+(** @since 4.03.0: val sigpoll : int
+ *)
+val sigsys : int
+(** @since 4.03.0: val sigsys : int
+ *)
+val sigtrap : int
+(** @since 4.03.0: val sigtrap : int
+ *)
+val sigurg : int
+(** @since 4.03.0: val sigurg : int
+ *)
+val sigxcpu : int
+(** @since 4.03.0: val sigxcpu : int
+ *)
+val sigxfsz : int
+(** @since 4.03.0: val sigxfsz : int
+ *)
+val enable_runtime_warnings : bool -> unit
+(** @since 4.03.0: val enable_runtime_warnings : bool -> unit
+ *)
+val runtime_warnings_enabled : unit -> bool
+(** @since 4.03.0: val runtime_warnings_enabled : unit -> bool
+ *)
+@BEGIN_FROM_4_03_0@
+external opaque_identity : 'a -> 'a = "%opaque"
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val opaque_identity : 'a -> 'a
+@END_BEFORE_4_03_0@
+(** @since 4.03.0: external opaque_identity : 'a -> 'a = "%opaque"
+ *)
+val unix : bool
+(** @since 4.01.0: val unix : bool
+ *)
+val win32 : bool
+(** @since 4.01.0: val win32 : bool
+ *)
+val cygwin : bool
+(** @since 4.01.0: val cygwin : bool
+ *)
+val big_endian : bool
+(** @since 4.00.0: val big_endian : bool
+ *)
+val argv : string array
+(** Alias for {!Sys.argv} *)
+val executable_name : string
+(** Alias for {!Sys.executable_name} *)
+external file_exists : string -> bool = "caml_sys_file_exists"
+(** Alias for {!Sys.file_exists} *)
+external is_directory : string -> bool = "caml_sys_is_directory"
+(** Alias for {!Sys.is_directory} *)
+external remove : string -> unit = "caml_sys_remove"
+(** Alias for {!Sys.remove} *)
+external rename : string -> string -> unit = "caml_sys_rename"
+(** Alias for {!Sys.rename} *)
+external getenv : string -> string = "caml_sys_getenv"
+(** Alias for {!Sys.getenv} *)
+external command : string -> int = "caml_sys_system_command"
+(** Alias for {!Sys.command} *)
+@BEGIN_FROM_4_03_0@
+external time :
+  unit -> ((float)[@unboxed ]) = "caml_sys_time" "caml_sys_time_unboxed"
+[@@noalloc ]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+external time : unit -> float = "caml_sys_time"
+@END_BEFORE_4_03_0@
+(** @since 4.03.0:
+    external time :
+      unit -> ((float)[@unboxed ]) = "caml_sys_time" "caml_sys_time_unboxed"
+    [@@noalloc ]
+@since 3.11.0: external time : unit -> float = "caml_sys_time"
+ *)
+external chdir : string -> unit = "caml_sys_chdir"
+(** Alias for {!Sys.chdir} *)
+external getcwd : unit -> string = "caml_sys_getcwd"
+(** Alias for {!Sys.getcwd} *)
+external readdir : string -> string array = "caml_sys_read_directory"
+(** Alias for {!Sys.readdir} *)
+val interactive : bool ref
+(** Alias for {!Sys.interactive} *)
+val os_type : string
+(** Alias for {!Sys.os_type} *)
+val word_size : int
+(** Alias for {!Sys.word_size} *)
+val max_string_length : int
+(** Alias for {!Sys.max_string_length} *)
+val max_array_length : int
+(** Alias for {!Sys.max_array_length} *)
+external signal :
+  int -> signal_behavior -> signal_behavior = "caml_install_signal_handler"
+(** Alias for {!Sys.signal} *)
+val set_signal : int -> signal_behavior -> unit
+(** Alias for {!Sys.set_signal} *)
+val sigabrt : int
+(** Alias for {!Sys.sigabrt} *)
+val sigalrm : int
+(** Alias for {!Sys.sigalrm} *)
+val sigfpe : int
+(** Alias for {!Sys.sigfpe} *)
+val sighup : int
+(** Alias for {!Sys.sighup} *)
+val sigill : int
+(** Alias for {!Sys.sigill} *)
+val sigint : int
+(** Alias for {!Sys.sigint} *)
+val sigkill : int
+(** Alias for {!Sys.sigkill} *)
+val sigpipe : int
+(** Alias for {!Sys.sigpipe} *)
+val sigquit : int
+(** Alias for {!Sys.sigquit} *)
+val sigsegv : int
+(** Alias for {!Sys.sigsegv} *)
+val sigterm : int
+(** Alias for {!Sys.sigterm} *)
+val sigusr1 : int
+(** Alias for {!Sys.sigusr1} *)
+val sigusr2 : int
+(** Alias for {!Sys.sigusr2} *)
+val sigchld : int
+(** Alias for {!Sys.sigchld} *)
+val sigcont : int
+(** Alias for {!Sys.sigcont} *)
+val sigstop : int
+(** Alias for {!Sys.sigstop} *)
+val sigtstp : int
+(** Alias for {!Sys.sigtstp} *)
+val sigttin : int
+(** Alias for {!Sys.sigttin} *)
+val sigttou : int
+(** Alias for {!Sys.sigttou} *)
+val sigvtalrm : int
+(** Alias for {!Sys.sigvtalrm} *)
+val sigprof : int
+(** Alias for {!Sys.sigprof} *)
+val catch_break : bool -> unit
+(** Alias for {!Sys.catch_break} *)
+val ocaml_version : string
+(** Alias for {!Sys.ocaml_version} *)
