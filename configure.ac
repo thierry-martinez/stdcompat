@@ -1,5 +1,6 @@
 AC_INIT([[stdcompat]], [5], [[Thierry.Martinez@inria.fr]], [[stdcompat]],
   [[https://github.com/thierry.martinez/stdcompat/]])
+AM_INIT_AUTOMAKE
 
 AC_DEFUN([AC_OCAMLFIND_PKG],
   [AC_MSG_CHECKING([for ocamlfind package $2])
@@ -20,12 +21,16 @@ AS_IF([test "x$OCAMLFIND" = "x"],
    AC_CHECK_TOOL([OCAMLDOC], [ocamldoc.opt], [])
    AS_IF([test "x$OCAMLDOC" = "x"],
      [AC_CHECK_TOOL([OCAMLDOC], [ocamldoc], [])])
+   AC_CHECK_TOOL([OCAMLDEP], [ocamldep.opt], [])
+   AS_IF([test "x$OCAMLDEP" = "x"],
+     [AC_CHECK_TOOL([OCAMLDEP], [ocamldep], [])])
    AC_SUBST([RESULT_PKG], [])
    AC_SUBST([SEQ_PKG], [])
    AC_SUBST([UCHAR_PKG], [])],
   [AC_SUBST([OCAMLC], [["$OCAMLFIND ocamlc"]])
    AC_SUBST([OCAMLOPT], [["$OCAMLFIND ocamlopt"]])
    AC_SUBST([OCAMLDOC], [["$OCAMLFIND ocamldoc"]])
+   AC_SUBST([OCAMLDEP], [["$OCAMLFIND ocamldep"]])
    AC_OCAMLFIND_PKG([RESULT_PKG], [result])
    AC_OCAMLFIND_PKG([SEQ_PKG], [seq])
    AC_OCAMLFIND_PKG([UCHAR_PKG], [uchar])])
@@ -35,6 +40,9 @@ AS_IF([test "x$OCAMLOPT" = "x"],
      [AC_MSG_ERROR([[No OCaml compiler available]])],
      [AC_SUBST([OCAMLBEST], [["$OCAMLC"]])])],
   [AC_SUBST([OCAMLBEST], [["$OCAMLOPT"]])])
+
+AS_IF([test "x$OCAMLDEP" = "x"],
+  [AC_MSG_ERROR([[No ocamldep available]])])
 
 AC_C_BIGENDIAN(
   [AC_SUBST([BIG_ENDIAN], [[true]])],
@@ -101,7 +109,15 @@ AC_WITH_OCAML_VERSION([4_05_0], [4.05.0])
 AC_WITH_OCAML_VERSION([4_06_0], [4.06.0])
 AC_WITH_OCAML_VERSION([4_07_0], [4.07.0])
 
-AC_CONFIG_FILES([META Makefile.config])
+AC_SUBST([INCLUDE_DEPEND],[['
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
+include .depend
+endif
+endif
+']])
+
+AC_CONFIG_FILES([META Makefile])
 AC_CONFIG_FILES([
   stdcompat_hashtbl_ext.mli
   stdcompat_hashtbl_ext.ml
@@ -177,6 +193,7 @@ AC_CONFIG_FILES([
   stdcompat__sys.ml
   stdcompat__uchar.ml
   stdcompat__weak.ml])
+
 AC_OUTPUT
 
 AC_MSG_NOTICE([OCaml version is $OCAMLVERSION])

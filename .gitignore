@@ -14,3 +14,7 @@ _build/
 /stdcompat.ml_byte
 /stdcompat.ml_native
 /interface_generator
+/.depend
+/stdcompat_*.ml
+/stdcompat_*.mli
+/configure
