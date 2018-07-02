@@ -6,6 +6,10 @@ _build/
 *.cm[aiotx]
 *.cmti
 *.cmx[as]
+/Makefile
+/Makefile.in
+/aclocal.m4
+/autom4te.cache
 /doc/
 /stdcompat.mli
 /tests.bytecode
