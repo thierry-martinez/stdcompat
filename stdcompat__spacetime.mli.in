@@ -1,7 +1,7 @@
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_04_0@
 module Series = Spacetime.Series
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_04_0@
+@BEGIN_BEFORE_4_04_0@
 module Series :
 sig
   type t
@@ -9,22 +9,35 @@ sig
   val save_event : ?time:float -> t -> event_name:string -> unit
   val save_and_close : ?time:float -> t -> unit
 end
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: module Series = Spacetime.Series
+
+@END_BEFORE_4_04_0@
+(** @since 4.04.0: module Series = Spacetime.Series
  *)
 @BEGIN_FROM_4_04_0@
 module Snapshot = Spacetime.Snapshot
 @END_FROM_4_04_0@
 @BEGIN_BEFORE_4_04_0@
-module Snapshot :
-sig val take : ?time:float -> Series.t -> unit end
+module Snapshot : sig val take : ?time:float -> Series.t -> unit end
+
 @END_BEFORE_4_04_0@
 (** @since 4.04.0: module Snapshot = Spacetime.Snapshot
  *)
+@BEGIN_FROM_4_05_0@
 val enabled : bool
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+val enabled : bool
+
+@END_BEFORE_4_05_0@
 (** @since 4.05.0: val enabled : bool
  *)
+@BEGIN_FROM_4_04_0@
 val save_event_for_automatic_snapshots : event_name:string -> unit
+@END_FROM_4_04_0@
+@BEGIN_BEFORE_4_04_0@
+val save_event_for_automatic_snapshots : event_name:string -> unit
+
+@END_BEFORE_4_04_0@
 (** @since 4.04.0:
     val save_event_for_automatic_snapshots : event_name:string -> unit
  *)

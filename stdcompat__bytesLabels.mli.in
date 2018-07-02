@@ -3,6 +3,7 @@ type t = bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 type t = Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: type t = bytes
  *)
@@ -11,6 +12,7 @@ val to_seq : t -> char Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seq : t -> char Stdcompat__seq.t
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seq : t -> char Seq.t
  *)
@@ -19,6 +21,7 @@ val to_seqi : t -> (int * char) Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seqi : t -> (int * char) Stdcompat__seq.t
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seqi : t -> (int * char) Seq.t
  *)
@@ -27,6 +30,7 @@ val of_seq : char Seq.t -> t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val of_seq : char Stdcompat__seq.t -> t
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val of_seq : char Seq.t -> t
  *)
@@ -35,6 +39,7 @@ val sub_string : bytes -> pos:int -> len:int -> string
 @END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
 val sub_string : Stdcompat__init.bytes -> pos:int -> len:int -> string
+
 @END_BEFORE_4_06_0@
 (** @since 4.06.0: val sub_string : bytes -> pos:int -> len:int -> string
  *)
@@ -44,6 +49,7 @@ val extend : bytes -> left:int -> right:int -> bytes
 @BEGIN_BEFORE_4_05_0@
 val extend :
   Stdcompat__init.bytes -> left:int -> right:int -> Stdcompat__init.bytes
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: val extend : bytes -> left:int -> right:int -> bytes
  *)
@@ -56,6 +62,7 @@ val blit_string :
   src:string ->
     src_pos:int ->
       dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0:
     val blit_string :
@@ -68,6 +75,7 @@ val cat : bytes -> bytes -> bytes
 @BEGIN_BEFORE_4_05_0@
 val cat :
   Stdcompat__init.bytes -> Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: val cat : bytes -> bytes -> bytes
  *)
@@ -76,6 +84,7 @@ val index_opt : bytes -> char -> int option
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val index_opt : Stdcompat__init.bytes -> char -> int option
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: val index_opt : bytes -> char -> int option
  *)
@@ -84,6 +93,7 @@ val rindex_opt : bytes -> char -> int option
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val rindex_opt : Stdcompat__init.bytes -> char -> int option
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: val rindex_opt : bytes -> char -> int option
  *)
@@ -92,6 +102,7 @@ val index_from_opt : bytes -> int -> char -> int option
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val index_from_opt : Stdcompat__init.bytes -> int -> char -> int option
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: val index_from_opt : bytes -> int -> char -> int option
  *)
@@ -100,6 +111,7 @@ val rindex_from_opt : bytes -> int -> char -> int option
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val rindex_from_opt : Stdcompat__init.bytes -> int -> char -> int option
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: val rindex_from_opt : bytes -> int -> char -> int option
  *)
@@ -108,6 +120,7 @@ val uppercase_ascii : bytes -> bytes
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val uppercase_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: val uppercase_ascii : bytes -> bytes
  *)
@@ -116,6 +129,7 @@ val lowercase_ascii : bytes -> bytes
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val lowercase_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: val lowercase_ascii : bytes -> bytes
  *)
@@ -124,6 +138,7 @@ val capitalize_ascii : bytes -> bytes
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val capitalize_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: val capitalize_ascii : bytes -> bytes
  *)
@@ -132,10 +147,17 @@ val uncapitalize_ascii : bytes -> bytes
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val uncapitalize_ascii : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: val uncapitalize_ascii : bytes -> bytes
  *)
+@BEGIN_FROM_4_05_0@
 val equal : t -> t -> bool
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+val equal : t -> t -> bool
+
+@END_BEFORE_4_05_0@
 (** @since 4.05.0: val equal : t -> t -> bool
  *)
 @BEGIN_FROM_4_04_0@
@@ -147,6 +169,7 @@ external length : bytes -> int = "%string_length"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val length : Stdcompat__init.bytes -> int
+
 @END_BEFORE_4_02_0@
 
 @END_BEFORE_4_04_0@
@@ -162,6 +185,7 @@ external get : bytes -> int -> char = "%string_safe_get"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val get : Stdcompat__init.bytes -> int -> char
+
 @END_BEFORE_4_02_0@
 
 @END_BEFORE_4_04_0@
@@ -177,6 +201,7 @@ external set : bytes -> int -> char -> unit = "%string_safe_set"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val set : Stdcompat__init.bytes -> int -> char -> unit
+
 @END_BEFORE_4_02_0@
 
 @END_BEFORE_4_04_0@
@@ -194,6 +219,7 @@ external create : int -> bytes = "caml_create_string"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val create : int -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 
 @END_BEFORE_4_04_0@
@@ -205,6 +231,7 @@ val make : int -> char -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val make : int -> char -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val make : int -> char -> bytes
  *)
@@ -213,6 +240,7 @@ val init : int -> f:(int -> char) -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val init : int -> f:(int -> char) -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val init : int -> f:(int -> char) -> bytes
  *)
@@ -221,6 +249,7 @@ val empty : bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val empty : Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val empty : bytes
  *)
@@ -229,6 +258,7 @@ val copy : bytes -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val copy : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val copy : bytes -> bytes
  *)
@@ -237,6 +267,7 @@ val of_string : string -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val of_string : string -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val of_string : string -> bytes
  *)
@@ -245,6 +276,7 @@ val to_string : bytes -> string
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val to_string : Stdcompat__init.bytes -> string
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val to_string : bytes -> string
  *)
@@ -254,6 +286,7 @@ val sub : bytes -> pos:int -> len:int -> bytes
 @BEGIN_BEFORE_4_02_0@
 val sub :
   Stdcompat__init.bytes -> pos:int -> len:int -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val sub : bytes -> pos:int -> len:int -> bytes
  *)
@@ -262,6 +295,7 @@ val fill : bytes -> pos:int -> len:int -> char -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val fill : Stdcompat__init.bytes -> pos:int -> len:int -> char -> unit
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val fill : bytes -> pos:int -> len:int -> char -> unit
  *)
@@ -274,6 +308,7 @@ val blit :
   src:Stdcompat__init.bytes ->
     src_pos:int ->
       dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val blit :
@@ -286,6 +321,7 @@ val concat : sep:bytes -> bytes list -> bytes
 val concat :
   sep:Stdcompat__init.bytes ->
     Stdcompat__init.bytes list -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val concat : sep:bytes -> bytes list -> bytes
  *)
@@ -294,6 +330,7 @@ val iter : f:(char -> unit) -> bytes -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val iter : f:(char -> unit) -> Stdcompat__init.bytes -> unit
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val iter : f:(char -> unit) -> bytes -> unit
  *)
@@ -302,6 +339,7 @@ val iteri : f:(int -> char -> unit) -> bytes -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val iteri : f:(int -> char -> unit) -> Stdcompat__init.bytes -> unit
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val iteri : f:(int -> char -> unit) -> bytes -> unit
  *)
@@ -310,6 +348,7 @@ val map : f:(char -> char) -> bytes -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val map : f:(char -> char) -> Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val map : f:(char -> char) -> bytes -> bytes
  *)
@@ -319,6 +358,7 @@ val mapi : f:(int -> char -> char) -> bytes -> bytes
 @BEGIN_BEFORE_4_02_0@
 val mapi :
   f:(int -> char -> char) -> Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val mapi : f:(int -> char -> char) -> bytes -> bytes
  *)
@@ -327,6 +367,7 @@ val trim : bytes -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val trim : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val trim : bytes -> bytes
  *)
@@ -335,6 +376,7 @@ val escaped : bytes -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val escaped : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val escaped : bytes -> bytes
  *)
@@ -343,6 +385,7 @@ val index : bytes -> char -> int
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val index : Stdcompat__init.bytes -> char -> int
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val index : bytes -> char -> int
  *)
@@ -351,6 +394,7 @@ val rindex : bytes -> char -> int
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val rindex : Stdcompat__init.bytes -> char -> int
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val rindex : bytes -> char -> int
  *)
@@ -359,6 +403,7 @@ val index_from : bytes -> int -> char -> int
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val index_from : Stdcompat__init.bytes -> int -> char -> int
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val index_from : bytes -> int -> char -> int
  *)
@@ -367,6 +412,7 @@ val rindex_from : bytes -> int -> char -> int
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val rindex_from : Stdcompat__init.bytes -> int -> char -> int
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val rindex_from : bytes -> int -> char -> int
  *)
@@ -375,6 +421,7 @@ val contains : bytes -> char -> bool
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val contains : Stdcompat__init.bytes -> char -> bool
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val contains : bytes -> char -> bool
  *)
@@ -383,6 +430,7 @@ val contains_from : bytes -> int -> char -> bool
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val contains_from : Stdcompat__init.bytes -> int -> char -> bool
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val contains_from : bytes -> int -> char -> bool
  *)
@@ -391,42 +439,93 @@ val rcontains_from : bytes -> int -> char -> bool
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val rcontains_from : Stdcompat__init.bytes -> int -> char -> bool
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val rcontains_from : bytes -> int -> char -> bool
  *)
+@BEGIN_FROM_4_05_0@
+val uppercase : bytes -> bytes[@@ocaml.deprecated
+                                "Use Bytes.uppercase_ascii instead."]
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
 @BEGIN_FROM_4_02_0@
 val uppercase : bytes -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val uppercase : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
-(** @since 4.02.0: val uppercase : bytes -> bytes
+
+@END_BEFORE_4_05_0@
+(** @since 4.05.0:
+    val uppercase : bytes -> bytes[@@ocaml.deprecated
+                                    "Use Bytes.uppercase_ascii instead."]
+@since 4.02.0: val uppercase : bytes -> bytes
  *)
+@BEGIN_FROM_4_05_0@
+val lowercase : bytes -> bytes[@@ocaml.deprecated
+                                "Use Bytes.lowercase_ascii instead."]
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
 @BEGIN_FROM_4_02_0@
 val lowercase : bytes -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val lowercase : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
-(** @since 4.02.0: val lowercase : bytes -> bytes
+
+@END_BEFORE_4_05_0@
+(** @since 4.05.0:
+    val lowercase : bytes -> bytes[@@ocaml.deprecated
+                                    "Use Bytes.lowercase_ascii instead."]
+@since 4.02.0: val lowercase : bytes -> bytes
  *)
+@BEGIN_FROM_4_05_0@
+val capitalize : bytes -> bytes[@@ocaml.deprecated
+                                 "Use Bytes.capitalize_ascii instead."]
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
 @BEGIN_FROM_4_02_0@
 val capitalize : bytes -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val capitalize : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
-(** @since 4.02.0: val capitalize : bytes -> bytes
+
+@END_BEFORE_4_05_0@
+(** @since 4.05.0:
+    val capitalize : bytes -> bytes[@@ocaml.deprecated
+                                     "Use Bytes.capitalize_ascii instead."]
+@since 4.02.0: val capitalize : bytes -> bytes
  *)
+@BEGIN_FROM_4_05_0@
+val uncapitalize : bytes -> bytes[@@ocaml.deprecated
+                                   "Use Bytes.uncapitalize_ascii instead."]
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
 @BEGIN_FROM_4_02_0@
 val uncapitalize : bytes -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val uncapitalize : Stdcompat__init.bytes -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
-(** @since 4.02.0: val uncapitalize : bytes -> bytes
+
+@END_BEFORE_4_05_0@
+(** @since 4.05.0:
+    val uncapitalize : bytes -> bytes[@@ocaml.deprecated
+                                       "Use Bytes.uncapitalize_ascii instead."]
+@since 4.02.0: val uncapitalize : bytes -> bytes
  *)
+@BEGIN_FROM_4_02_0@
 val compare : t -> t -> int
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val compare : t -> t -> int
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0: val compare : t -> t -> int
  *)
 @BEGIN_FROM_4_04_0@
@@ -438,6 +537,7 @@ external unsafe_get : bytes -> int -> char = "%string_unsafe_get"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val unsafe_get : Stdcompat__init.bytes -> int -> char
+
 @END_BEFORE_4_02_0@
 
 @END_BEFORE_4_04_0@
@@ -455,6 +555,7 @@ external unsafe_set : bytes -> int -> char -> unit = "%string_unsafe_set"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val unsafe_set : Stdcompat__init.bytes -> int -> char -> unit
+
 @END_BEFORE_4_02_0@
 
 @END_BEFORE_4_04_0@
@@ -485,6 +586,7 @@ val unsafe_blit :
   src:Stdcompat__init.bytes ->
     src_pos:int ->
       dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
+
 @END_BEFORE_4_02_0@
 
 @END_BEFORE_4_03_0@
@@ -520,6 +622,7 @@ external unsafe_fill :
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val unsafe_fill : Stdcompat__init.bytes -> pos:int -> len:int -> char -> unit
+
 @END_BEFORE_4_02_0@
 
 @END_BEFORE_4_03_0@
@@ -542,6 +645,7 @@ val unsafe_to_string : bytes -> string
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val unsafe_to_string : Stdcompat__init.bytes -> string
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val unsafe_to_string : bytes -> string
  *)
@@ -550,6 +654,7 @@ val unsafe_of_string : string -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val unsafe_of_string : string -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val unsafe_of_string : string -> bytes
  *)

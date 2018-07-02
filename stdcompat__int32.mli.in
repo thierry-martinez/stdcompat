@@ -1,10 +1,66 @@
 type t = int32
 (** Alias for {!Int32.t} *)
+@BEGIN_FROM_4_05_0@
 val of_string_opt : string -> int32 option
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+val of_string_opt : string -> int32 option
+
+@END_BEFORE_4_05_0@
 (** @since 4.05.0: val of_string_opt : string -> int32 option
  *)
+@BEGIN_FROM_4_03_0@
 val equal : t -> t -> bool
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val equal : t -> t -> bool
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val equal : t -> t -> bool
+ *)
+@BEGIN_FROM_4_03_0@
+external bits_of_float :
+  float -> int32 = "caml_int32_bits_of_float"
+    "caml_int32_bits_of_float_unboxed"[@@unboxed ][@@noalloc ]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+@BEGIN_FROM_3_08_0@
+external bits_of_float : float -> int32 = "caml_int32_bits_of_float"
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+val bits_of_float : float -> int32
+
+@END_BEFORE_3_08_0@
+
+@END_BEFORE_4_03_0@
+(** @since 4.03.0:
+    external bits_of_float :
+      float -> int32 = "caml_int32_bits_of_float"
+        "caml_int32_bits_of_float_unboxed"[@@unboxed ][@@noalloc ]
+@since 3.08.0:
+external bits_of_float : float -> int32 = "caml_int32_bits_of_float"
+ *)
+@BEGIN_FROM_4_03_0@
+external float_of_bits :
+  int32 -> float = "caml_int32_float_of_bits"
+    "caml_int32_float_of_bits_unboxed"[@@unboxed ][@@noalloc ]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+@BEGIN_FROM_3_08_0@
+external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+val float_of_bits : int32 -> float
+
+@END_BEFORE_3_08_0@
+
+@END_BEFORE_4_03_0@
+(** @since 4.03.0:
+    external float_of_bits :
+      int32 -> float = "caml_int32_float_of_bits"
+        "caml_int32_float_of_bits_unboxed"[@@unboxed ][@@noalloc ]
+@since 3.08.0:
+external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
  *)
 val zero : int32
 (** Alias for {!Int32.zero} *)
@@ -58,13 +114,21 @@ external of_float :
 [@@unboxed ][@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
+@BEGIN_FROM_3_08_0@
 external of_float : float -> int32 = "caml_int32_of_float"
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external of_float : float -> int32 = "int32_of_float"
+
+@END_BEFORE_3_08_0@
+
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     external of_float :
       float -> int32 = "caml_int32_of_float" "caml_int32_of_float_unboxed"
     [@@unboxed ][@@noalloc ]
-@since 3.11.0: external of_float : float -> int32 = "caml_int32_of_float"
+@since 3.08.0: external of_float : float -> int32 = "caml_int32_of_float"
+@since 3.07.0: external of_float : float -> int32 = "int32_of_float"
  *)
 @BEGIN_FROM_4_03_0@
 external to_float :
@@ -72,49 +136,45 @@ external to_float :
 [@@unboxed ][@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
+@BEGIN_FROM_3_08_0@
 external to_float : int32 -> float = "caml_int32_to_float"
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external to_float : int32 -> float = "int32_to_float"
+
+@END_BEFORE_3_08_0@
+
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     external to_float :
       int32 -> float = "caml_int32_to_float" "caml_int32_to_float_unboxed"
     [@@unboxed ][@@noalloc ]
-@since 3.11.0: external to_float : int32 -> float = "caml_int32_to_float"
+@since 3.08.0: external to_float : int32 -> float = "caml_int32_to_float"
+@since 3.07.0: external to_float : int32 -> float = "int32_to_float"
  *)
+@BEGIN_FROM_3_08_0@
 external of_string : string -> int32 = "caml_int32_of_string"
-(** Alias for {!Int32.of_string} *)
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external of_string : string -> int32 = "int32_of_string"
+
+@END_BEFORE_3_08_0@
+(** @since 3.08.0:
+    external of_string : string -> int32 = "caml_int32_of_string"
+@since 3.07.0: external of_string : string -> int32 = "int32_of_string"
+ *)
 val to_string : int32 -> string
 (** Alias for {!Int32.to_string} *)
-@BEGIN_FROM_4_03_0@
-external bits_of_float :
-  float -> int32 = "caml_int32_bits_of_float"
-    "caml_int32_bits_of_float_unboxed"[@@unboxed ][@@noalloc ]
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-external bits_of_float : float -> int32 = "caml_int32_bits_of_float"
-@END_BEFORE_4_03_0@
-(** @since 4.03.0:
-    external bits_of_float :
-      float -> int32 = "caml_int32_bits_of_float"
-        "caml_int32_bits_of_float_unboxed"[@@unboxed ][@@noalloc ]
-@since 3.11.0:
-external bits_of_float : float -> int32 = "caml_int32_bits_of_float"
- *)
-@BEGIN_FROM_4_03_0@
-external float_of_bits :
-  int32 -> float = "caml_int32_float_of_bits"
-    "caml_int32_float_of_bits_unboxed"[@@unboxed ][@@noalloc ]
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
-@END_BEFORE_4_03_0@
-(** @since 4.03.0:
-    external float_of_bits :
-      int32 -> float = "caml_int32_float_of_bits"
-        "caml_int32_float_of_bits_unboxed"[@@unboxed ][@@noalloc ]
-@since 3.11.0:
-external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
- *)
 val compare : t -> t -> int
 (** Alias for {!Int32.compare} *)
+@BEGIN_FROM_3_08_0@
 external format : string -> int32 -> string = "caml_int32_format"
-(** Alias for {!Int32.format} *)
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external format : string -> int32 -> string = "int32_format"
+
+@END_BEFORE_3_08_0@
+(** @since 3.08.0:
+    external format : string -> int32 -> string = "caml_int32_format"
+@since 3.07.0: external format : string -> int32 -> string = "int32_format"
+ *)

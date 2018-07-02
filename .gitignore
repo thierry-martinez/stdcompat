@@ -17,8 +17,10 @@ _build/
 /META
 /stdcompat.ml_byte
 /stdcompat.ml_native
-/interface_generator
 /.depend
 /stdcompat_*.ml
 /stdcompat_*.mli
 /configure
+/interface_generator/interface_dumper
+/interface_generator/interface_generator
+/interface_generator/.depend

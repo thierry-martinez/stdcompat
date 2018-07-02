@@ -7,40 +7,85 @@ and 'a node = 'a Seq.node =
 @BEGIN_BEFORE_4_07_0@
 type 'a t = unit -> 'a node
 and 'a node =
-@BEGIN_WITH_SEQ_PKG@
-  'a Seq.node =
-@END_WITH_SEQ_PKG@
+  | Nil 
+  | Cons of 'a * 'a t 
 
-  | Nil
-  | Cons of 'a * 'a t
 @END_BEFORE_4_07_0@
 (** @since 4.07.0:
     type 'a t = unit -> 'a node
-    and 'a node = 'a Seq.node =
+    and 'a node =
       | Nil 
       | Cons of 'a * 'a t 
  *)
+@BEGIN_FROM_4_07_0@
 val empty : 'a t
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+val empty : 'a t
+
+@END_BEFORE_4_07_0@
 (** @since 4.07.0: val empty : 'a t
  *)
+@BEGIN_FROM_4_07_0@
 val return : 'a -> 'a t
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+val return : 'a -> 'a t
+
+@END_BEFORE_4_07_0@
 (** @since 4.07.0: val return : 'a -> 'a t
  *)
+@BEGIN_FROM_4_07_0@
 val map : ('a -> 'b) -> 'a t -> 'b t
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+val map : ('a -> 'b) -> 'a t -> 'b t
+
+@END_BEFORE_4_07_0@
 (** @since 4.07.0: val map : ('a -> 'b) -> 'a t -> 'b t
  *)
+@BEGIN_FROM_4_07_0@
 val filter : ('a -> bool) -> 'a t -> 'a t
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+val filter : ('a -> bool) -> 'a t -> 'a t
+
+@END_BEFORE_4_07_0@
 (** @since 4.07.0: val filter : ('a -> bool) -> 'a t -> 'a t
  *)
+@BEGIN_FROM_4_07_0@
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+val filter_map : ('a -> 'b option) -> 'a t -> 'b t
+
+@END_BEFORE_4_07_0@
 (** @since 4.07.0: val filter_map : ('a -> 'b option) -> 'a t -> 'b t
  *)
+@BEGIN_FROM_4_07_0@
 val flat_map : ('a -> 'b t) -> 'a t -> 'b t
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+val flat_map : ('a -> 'b t) -> 'a t -> 'b t
+
+@END_BEFORE_4_07_0@
 (** @since 4.07.0: val flat_map : ('a -> 'b t) -> 'a t -> 'b t
  *)
+@BEGIN_FROM_4_07_0@
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+
+@END_BEFORE_4_07_0@
 (** @since 4.07.0: val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
  *)
+@BEGIN_FROM_4_07_0@
 val iter : ('a -> unit) -> 'a t -> unit
+@END_FROM_4_07_0@
+@BEGIN_BEFORE_4_07_0@
+val iter : ('a -> unit) -> 'a t -> unit
+
+@END_BEFORE_4_07_0@
 (** @since 4.07.0: val iter : ('a -> unit) -> 'a t -> unit
  *)

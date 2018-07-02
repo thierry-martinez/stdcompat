@@ -1,6 +1,12 @@
 type t = string
 (** Alias for {!Digest.t} *)
+@BEGIN_FROM_4_03_0@
 val equal : t -> t -> bool
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val equal : t -> t -> bool
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val equal : t -> t -> bool
  *)
 @BEGIN_FROM_4_02_0@
@@ -8,6 +14,7 @@ val bytes : bytes -> t
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val bytes : Stdcompat__init.bytes -> t
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val bytes : bytes -> t
  *)
@@ -16,21 +23,43 @@ val subbytes : bytes -> int -> int -> t
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val subbytes : Stdcompat__init.bytes -> int -> int -> t
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val subbytes : bytes -> int -> int -> t
  *)
+@BEGIN_FROM_4_00_0@
 val compare : t -> t -> int
+@END_FROM_4_00_0@
+@BEGIN_BEFORE_4_00_0@
+val compare : t -> t -> int
+
+@END_BEFORE_4_00_0@
 (** @since 4.00.0: val compare : t -> t -> int
  *)
+@BEGIN_FROM_4_00_0@
 val from_hex : string -> t
+@END_FROM_4_00_0@
+@BEGIN_BEFORE_4_00_0@
+val from_hex : string -> t
+
+@END_BEFORE_4_00_0@
 (** @since 4.00.0: val from_hex : string -> t
  *)
 val string : string -> t
 (** Alias for {!Digest.string} *)
 val substring : string -> int -> int -> t
 (** Alias for {!Digest.substring} *)
+@BEGIN_FROM_3_08_0@
 external channel : in_channel -> int -> t = "caml_md5_chan"
-(** Alias for {!Digest.channel} *)
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external channel : in_channel -> int -> t = "md5_chan"
+
+@END_BEFORE_3_08_0@
+(** @since 3.08.0:
+    external channel : in_channel -> int -> t = "caml_md5_chan"
+@since 3.07.0: external channel : in_channel -> int -> t = "md5_chan"
+ *)
 val file : string -> t
 (** Alias for {!Digest.file} *)
 val output : out_channel -> t -> unit

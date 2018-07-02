@@ -74,8 +74,14 @@ let usage_string l msg =
   failwith "Not implemented"
 @END_BEFORE_3_12_0@
 
+@BEGIN_FROM_3_08_0@
 let align ?limit l =
   expand_list (Arg.align (no_expand_list l))
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+let align ?limit l =
+  failwith "Not implemented"
+@END_BEFORE_3_08_0@
 
 let parse l anon msg =
   Arg.parse (no_expand_list l) anon msg

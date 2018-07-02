@@ -5,6 +5,7 @@ val of_bytes : bytes -> char t
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val of_bytes : Stdcompat__init.bytes -> char t
+
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val of_bytes : bytes -> char t
  *)

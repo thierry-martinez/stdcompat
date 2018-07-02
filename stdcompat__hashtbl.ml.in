@@ -28,8 +28,6 @@ let iter = Hashtbl.iter
 
 let fold = Hashtbl.fold
 
-let length = Hashtbl.length
-
 module type HashedType = Hashtbl.HashedType
 
 let hash = Hashtbl.hash
@@ -104,6 +102,21 @@ let filter_map_inplace filter table =
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_03_0@
 
+@BEGIN_FROM_3_08_0@
+let length = Hashtbl.length
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+@BEGIN_WITH_MAGIC@
+let length (table : ('a, 'b) t) =
+  let table : ('a, 'b) Stdcompat_hashtbl_ext.internal = Obj.magic table in
+  table.Stdcompat_hashtbl_ext.size
+@END_WITH_MAGIC@
+@BEGIN_WITHOUT_MAGIC@
+let length table =
+  fold (fun _ _ counter -> succ counter) table 0
+@END_WITHOUT_MAGIC@
+@END_BEFORE_3_08_0@
+
 @BEGIN_FROM_4_00_0@
 let create = Hashtbl.create
 
@@ -126,8 +139,14 @@ let reset = clear
 
 let randomize () = ()
 
+@BEGIN_FROM_3_08_0@
 external hash_param :
   int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external hash_param :
+  int -> int -> 'a -> int = "hash_univ_param" "noalloc"
+@END_BEFORE_3_08_0@
 
 let seeded_hash seed x = Hashtbl.hash (seed, x)
 
@@ -221,6 +240,18 @@ module Make (H : HashedType) = struct
     Stdcompat_hashtbl_ext.filter_map_inplace dict filter table
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_03_0@
+
+@BEGIN_BEFORE_3_08_0@
+@BEGIN_WITH_MAGIC@
+  let length (table : 'a t) =
+    let table : (key, 'a) Stdcompat_hashtbl_ext.internal = Obj.magic table in
+    table.Stdcompat_hashtbl_ext.size
+@END_WITH_MAGIC@
+@BEGIN_WITHOUT_MAGIC@
+  let length table =
+    fold (fun _ _ counter -> succ counter) table 0
+@END_WITHOUT_MAGIC@
+@END_BEFORE_3_08_0@
 
 @BEGIN_BEFORE_4_00_0@
   let create capacity = create capacity
@@ -335,6 +366,18 @@ module MakeSeeded (H : SeededHashedType) = struct
     Stdcompat_hashtbl_ext.filter_map_inplace dict filter table
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_03_0@
+
+@BEGIN_BEFORE_3_08_0@
+@BEGIN_WITH_MAGIC@
+let length (table : 'a t) =
+  let table : (key, 'a) Stdcompat_hashtbl_ext.internal = Obj.magic table in
+  table.Stdcompat_hashtbl_ext.size
+@END_WITH_MAGIC@
+@BEGIN_WITHOUT_MAGIC@
+let length table =
+  fold (fun _ _ counter -> succ counter) table 0
+@END_WITHOUT_MAGIC@
+@END_BEFORE_3_08_0@
 
 @BEGIN_BEFORE_4_00_0@
   let create ?random capacity = create capacity

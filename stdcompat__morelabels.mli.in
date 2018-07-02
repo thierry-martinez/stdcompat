@@ -152,6 +152,7 @@ sig
   val hash_param : int -> int -> 'a -> int
   val seeded_hash_param : int -> int -> int -> 'a -> int
 end
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Hashtbl = MoreLabels.Hashtbl
  *)
@@ -254,6 +255,7 @@ sig
       val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
     end
 end
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Map = MoreLabels.Map
  *)
@@ -354,6 +356,7 @@ sig
       val of_seq : elt Stdcompat__seq.t -> t
     end
 end
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Set = MoreLabels.Set
  *)

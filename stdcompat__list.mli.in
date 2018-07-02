@@ -3,6 +3,7 @@ val to_seq : 'a list -> 'a Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seq : 'a list -> 'a Stdcompat__seq.t
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seq : 'a list -> 'a Seq.t
  *)
@@ -11,40 +12,107 @@ val of_seq : 'a Seq.t -> 'a list
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val of_seq : 'a Stdcompat__seq.t -> 'a list
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val of_seq : 'a Seq.t -> 'a list
  *)
+@BEGIN_FROM_4_06_0@
 val init : int -> (int -> 'a) -> 'a list
+@END_FROM_4_06_0@
+@BEGIN_BEFORE_4_06_0@
+val init : int -> (int -> 'a) -> 'a list
+
+@END_BEFORE_4_06_0@
 (** @since 4.06.0: val init : int -> (int -> 'a) -> 'a list
  *)
+@BEGIN_FROM_4_05_0@
 val compare_lengths : 'a list -> 'b list -> int
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+val compare_lengths : 'a list -> 'b list -> int
+
+@END_BEFORE_4_05_0@
 (** @since 4.05.0: val compare_lengths : 'a list -> 'b list -> int
  *)
+@BEGIN_FROM_4_05_0@
 val compare_length_with : 'a list -> int -> int
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+val compare_length_with : 'a list -> int -> int
+
+@END_BEFORE_4_05_0@
 (** @since 4.05.0: val compare_length_with : 'a list -> int -> int
  *)
+@BEGIN_FROM_4_05_0@
 val nth_opt : 'a list -> int -> 'a option
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+val nth_opt : 'a list -> int -> 'a option
+
+@END_BEFORE_4_05_0@
 (** @since 4.05.0: val nth_opt : 'a list -> int -> 'a option
  *)
+@BEGIN_FROM_4_05_0@
 val find_opt : ('a -> bool) -> 'a list -> 'a option
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+val find_opt : ('a -> bool) -> 'a list -> 'a option
+
+@END_BEFORE_4_05_0@
 (** @since 4.05.0: val find_opt : ('a -> bool) -> 'a list -> 'a option
  *)
+@BEGIN_FROM_4_05_0@
 val assoc_opt : 'a -> ('a * 'b) list -> 'b option
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+val assoc_opt : 'a -> ('a * 'b) list -> 'b option
+
+@END_BEFORE_4_05_0@
 (** @since 4.05.0: val assoc_opt : 'a -> ('a * 'b) list -> 'b option
  *)
+@BEGIN_FROM_4_05_0@
 val assq_opt : 'a -> ('a * 'b) list -> 'b option
+@END_FROM_4_05_0@
+@BEGIN_BEFORE_4_05_0@
+val assq_opt : 'a -> ('a * 'b) list -> 'b option
+
+@END_BEFORE_4_05_0@
 (** @since 4.05.0: val assq_opt : 'a -> ('a * 'b) list -> 'b option
  *)
+@BEGIN_FROM_4_03_0@
 val cons : 'a -> 'a list -> 'a list
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val cons : 'a -> 'a list -> 'a list
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val cons : 'a -> 'a list -> 'a list
  *)
+@BEGIN_FROM_4_02_0@
 val sort_uniq : ('a -> 'a -> int) -> 'a list -> 'a list
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val sort_uniq : ('a -> 'a -> int) -> 'a list -> 'a list
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0: val sort_uniq : ('a -> 'a -> int) -> 'a list -> 'a list
  *)
+@BEGIN_FROM_4_00_0@
 val iteri : (int -> 'a -> unit) -> 'a list -> unit
+@END_FROM_4_00_0@
+@BEGIN_BEFORE_4_00_0@
+val iteri : (int -> 'a -> unit) -> 'a list -> unit
+
+@END_BEFORE_4_00_0@
 (** @since 4.00.0: val iteri : (int -> 'a -> unit) -> 'a list -> unit
  *)
+@BEGIN_FROM_4_00_0@
 val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list
+@END_FROM_4_00_0@
+@BEGIN_BEFORE_4_00_0@
+val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list
+
+@END_BEFORE_4_00_0@
 (** @since 4.00.0: val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list
  *)
 val length : 'a list -> int

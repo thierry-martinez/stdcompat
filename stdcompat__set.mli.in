@@ -1,7 +1,5 @@
 module type OrderedType  = sig type t val compare : t -> t -> int end
-(** @since 4.07.0:
-    module type OrderedType  = sig type t val compare : t -> t -> int end
- *)
+(** Alias for {!Set.OrderedType} *)
 @BEGIN_FROM_4_07_0@
 module type S  =
   sig
@@ -93,6 +91,7 @@ module type S  =
     val add_seq : elt Stdcompat__seq.t -> t -> t
     val of_seq : elt Stdcompat__seq.t -> t
   end
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0:
     module type S  =
@@ -145,7 +144,7 @@ module Make = Set.Make
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module Make :
-functor (Ord : Set.OrderedType) ->
+functor (Ord : OrderedType) ->
   sig
     type elt = Ord.t
     type t
@@ -189,6 +188,7 @@ functor (Ord : Set.OrderedType) ->
     val add_seq : elt Stdcompat__seq.t -> t -> t
     val of_seq : elt Stdcompat__seq.t -> t
   end
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Make = Set.Make
  *)

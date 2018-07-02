@@ -14,12 +14,30 @@ type ('a, 'b) bucketlist =
   | Empty
   | Cons of 'a * 'b * ('a, 'b) bucketlist
 
+@BEGIN_FROM_4_04_0@
 type ('a, 'b) internal =
     { mutable size: int;
       mutable data: ('a, 'b) bucketlist array;
       mutable seed: int;
       mutable initial_size: int;
     }
+@END_FROM_4_04_0@
+@BEGIN_BEFORE_4_04_0@
+@BEGIN_FROM_4_00_0@
+type ('a, 'b) internal =
+    { mutable size: int;
+      mutable data: ('a, 'b) bucketlist array;
+      mutable seed: int;
+      initial_size: int;
+    }
+@END_FROM_4_00_0@
+@BEGIN_BEFORE_4_00_0@
+type ('a, 'b) internal =
+    { mutable size: int;
+      mutable data: ('a, 'b) bucketlist array;
+    }
+@END_BEFORE_4_00_0@
+@END_BEFORE_4_04_0@
 
 val filter_map_inplace : ('a -> 'b -> 'b option) -> 'c -> unit
 

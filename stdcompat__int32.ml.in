@@ -8,3 +8,11 @@ let equal : t -> t -> bool = ( = )
 let of_string_opt s =
   Stdcompat__tools.option_fail of_string s
 @END_BEFORE_4_05_0@
+
+@BEGIN_BEFORE_3_08_0@
+let float_of_bits _ =
+  failwith "Not implemented"
+
+let bits_of_float _ =
+  failwith "Not implemented"
+@END_BEFORE_3_08_0@

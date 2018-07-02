@@ -1,5 +1,9 @@
 include StringLabels
 
+@BEGIN_BEFORE_3_08_0@
+type t = string
+@END_BEFORE_3_08_0@
+
 @BEGIN_BEFORE_4_07_0@
 let of_seq g = Buffer.contents (Stdcompat__buffer.of_seq g)
 
@@ -68,3 +72,7 @@ let map ~f s =
 let trim s =
   Stdcompat__string.trim s
 @END_BEFORE_4_00_0@
+
+@BEGIN_BEFORE_3_08_0@
+let compare : t -> t -> int = compare
+@END_BEFORE_3_08_0@

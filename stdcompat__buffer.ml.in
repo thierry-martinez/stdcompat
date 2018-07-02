@@ -8,6 +8,14 @@ let add_bytes = add_string
 let add_subbytes = add_substring
 @END_BEFORE_4_02_0@
 
+@BEGIN_BEFORE_3_08_0@
+let sub buffer offset length =
+  String.sub (contents buffer) offset length
+
+let nth buffer offset =
+  (contents buffer).[offset]
+@END_BEFORE_3_08_0@
+
 @BEGIN_BEFORE_4_05_0@
 let truncate b len =
   let s = sub b 0 len in
@@ -86,3 +94,9 @@ let to_seq b = Stdcompat__tools.vec_to_seq length nth b
 
 let to_seqi b = Stdcompat__tools.vec_to_seqi length nth b
 @END_BEFORE_4_07_0@
+
+@BEGIN_BEFORE_3_11_0@
+let blit src srcoff dst dstoff len =
+  String.blit (contents src) srcoff dst dstoff len
+@END_BEFORE_3_11_0@
+

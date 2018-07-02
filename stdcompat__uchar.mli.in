@@ -1,65 +1,162 @@
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_03_0@
 type t = Uchar.t
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
-@BEGIN_WITH_UCHAR_PKG@
-type t = Uchar.t
-@END_WITH_UCHAR_PKG@
-@BEGIN_WITHOUT_UCHAR_PKG@
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
 type t
-@END_WITHOUT_UCHAR_PKG@
 
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: type t = Uchar.t
+@END_BEFORE_4_03_0@
+(** @since 4.03.0: type t
  *)
+@BEGIN_FROM_4_06_0@
 val bom : t
+@END_FROM_4_06_0@
+@BEGIN_BEFORE_4_06_0@
+val bom : t
+
+@END_BEFORE_4_06_0@
 (** @since 4.06.0: val bom : t
  *)
+@BEGIN_FROM_4_06_0@
 val rep : t
+@END_FROM_4_06_0@
+@BEGIN_BEFORE_4_06_0@
+val rep : t
+
+@END_BEFORE_4_06_0@
 (** @since 4.06.0: val rep : t
  *)
+@BEGIN_FROM_4_03_0@
 val min : t
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val min : t
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val min : t
  *)
+@BEGIN_FROM_4_03_0@
 val max : t
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val max : t
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val max : t
  *)
+@BEGIN_FROM_4_03_0@
 val succ : t -> t
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val succ : t -> t
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val succ : t -> t
  *)
+@BEGIN_FROM_4_03_0@
 val pred : t -> t
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val pred : t -> t
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val pred : t -> t
  *)
+@BEGIN_FROM_4_03_0@
 val is_valid : int -> bool
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val is_valid : int -> bool
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val is_valid : int -> bool
  *)
+@BEGIN_FROM_4_03_0@
 val of_int : int -> t
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val of_int : int -> t
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val of_int : int -> t
  *)
+@BEGIN_FROM_4_03_0@
 val unsafe_of_int : int -> t
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val unsafe_of_int : int -> t
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val unsafe_of_int : int -> t
  *)
+@BEGIN_FROM_4_03_0@
 val to_int : t -> int
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val to_int : t -> int
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val to_int : t -> int
  *)
+@BEGIN_FROM_4_03_0@
 val is_char : t -> bool
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val is_char : t -> bool
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val is_char : t -> bool
  *)
+@BEGIN_FROM_4_03_0@
 val of_char : char -> t
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val of_char : char -> t
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val of_char : char -> t
  *)
+@BEGIN_FROM_4_03_0@
 val to_char : t -> char
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val to_char : t -> char
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val to_char : t -> char
  *)
+@BEGIN_FROM_4_03_0@
 val unsafe_to_char : t -> char
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val unsafe_to_char : t -> char
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val unsafe_to_char : t -> char
  *)
+@BEGIN_FROM_4_03_0@
 val equal : t -> t -> bool
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val equal : t -> t -> bool
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val equal : t -> t -> bool
  *)
+@BEGIN_FROM_4_03_0@
 val compare : t -> t -> int
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val compare : t -> t -> int
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val compare : t -> t -> int
  *)
+@BEGIN_FROM_4_03_0@
 val hash : t -> int
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val hash : t -> int
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val hash : t -> int
  *)

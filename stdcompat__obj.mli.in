@@ -1,12 +1,12 @@
 type t = Obj.t
 (** Alias for {!Obj.t} *)
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_03_0@
 module Ephemeron = Obj.Ephemeron
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
 module Ephemeron :
 sig
-  type obj_t = Obj.t
+  type obj_t = t
   type t
   val create : int -> t
   val length : t -> int
@@ -23,57 +23,142 @@ sig
   val check_data : t -> bool
   val blit_data : t -> t -> unit
 end
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: module Ephemeron = Obj.Ephemeron
+
+@END_BEFORE_4_03_0@
+(** @since 4.03.0: module Ephemeron = Obj.Ephemeron
  *)
 @BEGIN_FROM_4_04_0@
 external reachable_words : t -> int = "caml_obj_reachable_words"
 @END_FROM_4_04_0@
 @BEGIN_BEFORE_4_04_0@
 val reachable_words : t -> int
+
 @END_BEFORE_4_04_0@
 (** @since 4.04.0:
     external reachable_words : t -> int = "caml_obj_reachable_words"
  *)
+@BEGIN_FROM_4_03_0@
 val extension_constructor : 'a -> extension_constructor
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val extension_constructor : 'a -> extension_constructor
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val extension_constructor : 'a -> extension_constructor
  *)
+@BEGIN_FROM_4_03_0@
 val extension_name : extension_constructor -> string
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val extension_name : extension_constructor -> string
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val extension_name : extension_constructor -> string
  *)
+@BEGIN_FROM_4_03_0@
 val extension_id : extension_constructor -> int
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val extension_id : extension_constructor -> int
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val extension_id : extension_constructor -> int
  *)
+@BEGIN_FROM_4_02_0@
 val first_non_constant_constructor_tag : int
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val first_non_constant_constructor_tag : int
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0: val first_non_constant_constructor_tag : int
  *)
+@BEGIN_FROM_4_02_0@
 val last_non_constant_constructor_tag : int
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val last_non_constant_constructor_tag : int
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0: val last_non_constant_constructor_tag : int
  *)
 @BEGIN_FROM_4_02_0@
-val marshal : t -> bytes
+val marshal : t -> bytes[@@ocaml.deprecated "Use Marshal.to_bytes instead."]
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val marshal : t -> Stdcompat__init.bytes
+
 @END_BEFORE_4_02_0@
-(** @since 4.02.0: val marshal : t -> bytes
+(** @since 4.02.0:
+    val marshal : t -> bytes[@@ocaml.deprecated
+                              "Use Marshal.to_bytes instead."]
  *)
 @BEGIN_FROM_4_02_0@
-val unmarshal : bytes -> int -> (t * int)
+val unmarshal : bytes -> int -> (t * int)[@@ocaml.deprecated
+                                           "Use Marshal.from_bytes and Marshal.total_size instead."]
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val unmarshal : Stdcompat__init.bytes -> int -> (t * int)
+
 @END_BEFORE_4_02_0@
-(** @since 4.02.0: val unmarshal : bytes -> int -> (t * int)
+(** @since 4.02.0:
+    val unmarshal : bytes -> int -> (t * int)[@@ocaml.deprecated
+                                               "Use Marshal.from_bytes and Marshal.total_size instead."]
  *)
 @BEGIN_FROM_3_12_0@
 external add_offset : t -> Int32.t -> t = "caml_obj_add_offset"
 @END_FROM_3_12_0@
 @BEGIN_BEFORE_3_12_0@
 val add_offset : t -> Int32.t -> t
+
 @END_BEFORE_3_12_0@
 (** @since 3.12.0:
     external add_offset : t -> Int32.t -> t = "caml_obj_add_offset"
+ *)
+@BEGIN_FROM_3_11_0@
+val double_field : t -> int -> float
+@END_FROM_3_11_0@
+@BEGIN_BEFORE_3_11_0@
+val double_field : t -> int -> float
+
+@END_BEFORE_3_11_0@
+(** @since 3.11.0: val double_field : t -> int -> float
+ *)
+@BEGIN_FROM_3_11_0@
+val set_double_field : t -> int -> float -> unit
+@END_FROM_3_11_0@
+@BEGIN_BEFORE_3_11_0@
+val set_double_field : t -> int -> float -> unit
+
+@END_BEFORE_3_11_0@
+(** @since 3.11.0: val set_double_field : t -> int -> float -> unit
+ *)
+@BEGIN_FROM_3_11_0@
+val unaligned_tag : int
+@END_FROM_3_11_0@
+@BEGIN_BEFORE_3_11_0@
+val unaligned_tag : int
+
+@END_BEFORE_3_11_0@
+(** @since 3.11.0: val unaligned_tag : int
+ *)
+@BEGIN_FROM_3_08_0@
+val int_tag : int
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+val int_tag : int
+
+@END_BEFORE_3_08_0@
+(** @since 3.08.0: val int_tag : int
+ *)
+@BEGIN_FROM_3_08_0@
+val out_of_heap_tag : int
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+val out_of_heap_tag : int
+
+@END_BEFORE_3_08_0@
+(** @since 3.08.0: val out_of_heap_tag : int
  *)
 external repr : 'a -> t = "%identity"
 (** Alias for {!Obj.repr} *)
@@ -85,33 +170,77 @@ external magic : 'a -> 'b = "%identity"
 val is_block : t -> bool
 @END_FROM_4_04_0@
 @BEGIN_BEFORE_4_04_0@
+@BEGIN_FROM_3_08_0@
 external is_block : t -> bool = "caml_obj_is_block"
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external is_block : t -> bool = "obj_is_block"
+
+@END_BEFORE_3_08_0@
+
 @END_BEFORE_4_04_0@
 (** @since 4.04.0: val is_block : t -> bool
-@since 3.11.0: external is_block : t -> bool = "caml_obj_is_block"
+@since 3.08.0: external is_block : t -> bool = "caml_obj_is_block"
+@since 3.07.0: external is_block : t -> bool = "obj_is_block"
  *)
 external is_int : t -> bool = "%obj_is_int"
 (** Alias for {!Obj.is_int} *)
+@BEGIN_FROM_3_08_0@
 external tag : t -> int = "caml_obj_tag"
-(** Alias for {!Obj.tag} *)
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external tag : t -> int = "obj_tag"
+
+@END_BEFORE_3_08_0@
+(** @since 3.08.0: external tag : t -> int = "caml_obj_tag"
+@since 3.07.0: external tag : t -> int = "obj_tag"
+ *)
 external size : t -> int = "%obj_size"
 (** Alias for {!Obj.size} *)
 external field : t -> int -> t = "%obj_field"
 (** Alias for {!Obj.field} *)
 external set_field : t -> int -> t -> unit = "%obj_set_field"
 (** Alias for {!Obj.set_field} *)
+@BEGIN_FROM_3_08_0@
 external set_tag : t -> int -> unit = "caml_obj_set_tag"
-(** Alias for {!Obj.set_tag} *)
-val double_field : t -> int -> float
-(** Alias for {!Obj.double_field} *)
-val set_double_field : t -> int -> float -> unit
-(** Alias for {!Obj.set_double_field} *)
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external set_tag : t -> int -> unit = "obj_set_tag"
+
+@END_BEFORE_3_08_0@
+(** @since 3.08.0: external set_tag : t -> int -> unit = "caml_obj_set_tag"
+@since 3.07.0: external set_tag : t -> int -> unit = "obj_set_tag"
+ *)
+@BEGIN_FROM_3_08_0@
 external new_block : int -> int -> t = "caml_obj_block"
-(** Alias for {!Obj.new_block} *)
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external new_block : int -> int -> t = "obj_block"
+
+@END_BEFORE_3_08_0@
+(** @since 3.08.0: external new_block : int -> int -> t = "caml_obj_block"
+@since 3.07.0: external new_block : int -> int -> t = "obj_block"
+ *)
+@BEGIN_FROM_3_08_0@
 external dup : t -> t = "caml_obj_dup"
-(** Alias for {!Obj.dup} *)
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external dup : t -> t = "obj_dup"
+
+@END_BEFORE_3_08_0@
+(** @since 3.08.0: external dup : t -> t = "caml_obj_dup"
+@since 3.07.0: external dup : t -> t = "obj_dup"
+ *)
+@BEGIN_FROM_3_08_0@
 external truncate : t -> int -> unit = "caml_obj_truncate"
-(** Alias for {!Obj.truncate} *)
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external truncate : t -> int -> unit = "obj_truncate"
+
+@END_BEFORE_3_08_0@
+(** @since 3.08.0: external truncate : t -> int -> unit = "caml_obj_truncate"
+@since 3.07.0: external truncate : t -> int -> unit = "obj_truncate"
+ *)
 val lazy_tag : int
 (** Alias for {!Obj.lazy_tag} *)
 val closure_tag : int
@@ -134,11 +263,14 @@ val double_array_tag : int
 (** Alias for {!Obj.double_array_tag} *)
 val custom_tag : int
 (** Alias for {!Obj.custom_tag} *)
+@BEGIN_FROM_4_02_0@
+val final_tag : int[@@ocaml.deprecated "Replaced by custom_tag."]
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
 val final_tag : int
-(** Alias for {!Obj.final_tag} *)
-val int_tag : int
-(** Alias for {!Obj.int_tag} *)
-val out_of_heap_tag : int
-(** Alias for {!Obj.out_of_heap_tag} *)
-val unaligned_tag : int
-(** Alias for {!Obj.unaligned_tag} *)
+
+@END_BEFORE_4_02_0@
+(** @since 4.02.0:
+    val final_tag : int[@@ocaml.deprecated "Replaced by custom_tag."]
+@since 3.07.0: val final_tag : int
+ *)

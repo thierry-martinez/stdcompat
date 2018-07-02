@@ -3,35 +3,38 @@ type raw_backtrace = Printexc.raw_backtrace
 @END_FROM_4_01_0@
 @BEGIN_BEFORE_4_01_0@
 type raw_backtrace
+
 @END_BEFORE_4_01_0@
-(** @since 4.01.0: type raw_backtrace = Printexc.raw_backtrace
+(** @since 4.01.0: type raw_backtrace
  *)
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_02_0@
 type backtrace_slot = Printexc.backtrace_slot
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
 type backtrace_slot
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: type backtrace_slot = Printexc.backtrace_slot
+
+@END_BEFORE_4_02_0@
+(** @since 4.02.0: type backtrace_slot
  *)
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_02_0@
 type location = Printexc.location =
   {
   filename: string ;
   line_number: int ;
   start_char: int ;
   end_char: int }
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
 type location =
   {
   filename: string ;
   line_number: int ;
   start_char: int ;
   end_char: int }
-@END_BEFORE_4_07_0@
-(** @since 4.07.0:
-    type location = Printexc.location =
+
+@END_BEFORE_4_02_0@
+(** @since 4.02.0:
+    type location =
       {
       filename: string ;
       line_number: int ;
@@ -44,22 +47,24 @@ module Slot = Printexc.Slot
 @BEGIN_BEFORE_4_04_0@
 module Slot :
 sig
-  type t = Printexc.backtrace_slot
+  type t = backtrace_slot
   val is_raise : t -> bool
   val is_inline : t -> bool
-  val location : t -> Printexc.location option
+  val location : t -> location option
   val format : int -> t -> string option
 end
+
 @END_BEFORE_4_04_0@
 (** @since 4.04.0: module Slot = Printexc.Slot
  *)
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_02_0@
 type raw_backtrace_slot = Printexc.raw_backtrace_slot
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
 type raw_backtrace_slot
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: type raw_backtrace_slot = Printexc.raw_backtrace_slot
+
+@END_BEFORE_4_02_0@
+(** @since 4.02.0: type raw_backtrace_slot
  *)
 @BEGIN_FROM_4_05_0@
 external raise_with_backtrace :
@@ -67,55 +72,174 @@ external raise_with_backtrace :
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val raise_with_backtrace : exn -> raw_backtrace -> 'a
+
 @END_BEFORE_4_05_0@
 (** @since 4.05.0:
     external raise_with_backtrace :
       exn -> raw_backtrace -> 'a = "%raise_with_backtrace"
  *)
+@BEGIN_FROM_4_04_0@
 val get_raw_backtrace_next_slot :
   raw_backtrace_slot -> raw_backtrace_slot option
+@END_FROM_4_04_0@
+@BEGIN_BEFORE_4_04_0@
+val get_raw_backtrace_next_slot :
+  raw_backtrace_slot -> raw_backtrace_slot option
+
+@END_BEFORE_4_04_0@
 (** @since 4.04.0:
     val get_raw_backtrace_next_slot :
       raw_backtrace_slot -> raw_backtrace_slot option
  *)
+@BEGIN_FROM_4_02_0@
 val set_uncaught_exception_handler : (exn -> raw_backtrace -> unit) -> unit
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val set_uncaught_exception_handler : (exn -> raw_backtrace -> unit) -> unit
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val set_uncaught_exception_handler :
       (exn -> raw_backtrace -> unit) -> unit
  *)
+@BEGIN_FROM_4_02_0@
 val backtrace_slots : raw_backtrace -> backtrace_slot array option
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val backtrace_slots : raw_backtrace -> backtrace_slot array option
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val backtrace_slots : raw_backtrace -> backtrace_slot array option
  *)
+@BEGIN_FROM_4_02_0@
 val raw_backtrace_length : raw_backtrace -> int
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val raw_backtrace_length : raw_backtrace -> int
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0: val raw_backtrace_length : raw_backtrace -> int
  *)
+@BEGIN_FROM_4_02_0@
 val get_raw_backtrace_slot : raw_backtrace -> int -> raw_backtrace_slot
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val get_raw_backtrace_slot : raw_backtrace -> int -> raw_backtrace_slot
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val get_raw_backtrace_slot : raw_backtrace -> int -> raw_backtrace_slot
  *)
+@BEGIN_FROM_4_02_0@
 val convert_raw_backtrace_slot : raw_backtrace_slot -> backtrace_slot
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val convert_raw_backtrace_slot : raw_backtrace_slot -> backtrace_slot
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val convert_raw_backtrace_slot : raw_backtrace_slot -> backtrace_slot
  *)
+@BEGIN_FROM_4_02_0@
 val exn_slot_id : exn -> int
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val exn_slot_id : exn -> int
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0: val exn_slot_id : exn -> int
  *)
+@BEGIN_FROM_4_02_0@
 val exn_slot_name : exn -> string
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val exn_slot_name : exn -> string
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0: val exn_slot_name : exn -> string
  *)
+@BEGIN_FROM_4_01_0@
 val get_raw_backtrace : unit -> raw_backtrace
+@END_FROM_4_01_0@
+@BEGIN_BEFORE_4_01_0@
+val get_raw_backtrace : unit -> raw_backtrace
+
+@END_BEFORE_4_01_0@
 (** @since 4.01.0: val get_raw_backtrace : unit -> raw_backtrace
  *)
+@BEGIN_FROM_4_01_0@
 val print_raw_backtrace : out_channel -> raw_backtrace -> unit
+@END_FROM_4_01_0@
+@BEGIN_BEFORE_4_01_0@
+val print_raw_backtrace : out_channel -> raw_backtrace -> unit
+
+@END_BEFORE_4_01_0@
 (** @since 4.01.0:
     val print_raw_backtrace : out_channel -> raw_backtrace -> unit
  *)
+@BEGIN_FROM_4_01_0@
 val raw_backtrace_to_string : raw_backtrace -> string
+@END_FROM_4_01_0@
+@BEGIN_BEFORE_4_01_0@
+val raw_backtrace_to_string : raw_backtrace -> string
+
+@END_BEFORE_4_01_0@
 (** @since 4.01.0: val raw_backtrace_to_string : raw_backtrace -> string
  *)
+@BEGIN_FROM_4_01_0@
 val get_callstack : int -> raw_backtrace
+@END_FROM_4_01_0@
+@BEGIN_BEFORE_4_01_0@
+val get_callstack : int -> raw_backtrace
+
+@END_BEFORE_4_01_0@
 (** @since 4.01.0: val get_callstack : int -> raw_backtrace
+ *)
+@BEGIN_FROM_3_11_0@
+val print_backtrace : out_channel -> unit
+@END_FROM_3_11_0@
+@BEGIN_BEFORE_3_11_0@
+val print_backtrace : out_channel -> unit
+
+@END_BEFORE_3_11_0@
+(** @since 3.11.0: val print_backtrace : out_channel -> unit
+ *)
+@BEGIN_FROM_3_11_0@
+val get_backtrace : unit -> string
+@END_FROM_3_11_0@
+@BEGIN_BEFORE_3_11_0@
+val get_backtrace : unit -> string
+
+@END_BEFORE_3_11_0@
+(** @since 3.11.0: val get_backtrace : unit -> string
+ *)
+@BEGIN_FROM_3_11_0@
+val record_backtrace : bool -> unit
+@END_FROM_3_11_0@
+@BEGIN_BEFORE_3_11_0@
+val record_backtrace : bool -> unit
+
+@END_BEFORE_3_11_0@
+(** @since 3.11.0: val record_backtrace : bool -> unit
+ *)
+@BEGIN_FROM_3_11_0@
+val backtrace_status : unit -> bool
+@END_FROM_3_11_0@
+@BEGIN_BEFORE_3_11_0@
+val backtrace_status : unit -> bool
+
+@END_BEFORE_3_11_0@
+(** @since 3.11.0: val backtrace_status : unit -> bool
+ *)
+@BEGIN_FROM_3_11_0@
+val register_printer : (exn -> string option) -> unit
+@END_FROM_3_11_0@
+@BEGIN_BEFORE_3_11_0@
+val register_printer : (exn -> string option) -> unit
+
+@END_BEFORE_3_11_0@
+(** @since 3.11.0: val register_printer : (exn -> string option) -> unit
  *)
 val to_string : exn -> string
 (** Alias for {!Printexc.to_string} *)
@@ -123,13 +247,3 @@ val print : ('a -> 'b) -> 'a -> 'b
 (** Alias for {!Printexc.print} *)
 val catch : ('a -> 'b) -> 'a -> 'b
 (** Alias for {!Printexc.catch} *)
-val print_backtrace : out_channel -> unit
-(** Alias for {!Printexc.print_backtrace} *)
-val get_backtrace : unit -> string
-(** Alias for {!Printexc.get_backtrace} *)
-val record_backtrace : bool -> unit
-(** Alias for {!Printexc.record_backtrace} *)
-val backtrace_status : unit -> bool
-(** Alias for {!Printexc.backtrace_status} *)
-val register_printer : (exn -> string option) -> unit
-(** Alias for {!Printexc.register_printer} *)

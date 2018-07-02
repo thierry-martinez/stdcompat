@@ -1,7 +1,7 @@
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_06_0@
 module Scanning = Scanf.Scanning
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_06_0@
+@BEGIN_BEFORE_4_06_0@
 module Scanning :
 sig
   type in_channel
@@ -21,67 +21,202 @@ sig
   val name_of_input : in_channel -> string
   val stdib : in_channel
 end
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: module Scanning = Scanf.Scanning
+
+@END_BEFORE_4_06_0@
+(** @since 4.06.0: module Scanning = Scanf.Scanning
  *)
+@BEGIN_FROM_3_12_0@
 type ('a, 'b, 'c, 'd) scanner =
   ('a, Scanning.in_channel, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c
+@END_FROM_3_12_0@
+@BEGIN_BEFORE_3_12_0@
+type ('a, 'b, 'c, 'd) scanner =
+  ('a, Scanning.in_channel, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c
+
+@END_BEFORE_3_12_0@
 (** @since 3.12.0:
     type ('a, 'b, 'c, 'd) scanner =
       ('a, Scanning.in_channel, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c
  *)
+@BEGIN_FROM_4_02_0@
 val ksscanf :
   string -> (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val ksscanf :
+  string -> (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+
+@END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val ksscanf :
       string ->
         (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
  *)
+@BEGIN_FROM_4_03_0@
+val kfscanf :
+  in_channel ->
+    (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner[@@ocaml.deprecated
+                                                                    "Use Scanning.from_channel then Scanf.kscanf."]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+@BEGIN_FROM_4_02_0@
 val kfscanf :
   in_channel ->
     (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
-(** @since 4.02.0:
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+val kfscanf :
+  in_channel ->
+    (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+
+@END_BEFORE_4_02_0@
+
+@END_BEFORE_4_03_0@
+(** @since 4.03.0:
     val kfscanf :
       in_channel ->
         (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+    [@@ocaml.deprecated "Use Scanning.from_channel then Scanf.kscanf."]
+@since 4.02.0:
+val kfscanf :
+  in_channel ->
+    (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
  *)
+@BEGIN_FROM_4_00_0@
+val unescaped : string -> string
+@END_FROM_4_00_0@
+@BEGIN_BEFORE_4_00_0@
+val unescaped : string -> string
+
+@END_BEFORE_4_00_0@
+(** @since 4.00.0: val unescaped : string -> string
+ *)
+@BEGIN_FROM_3_12_0@
+val bscanf : Scanning.in_channel -> ('a, 'b, 'c, 'd) scanner
+@END_FROM_3_12_0@
+@BEGIN_BEFORE_3_12_0@
+val bscanf : Scanning.in_channel -> ('a, 'b, 'c, 'd) scanner
+
+@END_BEFORE_3_12_0@
+(** @since 3.12.0:
+    val bscanf : Scanning.in_channel -> ('a, 'b, 'c, 'd) scanner
+ *)
+@BEGIN_FROM_4_00_0@
 val kscanf :
   Scanning.in_channel ->
     (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+@END_FROM_4_00_0@
+@BEGIN_BEFORE_4_00_0@
+@BEGIN_FROM_3_12_0@
+val kscanf :
+  Scanning.in_channel ->
+    (Scanning.in_channel -> exn -> 'a) -> ('b, 'c, 'd, 'a) scanner
+@END_FROM_3_12_0@
+@BEGIN_BEFORE_3_12_0@
+val kscanf :
+  Scanning.in_channel ->
+    (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+
+@END_BEFORE_3_12_0@
+
+@END_BEFORE_4_00_0@
 (** @since 4.00.0:
     val kscanf :
       Scanning.in_channel ->
         (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+@since 3.12.0:
+val kscanf :
+  Scanning.in_channel ->
+    (Scanning.in_channel -> exn -> 'a) -> ('b, 'c, 'd, 'a) scanner
  *)
-val unescaped : string -> string
-(** @since 4.00.0: val unescaped : string -> string
- *)
-val bscanf : Scanning.in_channel -> ('a, 'b, 'c, 'd) scanner
-(** @since 3.12.0:
-    val bscanf : Scanning.in_channel -> ('a, 'b, 'c, 'd) scanner
- *)
+@BEGIN_FROM_3_12_0@
 val bscanf_format :
   Scanning.in_channel ->
     ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
       (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g
+@END_FROM_3_12_0@
+@BEGIN_BEFORE_3_12_0@
+val bscanf_format :
+  Scanning.in_channel ->
+    ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
+      (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g
+
+@END_BEFORE_3_12_0@
 (** @since 3.12.0:
     val bscanf_format :
       Scanning.in_channel ->
         ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
           (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g
  *)
+@BEGIN_FROM_3_10_0@
 val sscanf : string -> ('a, 'b, 'c, 'd) scanner
-(** Alias for {!Scanf.sscanf} *)
+@END_FROM_3_10_0@
+@BEGIN_BEFORE_3_10_0@
+val sscanf : string -> ('a, 'b, 'c, 'd) scanner
+
+@END_BEFORE_3_10_0@
+(** @since 3.10.0: val sscanf : string -> ('a, 'b, 'c, 'd) scanner
+ *)
+@BEGIN_FROM_3_10_0@
 val scanf : ('a, 'b, 'c, 'd) scanner
-(** Alias for {!Scanf.scanf} *)
+@END_FROM_3_10_0@
+@BEGIN_BEFORE_3_10_0@
+val scanf : ('a, 'b, 'c, 'd) scanner
+
+@END_BEFORE_3_10_0@
+(** @since 3.10.0: val scanf : ('a, 'b, 'c, 'd) scanner
+ *)
+@BEGIN_FROM_3_10_0@
 val sscanf_format :
   string ->
     ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
       (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g
-(** Alias for {!Scanf.sscanf_format} *)
+@END_FROM_3_10_0@
+@BEGIN_BEFORE_3_10_0@
+val sscanf_format :
+  string ->
+    ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
+      (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g
+
+@END_BEFORE_3_10_0@
+(** @since 3.10.0:
+    val sscanf_format :
+      string ->
+        ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
+          (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g
+ *)
+@BEGIN_FROM_3_10_0@
 val format_from_string :
   string ->
     ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6
-(** Alias for {!Scanf.format_from_string} *)
+@END_FROM_3_10_0@
+@BEGIN_BEFORE_3_10_0@
+val format_from_string :
+  string ->
+    ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6
+
+@END_BEFORE_3_10_0@
+(** @since 3.10.0:
+    val format_from_string :
+      string ->
+        ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6
+ *)
+@BEGIN_FROM_4_03_0@
+val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner[@@ocaml.deprecated
+                                                     "Use Scanning.from_channel then Scanf.bscanf."]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+@BEGIN_FROM_3_10_0@
 val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
-(** Alias for {!Scanf.fscanf} *)
+@END_FROM_3_10_0@
+@BEGIN_BEFORE_3_10_0@
+val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
+
+@END_BEFORE_3_10_0@
+
+@END_BEFORE_4_03_0@
+(** @since 4.03.0:
+    val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner[@@ocaml.deprecated
+                                                         "Use Scanning.from_channel then Scanf.bscanf."]
+@since 3.10.0: val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
+ *)

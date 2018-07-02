@@ -333,5 +333,18 @@ module Make (Ord : OrderedType) = struct
     with Find y -> y
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_01_0@
+
+@BEGIN_BEFORE_3_08_0@
+   let split x s =
+     let add item (passed, (l, present, r)) =
+       if passed then
+         (passed, (l, present, add item r))
+       else
+         let o = Ord.compare item x in
+         if o < 0 then (passed, (add item l, present, add item r))
+         else if o > 0 then (true, (l, false, add item r))
+         else (true, (l, true, r)) in
+     snd (fold add s (false, (empty, false, empty)))
+@END_BEFORE_3_08_0@
 end
 @END_BEFORE_4_07_0@

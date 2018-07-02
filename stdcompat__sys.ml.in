@@ -61,3 +61,12 @@ let win32 = os_type = "Win32"
 
 let cygwin = os_type = "Cygwin"
 @END_BEFORE_4_01_0@
+
+@BEGIN_BEFORE_3_10_0@
+let is_directory path =
+  try
+    ignore (readdir path);
+    true
+  with Sys_error _ when file_exists path ->
+    false
+@END_BEFORE_3_10_0@

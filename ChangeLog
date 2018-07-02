@@ -1,8 +1,5 @@
 * Version 5
-- Interfaces are auto-generated. "interface_generator" requires many
-  switches to be available in opam: auto-generated interfaces are
-  included in the Git repository to allow stdcompat to compile without
-  this specific opam environment. This may change in the future.
+- Interfaces are auto-generated.
 
 - stdcompat is now free from any required dependency. There are still
   optional dependencies with respect to the packages result, seq and

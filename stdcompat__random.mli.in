@@ -1,10 +1,10 @@
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_02_0@
 module State = Random.State
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
 module State :
 sig
-  type t = Random.State.t
+  type t = Random.t
   val make : int array -> t
   val make_self_init : unit -> t
   val copy : t -> t
@@ -16,12 +16,13 @@ sig
   val float : t -> float -> float
   val bool : t -> bool
 end
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: module State = Random.State
-@since 3.11.0:
+
+@END_BEFORE_4_02_0@
+(** @since 4.02.0: module State = Random.State
+@since 3.07.0:
 module State :
 sig
-  type t = Random.State.t
+  type t
   val make : int array -> t
   val make_self_init : unit -> t
   val copy : t -> t

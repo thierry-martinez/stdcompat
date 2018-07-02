@@ -2,15 +2,21 @@ ACLOCAL_AMFLAGS = -I m4
 
 PACKAGE=stdcompat
 mypkgdir=$(pkglibdir)
+
+if OCAML_SUPPORTS_SHARED
 mypkg_SCRIPTS = \
 	META stdcompat.cmi stdcompat.cma stdcompat.cmxa stdcompat.cmxs
+else
+mypkg_SCRIPTS = \
+	META stdcompat.cmi stdcompat.cma stdcompat.cmxa
+endif
 
 PACKAGES = $(RESULT_PKG) $(SEQ_PKG) $(UCHAR_PKG)
 OCAMLFLAGS = $(PACKAGES:%=-package %)
 OCAMLCFLAGS = $(OCAMLFLAGS)
 OCAMLLDFLAGS = $(OCAMLFLAGS)
 
-SUFFIXES = .ml .mli .cmi .cmo .cmx
+SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs
 
 MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__tools.ml \
@@ -50,16 +56,19 @@ stdcompat.cmxs : stdcompat__native.cmx $(MODULES:.ml=.cmx)
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -shared $^ -o $@
 
 stdcompat__native.cmo : stdcompat__native.ml_byte
-	$(OCAMLC) $(OCAMLCFLAGS) -c -impl $<
+	cp stdcompat__native.ml_byte stdcompat__native.ml
+	$(OCAMLC) $(OCAMLCFLAGS) -c stdcompat__native.ml
 
-stdcompat__native.cmx : stdcompat__native.ml_native
-	$(OCAMLOPT) $(OCAMLCFLAGS) -c -impl $<
+stdcompat__native.cmx : stdcompat__native.ml_native stdcompat__native.cmo
+	cp stdcompat__native.ml_native stdcompat__native.ml
+	$(OCAMLOPT) $(OCAMLCFLAGS) -c stdcompat__native.ml
 
 .PHONY : depend
 depend : .depend
 
 .depend : $(MODULES) $(MODULES:.ml=.mli) stdcompat.ml
-	$(OCAMLDEP) -impl stdcompat__native.ml_byte $^ >$@
+	cp stdcompat__native.ml_byte stdcompat__native.ml
+	$(OCAMLDEP) stdcompat__native.ml $^ >$@ || rm -f .depend
 
 @INCLUDE_DEPEND@
 

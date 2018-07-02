@@ -5,6 +5,7 @@ val to_seq : 'a t -> 'a Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seq : 'a t -> 'a Stdcompat__seq.t
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seq : 'a t -> 'a Seq.t
  *)
@@ -13,6 +14,7 @@ val add_seq : 'a t -> 'a Seq.t -> unit
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val add_seq : 'a t -> 'a Stdcompat__seq.t -> unit
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val add_seq : 'a t -> 'a Seq.t -> unit
  *)
@@ -21,10 +23,17 @@ val of_seq : 'a Seq.t -> 'a t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val of_seq : 'a Stdcompat__seq.t -> 'a t
+
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val of_seq : 'a Seq.t -> 'a t
  *)
+@BEGIN_FROM_4_03_0@
 val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
+
+@END_BEFORE_4_03_0@
 (** @since 4.03.0: val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
  *)
 val create : unit -> 'a t
