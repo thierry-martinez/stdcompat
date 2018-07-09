@@ -6,4 +6,5 @@ for ocamlversion in `opam switch -i -s`; do
     ./configure
     make clean
     make
+    make tests
 done

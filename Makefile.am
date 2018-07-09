@@ -4,7 +4,6 @@ mypkgdir=$(pkglibdir)
 
 EXTRA_DIST=stdcompat.opam
 
-
 if OCAML_SUPPORTS_SHARED
 mypkg_SCRIPTS = \
 	META stdcompat.cmi stdcompat.cma stdcompat.cmxa stdcompat.cmxs
@@ -72,6 +71,14 @@ depend : .depend
 	cp stdcompat__native.ml_byte stdcompat__native.ml
 	$(OCAMLDEP) stdcompat__native.ml $^ >$@ || rm -f .depend
 
+.PHONY : tests
+tests : stdcompat_tests
+	./stdcompat_tests
+
+stdcompat_tests: stdcompat.$(CMAX)
+	$(OCAMLBEST) stdcompat.$(CMAX) stdcompat_tests.ml -o $@
+
 @INCLUDE_DEPEND@
 
-CLEANFILES = *.cmi *.cmo $(bin_SCRIPTS) *~
+CLEANFILES = *.cmi *.cmo *.cmx *.o *.a stdcompat.cma stdcompat.cmxa \
+	stdcompat_tests $(bin_SCRIPTS) *~

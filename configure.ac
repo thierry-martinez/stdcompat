@@ -38,8 +38,10 @@ AS_IF([test "x$OCAMLFIND" = "x"],
 AS_IF([test "x$OCAMLOPT" = "x"],
   [AS_IF([test "x$OCAMLC" = "x"],
      [AC_MSG_ERROR([[No OCaml compiler available]])],
-     [AC_SUBST([OCAMLBEST], [["$OCAMLC"]])])],
-  [AC_SUBST([OCAMLBEST], [["$OCAMLOPT"]])])
+     [AC_SUBST([OCAMLBEST], [["$OCAMLC"]])
+      AC_SUBST([CMAX], [["cma"]])])],
+  [AC_SUBST([OCAMLBEST], [["$OCAMLOPT"]])
+   AC_SUBST([CMAX], [["cmxa"]])])
 
 AS_IF([test "x$OCAMLDEP" = "x"],
   [AC_MSG_ERROR([[No ocamldep available]])])
