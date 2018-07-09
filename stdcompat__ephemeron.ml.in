@@ -385,55 +385,58 @@ module GenHashTable = struct
 end
 @END_FROM_4_04_0@
 @BEGIN_BEFORE_4_04_0@
+let not_implemented () =
+  failwith "Stdcompat.Ephemeron is not implemented yet. Please fill an issue: https://github.com/thierry-martinez/stdcompat/issues ."
+
 module K1 =struct
   type ('k, 'd) t
-  let create _ = failwith "Not implemented"
-  let get_key _ = failwith "Not implemented"
-  let get_key_copy _ = failwith "Not implemented"
-  let set_key _ = failwith "Not implemented"
-  let unset_key _ = failwith "Not implemented"
-  let check_key _ = failwith "Not implemented"
-  let blit_key _ = failwith "Not implemented"
-  let get_data _ = failwith "Not implemented"
-  let get_data_copy _ = failwith "Not implemented"
-  let set_data _ = failwith "Not implemented"
-  let unset_data _ = failwith "Not implemented"
-  let check_data _ = failwith "Not implemented"
-  let blit_data _ = failwith "Not implemented"
+  let create _ = not_implemented ()
+  let get_key _ = not_implemented ()
+  let get_key_copy _ = not_implemented ()
+  let set_key _ = not_implemented ()
+  let unset_key _ = not_implemented ()
+  let check_key _ = not_implemented ()
+  let blit_key _ = not_implemented ()
+  let get_data _ = not_implemented ()
+  let get_data_copy _ = not_implemented ()
+  let set_data _ = not_implemented ()
+  let unset_data _ = not_implemented ()
+  let check_data _ = not_implemented ()
+  let blit_data _ = not_implemented ()
   module Make (H : Hashtbl.HashedType) = struct
     include Stdcompat__hashtbl.Make (H)
-    let clean _ = failwith "Not implemented"
-    let stats_alive _ = failwith "Not implemented"
+    let clean _ = not_implemented ()
+    let stats_alive _ = not_implemented ()
   end
   module MakeSeeded (H : Stdcompat__hashtbl.SeededHashedType) = struct
     include Stdcompat__hashtbl.MakeSeeded (H)
-    let clean _ = failwith "Not implemented"
-    let stats_alive _ = failwith "Not implemented"
+    let clean _ = not_implemented ()
+    let stats_alive _ = not_implemented ()
   end
 end
 
 module K2 = struct
   type ('k1, 'k2, 'd) t
-  let create _ = failwith "Not implemented"
-  let get_key1 _ = failwith "Not implemented"
-  let get_key1_copy _ = failwith "Not implemented"
-  let set_key1 _ = failwith "Not implemented"
-  let unset_key1 _ = failwith "Not implemented"
-  let check_key1 _ = failwith "Not implemented"
-  let get_key2 _ = failwith "Not implemented"
-  let get_key2_copy _ = failwith "Not implemented"
-  let set_key2 _ = failwith "Not implemented"
-  let unset_key2 _ = failwith "Not implemented"
-  let check_key2 _ = failwith "Not implemented"
-  let blit_key1 _ = failwith "Not implemented"
-  let blit_key2 _ = failwith "Not implemented"
-  let blit_key12 _ = failwith "Not implemented"
-  let get_data _ = failwith "Not implemented"
-  let get_data_copy _ = failwith "Not implemented"
-  let set_data _ = failwith "Not implemented"
-  let unset_data _ = failwith "Not implemented"
-  let check_data _ = failwith "Not implemented"
-  let blit_data _ = failwith "Not implemented"
+  let create _ = not_implemented ()
+  let get_key1 _ = not_implemented ()
+  let get_key1_copy _ = not_implemented ()
+  let set_key1 _ = not_implemented ()
+  let unset_key1 _ = not_implemented ()
+  let check_key1 _ = not_implemented ()
+  let get_key2 _ = not_implemented ()
+  let get_key2_copy _ = not_implemented ()
+  let set_key2 _ = not_implemented ()
+  let unset_key2 _ = not_implemented ()
+  let check_key2 _ = not_implemented ()
+  let blit_key1 _ = not_implemented ()
+  let blit_key2 _ = not_implemented ()
+  let blit_key12 _ = not_implemented ()
+  let get_data _ = not_implemented ()
+  let get_data_copy _ = not_implemented ()
+  let set_data _ = not_implemented ()
+  let unset_data _ = not_implemented ()
+  let check_data _ = not_implemented ()
+  let blit_data _ = not_implemented ()
   module Make (H1 : Hashtbl.HashedType) (H2 : Hashtbl.HashedType) = struct
     include Stdcompat__hashtbl.Make (struct
       type t = H1.t * H2.t
@@ -442,8 +445,8 @@ module K2 = struct
 
       let hash (x, y) = Hashtbl.hash (H1.hash x, H2.hash y)
     end)
-    let clean _ = failwith "Not implemented"
-    let stats_alive _ = failwith "Not implemented"
+    let clean _ = not_implemented ()
+    let stats_alive _ = not_implemented ()
   end
   module MakeSeeded (H1 : Stdcompat__hashtbl.SeededHashedType)
        (H2 : Stdcompat__hashtbl.SeededHashedType) = struct
@@ -454,26 +457,26 @@ module K2 = struct
 
       let hash seed (x, y) = Hashtbl.hash (H1.hash seed x, H2.hash seed y)
     end)
-    let clean _ = failwith "Not implemented"
-    let stats_alive _ = failwith "Not implemented"
+    let clean _ = not_implemented ()
+    let stats_alive _ = not_implemented ()
   end
 end
 
 module Kn  = struct
   type ('k, 'd) t
-  let create _ = failwith "Not implemented"
-  let get_key _ = failwith "Not implemented"
-  let get_key_copy _ = failwith "Not implemented"
-  let set_key _ = failwith "Not implemented"
-  let unset_key _ = failwith "Not implemented"
-  let check_key _ = failwith "Not implemented"
-  let blit_key _ = failwith "Not implemented"
-  let get_data _ = failwith "Not implemented"
-  let get_data_copy _ = failwith "Not implemented"
-  let set_data _ = failwith "Not implemented"
-  let unset_data _ = failwith "Not implemented"
-  let check_data _ = failwith "Not implemented"
-  let blit_data _ = failwith "Not implemented"
+  let create _ = not_implemented ()
+  let get_key _ = not_implemented ()
+  let get_key_copy _ = not_implemented ()
+  let set_key _ = not_implemented ()
+  let unset_key _ = not_implemented ()
+  let check_key _ = not_implemented ()
+  let blit_key _ = not_implemented ()
+  let get_data _ = not_implemented ()
+  let get_data_copy _ = not_implemented ()
+  let set_data _ = not_implemented ()
+  let unset_data _ = not_implemented ()
+  let check_data _ = not_implemented ()
+  let blit_data _ = not_implemented ()
   module Make (H : Hashtbl.HashedType) = struct
     include Stdcompat__hashtbl.Make (struct
       type t = H.t array
@@ -486,8 +489,8 @@ module Kn  = struct
 
       let hash x = Hashtbl.hash (Array.map H.hash x)
     end)
-    let clean _ = failwith "Not implemented"
-    let stats_alive _ = failwith "Not implemented"
+    let clean _ = not_implemented ()
+    let stats_alive _ = not_implemented ()
   end
   module MakeSeeded (H : Stdcompat__hashtbl.SeededHashedType) = struct
     include Stdcompat__hashtbl.MakeSeeded (struct
@@ -501,8 +504,8 @@ module Kn  = struct
 
       let hash seed x = Hashtbl.hash (Array.map (H.hash seed) x)
     end)
-    let clean _ = failwith "Not implemented"
-    let stats_alive _ = failwith "Not implemented"
+    let clean _ = not_implemented ()
+    let stats_alive _ = not_implemented ()
   end
 end
 
@@ -551,8 +554,8 @@ module GenHashTable  = struct
 
       let hash = H.hash
     end)
-    let clean _ = failwith "Not implemented"
-    let stats_alive _ = failwith "Not implemented"
+    let clean _ = not_implemented ()
+    let stats_alive _ = not_implemented ()
   end
 end
 @END_BEFORE_4_04_0@

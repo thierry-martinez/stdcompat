@@ -2,6 +2,9 @@
 include Arg
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
+let not_implemented () =
+  failwith "Stdcompat.Arg is not fully implemented yet. Please fill an issue: https://github.com/thierry-martinez/stdcompat/issues ."
+
 type spec =
   | Unit of (unit -> unit)
   | Bool of (bool -> unit)
@@ -41,7 +44,7 @@ let rec no_expand spec =
   | Tuple l -> Arg.Tuple (List.map no_expand l)
   | Symbol (l, f) -> Arg.Symbol (l, f)
   | Rest f -> Arg.Rest f
-  | Expand _ -> failwith "no_expand"
+  | Expand _ -> not_implemented ()
 
 let rec expand spec =
   match spec with
@@ -71,7 +74,7 @@ let usage_string l msg =
 @END_FROM_3_12_0@
 @BEGIN_BEFORE_3_12_0@
 let usage_string l msg =
-  failwith "Not implemented"
+  not_implemented ()
 @END_BEFORE_3_12_0@
 
 @BEGIN_FROM_3_08_0@
@@ -80,7 +83,7 @@ let align ?limit l =
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 let align ?limit l =
-  failwith "Not implemented"
+  not_implemented ()
 @END_BEFORE_3_08_0@
 
 let parse l anon msg =
@@ -149,14 +152,14 @@ let write_arg0 =
   write_aux '\x00'
 
 let parse_argv_dynamic ?current _ =
-  failwith "Not implemented"
+  not_implemented ()
 
 let parse_dynamic _ =
-  failwith "Not implemented"
+  not_implemented ()
 
 let parse_expand _ =
-  failwith "Not implemented"
+  not_implemented ()
 
 let parse_and_expand_argv_dynamic _ =
-  failwith "Not implemented"
+  not_implemented ()
 @END_BEFORE_4_05_0@
