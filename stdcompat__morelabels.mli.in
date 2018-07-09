@@ -23,7 +23,7 @@ sig
   val length : ('a, 'b) t -> int
   val randomize : unit -> unit
   val is_randomized : unit -> bool
-  type statistics = Stdcompat__hashtbl_ext.statistics
+  type statistics = Stdcompat_hashtbl_ext.statistics
   val stats : ('a, 'b) t -> statistics
   val to_seq : ('a, 'b) t -> ('a * 'b) Stdcompat__seq.t
   val to_seq_keys : ('a, 'b) t -> 'a Stdcompat__seq.t
@@ -152,7 +152,6 @@ sig
   val hash_param : int -> int -> 'a -> int
   val seeded_hash_param : int -> int -> int -> 'a -> int
 end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Hashtbl = MoreLabels.Hashtbl
  *)
@@ -255,7 +254,6 @@ sig
       val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
     end
 end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Map = MoreLabels.Map
  *)
@@ -356,7 +354,6 @@ sig
       val of_seq : elt Stdcompat__seq.t -> t
     end
 end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Set = MoreLabels.Set
  *)

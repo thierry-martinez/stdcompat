@@ -1,23 +1,9 @@
 type t = int64
 (** Alias for {!Int64.t} *)
-@BEGIN_FROM_4_05_0@
 val of_string_opt : string -> int64 option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val of_string_opt : string -> int64 option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val of_string_opt : string -> int64 option
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.05.0: val of_string_opt : string -> int64 option *)
 val equal : t -> t -> bool
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val equal : t -> t -> bool
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val equal : t -> t -> bool
- *)
+(** @since 4.03.0: val equal : t -> t -> bool *)
 val zero : int64
 (** Alias for {!Int64.zero} *)
 val one : int64
@@ -75,7 +61,6 @@ external of_float : float -> int64 = "caml_int64_of_float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external of_float : float -> int64 = "int64_of_float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -97,7 +82,6 @@ external to_float : int64 -> float = "caml_int64_to_float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external to_float : int64 -> float = "int64_to_float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -121,7 +105,6 @@ external of_string : string -> int64 = "caml_int64_of_string"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external of_string : string -> int64 = "int64_of_string"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external of_string : string -> int64 = "caml_int64_of_string"
@@ -140,7 +123,6 @@ external bits_of_float : float -> int64 = "caml_int64_bits_of_float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external bits_of_float : float -> int64 = "int64_bits_of_float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -164,7 +146,6 @@ external float_of_bits : int64 -> float = "caml_int64_float_of_bits"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external float_of_bits : int64 -> float = "int64_float_of_bits"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -184,7 +165,6 @@ external format : string -> int64 -> string = "caml_int64_format"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external format : string -> int64 -> string = "int64_format"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external format : string -> int64 -> string = "caml_int64_format"

@@ -1,21 +1,7 @@
-@BEGIN_FROM_3_08_0@
 val new_method : string -> CamlinternalOO.tag
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-val new_method : string -> CamlinternalOO.tag
-
-@END_BEFORE_3_08_0@
-(** @since 3.08.0: val new_method : string -> CamlinternalOO.tag
- *)
-@BEGIN_FROM_3_08_0@
+(** @since 3.08.0: val new_method : string -> CamlinternalOO.tag *)
 val public_method_label : string -> CamlinternalOO.tag
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-val public_method_label : string -> CamlinternalOO.tag
-
-@END_BEFORE_3_08_0@
-(** @since 3.08.0: val public_method_label : string -> CamlinternalOO.tag
- *)
+(** @since 3.08.0: val public_method_label : string -> CamlinternalOO.tag *)
 val copy : (< .. >  as 'a) -> 'a
 (** Alias for {!Oo.copy} *)
 external id : < .. >  -> int = "%field1"

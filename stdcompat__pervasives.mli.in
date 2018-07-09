@@ -10,7 +10,6 @@ type in_channel = Pervasives.in_channel
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 type in_channel
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: type in_channel
  *)
@@ -19,7 +18,6 @@ type out_channel = Pervasives.out_channel
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 type out_channel
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: type out_channel
  *)
@@ -47,7 +45,6 @@ sig
   val pos_in : in_channel -> int64
   val in_channel_length : in_channel -> int64
 end
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: module LargeFile = Pervasives.LargeFile
 @since 3.07.0:
@@ -70,9 +67,16 @@ type ('a, 'b) result = ('a, 'b) Pervasives.result =
   | Error of 'b 
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
+@BEGIN_WITH_RESULT_PKG@
+type ('a, 'b) result = ('a, 'b) Result.result =
+  | Ok of 'a 
+  | Error of 'b 
+@END_WITH_RESULT_PKG@
+@BEGIN_WITHOUT_RESULT_PKG@
 type ('a, 'b) result =
   | Ok of 'a 
   | Error of 'b 
+@END_WITHOUT_RESULT_PKG@
 
 @END_BEFORE_4_03_0@
 (** @since 4.03.0: type ('a, 'b) result =
@@ -86,7 +90,6 @@ type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
 @BEGIN_BEFORE_4_02_0@
 type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
   ('a, 'b, 'c, 'd, 'e, 'f) Stdcompat__init.format6
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
@@ -97,64 +100,27 @@ type ('a, 'b, 'c, 'd) format4 = ('a, 'b, 'c, 'c, 'c, 'd) format6
 @END_FROM_3_10_0@
 @BEGIN_BEFORE_3_10_0@
 type ('a, 'b, 'c, 'd) format4 = ('a, 'b, 'c, 'c, 'c, 'd) format6
-
 @END_BEFORE_3_10_0@
 (** @since 3.10.0:
     type ('a, 'b, 'c, 'd) format4 = ('a, 'b, 'c, 'c, 'c, 'd) format6
  *)
 type ('a, 'b, 'c) format = ('a, 'b, 'c, 'c) format4
 (** Alias for {!Pervasives.format} *)
-@BEGIN_FROM_4_05_0@
 val bool_of_string_opt : string -> bool option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val bool_of_string_opt : string -> bool option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val bool_of_string_opt : string -> bool option
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val bool_of_string_opt : string -> bool option *)
 val int_of_string_opt : string -> int option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val int_of_string_opt : string -> int option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val int_of_string_opt : string -> int option
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val int_of_string_opt : string -> int option *)
 val float_of_string_opt : string -> float option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val float_of_string_opt : string -> float option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val float_of_string_opt : string -> float option
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val float_of_string_opt : string -> float option *)
 val read_int_opt : unit -> int option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val read_int_opt : unit -> int option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val read_int_opt : unit -> int option
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val read_int_opt : unit -> int option *)
 val read_float_opt : unit -> float option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val read_float_opt : unit -> float option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val read_float_opt : unit -> float option
- *)
+(** @since 4.05.0: val read_float_opt : unit -> float option *)
 @BEGIN_FROM_4_02_0@
 external raise_notrace : exn -> 'a = "%raise_notrace"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 external raise_notrace : exn -> 'a = "%raise"
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: external raise_notrace : exn -> 'a = "%raise_notrace"
  *)
@@ -163,7 +129,6 @@ external __LOC__ : string = "%loc_LOC"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val __LOC__ : string
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: external __LOC__ : string = "%loc_LOC"
  *)
@@ -172,7 +137,6 @@ external __FILE__ : string = "%loc_FILE"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val __FILE__ : string
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: external __FILE__ : string = "%loc_FILE"
  *)
@@ -181,7 +145,6 @@ external __LINE__ : int = "%loc_LINE"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val __LINE__ : int
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: external __LINE__ : int = "%loc_LINE"
  *)
@@ -190,7 +153,6 @@ external __MODULE__ : string = "%loc_MODULE"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val __MODULE__ : string
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: external __MODULE__ : string = "%loc_MODULE"
  *)
@@ -199,7 +161,6 @@ external __POS__ : (string * int * int * int) = "%loc_POS"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val __POS__ : (string * int * int * int)
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: external __POS__ : (string * int * int * int) = "%loc_POS"
  *)
@@ -208,7 +169,6 @@ external __LOC_OF__ : 'a -> (string * 'a) = "%loc_LOC"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val __LOC_OF__ : 'a -> (string * 'a)
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: external __LOC_OF__ : 'a -> (string * 'a) = "%loc_LOC"
  *)
@@ -217,7 +177,6 @@ external __LINE_OF__ : 'a -> (int * 'a) = "%loc_LINE"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val __LINE_OF__ : 'a -> (int * 'a)
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: external __LINE_OF__ : 'a -> (int * 'a) = "%loc_LINE"
  *)
@@ -226,7 +185,6 @@ external __POS_OF__ : 'a -> ((string * int * int * int) * 'a) = "%loc_POS"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val __POS_OF__ : 'a -> ((string * int * int * int) * 'a)
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     external __POS_OF__ :
@@ -237,7 +195,6 @@ val print_bytes : bytes -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val print_bytes : Stdcompat__init.bytes -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val print_bytes : bytes -> unit
  *)
@@ -246,7 +203,6 @@ val prerr_bytes : bytes -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val prerr_bytes : Stdcompat__init.bytes -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val prerr_bytes : bytes -> unit
  *)
@@ -255,7 +211,6 @@ val output_bytes : out_channel -> bytes -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val output_bytes : out_channel -> Stdcompat__init.bytes -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val output_bytes : out_channel -> bytes -> unit
  *)
@@ -264,26 +219,17 @@ val output : out_channel -> bytes -> int -> int -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val output : out_channel -> Stdcompat__init.bytes -> int -> int -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val output : out_channel -> bytes -> int -> int -> unit
  *)
-@BEGIN_FROM_4_02_0@
 val output_substring : out_channel -> string -> int -> int -> unit
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val output_substring : out_channel -> string -> int -> int -> unit
-
-@END_BEFORE_4_02_0@
 (** @since 4.02.0:
-    val output_substring : out_channel -> string -> int -> int -> unit
- *)
+    val output_substring : out_channel -> string -> int -> int -> unit *)
 @BEGIN_FROM_4_02_0@
 val input : in_channel -> bytes -> int -> int -> int
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val input : in_channel -> Stdcompat__init.bytes -> int -> int -> int
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val input : in_channel -> bytes -> int -> int -> int
  *)
@@ -292,27 +238,18 @@ val really_input : in_channel -> bytes -> int -> int -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val really_input : in_channel -> Stdcompat__init.bytes -> int -> int -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val really_input : in_channel -> bytes -> int -> int -> unit
  *)
-@BEGIN_FROM_4_02_0@
 val really_input_string : in_channel -> int -> string
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val really_input_string : in_channel -> int -> string
-
-@END_BEFORE_4_02_0@
-(** @since 4.02.0: val really_input_string : in_channel -> int -> string
- *)
+(** @since 4.02.0: val really_input_string : in_channel -> int -> string *)
 @BEGIN_FROM_4_02_0@
 val unsafe_really_input : in_channel -> bytes -> int -> int -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val unsafe_really_input :
   in_channel -> Stdcompat__init.bytes -> int -> int -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val unsafe_really_input : in_channel -> bytes -> int -> int -> unit
@@ -322,7 +259,6 @@ external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply"
 @END_FROM_4_01_0@
 @BEGIN_BEFORE_4_01_0@
 val (|>) : 'a -> ('a -> 'b) -> 'b
-
 @END_BEFORE_4_01_0@
 (** @since 4.01.0: external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply"
  *)
@@ -331,7 +267,6 @@ external (@@) : ('a -> 'b) -> 'a -> 'b = "%apply"
 @END_FROM_4_01_0@
 @BEGIN_BEFORE_4_01_0@
 val (@@) : ('a -> 'b) -> 'a -> 'b
-
 @END_BEFORE_4_01_0@
 (** @since 4.01.0: external (@@) : ('a -> 'b) -> 'a -> 'b = "%apply"
  *)
@@ -346,7 +281,6 @@ external hypot :
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
 val hypot : float -> float -> float
-
 @END_BEFORE_4_00_0@
 
 @END_BEFORE_4_03_0@
@@ -370,7 +304,6 @@ external copysign :
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
 val copysign : float -> float -> float
-
 @END_BEFORE_4_00_0@
 
 @END_BEFORE_4_03_0@
@@ -382,24 +315,10 @@ val copysign : float -> float -> float
 external copysign :
   float -> float -> float = "caml_copysign_float" "caml_copysign" "float"
  *)
-@BEGIN_FROM_3_12_0@
 external (~+) : int -> int = "%identity"
-@END_FROM_3_12_0@
-@BEGIN_BEFORE_3_12_0@
-external (~+) : int -> int = "%identity"
-
-@END_BEFORE_3_12_0@
-(** @since 3.12.0: external (~+) : int -> int = "%identity"
- *)
-@BEGIN_FROM_3_12_0@
+(** @since 3.12.0: external (~+) : int -> int = "%identity" *)
 external (~+.) : float -> float = "%identity"
-@END_FROM_3_12_0@
-@BEGIN_BEFORE_3_12_0@
-external (~+.) : float -> float = "%identity"
-
-@END_BEFORE_3_12_0@
-(** @since 3.12.0: external (~+.) : float -> float = "%identity"
- *)
+(** @since 3.12.0: external (~+.) : float -> float = "%identity" *)
 @BEGIN_FROM_4_03_0@
 external expm1 : float -> float = "caml_expm1_float" "caml_expm1"[@@unboxed ]
 [@@noalloc ]
@@ -410,7 +329,6 @@ external expm1 : float -> float = "caml_expm1_float" "caml_expm1" "float"
 @END_FROM_3_12_0@
 @BEGIN_BEFORE_3_12_0@
 val expm1 : float -> float
-
 @END_BEFORE_3_12_0@
 
 @END_BEFORE_4_03_0@
@@ -430,7 +348,6 @@ external log1p : float -> float = "caml_log1p_float" "caml_log1p" "float"
 @END_FROM_3_12_0@
 @BEGIN_BEFORE_3_12_0@
 val log1p : float -> float
-
 @END_BEFORE_3_12_0@
 
 @END_BEFORE_4_03_0@
@@ -478,7 +395,6 @@ external (&) : bool -> bool -> bool = "%sequand"[@@ocaml.deprecated
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 external (&) : bool -> bool -> bool = "%sequand"
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     external (&) : bool -> bool -> bool = "%sequand"[@@ocaml.deprecated
@@ -493,7 +409,6 @@ external (or) : bool -> bool -> bool = "%sequor"[@@ocaml.deprecated
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 external (or) : bool -> bool -> bool = "%sequor"
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     external (or) : bool -> bool -> bool = "%sequor"[@@ocaml.deprecated
@@ -557,7 +472,6 @@ external ( ** ) : float -> float -> float = "caml_power_float" "pow" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external ( ** ) : float -> float -> float = "power_float" "pow" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -579,7 +493,6 @@ external sqrt : float -> float = "caml_sqrt_float" "sqrt" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external sqrt : float -> float = "sqrt_float" "sqrt" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -600,7 +513,6 @@ external exp : float -> float = "caml_exp_float" "exp" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external exp : float -> float = "exp_float" "exp" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -620,7 +532,6 @@ external log : float -> float = "caml_log_float" "log" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external log : float -> float = "log_float" "log" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -640,7 +551,6 @@ external log10 : float -> float = "caml_log10_float" "log10" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external log10 : float -> float = "log10_float" "log10" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -662,7 +572,6 @@ external cos : float -> float = "caml_cos_float" "cos" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external cos : float -> float = "cos_float" "cos" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -682,7 +591,6 @@ external sin : float -> float = "caml_sin_float" "sin" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external sin : float -> float = "sin_float" "sin" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -702,7 +610,6 @@ external tan : float -> float = "caml_tan_float" "tan" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external tan : float -> float = "tan_float" "tan" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -722,7 +629,6 @@ external acos : float -> float = "caml_acos_float" "acos" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external acos : float -> float = "acos_float" "acos" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -743,7 +649,6 @@ external asin : float -> float = "caml_asin_float" "asin" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external asin : float -> float = "asin_float" "asin" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -764,7 +669,6 @@ external atan : float -> float = "caml_atan_float" "atan" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external atan : float -> float = "atan_float" "atan" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -785,7 +689,6 @@ external atan2 : float -> float -> float = "caml_atan2_float" "atan2" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external atan2 : float -> float -> float = "atan2_float" "atan2" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -807,7 +710,6 @@ external cosh : float -> float = "caml_cosh_float" "cosh" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external cosh : float -> float = "cosh_float" "cosh" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -828,7 +730,6 @@ external sinh : float -> float = "caml_sinh_float" "sinh" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external sinh : float -> float = "sinh_float" "sinh" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -849,7 +750,6 @@ external tanh : float -> float = "caml_tanh_float" "tanh" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external tanh : float -> float = "tanh_float" "tanh" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -870,7 +770,6 @@ external ceil : float -> float = "caml_ceil_float" "ceil" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external ceil : float -> float = "ceil_float" "ceil" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -891,7 +790,6 @@ external floor : float -> float = "caml_floor_float" "floor" "float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external floor : float -> float = "floor_float" "floor" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -916,7 +814,6 @@ external mod_float :
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external mod_float : float -> float -> float = "fmod_float" "fmod" "float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -934,7 +831,6 @@ external frexp : float -> (float * int) = "caml_frexp_float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external frexp : float -> (float * int) = "frexp_float"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external frexp : float -> (float * int) = "caml_frexp_float"
@@ -951,7 +847,6 @@ external ldexp : float -> int -> float = "caml_ldexp_float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external ldexp : float -> int -> float = "ldexp_float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -967,7 +862,6 @@ external modf : float -> (float * float) = "caml_modf_float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external modf : float -> (float * float) = "modf_float"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external modf : float -> (float * float) = "caml_modf_float"
@@ -1004,7 +898,6 @@ external classify_float : float -> fpclass = "caml_classify_float"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external classify_float : float -> fpclass = "classify_float"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -1035,7 +928,6 @@ external int_of_string : string -> int = "caml_int_of_string"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external int_of_string : string -> int = "int_of_string"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external int_of_string : string -> int = "caml_int_of_string"
@@ -1048,7 +940,6 @@ external float_of_string : string -> float = "caml_float_of_string"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external float_of_string : string -> float = "float_of_string"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external float_of_string : string -> float = "caml_float_of_string"
@@ -1175,7 +1066,6 @@ val string_of_format : ('a, 'b, 'c, 'd) format4 -> string
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external string_of_format : ('a, 'b, 'c, 'd) format4 -> string = "%identity"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_3_10_0@
@@ -1193,7 +1083,6 @@ external format_of_string :
 @BEGIN_BEFORE_3_10_0@
 external format_of_string :
   ('a, 'b, 'c, 'd) format4 -> ('a, 'b, 'c, 'd) format4 = "%identity"
-
 @END_BEFORE_3_10_0@
 (** @since 3.10.0:
     external format_of_string :
@@ -1212,7 +1101,6 @@ val (^^) :
 val (^^) :
   ('a, 'b, 'c, 'd) format4 ->
     ('d, 'b, 'c, 'e) format4 -> ('a, 'b, 'c, 'e) format4
-
 @END_BEFORE_3_10_0@
 (** @since 3.10.0:
     val (^^) :

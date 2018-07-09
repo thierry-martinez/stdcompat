@@ -9,7 +9,6 @@ type backend_type =
   | Native 
   | Bytecode 
   | Other of string 
-
 @END_BEFORE_4_04_0@
 (** @since 4.04.0: type backend_type =
                      | Native 
@@ -21,39 +20,17 @@ type signal_behavior = Sys.signal_behavior =
   | Signal_ignore 
   | Signal_handle of (int -> unit) 
 (** Alias for {!Sys.signal_behavior} *)
-@BEGIN_FROM_4_05_0@
 val getenv_opt : string -> string option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val getenv_opt : string -> string option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val getenv_opt : string -> string option
- *)
-@BEGIN_FROM_4_04_0@
+(** @since 4.05.0: val getenv_opt : string -> string option *)
 val backend_type : backend_type
-@END_FROM_4_04_0@
-@BEGIN_BEFORE_4_04_0@
-val backend_type : backend_type
-
-@END_BEFORE_4_04_0@
-(** @since 4.04.0: val backend_type : backend_type
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.04.0: val backend_type : backend_type *)
 val int_size : int
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val int_size : int
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val int_size : int
- *)
+(** @since 4.03.0: val int_size : int *)
 @BEGIN_FROM_4_03_0@
 external runtime_variant : unit -> string = "caml_runtime_variant"
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
 val runtime_variant : unit -> string
-
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     external runtime_variant : unit -> string = "caml_runtime_variant"
@@ -63,143 +40,49 @@ external runtime_parameters : unit -> string = "caml_runtime_parameters"
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
 val runtime_parameters : unit -> string
-
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     external runtime_parameters : unit -> string = "caml_runtime_parameters"
  *)
-@BEGIN_FROM_4_03_0@
 val sigbus : int
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val sigbus : int
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val sigbus : int
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val sigbus : int *)
 val sigpoll : int
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val sigpoll : int
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val sigpoll : int
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val sigpoll : int *)
 val sigsys : int
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val sigsys : int
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val sigsys : int
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val sigsys : int *)
 val sigtrap : int
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val sigtrap : int
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val sigtrap : int
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val sigtrap : int *)
 val sigurg : int
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val sigurg : int
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val sigurg : int
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val sigurg : int *)
 val sigxcpu : int
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val sigxcpu : int
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val sigxcpu : int
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val sigxcpu : int *)
 val sigxfsz : int
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val sigxfsz : int
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val sigxfsz : int
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val sigxfsz : int *)
 val enable_runtime_warnings : bool -> unit
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val enable_runtime_warnings : bool -> unit
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val enable_runtime_warnings : bool -> unit
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val enable_runtime_warnings : bool -> unit *)
 val runtime_warnings_enabled : unit -> bool
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val runtime_warnings_enabled : unit -> bool
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val runtime_warnings_enabled : unit -> bool
- *)
+(** @since 4.03.0: val runtime_warnings_enabled : unit -> bool *)
 @BEGIN_FROM_4_03_0@
 external opaque_identity : 'a -> 'a = "%opaque"
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
 val opaque_identity : 'a -> 'a
-
 @END_BEFORE_4_03_0@
 (** @since 4.03.0: external opaque_identity : 'a -> 'a = "%opaque"
  *)
-@BEGIN_FROM_4_01_0@
 val unix : bool
-@END_FROM_4_01_0@
-@BEGIN_BEFORE_4_01_0@
-val unix : bool
-
-@END_BEFORE_4_01_0@
-(** @since 4.01.0: val unix : bool
- *)
-@BEGIN_FROM_4_01_0@
+(** @since 4.01.0: val unix : bool *)
 val win32 : bool
-@END_FROM_4_01_0@
-@BEGIN_BEFORE_4_01_0@
-val win32 : bool
-
-@END_BEFORE_4_01_0@
-(** @since 4.01.0: val win32 : bool
- *)
-@BEGIN_FROM_4_01_0@
+(** @since 4.01.0: val win32 : bool *)
 val cygwin : bool
-@END_FROM_4_01_0@
-@BEGIN_BEFORE_4_01_0@
-val cygwin : bool
-
-@END_BEFORE_4_01_0@
-(** @since 4.01.0: val cygwin : bool
- *)
-@BEGIN_FROM_4_00_0@
+(** @since 4.01.0: val cygwin : bool *)
 val big_endian : bool
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-val big_endian : bool
-
-@END_BEFORE_4_00_0@
-(** @since 4.00.0: val big_endian : bool
- *)
+(** @since 4.00.0: val big_endian : bool *)
 @BEGIN_FROM_3_10_0@
 external is_directory : string -> bool = "caml_sys_is_directory"
 @END_FROM_3_10_0@
 @BEGIN_BEFORE_3_10_0@
 val is_directory : string -> bool
-
 @END_BEFORE_3_10_0@
 (** @since 3.10.0:
     external is_directory : string -> bool = "caml_sys_is_directory"
@@ -213,7 +96,6 @@ external file_exists : string -> bool = "caml_sys_file_exists"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external file_exists : string -> bool = "sys_file_exists"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external file_exists : string -> bool = "caml_sys_file_exists"
@@ -224,7 +106,6 @@ external remove : string -> unit = "caml_sys_remove"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external remove : string -> unit = "sys_remove"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external remove : string -> unit = "caml_sys_remove"
 @since 3.07.0: external remove : string -> unit = "sys_remove"
@@ -234,7 +115,6 @@ external rename : string -> string -> unit = "caml_sys_rename"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external rename : string -> string -> unit = "sys_rename"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external rename : string -> string -> unit = "caml_sys_rename"
@@ -245,7 +125,6 @@ external getenv : string -> string = "caml_sys_getenv"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external getenv : string -> string = "sys_getenv"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external getenv : string -> string = "caml_sys_getenv"
 @since 3.07.0: external getenv : string -> string = "sys_getenv"
@@ -255,7 +134,6 @@ external command : string -> int = "caml_sys_system_command"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external command : string -> int = "sys_system_command"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external command : string -> int = "caml_sys_system_command"
@@ -272,7 +150,6 @@ external time : unit -> float = "caml_sys_time"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external time : unit -> float = "sys_time"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
@@ -288,7 +165,6 @@ external chdir : string -> unit = "caml_sys_chdir"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external chdir : string -> unit = "sys_chdir"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external chdir : string -> unit = "caml_sys_chdir"
 @since 3.07.0: external chdir : string -> unit = "sys_chdir"
@@ -298,7 +174,6 @@ external getcwd : unit -> string = "caml_sys_getcwd"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external getcwd : unit -> string = "sys_getcwd"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external getcwd : unit -> string = "caml_sys_getcwd"
 @since 3.07.0: external getcwd : unit -> string = "sys_getcwd"
@@ -308,7 +183,6 @@ external readdir : string -> string array = "caml_sys_read_directory"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external readdir : string -> string array = "sys_read_directory"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external readdir : string -> string array = "caml_sys_read_directory"
@@ -332,7 +206,6 @@ external signal :
 @BEGIN_BEFORE_3_08_0@
 external signal :
   int -> signal_behavior -> signal_behavior = "install_signal_handler"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external signal :

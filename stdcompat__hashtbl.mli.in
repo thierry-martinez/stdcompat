@@ -9,13 +9,12 @@ type statistics = Hashtbl.statistics =
   bucket_histogram: int array }
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
-type statistics = Stdcompat__hashtbl_ext.statistics =
+type statistics = Stdcompat_hashtbl_ext.statistics =
   {
   num_bindings: int ;
   num_buckets: int ;
   max_bucket_length: int ;
   bucket_histogram: int array }
-
 @END_BEFORE_4_00_0@
 (** @since 4.00.0:
     type statistics =
@@ -85,7 +84,6 @@ module type S  =
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
   end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0:
     module type S  =
@@ -148,7 +146,6 @@ functor (H : HashedType) ->
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
   end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Make = Hashtbl.Make
  *)
@@ -159,7 +156,6 @@ module type SeededHashedType  =
 @BEGIN_BEFORE_4_00_0@
 module type SeededHashedType  =
   sig type t val equal : t -> t -> bool val hash : int -> t -> int end
-
 @END_BEFORE_4_00_0@
 (** @since 4.00.0:
     module type SeededHashedType  =
@@ -222,7 +218,6 @@ module type SeededS  =
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
   end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0:
     module type SeededS  =
@@ -285,7 +280,6 @@ functor (H : SeededHashedType) ->
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
   end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module MakeSeeded = Hashtbl.MakeSeeded
  *)
@@ -294,7 +288,6 @@ val to_seq : ('a, 'b) t -> ('a * 'b) Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seq : ('a, 'b) t -> ('a * 'b) Stdcompat__seq.t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seq : ('a, 'b) t -> ('a * 'b) Seq.t
  *)
@@ -303,7 +296,6 @@ val to_seq_keys : ('a, 'b) t -> 'a Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seq_keys : ('a, 'b) t -> 'a Stdcompat__seq.t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seq_keys : ('a, 'b) t -> 'a Seq.t
  *)
@@ -312,7 +304,6 @@ val to_seq_values : ('a, 'b) t -> 'b Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seq_values : ('a, 'b) t -> 'b Stdcompat__seq.t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seq_values : ('a, 'b) t -> 'b Seq.t
  *)
@@ -321,7 +312,6 @@ val add_seq : ('a, 'b) t -> ('a * 'b) Seq.t -> unit
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val add_seq : ('a, 'b) t -> ('a * 'b) Stdcompat__seq.t -> unit
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val add_seq : ('a, 'b) t -> ('a * 'b) Seq.t -> unit
  *)
@@ -330,7 +320,6 @@ val replace_seq : ('a, 'b) t -> ('a * 'b) Seq.t -> unit
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val replace_seq : ('a, 'b) t -> ('a * 'b) Stdcompat__seq.t -> unit
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val replace_seq : ('a, 'b) t -> ('a * 'b) Seq.t -> unit
  *)
@@ -339,101 +328,30 @@ val of_seq : ('a * 'b) Seq.t -> ('a, 'b) t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val of_seq : ('a * 'b) Stdcompat__seq.t -> ('a, 'b) t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val of_seq : ('a * 'b) Seq.t -> ('a, 'b) t
  *)
-@BEGIN_FROM_4_05_0@
 val find_opt : ('a, 'b) t -> 'a -> 'b option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val find_opt : ('a, 'b) t -> 'a -> 'b option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val find_opt : ('a, 'b) t -> 'a -> 'b option
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.05.0: val find_opt : ('a, 'b) t -> 'a -> 'b option *)
 val filter_map_inplace : ('a -> 'b -> 'b option) -> ('a, 'b) t -> unit
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val filter_map_inplace : ('a -> 'b -> 'b option) -> ('a, 'b) t -> unit
-
-@END_BEFORE_4_03_0@
 (** @since 4.03.0:
-    val filter_map_inplace : ('a -> 'b -> 'b option) -> ('a, 'b) t -> unit
- *)
-@BEGIN_FROM_4_03_0@
+    val filter_map_inplace : ('a -> 'b -> 'b option) -> ('a, 'b) t -> unit *)
 val is_randomized : unit -> bool
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val is_randomized : unit -> bool
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val is_randomized : unit -> bool
- *)
-@BEGIN_FROM_4_00_0@
+(** @since 4.03.0: val is_randomized : unit -> bool *)
 val create : ?random:bool -> int -> ('a, 'b) t
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-val create : ?random:bool -> int -> ('a, 'b) t
-
-@END_BEFORE_4_00_0@
-(** @since 4.00.0: val create : ?random:bool -> int -> ('a, 'b) t
- *)
-@BEGIN_FROM_4_00_0@
+(** @since 4.00.0: val create : ?random:bool -> int -> ('a, 'b) t *)
 val reset : ('a, 'b) t -> unit
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-val reset : ('a, 'b) t -> unit
-
-@END_BEFORE_4_00_0@
-(** @since 4.00.0: val reset : ('a, 'b) t -> unit
- *)
-@BEGIN_FROM_4_00_0@
+(** @since 4.00.0: val reset : ('a, 'b) t -> unit *)
 val randomize : unit -> unit
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-val randomize : unit -> unit
-
-@END_BEFORE_4_00_0@
-(** @since 4.00.0: val randomize : unit -> unit
- *)
-@BEGIN_FROM_4_00_0@
+(** @since 4.00.0: val randomize : unit -> unit *)
 val stats : ('a, 'b) t -> statistics
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-val stats : ('a, 'b) t -> statistics
-
-@END_BEFORE_4_00_0@
-(** @since 4.00.0: val stats : ('a, 'b) t -> statistics
- *)
-@BEGIN_FROM_4_00_0@
+(** @since 4.00.0: val stats : ('a, 'b) t -> statistics *)
 val seeded_hash : int -> 'a -> int
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-val seeded_hash : int -> 'a -> int
-
-@END_BEFORE_4_00_0@
-(** @since 4.00.0: val seeded_hash : int -> 'a -> int
- *)
-@BEGIN_FROM_4_00_0@
+(** @since 4.00.0: val seeded_hash : int -> 'a -> int *)
 val seeded_hash_param : int -> int -> int -> 'a -> int
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-val seeded_hash_param : int -> int -> int -> 'a -> int
-
-@END_BEFORE_4_00_0@
-(** @since 4.00.0: val seeded_hash_param : int -> int -> int -> 'a -> int
- *)
-@BEGIN_FROM_3_08_0@
+(** @since 4.00.0: val seeded_hash_param : int -> int -> int -> 'a -> int *)
 val length : ('a, 'b) t -> int
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-val length : ('a, 'b) t -> int
-
-@END_BEFORE_3_08_0@
-(** @since 3.08.0: val length : ('a, 'b) t -> int
- *)
+(** @since 3.08.0: val length : ('a, 'b) t -> int *)
 val clear : ('a, 'b) t -> unit
 (** Alias for {!Hashtbl.clear} *)
 val copy : ('a, 'b) t -> ('a, 'b) t
@@ -466,7 +384,6 @@ external hash_param :
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external hash_param : int -> int -> 'a -> int = "hash_univ_param" "noalloc"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_00_0@

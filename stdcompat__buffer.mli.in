@@ -5,7 +5,6 @@ val to_seq : t -> char Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seq : t -> char Stdcompat__seq.t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seq : t -> char Seq.t
  *)
@@ -14,7 +13,6 @@ val to_seqi : t -> (int * char) Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seqi : t -> (int * char) Stdcompat__seq.t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seqi : t -> (int * char) Seq.t
  *)
@@ -23,7 +21,6 @@ val add_seq : t -> char Seq.t -> unit
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val add_seq : t -> char Stdcompat__seq.t -> unit
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val add_seq : t -> char Seq.t -> unit
  *)
@@ -32,7 +29,6 @@ val of_seq : char Seq.t -> t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val of_seq : char Stdcompat__seq.t -> t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val of_seq : char Seq.t -> t
  *)
@@ -41,7 +37,6 @@ val add_utf_8_uchar : t -> Uchar.t -> unit
 @END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
 val add_utf_8_uchar : t -> Stdcompat__uchar.t -> unit
-
 @END_BEFORE_4_06_0@
 (** @since 4.06.0: val add_utf_8_uchar : t -> Uchar.t -> unit
  *)
@@ -50,7 +45,6 @@ val add_utf_16le_uchar : t -> Uchar.t -> unit
 @END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
 val add_utf_16le_uchar : t -> Stdcompat__uchar.t -> unit
-
 @END_BEFORE_4_06_0@
 (** @since 4.06.0: val add_utf_16le_uchar : t -> Uchar.t -> unit
  *)
@@ -59,25 +53,16 @@ val add_utf_16be_uchar : t -> Uchar.t -> unit
 @END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
 val add_utf_16be_uchar : t -> Stdcompat__uchar.t -> unit
-
 @END_BEFORE_4_06_0@
 (** @since 4.06.0: val add_utf_16be_uchar : t -> Uchar.t -> unit
  *)
-@BEGIN_FROM_4_05_0@
 val truncate : t -> int -> unit
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val truncate : t -> int -> unit
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val truncate : t -> int -> unit
- *)
+(** @since 4.05.0: val truncate : t -> int -> unit *)
 @BEGIN_FROM_4_02_0@
 val to_bytes : t -> bytes
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val to_bytes : t -> Stdcompat__init.bytes
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val to_bytes : t -> bytes
  *)
@@ -86,7 +71,6 @@ val blit : t -> int -> bytes -> int -> int -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val blit : t -> int -> Stdcompat__init.bytes -> int -> int -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val blit : t -> int -> bytes -> int -> int -> unit
  *)
@@ -95,7 +79,6 @@ val add_bytes : t -> bytes -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val add_bytes : t -> Stdcompat__init.bytes -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val add_bytes : t -> bytes -> unit
  *)
@@ -104,28 +87,13 @@ val add_subbytes : t -> bytes -> int -> int -> unit
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val add_subbytes : t -> Stdcompat__init.bytes -> int -> int -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val add_subbytes : t -> bytes -> int -> int -> unit
  *)
-@BEGIN_FROM_3_08_0@
 val sub : t -> int -> int -> string
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-val sub : t -> int -> int -> string
-
-@END_BEFORE_3_08_0@
-(** @since 3.08.0: val sub : t -> int -> int -> string
- *)
-@BEGIN_FROM_3_08_0@
+(** @since 3.08.0: val sub : t -> int -> int -> string *)
 val nth : t -> int -> char
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-val nth : t -> int -> char
-
-@END_BEFORE_3_08_0@
-(** @since 3.08.0: val nth : t -> int -> char
- *)
+(** @since 3.08.0: val nth : t -> int -> char *)
 val create : int -> t
 (** Alias for {!Buffer.create} *)
 val contents : t -> string

@@ -9,7 +9,6 @@ type extern_flags =
   | No_sharing 
   | Closures 
   | Compat_32 
-
 @END_BEFORE_4_01_0@
 (** @since 4.01.0: type extern_flags =
                      | No_sharing 
@@ -27,7 +26,6 @@ external to_bytes :
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val to_bytes : 'a -> extern_flags list -> Stdcompat__init.bytes
-
 @END_BEFORE_4_02_0@
 
 @END_BEFORE_4_07_0@
@@ -44,7 +42,6 @@ val to_buffer : bytes -> int -> int -> 'a -> extern_flags list -> int
 @BEGIN_BEFORE_4_02_0@
 val to_buffer :
   Stdcompat__init.bytes -> int -> int -> 'a -> extern_flags list -> int
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val to_buffer : bytes -> int -> int -> 'a -> extern_flags list -> int
@@ -54,7 +51,6 @@ val from_bytes : bytes -> int -> 'a
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val from_bytes : Stdcompat__init.bytes -> int -> 'a
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val from_bytes : bytes -> int -> 'a
  *)
@@ -63,7 +59,6 @@ val data_size : bytes -> int -> int
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val data_size : Stdcompat__init.bytes -> int -> int
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val data_size : bytes -> int -> int
  *)
@@ -72,7 +67,6 @@ val total_size : bytes -> int -> int
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val total_size : Stdcompat__init.bytes -> int -> int
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val total_size : bytes -> int -> int
  *)
@@ -85,7 +79,6 @@ external to_string :
 @BEGIN_BEFORE_3_08_0@
 external to_string :
   'a -> extern_flags list -> string = "output_value_to_string"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external to_string :

@@ -845,7 +845,7 @@ and is_signature_item_isomorphic kind
   | _ ->
       failwith "is_signature_item_isomorphic"
 
-let find_prim_opt version pval_name prim = 
+let find_prim_opt version pval_name prim =
   let modules : Longident.t list = [Lident "Pervasives"] in
   let modules : Longident.t list =
     if Interface_tools.Version.compare version
@@ -1008,9 +1008,9 @@ let version_signature_item ~reference_version ~module_name ~signatures
 
 let rec last_real_version versions =
   match versions with
-  | [] -> assert false
-  | [_, version, item]
-  | (true, version, item) :: (false, _, _) :: _ -> version, item
+  | [] | [None, _, _] -> assert false
+  | [Some version, _, item]
+  | (Some version, _, item) :: (None, _, _) :: _ -> version, item
   | _ :: tail -> last_real_version tail
 
 let compare_versioned_signature versions versions' =
@@ -1029,15 +1029,33 @@ let compare_versioned_signature versions versions' =
     prerr_endline "EMPTY!";
     0
 
+let value_item (item : Parsetree.signature_item) =
+  match item.psig_desc with
+  | Psig_value _ -> true
+  | _ -> false
+
+let rec consume_similar_versions last_real_version version item versions =
+  match versions with
+  | (real', version', item') :: tail when
+        is_signature_item_isomorphic Attributes_equal
+          ~version item ~version' item'
+        && ((last_real_version <> None) = real' || value_item item) ->
+      let last_real_version =
+        if real' then Some version'
+        else last_real_version in
+      consume_similar_versions last_real_version version' item tail
+  | tail -> (last_real_version, version, item), tail
+
 let rec gather_similar_versions versions =
   match versions with
-  | [] | [_] -> versions
-  | (real, version, item) :: ((real', version', item') :: _ as tail) when
-      real = real' &&
-      is_signature_item_isomorphic Attributes_equal
-        ~version item ~version' item' ->
-      gather_similar_versions tail
-  | hd :: tl -> hd :: gather_similar_versions tl
+  | [] -> []
+  | (real, version, item) :: tail ->
+      let last_real_version =
+        if real then Some version
+        else None in
+      let head', tail' =
+        consume_similar_versions last_real_version version item tail in
+      head' :: (gather_similar_versions tail')
 
 let type_of_desc ptyp_desc : Parsetree.core_type =
   { ptyp_desc; ptyp_loc = Location.none; ptyp_attributes = [] }
@@ -1099,8 +1117,7 @@ let format_default_item ~module_name formatter
       Format.fprintf formatter "\
 type 'a t = unit -> 'a node
 and 'a node =
-%a
-  | Nil
+%a  | Nil
   | Cons of 'a * 'a t"
         (format_with "SEQ_PKG" Format.pp_print_string)
          "  'a Seq.node ="
@@ -1171,10 +1188,11 @@ and add_self_type_manifest_to_module_type ~module_name
   | _ -> module_type
 
 let print_signature_item ~module_name real formatter item =
-  let self_item =
-    if real then add_self_type_manifest ~module_name item
-    else item in
-  Pprintast.signature formatter [self_item]
+  match real with
+  | Some _ ->
+      let self_item = add_self_type_manifest ~module_name item in
+      Pprintast.signature formatter [self_item]
+  | None -> format_default_item ~module_name formatter item
 
 let format_versioned_signature ~module_name ~version_high ~version_low
     ~reference_version formatter versions =
@@ -1185,7 +1203,17 @@ let format_versioned_signature ~module_name ~version_high ~version_low
       Format.fprintf formatter "%a@." (print_signature_item ~module_name real)
         item;
       let item_name = item_name module_name item in
-      Format.fprintf formatter "(** Alias for {!%s} *)@." item_name
+      begin
+        match real with
+        | None -> ()
+        | Some real_version ->
+            if Interface_tools.Version.equal real_version last_version then
+              Format.fprintf formatter "(** Alias for {!%s} *)@." item_name
+            else
+              Format.fprintf formatter "(** @[@since %s:@ %a@] *)@."
+                (Interface_tools.Version.to_string real_version)
+                Pprintast.signature [item]
+      end
   | (real, last_version, item) :: next :: tail ->
       format_from last_version (print_signature_item ~module_name real)
         formatter item;
@@ -1194,7 +1222,7 @@ let format_versioned_signature ~module_name ~version_high ~version_low
           let (real, last_version, item) = next in
           match tail with
           | [] ->
-              Format.fprintf formatter "%a@."
+              Format.fprintf formatter "%a"
                 (print_signature_item ~module_name real) item
           | next :: tail ->
               format_from last_version
@@ -1203,10 +1231,12 @@ let format_versioned_signature ~module_name ~version_high ~version_low
         format_before version format formatter tail in
       format_tail last_version next tail;
       let format_doc formatter versions =
-        let format_doc_version (real, version, item) =
-          if real then
+        let format_doc_version (real, _version, item) =
+          match real with
+          | None -> ()
+          | Some real_version ->
             Format.fprintf formatter "@[@since %s:@ %a@]@."
-              (Interface_tools.Version.to_string version)
+              (Interface_tools.Version.to_string real_version)
               Pprintast.signature [item] in
         List.iter format_doc_version versions in
       Format.fprintf formatter "(** @[<v>%a@] *)@." format_doc versions

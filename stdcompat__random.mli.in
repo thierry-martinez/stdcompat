@@ -16,7 +16,6 @@ sig
   val float : t -> float -> float
   val bool : t -> bool
 end
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: module State = Random.State
 @since 3.07.0:

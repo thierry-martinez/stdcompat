@@ -1,32 +1,11 @@
 type t = char
 (** Alias for {!Char.t} *)
-@BEGIN_FROM_4_03_0@
 val lowercase_ascii : char -> char
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val lowercase_ascii : char -> char
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val lowercase_ascii : char -> char
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val lowercase_ascii : char -> char *)
 val uppercase_ascii : char -> char
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val uppercase_ascii : char -> char
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val uppercase_ascii : char -> char
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val uppercase_ascii : char -> char *)
 val equal : t -> t -> bool
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val equal : t -> t -> bool
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val equal : t -> t -> bool
- *)
+(** @since 4.03.0: val equal : t -> t -> bool *)
 external code : char -> int = "%identity"
 (** Alias for {!Char.code} *)
 val chr : int -> char
@@ -39,7 +18,6 @@ val lowercase : char -> char[@@ocaml.deprecated
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
 val lowercase : char -> char
-
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     val lowercase : char -> char[@@ocaml.deprecated
@@ -52,7 +30,6 @@ val uppercase : char -> char[@@ocaml.deprecated
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
 val uppercase : char -> char
-
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     val uppercase : char -> char[@@ocaml.deprecated

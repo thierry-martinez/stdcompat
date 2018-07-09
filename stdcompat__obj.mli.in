@@ -23,7 +23,6 @@ sig
   val check_data : t -> bool
   val blit_data : t -> t -> unit
 end
-
 @END_BEFORE_4_03_0@
 (** @since 4.03.0: module Ephemeron = Obj.Ephemeron
  *)
@@ -32,62 +31,25 @@ external reachable_words : t -> int = "caml_obj_reachable_words"
 @END_FROM_4_04_0@
 @BEGIN_BEFORE_4_04_0@
 val reachable_words : t -> int
-
 @END_BEFORE_4_04_0@
 (** @since 4.04.0:
     external reachable_words : t -> int = "caml_obj_reachable_words"
  *)
-@BEGIN_FROM_4_03_0@
 val extension_constructor : 'a -> extension_constructor
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val extension_constructor : 'a -> extension_constructor
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val extension_constructor : 'a -> extension_constructor
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val extension_constructor : 'a -> extension_constructor *)
 val extension_name : extension_constructor -> string
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val extension_name : extension_constructor -> string
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val extension_name : extension_constructor -> string
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val extension_name : extension_constructor -> string *)
 val extension_id : extension_constructor -> int
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val extension_id : extension_constructor -> int
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val extension_id : extension_constructor -> int
- *)
-@BEGIN_FROM_4_02_0@
+(** @since 4.03.0: val extension_id : extension_constructor -> int *)
 val first_non_constant_constructor_tag : int
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val first_non_constant_constructor_tag : int
-
-@END_BEFORE_4_02_0@
-(** @since 4.02.0: val first_non_constant_constructor_tag : int
- *)
-@BEGIN_FROM_4_02_0@
+(** @since 4.02.0: val first_non_constant_constructor_tag : int *)
 val last_non_constant_constructor_tag : int
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val last_non_constant_constructor_tag : int
-
-@END_BEFORE_4_02_0@
-(** @since 4.02.0: val last_non_constant_constructor_tag : int
- *)
+(** @since 4.02.0: val last_non_constant_constructor_tag : int *)
 @BEGIN_FROM_4_02_0@
 val marshal : t -> bytes[@@ocaml.deprecated "Use Marshal.to_bytes instead."]
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val marshal : t -> Stdcompat__init.bytes
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val marshal : t -> bytes[@@ocaml.deprecated
@@ -99,7 +61,6 @@ val unmarshal : bytes -> int -> (t * int)[@@ocaml.deprecated
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val unmarshal : Stdcompat__init.bytes -> int -> (t * int)
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val unmarshal : bytes -> int -> (t * int)[@@ocaml.deprecated
@@ -110,56 +71,20 @@ external add_offset : t -> Int32.t -> t = "caml_obj_add_offset"
 @END_FROM_3_12_0@
 @BEGIN_BEFORE_3_12_0@
 val add_offset : t -> Int32.t -> t
-
 @END_BEFORE_3_12_0@
 (** @since 3.12.0:
     external add_offset : t -> Int32.t -> t = "caml_obj_add_offset"
  *)
-@BEGIN_FROM_3_11_0@
 val double_field : t -> int -> float
-@END_FROM_3_11_0@
-@BEGIN_BEFORE_3_11_0@
-val double_field : t -> int -> float
-
-@END_BEFORE_3_11_0@
-(** @since 3.11.0: val double_field : t -> int -> float
- *)
-@BEGIN_FROM_3_11_0@
+(** @since 3.11.0: val double_field : t -> int -> float *)
 val set_double_field : t -> int -> float -> unit
-@END_FROM_3_11_0@
-@BEGIN_BEFORE_3_11_0@
-val set_double_field : t -> int -> float -> unit
-
-@END_BEFORE_3_11_0@
-(** @since 3.11.0: val set_double_field : t -> int -> float -> unit
- *)
-@BEGIN_FROM_3_11_0@
+(** @since 3.11.0: val set_double_field : t -> int -> float -> unit *)
 val unaligned_tag : int
-@END_FROM_3_11_0@
-@BEGIN_BEFORE_3_11_0@
-val unaligned_tag : int
-
-@END_BEFORE_3_11_0@
-(** @since 3.11.0: val unaligned_tag : int
- *)
-@BEGIN_FROM_3_08_0@
+(** @since 3.11.0: val unaligned_tag : int *)
 val int_tag : int
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-val int_tag : int
-
-@END_BEFORE_3_08_0@
-(** @since 3.08.0: val int_tag : int
- *)
-@BEGIN_FROM_3_08_0@
+(** @since 3.08.0: val int_tag : int *)
 val out_of_heap_tag : int
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-val out_of_heap_tag : int
-
-@END_BEFORE_3_08_0@
-(** @since 3.08.0: val out_of_heap_tag : int
- *)
+(** @since 3.08.0: val out_of_heap_tag : int *)
 external repr : 'a -> t = "%identity"
 (** Alias for {!Obj.repr} *)
 external obj : t -> 'a = "%identity"
@@ -175,7 +100,6 @@ external is_block : t -> bool = "caml_obj_is_block"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external is_block : t -> bool = "obj_is_block"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_04_0@
@@ -190,7 +114,6 @@ external tag : t -> int = "caml_obj_tag"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external tag : t -> int = "obj_tag"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external tag : t -> int = "caml_obj_tag"
 @since 3.07.0: external tag : t -> int = "obj_tag"
@@ -206,7 +129,6 @@ external set_tag : t -> int -> unit = "caml_obj_set_tag"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external set_tag : t -> int -> unit = "obj_set_tag"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external set_tag : t -> int -> unit = "caml_obj_set_tag"
 @since 3.07.0: external set_tag : t -> int -> unit = "obj_set_tag"
@@ -216,7 +138,6 @@ external new_block : int -> int -> t = "caml_obj_block"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external new_block : int -> int -> t = "obj_block"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external new_block : int -> int -> t = "caml_obj_block"
 @since 3.07.0: external new_block : int -> int -> t = "obj_block"
@@ -226,7 +147,6 @@ external dup : t -> t = "caml_obj_dup"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external dup : t -> t = "obj_dup"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external dup : t -> t = "caml_obj_dup"
 @since 3.07.0: external dup : t -> t = "obj_dup"
@@ -236,7 +156,6 @@ external truncate : t -> int -> unit = "caml_obj_truncate"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external truncate : t -> int -> unit = "obj_truncate"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external truncate : t -> int -> unit = "caml_obj_truncate"
 @since 3.07.0: external truncate : t -> int -> unit = "obj_truncate"
@@ -268,7 +187,6 @@ val final_tag : int[@@ocaml.deprecated "Replaced by custom_tag."]
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val final_tag : int
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val final_tag : int[@@ocaml.deprecated "Replaced by custom_tag."]

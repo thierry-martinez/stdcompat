@@ -91,7 +91,6 @@ module type S  =
     val add_seq : elt Stdcompat__seq.t -> t -> t
     val of_seq : elt Stdcompat__seq.t -> t
   end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0:
     module type S  =
@@ -188,7 +187,6 @@ functor (Ord : OrderedType) ->
     val add_seq : elt Stdcompat__seq.t -> t -> t
     val of_seq : elt Stdcompat__seq.t -> t
   end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Make = Set.Make
  *)

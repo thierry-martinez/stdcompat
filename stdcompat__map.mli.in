@@ -91,7 +91,6 @@ module type S  =
     val add_seq : (key * 'a) Stdcompat__seq.t -> 'a t -> 'a t
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
   end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0:
     module type S  =
@@ -189,7 +188,6 @@ functor (Ord : OrderedType) ->
     val add_seq : (key * 'a) Stdcompat__seq.t -> 'a t -> 'a t
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
   end
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Make = Map.Make
  *)

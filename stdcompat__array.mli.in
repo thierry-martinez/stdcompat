@@ -11,7 +11,6 @@ sig
   val unsafe_get : Stdcompat__init.floatarray -> int -> float
   val unsafe_set : Stdcompat__init.floatarray -> int -> float -> unit
 end
-
 @END_BEFORE_4_06_0@
 (** @since 4.06.0: module Floatarray = Array.Floatarray
  *)
@@ -20,7 +19,6 @@ val to_seq : 'a array -> 'a Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seq : 'a array -> 'a Stdcompat__seq.t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seq : 'a array -> 'a Seq.t
  *)
@@ -29,7 +27,6 @@ val to_seqi : 'a array -> (int * 'a) Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seqi : 'a array -> (int * 'a) Stdcompat__seq.t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seqi : 'a array -> (int * 'a) Seq.t
  *)
@@ -38,7 +35,6 @@ val of_seq : 'a Seq.t -> 'a array
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val of_seq : 'a Stdcompat__seq.t -> 'a array
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val of_seq : 'a Seq.t -> 'a array
  *)
@@ -47,67 +43,24 @@ external create_float : int -> float array = "caml_make_float_vect"
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
 val create_float : int -> float array
-
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     external create_float : int -> float array = "caml_make_float_vect"
  *)
-@BEGIN_FROM_4_03_0@
 val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
-
-@END_BEFORE_4_03_0@
 (** @since 4.03.0:
-    val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
- *)
-@BEGIN_FROM_4_03_0@
+    val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit *)
 val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
-
-@END_BEFORE_4_03_0@
 (** @since 4.03.0:
-    val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
- *)
-@BEGIN_FROM_4_03_0@
+    val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array *)
 val for_all : ('a -> bool) -> 'a array -> bool
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val for_all : ('a -> bool) -> 'a array -> bool
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val for_all : ('a -> bool) -> 'a array -> bool
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val for_all : ('a -> bool) -> 'a array -> bool *)
 val exists : ('a -> bool) -> 'a array -> bool
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val exists : ('a -> bool) -> 'a array -> bool
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val exists : ('a -> bool) -> 'a array -> bool
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val exists : ('a -> bool) -> 'a array -> bool *)
 val mem : 'a -> 'a array -> bool
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val mem : 'a -> 'a array -> bool
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val mem : 'a -> 'a array -> bool
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val mem : 'a -> 'a array -> bool *)
 val memq : 'a -> 'a array -> bool
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val memq : 'a -> 'a array -> bool
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val memq : 'a -> 'a array -> bool
- *)
+(** @since 4.03.0: val memq : 'a -> 'a array -> bool *)
 @BEGIN_FROM_4_03_0@
 val make_float : int -> float array[@@ocaml.deprecated
                                      "Use Array.create_float instead."]
@@ -118,7 +71,6 @@ external make_float : int -> float array = "caml_make_float_vect"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val make_float : int -> float array
-
 @END_BEFORE_4_02_0@
 
 @END_BEFORE_4_03_0@
@@ -139,7 +91,6 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external make : int -> 'a -> 'a array = "make_vect"
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external make : int -> 'a -> 'a array = "caml_make_vect"
 @since 3.07.0: external make : int -> 'a -> 'a array = "make_vect"
@@ -154,7 +105,6 @@ external create : int -> 'a -> 'a array = "caml_make_vect"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external create : int -> 'a -> 'a array = "make_vect"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_02_0@
@@ -174,7 +124,6 @@ val create_matrix : int -> int -> 'a -> 'a array array[@@ocaml.deprecated
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val create_matrix : int -> int -> 'a -> 'a array array
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val create_matrix : int -> int -> 'a -> 'a array array[@@ocaml.deprecated
@@ -212,7 +161,6 @@ val fold_right : ('b -> 'a -> 'a) -> 'b array -> 'a -> 'a
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
 val fold_right : ('a -> 'b -> 'b) -> 'a array -> 'b -> 'b
-
 @END_BEFORE_4_00_0@
 (** @since 4.00.0: val fold_right : ('b -> 'a -> 'a) -> 'b array -> 'a -> 'a
 @since 3.07.0: val fold_right : ('a -> 'b -> 'b) -> 'a array -> 'b -> 'b

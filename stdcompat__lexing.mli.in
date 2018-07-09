@@ -36,7 +36,6 @@ type lexbuf =
   mutable lex_mem: int array ;
   mutable lex_start_p: position ;
   mutable lex_curr_p: position }
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     type lexbuf =
@@ -73,19 +72,11 @@ val from_function : (bytes -> int -> int) -> lexbuf
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val from_function : (Stdcompat__init.bytes -> int -> int) -> lexbuf
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val from_function : (bytes -> int -> int) -> lexbuf
  *)
-@BEGIN_FROM_3_11_0@
 val new_line : lexbuf -> unit
-@END_FROM_3_11_0@
-@BEGIN_BEFORE_3_11_0@
-val new_line : lexbuf -> unit
-
-@END_BEFORE_3_11_0@
-(** @since 3.11.0: val new_line : lexbuf -> unit
- *)
+(** @since 3.11.0: val new_line : lexbuf -> unit *)
 val dummy_pos : position
 (** Alias for {!Lexing.dummy_pos} *)
 val from_channel : in_channel -> lexbuf

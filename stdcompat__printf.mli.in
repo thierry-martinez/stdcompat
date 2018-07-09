@@ -1,22 +1,8 @@
-@BEGIN_FROM_4_03_0@
 val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a
- *)
-@BEGIN_FROM_4_03_0@
+(** @since 4.03.0: val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a *)
 val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a
-
-@END_BEFORE_4_03_0@
 (** @since 4.03.0:
-    val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a
- *)
+    val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a *)
 @BEGIN_FROM_4_03_0@
 val kbprintf :
   (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
@@ -29,7 +15,6 @@ val kbprintf :
 @BEGIN_BEFORE_3_10_0@
 val kbprintf :
   (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
-
 @END_BEFORE_3_10_0@
 
 @END_BEFORE_4_03_0@
@@ -55,7 +40,6 @@ val kfprintf :
 val kfprintf :
   (out_channel -> 'd) ->
     out_channel -> ('a, out_channel, unit, 'd) format4 -> 'a
-
 @END_BEFORE_3_09_0@
 
 @END_BEFORE_4_03_0@
@@ -77,7 +61,6 @@ val ksprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 @END_FROM_3_09_0@
 @BEGIN_BEFORE_3_09_0@
 val ksprintf : (string -> 'd) -> ('a, unit, string, 'd) format4 -> 'a
-
 @END_BEFORE_3_09_0@
 
 @END_BEFORE_4_03_0@
@@ -101,7 +84,6 @@ val kprintf : (string -> 'b) -> ('a, unit, string, 'b) format4 -> 'a
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
 val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
-
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     val kprintf : (string -> 'b) -> ('a, unit, string, 'b) format4 -> 'a

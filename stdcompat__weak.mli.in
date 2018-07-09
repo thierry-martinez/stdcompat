@@ -39,7 +39,6 @@ module type S  =
     val count : t -> int
     val stats : t -> (int * int * int * int * int * int)
   end
-
 @END_BEFORE_4_05_0@
 (** @since 4.05.0:
     module type S  =
@@ -84,7 +83,6 @@ functor (H : Hashtbl.HashedType) ->
     val count : t -> int
     val stats : t -> (int * int * int * int * int * int)
   end
-
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: module Make = Weak.Make
  *)

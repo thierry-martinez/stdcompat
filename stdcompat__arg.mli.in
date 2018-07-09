@@ -31,7 +31,6 @@ type spec =
   | Symbol of string list * (string -> unit) 
   | Rest of (string -> unit) 
   | Expand of (string -> string array) 
-
 @END_BEFORE_4_05_0@
 (** @since 4.05.0:
     type spec =
@@ -55,7 +54,6 @@ type key = string
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 type key = string
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: type key = string
  *)
@@ -64,7 +62,6 @@ type doc = string
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 type doc = string
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: type doc = string
  *)
@@ -73,7 +70,6 @@ type usage_msg = string
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 type usage_msg = string
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: type usage_msg = string
  *)
@@ -82,127 +78,50 @@ type anon_fun = string -> unit
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 type anon_fun = string -> unit
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: type anon_fun = string -> unit
  *)
-@BEGIN_FROM_4_05_0@
 val parse_and_expand_argv_dynamic :
   int ref ->
     string array ref ->
       (key * spec * doc) list ref -> anon_fun -> string -> unit
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val parse_and_expand_argv_dynamic :
-  int ref ->
-    string array ref ->
-      (key * spec * doc) list ref -> anon_fun -> string -> unit
-
-@END_BEFORE_4_05_0@
 (** @since 4.05.0:
     val parse_and_expand_argv_dynamic :
       int ref ->
         string array ref ->
-          (key * spec * doc) list ref -> anon_fun -> string -> unit
- *)
-@BEGIN_FROM_4_05_0@
+          (key * spec * doc) list ref -> anon_fun -> string -> unit *)
 val parse_expand : (key * spec * doc) list -> anon_fun -> usage_msg -> unit
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val parse_expand : (key * spec * doc) list -> anon_fun -> usage_msg -> unit
-
-@END_BEFORE_4_05_0@
 (** @since 4.05.0:
     val parse_expand :
-      (key * spec * doc) list -> anon_fun -> usage_msg -> unit
- *)
-@BEGIN_FROM_4_05_0@
+      (key * spec * doc) list -> anon_fun -> usage_msg -> unit *)
 val read_arg : string -> string array
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val read_arg : string -> string array
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val read_arg : string -> string array
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val read_arg : string -> string array *)
 val read_arg0 : string -> string array
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val read_arg0 : string -> string array
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val read_arg0 : string -> string array
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val read_arg0 : string -> string array *)
 val write_arg : string -> string array -> unit
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val write_arg : string -> string array -> unit
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val write_arg : string -> string array -> unit
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val write_arg : string -> string array -> unit *)
 val write_arg0 : string -> string array -> unit
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val write_arg0 : string -> string array -> unit
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val write_arg0 : string -> string array -> unit
- *)
-@BEGIN_FROM_4_02_0@
+(** @since 4.05.0: val write_arg0 : string -> string array -> unit *)
 val parse_dynamic :
   (key * spec * doc) list ref -> anon_fun -> usage_msg -> unit
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val parse_dynamic :
-  (key * spec * doc) list ref -> anon_fun -> usage_msg -> unit
-
-@END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val parse_dynamic :
-      (key * spec * doc) list ref -> anon_fun -> usage_msg -> unit
- *)
-@BEGIN_FROM_4_02_0@
+      (key * spec * doc) list ref -> anon_fun -> usage_msg -> unit *)
 val parse_argv_dynamic :
   ?current:int ref ->
     string array -> (key * spec * doc) list ref -> anon_fun -> string -> unit
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val parse_argv_dynamic :
-  ?current:int ref ->
-    string array -> (key * spec * doc) list ref -> anon_fun -> string -> unit
-
-@END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val parse_argv_dynamic :
       ?current:int ref ->
         string array ->
-          (key * spec * doc) list ref -> anon_fun -> string -> unit
- *)
-@BEGIN_FROM_4_02_0@
+          (key * spec * doc) list ref -> anon_fun -> string -> unit *)
 val align : ?limit:int -> (key * spec * doc) list -> (key * spec * doc) list
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val align : ?limit:int -> (key * spec * doc) list -> (key * spec * doc) list
-
-@END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val align :
-      ?limit:int -> (key * spec * doc) list -> (key * spec * doc) list
- *)
-@BEGIN_FROM_3_12_0@
+      ?limit:int -> (key * spec * doc) list -> (key * spec * doc) list *)
 val usage_string : (key * spec * doc) list -> usage_msg -> string
-@END_FROM_3_12_0@
-@BEGIN_BEFORE_3_12_0@
-val usage_string : (key * spec * doc) list -> usage_msg -> string
-
-@END_BEFORE_3_12_0@
 (** @since 3.12.0:
-    val usage_string : (key * spec * doc) list -> usage_msg -> string
- *)
+    val usage_string : (key * spec * doc) list -> usage_msg -> string *)
 val parse : (key * spec * doc) list -> anon_fun -> usage_msg -> unit
 (** Alias for {!Arg.parse} *)
 val parse_argv :
