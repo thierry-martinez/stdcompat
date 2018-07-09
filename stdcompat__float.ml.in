@@ -119,7 +119,7 @@ external expm1 : float -> float = "caml_expm1_float" "caml_expm1"[@@unboxed ]
 external expm1 : float -> float = "caml_expm1_float" "caml_expm1" "float"
 @END_FROM_3_12_0@
 @BEGIN_BEFORE_3_12_0@
-let expm1 x = exp x -. 1.
+let expm1 = Stdcompat__pervasives.expm1
 @END_BEFORE_3_12_0@
 
 @END_BEFORE_4_03_0@
@@ -138,7 +138,7 @@ external log1p : float -> float = "caml_log1p_float" "caml_log1p"[@@unboxed ]
 external log1p : float -> float = "caml_log1p_float" "caml_log1p" "float"
 @END_FROM_3_12_0@
 @BEGIN_BEFORE_3_12_0@
-let log1p x = log (1. +. x)
+let log1p = Stdcompat__pervasives.log1p
 @END_BEFORE_3_12_0@
 
 @END_BEFORE_4_03_0@

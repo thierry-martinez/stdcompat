@@ -88,7 +88,22 @@ external (~+) : int -> int = "%identity"
 
 external (~+.) : float -> float = "%identity"
 
-let expm1 x = exp x -. 1.0
+(* These emulations of expm1() and log1p() are due to William Kahan.
+   See http://www.plunk.org/~hatch/rightway.php *)
 
-let log1p x = log (1.0 +. x)
+let expm1 x =
+  let u = exp x in
+  if u = 1. then
+    x
+  else if u -. 1. = -1. then
+    -1.
+  else
+    (u -. 1.) *. x /. log u
+
+let log1p x =
+  let u = 1. +. x in
+  if u = 1. then
+    x
+  else
+    log u *. x /. (u -. 1.)
 @END_BEFORE_3_12_0@
