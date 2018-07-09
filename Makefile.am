@@ -1,7 +1,9 @@
 ACLOCAL_AMFLAGS = -I m4
 
-PACKAGE=stdcompat
 mypkgdir=$(pkglibdir)
+
+EXTRA_DIST=stdcompat.opam
+
 
 if OCAML_SUPPORTS_SHARED
 mypkg_SCRIPTS = \
