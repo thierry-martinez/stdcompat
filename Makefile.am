@@ -28,7 +28,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__hashtbl.ml stdcompat__set.ml \
 	stdcompat__map.ml stdcompat__weak.ml stdcompat__sys.ml \
 	stdcompat__stream.ml stdcompat__digest.ml stdcompat__nativeint.ml \
-	stdcompat__int32.ml stdcompat__int64.ml stdcompat__filename.ml \
+	stdcompat__int64.ml stdcompat__int32.ml stdcompat__filename.ml \
 	stdcompat__array.ml stdcompat__arrayLabels.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
 	stdcompat__spacetime.ml
@@ -46,13 +46,13 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 
 stdcompat.cmi : stdcompat.cmo
 
-stdcompat.cma : stdcompat__native.cmo $(MODULES:.ml=.cmo)
+stdcompat.cma : stdcompat__native.cmo $(MODULES:.ml=.cmo) stdcompat.cmo
 	$(OCAMLC) $(OCAMLLDFLAGS) -a $^ -o $@
 
-stdcompat.cmxa : stdcompat__native.cmx $(MODULES:.ml=.cmx)
+stdcompat.cmxa : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -a $^ -o $@
 
-stdcompat.cmxs : stdcompat__native.cmx $(MODULES:.ml=.cmx)
+stdcompat.cmxs : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -shared $^ -o $@
 
 stdcompat__native.cmo : stdcompat__native.ml_byte
