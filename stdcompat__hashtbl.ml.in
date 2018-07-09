@@ -1,4 +1,4 @@
-type statistics = Stdcompat_hashtbl_ext.statistics
+type statistics = Stdcompat__hashtbl_ext.statistics
   = {
     num_bindings : int;
     num_buckets : int;
@@ -47,26 +47,26 @@ let of_seq = Hashtbl.of_seq
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 @BEGIN_WITH_MAGIC@
-let to_seq = Stdcompat_hashtbl_ext.to_seq
+let to_seq = Stdcompat__hashtbl_ext.to_seq
 
-let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+let to_seq_keys = Stdcompat__hashtbl_ext.to_seq_keys
 
-let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+let to_seq_values = Stdcompat__hashtbl_ext.to_seq_values
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-let to_seq tbl = Stdcompat_hashtbl_ext.to_seq Hashtbl.fold tbl
+let to_seq tbl = Stdcompat__hashtbl_ext.to_seq Hashtbl.fold tbl
 
-let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys Hashtbl.fold tbl
+let to_seq_keys tbl = Stdcompat__hashtbl_ext.to_seq_keys Hashtbl.fold tbl
 
-let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values Hashtbl.fold tbl
+let to_seq_values tbl = Stdcompat__hashtbl_ext.to_seq_values Hashtbl.fold tbl
 @END_WITHOUT_MAGIC@
 
-let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq Hashtbl.add tbl g
+let add_seq tbl g = Stdcompat__hashtbl_ext.add_seq Hashtbl.add tbl g
 
-let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq Hashtbl.replace tbl g
+let replace_seq tbl g = Stdcompat__hashtbl_ext.add_seq Hashtbl.replace tbl g
 
 let of_seq g =
-  Stdcompat_hashtbl_ext.of_seq ~create:Hashtbl.create ~replace:Hashtbl.replace g
+  Stdcompat__hashtbl_ext.of_seq ~create:Hashtbl.create ~replace:Hashtbl.replace g
 @END_BEFORE_4_07_0@
 
 @BEGIN_FROM_4_05_0@
@@ -87,18 +87,18 @@ let is_randomized () = false
 
 @BEGIN_WITH_MAGIC@
 let filter_map_inplace filter table =
-  Stdcompat_hashtbl_ext.filter_map_inplace filter table
+  Stdcompat__hashtbl_ext.filter_map_inplace filter table
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
 let filter_map_inplace filter table =
   let dict = {
-    Stdcompat_hashtbl_ext.clear = clear;
+    Stdcompat__hashtbl_ext.clear = clear;
     fold = fold;
     add = add;
     remove = remove;
     replace = replace;
   } in
-  Stdcompat_hashtbl_ext.filter_map_inplace dict filter table
+  Stdcompat__hashtbl_ext.filter_map_inplace dict filter table
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_03_0@
 
@@ -108,8 +108,8 @@ let length = Hashtbl.length
 @BEGIN_BEFORE_3_08_0@
 @BEGIN_WITH_MAGIC@
 let length (table : ('a, 'b) t) =
-  let table : ('a, 'b) Stdcompat_hashtbl_ext.internal = Obj.magic table in
-  table.Stdcompat_hashtbl_ext.size
+  let table : ('a, 'b) Stdcompat__hashtbl_ext.internal = Obj.magic table in
+  table.Stdcompat__hashtbl_ext.size
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
 let length table =
@@ -155,11 +155,11 @@ let seeded_hash_param meaningful total seed x =
 
 @BEGIN_WITH_MAGIC@
 let stats (h : ('a, 'b) t) =
-  Stdcompat_hashtbl_ext.stats h
+  Stdcompat__hashtbl_ext.stats h
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
 let stats h =
-  Stdcompat_hashtbl_ext.stats ~length h
+  Stdcompat__hashtbl_ext.stats ~length h
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_00_0@
 
@@ -198,25 +198,25 @@ module Make (H : HashedType) = struct
   include Hashtbl.Make (H)
 
 @BEGIN_WITH_MAGIC@
-  let to_seq = Stdcompat_hashtbl_ext.to_seq
+  let to_seq = Stdcompat__hashtbl_ext.to_seq
 
-  let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+  let to_seq_keys = Stdcompat__hashtbl_ext.to_seq_keys
 
-  let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+  let to_seq_values = Stdcompat__hashtbl_ext.to_seq_values
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-  let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+  let to_seq tbl = Stdcompat__hashtbl_ext.to_seq fold tbl
 
-  let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+  let to_seq_keys tbl = Stdcompat__hashtbl_ext.to_seq_keys fold tbl
 
-  let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+  let to_seq_values tbl = Stdcompat__hashtbl_ext.to_seq_values fold tbl
 @END_WITHOUT_MAGIC@
 
-  let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+  let add_seq tbl g = Stdcompat__hashtbl_ext.add_seq add tbl g
 
-  let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+  let replace_seq tbl g = Stdcompat__hashtbl_ext.add_seq replace tbl g
 
-  let of_seq g = Stdcompat_hashtbl_ext.of_seq ~create ~replace g
+  let of_seq g = Stdcompat__hashtbl_ext.of_seq ~create ~replace g
 
 @BEGIN_BEFORE_4_05_0@
   let find_opt tbl key =
@@ -226,26 +226,26 @@ module Make (H : HashedType) = struct
 @BEGIN_BEFORE_4_03_0@
 @BEGIN_WITH_MAGIC@
   let filter_map_inplace filter table =
-    Stdcompat_hashtbl_ext.filter_map_inplace filter table
+    Stdcompat__hashtbl_ext.filter_map_inplace filter table
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
   let filter_map_inplace filter table =
     let dict = {
-      Stdcompat_hashtbl_ext.clear = clear;
+      Stdcompat__hashtbl_ext.clear = clear;
       fold = fold;
       add = add;
       remove = remove;
       replace = replace;
     } in
-    Stdcompat_hashtbl_ext.filter_map_inplace dict filter table
+    Stdcompat__hashtbl_ext.filter_map_inplace dict filter table
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_03_0@
 
 @BEGIN_BEFORE_3_08_0@
 @BEGIN_WITH_MAGIC@
   let length (table : 'a t) =
-    let table : (key, 'a) Stdcompat_hashtbl_ext.internal = Obj.magic table in
-    table.Stdcompat_hashtbl_ext.size
+    let table : (key, 'a) Stdcompat__hashtbl_ext.internal = Obj.magic table in
+    table.Stdcompat__hashtbl_ext.size
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
   let length table =
@@ -260,11 +260,11 @@ module Make (H : HashedType) = struct
 
 @BEGIN_WITH_MAGIC@
   let stats (h : 'a t) =
-    Stdcompat_hashtbl_ext.stats h
+    Stdcompat__hashtbl_ext.stats h
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
   let stats h =
-    Stdcompat_hashtbl_ext.stats ~length h
+    Stdcompat__hashtbl_ext.stats ~length h
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_00_0@
 end
@@ -324,25 +324,25 @@ module MakeSeeded (H : SeededHashedType) = struct
 @END_BEFORE_4_00_0@
 
 @BEGIN_WITH_MAGIC@
-  let to_seq = Stdcompat_hashtbl_ext.to_seq
+  let to_seq = Stdcompat__hashtbl_ext.to_seq
 
-  let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+  let to_seq_keys = Stdcompat__hashtbl_ext.to_seq_keys
 
-  let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+  let to_seq_values = Stdcompat__hashtbl_ext.to_seq_values
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-  let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+  let to_seq tbl = Stdcompat__hashtbl_ext.to_seq fold tbl
 
-  let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+  let to_seq_keys tbl = Stdcompat__hashtbl_ext.to_seq_keys fold tbl
 
-  let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+  let to_seq_values tbl = Stdcompat__hashtbl_ext.to_seq_values fold tbl
 @END_WITHOUT_MAGIC@
 
-  let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+  let add_seq tbl g = Stdcompat__hashtbl_ext.add_seq add tbl g
 
-  let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+  let replace_seq tbl g = Stdcompat__hashtbl_ext.add_seq replace tbl g
 
-  let of_seq g = Stdcompat_hashtbl_ext.of_seq ~create ~replace g
+  let of_seq g = Stdcompat__hashtbl_ext.of_seq ~create ~replace g
 
 @BEGIN_BEFORE_4_05_0@
   let find_opt tbl key =
@@ -352,26 +352,26 @@ module MakeSeeded (H : SeededHashedType) = struct
 @BEGIN_BEFORE_4_03_0@
 @BEGIN_WITH_MAGIC@
   let filter_map_inplace filter table =
-    Stdcompat_hashtbl_ext.filter_map_inplace filter table
+    Stdcompat__hashtbl_ext.filter_map_inplace filter table
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
   let filter_map_inplace filter table =
     let dict = {
-      Stdcompat_hashtbl_ext.clear = clear;
+      Stdcompat__hashtbl_ext.clear = clear;
       fold = fold;
       add = add;
       remove = remove;
       replace = replace;
     } in
-    Stdcompat_hashtbl_ext.filter_map_inplace dict filter table
+    Stdcompat__hashtbl_ext.filter_map_inplace dict filter table
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_03_0@
 
 @BEGIN_BEFORE_3_08_0@
 @BEGIN_WITH_MAGIC@
 let length (table : 'a t) =
-  let table : (key, 'a) Stdcompat_hashtbl_ext.internal = Obj.magic table in
-  table.Stdcompat_hashtbl_ext.size
+  let table : (key, 'a) Stdcompat__hashtbl_ext.internal = Obj.magic table in
+  table.Stdcompat__hashtbl_ext.size
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
 let length table =

@@ -24,7 +24,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__char.ml stdcompat__uchar.ml stdcompat__buffer.ml \
 	stdcompat__string.ml stdcompat__stringLabels.ml stdcompat__bytes.ml \
 	stdcompat__bytesLabels.ml stdcompat__list.ml stdcompat__listLabels.ml \
-	stdcompat__stack.ml stdcompat_hashtbl_ext.ml \
+	stdcompat__stack.ml stdcompat__hashtbl_ext.ml \
 	stdcompat__hashtbl.ml stdcompat__set.ml \
 	stdcompat__map.ml stdcompat__weak.ml stdcompat__sys.ml \
 	stdcompat__stream.ml stdcompat__digest.ml stdcompat__nativeint.ml \

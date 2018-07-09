@@ -125,8 +125,8 @@ endif
 
 AC_CONFIG_FILES([META Makefile])
 AC_CONFIG_FILES([
-  stdcompat_hashtbl_ext.mli
-  stdcompat_hashtbl_ext.ml
+  stdcompat__hashtbl_ext.mli
+  stdcompat__hashtbl_ext.ml
   stdcompat__init.mli
   stdcompat__init.ml
   stdcompat__root.mli

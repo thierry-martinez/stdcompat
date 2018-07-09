@@ -84,25 +84,25 @@ module K1 = struct
 
 @BEGIN_BEFORE_4_07_0@
 @BEGIN_WITH_MAGIC@
-    let to_seq = Stdcompat_hashtbl_ext.to_seq
+    let to_seq = Stdcompat__hashtbl_ext.to_seq
 
-    let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+    let to_seq_keys = Stdcompat__hashtbl_ext.to_seq_keys
 
-    let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+    let to_seq_values = Stdcompat__hashtbl_ext.to_seq_values
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-    let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+    let to_seq tbl = Stdcompat__hashtbl_ext.to_seq fold tbl
 
-    let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+    let to_seq_keys tbl = Stdcompat__hashtbl_ext.to_seq_keys fold tbl
 
-    let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+    let to_seq_values tbl = Stdcompat__hashtbl_ext.to_seq_values fold tbl
 @END_WITHOUT_MAGIC@
 
-    let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+    let add_seq tbl g = Stdcompat__hashtbl_ext.add_seq add tbl g
 
-    let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+    let replace_seq tbl g = Stdcompat__hashtbl_ext.add_seq replace tbl g
 
-    let of_seq g = Stdcompat_hashtbl_ext.of_seq ~create ~replace g
+    let of_seq g = Stdcompat__hashtbl_ext.of_seq ~create ~replace g
 @END_BEFORE_4_07_0@
 
 @BEGIN_BEFORE_4_05_0@
@@ -116,25 +116,25 @@ module K1 = struct
 
 @BEGIN_BEFORE_4_07_0@
 @BEGIN_WITH_MAGIC@
-    let to_seq = Stdcompat_hashtbl_ext.to_seq
+    let to_seq = Stdcompat__hashtbl_ext.to_seq
 
-    let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+    let to_seq_keys = Stdcompat__hashtbl_ext.to_seq_keys
 
-    let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+    let to_seq_values = Stdcompat__hashtbl_ext.to_seq_values
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-    let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+    let to_seq tbl = Stdcompat__hashtbl_ext.to_seq fold tbl
 
-    let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+    let to_seq_keys tbl = Stdcompat__hashtbl_ext.to_seq_keys fold tbl
 
-    let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+    let to_seq_values tbl = Stdcompat__hashtbl_ext.to_seq_values fold tbl
 @END_WITHOUT_MAGIC@
 
-    let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+    let add_seq tbl g = Stdcompat__hashtbl_ext.add_seq add tbl g
 
-    let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+    let replace_seq tbl g = Stdcompat__hashtbl_ext.add_seq replace tbl g
 
-    let of_seq g = Stdcompat_hashtbl_ext.of_seq ~create ~replace g
+    let of_seq g = Stdcompat__hashtbl_ext.of_seq ~create ~replace g
 @END_BEFORE_4_07_0@
 
 @BEGIN_BEFORE_4_05_0@
@@ -172,25 +172,25 @@ module K2 = struct
 
 @BEGIN_BEFORE_4_07_0@
 @BEGIN_WITH_MAGIC@
-    let to_seq = Stdcompat_hashtbl_ext.to_seq
+    let to_seq = Stdcompat__hashtbl_ext.to_seq
 
-    let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+    let to_seq_keys = Stdcompat__hashtbl_ext.to_seq_keys
 
-    let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+    let to_seq_values = Stdcompat__hashtbl_ext.to_seq_values
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-    let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+    let to_seq tbl = Stdcompat__hashtbl_ext.to_seq fold tbl
 
-    let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+    let to_seq_keys tbl = Stdcompat__hashtbl_ext.to_seq_keys fold tbl
 
-    let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+    let to_seq_values tbl = Stdcompat__hashtbl_ext.to_seq_values fold tbl
 @END_WITHOUT_MAGIC@
 
-    let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+    let add_seq tbl g = Stdcompat__hashtbl_ext.add_seq add tbl g
 
-    let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+    let replace_seq tbl g = Stdcompat__hashtbl_ext.add_seq replace tbl g
 
-    let of_seq g = Stdcompat_hashtbl_ext.of_seq ~create ~replace g
+    let of_seq g = Stdcompat__hashtbl_ext.of_seq ~create ~replace g
 @END_BEFORE_4_07_0@
 
 @BEGIN_BEFORE_4_05_0@
@@ -205,25 +205,25 @@ module K2 = struct
 
 @BEGIN_BEFORE_4_07_0@
 @BEGIN_WITH_MAGIC@
-    let to_seq = Stdcompat_hashtbl_ext.to_seq
+    let to_seq = Stdcompat__hashtbl_ext.to_seq
 
-    let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+    let to_seq_keys = Stdcompat__hashtbl_ext.to_seq_keys
 
-    let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+    let to_seq_values = Stdcompat__hashtbl_ext.to_seq_values
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-    let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+    let to_seq tbl = Stdcompat__hashtbl_ext.to_seq fold tbl
 
-    let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+    let to_seq_keys tbl = Stdcompat__hashtbl_ext.to_seq_keys fold tbl
 
-    let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+    let to_seq_values tbl = Stdcompat__hashtbl_ext.to_seq_values fold tbl
 @END_WITHOUT_MAGIC@
 
-    let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+    let add_seq tbl g = Stdcompat__hashtbl_ext.add_seq add tbl g
 
-    let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+    let replace_seq tbl g = Stdcompat__hashtbl_ext.add_seq replace tbl g
 
-    let of_seq g = Stdcompat_hashtbl_ext.of_seq ~create ~replace g
+    let of_seq g = Stdcompat__hashtbl_ext.of_seq ~create ~replace g
 @END_BEFORE_4_07_0@
 
 @BEGIN_BEFORE_4_05_0@
@@ -254,25 +254,25 @@ module Kn = struct
 
 @BEGIN_BEFORE_4_07_0@
 @BEGIN_WITH_MAGIC@
-    let to_seq = Stdcompat_hashtbl_ext.to_seq
+    let to_seq = Stdcompat__hashtbl_ext.to_seq
 
-    let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+    let to_seq_keys = Stdcompat__hashtbl_ext.to_seq_keys
 
-    let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+    let to_seq_values = Stdcompat__hashtbl_ext.to_seq_values
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-    let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+    let to_seq tbl = Stdcompat__hashtbl_ext.to_seq fold tbl
 
-    let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+    let to_seq_keys tbl = Stdcompat__hashtbl_ext.to_seq_keys fold tbl
 
-    let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+    let to_seq_values tbl = Stdcompat__hashtbl_ext.to_seq_values fold tbl
 @END_WITHOUT_MAGIC@
 
-    let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+    let add_seq tbl g = Stdcompat__hashtbl_ext.add_seq add tbl g
 
-    let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+    let replace_seq tbl g = Stdcompat__hashtbl_ext.add_seq replace tbl g
 
-    let of_seq g = Stdcompat_hashtbl_ext.of_seq ~create ~replace g
+    let of_seq g = Stdcompat__hashtbl_ext.of_seq ~create ~replace g
 @END_BEFORE_4_07_0@
 
 @BEGIN_BEFORE_4_05_0@
@@ -286,25 +286,25 @@ module Kn = struct
 
 @BEGIN_BEFORE_4_07_0@
 @BEGIN_WITH_MAGIC@
-    let to_seq = Stdcompat_hashtbl_ext.to_seq
+    let to_seq = Stdcompat__hashtbl_ext.to_seq
 
-    let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+    let to_seq_keys = Stdcompat__hashtbl_ext.to_seq_keys
 
-    let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+    let to_seq_values = Stdcompat__hashtbl_ext.to_seq_values
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-    let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+    let to_seq tbl = Stdcompat__hashtbl_ext.to_seq fold tbl
 
-    let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+    let to_seq_keys tbl = Stdcompat__hashtbl_ext.to_seq_keys fold tbl
 
-    let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+    let to_seq_values tbl = Stdcompat__hashtbl_ext.to_seq_values fold tbl
 @END_WITHOUT_MAGIC@
 
-    let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+    let add_seq tbl g = Stdcompat__hashtbl_ext.add_seq add tbl g
 
-    let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+    let replace_seq tbl g = Stdcompat__hashtbl_ext.add_seq replace tbl g
 
-    let of_seq g = Stdcompat_hashtbl_ext.of_seq ~create ~replace g
+    let of_seq g = Stdcompat__hashtbl_ext.of_seq ~create ~replace g
 @END_BEFORE_4_07_0@
 
 @BEGIN_BEFORE_4_05_0@
@@ -356,25 +356,25 @@ module GenHashTable = struct
 
 @BEGIN_BEFORE_4_07_0@
 @BEGIN_WITH_MAGIC@
-    let to_seq = Stdcompat_hashtbl_ext.to_seq
+    let to_seq = Stdcompat__hashtbl_ext.to_seq
 
-    let to_seq_keys = Stdcompat_hashtbl_ext.to_seq_keys
+    let to_seq_keys = Stdcompat__hashtbl_ext.to_seq_keys
 
-    let to_seq_values = Stdcompat_hashtbl_ext.to_seq_values
+    let to_seq_values = Stdcompat__hashtbl_ext.to_seq_values
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-    let to_seq tbl = Stdcompat_hashtbl_ext.to_seq fold tbl
+    let to_seq tbl = Stdcompat__hashtbl_ext.to_seq fold tbl
 
-    let to_seq_keys tbl = Stdcompat_hashtbl_ext.to_seq_keys fold tbl
+    let to_seq_keys tbl = Stdcompat__hashtbl_ext.to_seq_keys fold tbl
 
-    let to_seq_values tbl = Stdcompat_hashtbl_ext.to_seq_values fold tbl
+    let to_seq_values tbl = Stdcompat__hashtbl_ext.to_seq_values fold tbl
 @END_WITHOUT_MAGIC@
 
-    let add_seq tbl g = Stdcompat_hashtbl_ext.add_seq add tbl g
+    let add_seq tbl g = Stdcompat__hashtbl_ext.add_seq add tbl g
 
-    let replace_seq tbl g = Stdcompat_hashtbl_ext.add_seq replace tbl g
+    let replace_seq tbl g = Stdcompat__hashtbl_ext.add_seq replace tbl g
 
-    let of_seq g = Stdcompat_hashtbl_ext.of_seq ~create ~replace g
+    let of_seq g = Stdcompat__hashtbl_ext.of_seq ~create ~replace g
 @END_BEFORE_4_07_0@
 
 @BEGIN_BEFORE_4_05_0@

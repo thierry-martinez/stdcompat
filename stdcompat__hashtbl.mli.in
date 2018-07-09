@@ -9,7 +9,7 @@ type statistics = Hashtbl.statistics =
   bucket_histogram: int array }
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
-type statistics = Stdcompat_hashtbl_ext.statistics =
+type statistics = Stdcompat__hashtbl_ext.statistics =
   {
   num_bindings: int ;
   num_buckets: int ;

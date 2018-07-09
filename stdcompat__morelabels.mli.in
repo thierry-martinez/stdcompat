@@ -23,7 +23,7 @@ sig
   val length : ('a, 'b) t -> int
   val randomize : unit -> unit
   val is_randomized : unit -> bool
-  type statistics = Stdcompat_hashtbl_ext.statistics
+  type statistics = Stdcompat__hashtbl_ext.statistics
   val stats : ('a, 'b) t -> statistics
   val to_seq : ('a, 'b) t -> ('a * 'b) Stdcompat__seq.t
   val to_seq_keys : ('a, 'b) t -> 'a Stdcompat__seq.t
