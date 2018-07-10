@@ -4,7 +4,7 @@ module State = Random.State
 @BEGIN_BEFORE_4_02_0@
 module State :
 sig
-  type t = Random.t
+  type t = Random.State.t
   val make : int array -> t
   val make_self_init : unit -> t
   val copy : t -> t

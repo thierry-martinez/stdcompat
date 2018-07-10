@@ -9,7 +9,7 @@ type statistics = Hashtbl.statistics =
   bucket_histogram: int array }
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
-type statistics = Stdcompat_hashtbl_ext.statistics =
+type statistics = Stdcompat__hashtbl_ext.statistics =
   {
   num_bindings: int ;
   num_buckets: int ;
@@ -122,7 +122,7 @@ module Make :
 functor (H : HashedType) ->
   sig
     type key = H.t
-    type 'a t
+    type 'a t = 'a Hashtbl.Make(H).t
     val create : int -> 'a t
     val clear : 'a t -> unit
     val reset : 'a t -> unit
@@ -256,7 +256,7 @@ module MakeSeeded :
 functor (H : SeededHashedType) ->
   sig
     type key = H.t
-    type 'a t
+    type 'a t = 'a Hashtbl.MakeSeeded(H).t
     val create : ?random:bool -> int -> 'a t
     val clear : 'a t -> unit
     val reset : 'a t -> unit

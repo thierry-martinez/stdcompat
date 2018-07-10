@@ -519,7 +519,7 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
   | Ptyp_constr ({ loc; txt = Ldot (Lident "Hashtbl", "statistics") }, []) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat_hashtbl_ext", "statistics") },
+          ({ loc; txt = Ldot (Lident "Stdcompat__hashtbl_ext", "statistics") },
            []) in
       { core_type with ptyp_desc }
   | Ptyp_constr (constr, args) ->
@@ -594,7 +594,7 @@ let compat_type_declaration ~module_name
     { type_decl with ptype_manifest =
       Some (core_type_of_desc
         (Ptyp_constr
-           (loc_of_txt (Longident.Ldot (Lident "Stdcompat_hashtbl_ext", "statistics")), []))) }
+           (loc_of_txt (Longident.Ldot (Lident "Stdcompat__hashtbl_ext", "statistics")), []))) }
   | _ ->
 (*
     match type_decl.ptype_manifest with
@@ -1158,6 +1158,8 @@ let rec add_self_type_manifest ~module_name (item : Parsetree.signature_item) =
       { item with psig_desc = Psig_type (rec_flag, type_decl_list) }
   | Psig_value _ | Psig_modtype _ -> item
   | Psig_module module_declaration ->
+      let module_name : Longident.t =
+        Ldot (module_name, module_declaration.pmd_name.txt) in
       { item with psig_desc = Psig_module { module_declaration with
         pmd_type = module_declaration.pmd_type |>
           (add_self_type_manifest_to_module_type ~module_name) }}
@@ -1179,6 +1181,8 @@ and add_self_type_manifest_to_module_type ~module_name
       let arg = arg |> Option.map
         (add_self_type_manifest_to_module_type ~module_name) in
 *)
+      let module_name : Longident.t =
+        Lapply (module_name, Lident var.txt) in
       let body = body |> add_self_type_manifest_to_module_type ~module_name in
       { module_type with pmty_desc = Pmty_functor (var, arg, body) }
   | Pmty_with (ty, cstr) ->
@@ -1188,11 +1192,14 @@ and add_self_type_manifest_to_module_type ~module_name
   | _ -> module_type
 
 let print_signature_item ~module_name real formatter item =
-  match real with
-  | Some _ ->
-      let self_item = add_self_type_manifest ~module_name item in
-      Pprintast.signature formatter [self_item]
-  | None -> format_default_item ~module_name formatter item
+  if real <> None || module_name = Longident.Lident "Hashtbl"
+   || module_name = Longident.Lident "Set"
+   || module_name = Longident.Lident "Map"
+   || module_name = Longident.Lident "Weak" then
+    let self_item = add_self_type_manifest ~module_name item in
+    Pprintast.signature formatter [self_item]
+  else
+    format_default_item ~module_name formatter item
 
 let format_versioned_signature ~module_name ~version_high ~version_low
     ~reference_version formatter versions =

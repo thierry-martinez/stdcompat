@@ -3,7 +3,6 @@ type t = string
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 type t = string
-
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: type t = string
  *)
@@ -12,7 +11,6 @@ val to_seq : t -> char Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seq : t -> char Stdcompat__seq.t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seq : t -> char Seq.t
  *)
@@ -21,7 +19,6 @@ val to_seqi : t -> (int * char) Seq.t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val to_seqi : t -> (int * char) Stdcompat__seq.t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val to_seqi : t -> (int * char) Seq.t
  *)
@@ -30,100 +27,29 @@ val of_seq : char Seq.t -> t
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 val of_seq : char Stdcompat__seq.t -> t
-
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: val of_seq : char Seq.t -> t
  *)
-@BEGIN_FROM_4_05_0@
 val index_opt : string -> char -> int option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val index_opt : string -> char -> int option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val index_opt : string -> char -> int option
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val index_opt : string -> char -> int option *)
 val rindex_opt : string -> char -> int option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val rindex_opt : string -> char -> int option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val rindex_opt : string -> char -> int option
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val rindex_opt : string -> char -> int option *)
 val index_from_opt : string -> int -> char -> int option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val index_from_opt : string -> int -> char -> int option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val index_from_opt : string -> int -> char -> int option
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val index_from_opt : string -> int -> char -> int option *)
 val rindex_from_opt : string -> int -> char -> int option
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val rindex_from_opt : string -> int -> char -> int option
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val rindex_from_opt : string -> int -> char -> int option
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val rindex_from_opt : string -> int -> char -> int option *)
 val uppercase_ascii : string -> string
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val uppercase_ascii : string -> string
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val uppercase_ascii : string -> string
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val uppercase_ascii : string -> string *)
 val lowercase_ascii : string -> string
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val lowercase_ascii : string -> string
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val lowercase_ascii : string -> string
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val lowercase_ascii : string -> string *)
 val capitalize_ascii : string -> string
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val capitalize_ascii : string -> string
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val capitalize_ascii : string -> string
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val capitalize_ascii : string -> string *)
 val uncapitalize_ascii : string -> string
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val uncapitalize_ascii : string -> string
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val uncapitalize_ascii : string -> string
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val uncapitalize_ascii : string -> string *)
 val equal : t -> t -> bool
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val equal : t -> t -> bool
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val equal : t -> t -> bool
- *)
-@BEGIN_FROM_4_05_0@
+(** @since 4.05.0: val equal : t -> t -> bool *)
 val split_on_char : sep:char -> string -> string list
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
-val split_on_char : sep:char -> string -> string list
-
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: val split_on_char : sep:char -> string -> string list
- *)
+(** @since 4.05.0: val split_on_char : sep:char -> string -> string list *)
 @BEGIN_FROM_4_02_0@
 external set : bytes -> int -> char -> unit = "%string_safe_set"[@@ocaml.deprecated
                                                                   "Use BytesLabels.set instead."]
@@ -131,7 +57,6 @@ external set : bytes -> int -> char -> unit = "%string_safe_set"[@@ocaml.depreca
 @BEGIN_BEFORE_4_02_0@
 external set :
   Stdcompat__init.bytes -> int -> char -> unit = "%string_safe_set"
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     external set : bytes -> int -> char -> unit = "%string_safe_set"[@@ocaml.deprecated
@@ -147,7 +72,6 @@ external create : int -> Stdcompat__init.bytes = "caml_create_string"
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
 external create : int -> Stdcompat__init.bytes = "create_string"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_02_0@
@@ -155,22 +79,14 @@ external create : int -> Stdcompat__init.bytes = "create_string"
     external create : int -> bytes = "caml_create_string"[@@ocaml.deprecated
                                                            "Use BytesLabels.create instead."]
  *)
-@BEGIN_FROM_4_02_0@
 val init : int -> f:(int -> char) -> string
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val init : int -> f:(int -> char) -> string
-
-@END_BEFORE_4_02_0@
-(** @since 4.02.0: val init : int -> f:(int -> char) -> string
- *)
+(** @since 4.02.0: val init : int -> f:(int -> char) -> string *)
 @BEGIN_FROM_4_02_0@
 val fill : bytes -> pos:int -> len:int -> char -> unit[@@ocaml.deprecated
                                                         "Use BytesLabels.fill instead."]
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val fill : Stdcompat__init.bytes -> pos:int -> len:int -> char -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val fill : bytes -> pos:int -> len:int -> char -> unit[@@ocaml.deprecated
@@ -185,22 +101,14 @@ val blit :
   src:string ->
     src_pos:int ->
       dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     val blit :
       src:string ->
         src_pos:int -> dst:bytes -> dst_pos:int -> len:int -> unit
  *)
-@BEGIN_FROM_4_02_0@
 val mapi : f:(int -> char -> char) -> string -> string
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val mapi : f:(int -> char -> char) -> string -> string
-
-@END_BEFORE_4_02_0@
-(** @since 4.02.0: val mapi : f:(int -> char -> char) -> string -> string
- *)
+(** @since 4.02.0: val mapi : f:(int -> char -> char) -> string -> string *)
 @BEGIN_FROM_4_02_0@
 external unsafe_set : bytes -> int -> char -> unit = "%string_unsafe_set"
 [@@ocaml.deprecated "- : bytes -> int -> char -> unit = <fun>"]
@@ -208,7 +116,6 @@ external unsafe_set : bytes -> int -> char -> unit = "%string_unsafe_set"
 @BEGIN_BEFORE_4_02_0@
 external unsafe_set :
   Stdcompat__init.bytes -> int -> char -> unit = "%string_unsafe_set"
-
 @END_BEFORE_4_02_0@
 (** @since 4.02.0:
     external unsafe_set : bytes -> int -> char -> unit = "%string_unsafe_set"
@@ -239,7 +146,6 @@ external unsafe_blit :
     src_pos:int ->
       dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit =
     "blit_string" "noalloc"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_02_0@
@@ -278,7 +184,6 @@ external unsafe_fill :
 external unsafe_fill :
   Stdcompat__init.bytes -> pos:int -> len:int -> char -> unit = "fill_string"
     "noalloc"
-
 @END_BEFORE_3_08_0@
 
 @END_BEFORE_4_02_0@
@@ -295,42 +200,14 @@ external unsafe_fill :
 [@@ocaml.deprecated
   "- : bytes -> pos:int -> len:int -> char -> unit = <fun>"]
  *)
-@BEGIN_FROM_4_00_0@
 val iteri : f:(int -> char -> unit) -> string -> unit
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-val iteri : f:(int -> char -> unit) -> string -> unit
-
-@END_BEFORE_4_00_0@
-(** @since 4.00.0: val iteri : f:(int -> char -> unit) -> string -> unit
- *)
-@BEGIN_FROM_4_00_0@
+(** @since 4.00.0: val iteri : f:(int -> char -> unit) -> string -> unit *)
 val map : f:(char -> char) -> string -> string
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-val map : f:(char -> char) -> string -> string
-
-@END_BEFORE_4_00_0@
-(** @since 4.00.0: val map : f:(char -> char) -> string -> string
- *)
-@BEGIN_FROM_4_00_0@
+(** @since 4.00.0: val map : f:(char -> char) -> string -> string *)
 val trim : string -> string
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-val trim : string -> string
-
-@END_BEFORE_4_00_0@
-(** @since 4.00.0: val trim : string -> string
- *)
-@BEGIN_FROM_3_08_0@
+(** @since 4.00.0: val trim : string -> string *)
 val compare : t -> t -> int
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-val compare : t -> t -> int
-
-@END_BEFORE_3_08_0@
-(** @since 3.08.0: val compare : t -> t -> int
- *)
+(** @since 3.08.0: val compare : t -> t -> int *)
 external length : string -> int = "%string_length"
 (** Alias for {!StringLabels.length} *)
 external get : string -> int -> char = "%string_safe_get"
@@ -343,7 +220,6 @@ val copy : string -> string[@@ocaml.deprecated
 @END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
 val copy : string -> string
-
 @END_BEFORE_4_06_0@
 (** @since 4.06.0:
     val copy : string -> string[@@ocaml.deprecated
@@ -378,7 +254,6 @@ val uppercase : string -> string[@@ocaml.deprecated
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val uppercase : string -> string
-
 @END_BEFORE_4_05_0@
 (** @since 4.05.0:
     val uppercase : string -> string[@@ocaml.deprecated
@@ -391,7 +266,6 @@ val lowercase : string -> string[@@ocaml.deprecated
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val lowercase : string -> string
-
 @END_BEFORE_4_05_0@
 (** @since 4.05.0:
     val lowercase : string -> string[@@ocaml.deprecated
@@ -404,7 +278,6 @@ val capitalize : string -> string[@@ocaml.deprecated
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val capitalize : string -> string
-
 @END_BEFORE_4_05_0@
 (** @since 4.05.0:
     val capitalize : string -> string[@@ocaml.deprecated
@@ -417,7 +290,6 @@ val uncapitalize : string -> string[@@ocaml.deprecated
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 val uncapitalize : string -> string
-
 @END_BEFORE_4_05_0@
 (** @since 4.05.0:
     val uncapitalize : string -> string[@@ocaml.deprecated
