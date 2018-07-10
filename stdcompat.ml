@@ -90,7 +90,15 @@ module Stdlib = struct
 
   module Stack = Stdcompat__stack
 
-  module StdLabels = StdLabels
+  module StdLabels = struct
+    module Array = Stdcompat__arrayLabels
+
+    module Bytes = Stdcompat__bytesLabels
+
+    module List = Stdcompat__listLabels
+
+    module String = Stdcompat__stringLabels
+  end
 
   module Stream = Stdcompat__stream
 
