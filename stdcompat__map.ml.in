@@ -89,22 +89,113 @@ module Make (Ord : OrderedType) = struct
     in
     seq_of_enum_ (aux low m End)
 
-@BEGIN_BEFORE_4_05_0@
+@BEGIN_BEFORE_4_06_0@
+  let height map =
+    match map with
+    | Empty -> 0
+    | Node (_l, _v, _d, _r, h) -> h
+
+  let create l x d r =
+    Node (l, x, d, r, (max (height l) (height r)) + 1)
+
+  let destruct map =
+    match map with
+    | Empty -> assert false
+    | Node (l, v, d, r, h) -> l, v, d, r, h
+
+  let bal l x d r =
+    let hl = height l and hr = height r in
+    if hl > hr + 2 then
+      begin
+        let ll, lv, ld, lr, _h = destruct l in
+        if height ll >= height lr then
+          create ll lv ld (create lr x d r)
+        else
+          let lrl, lrv, lrd, lrr, _ = destruct lr in
+          create (create ll lv ld lrl) lrv lrd (create lrr x d r)
+      end
+    else if hr > hl + 2 then
+      begin
+        let rl, rv, rd, rr, _h = destruct r in
+        if height rr >= height rl then
+          create (create l x d rl) rv rd rr
+        else
+          let rll, rlv, rld, rlr, _h = destruct rl in
+          create (create l x d rll) rlv rld (create rlr rv rd rr)
+      end
+    else
+      Node (l, x, d, r, (max hl hr) + 1)
+
   let rec min_binding_aux l v d =
     match l with
     | Empty -> v, d
     | Node (l', v', d', _r, _h) -> min_binding_aux l' v' d'
 
+  let min_binding_magic map =
+    match map with
+    | Empty -> raise Not_found
+    | Node (l, v, d, _r, _h) -> min_binding_aux l v d
+
+  let rec remove_min_binding map =
+    match map with
+    | Empty -> assert false
+    | Node (Empty, _v, _d, r, _h) -> r
+    | Node (l, v, d, r, _h) ->
+        bal (remove_min_binding l) v d r
+
+  let simple_merge t1 t2 =
+    match t1, t2 with
+    | Empty, t -> t
+    | t, Empty -> t
+    | _ ->
+        let x, d = min_binding_magic t2 in
+        bal t1 x d (remove_min_binding t2)
+
+  let rec update_magic x f map =
+    match map with
+    | Empty ->
+        begin
+          match f None with
+          | None -> Empty
+          | Some data -> Node (Empty, x, data, Empty, 1)
+        end
+    | Node (l, v, d, r, h) as m ->
+        let c = Ord.compare x v in
+        if c = 0 then
+          begin
+            match f (Some d) with
+            | None -> simple_merge l r
+            | Some data ->
+                if d == data then
+                  m
+                else
+                  Node (l, x, data, r, h)
+          end
+        else if c < 0 then
+          let ll = update_magic x f l in
+          if l == ll then
+            m
+          else
+            bal ll v d r
+        else
+          let rr = update_magic x f r in
+          if r == rr then
+            m
+          else
+            bal l v d rr
+
+  let update x f (map : 'a t) =
+    let map : 'a internal = Obj.magic map in
+    let result : 'a internal = update_magic x f map in
+    Obj.magic result
+@END_BEFORE_4_06_0@
+
+@BEGIN_BEFORE_4_05_0@
   let min_binding_opt (map : 'a t) =
     let map : 'a internal = Obj.magic map in
     match map with
     | Empty -> None
     | Node (l, v, d, _r, _h) -> Some (min_binding_aux l v d)
-
-  let min_binding_magic map =
-    match map with
-    | Empty -> raise Not_found
-    | Node (l, v, d, _r, _h) -> min_binding_aux l v d
 
   let rec max_binding_aux v d r =
     match r with
@@ -218,42 +309,6 @@ module Make (Ord : OrderedType) = struct
 @END_BEFORE_3_12_0@
 
 @BEGIN_BEFORE_4_03_0@
-  let height map =
-    match map with
-    | Empty -> 0
-    | Node (_l, _v, _d, _r, h) -> h
-
-  let create l x d r =
-    Node (l, x, d, r, (max (height l) (height r)) + 1)
-
-  let destruct map =
-    match map with
-    | Empty -> assert false
-    | Node (l, v, d, r, h) -> l, v, d, r, h
-
-  let bal l x d r =
-    let hl = height l and hr = height r in
-    if hl > hr + 2 then
-      begin
-        let ll, lv, ld, lr, _h = destruct l in
-        if height ll >= height lr then
-          create ll lv ld (create lr x d r)
-        else
-          let lrl, lrv, lrd, lrr, _ = destruct lr in
-          create (create ll lv ld lrl) lrv lrd (create lrr x d r)
-      end
-    else if hr > hl + 2 then
-      begin
-        let rl, rv, rd, rr, _h = destruct r in
-        if height rr >= height rl then
-          create (create l x d rl) rv rd rr
-        else
-          let rll, rlv, rld, rlr, _h = destruct rl in
-          create (create l x d rll) rlv rld (create rlr rv rd rr)
-      end
-    else
-      Node (l, x, d, r, (max hl hr) + 1)
-
   let singleton_magic v d =
     Node (Empty, v, d, Empty, 1)
 
@@ -267,13 +322,6 @@ module Make (Ord : OrderedType) = struct
     | Empty -> singleton_magic k x
     | Node (l, v, d, r, _h) ->
         bal l v d (add_max_binding k x r)
-
-  let rec remove_min_binding map =
-    match map with
-    | Empty -> assert false
-    | Node (Empty, _v, _d, r, _h) -> r
-    | Node (l, v, d, r, _h) ->
-        bal (remove_min_binding l) v d r
 
   let rec join l v d r =
     match l, r with
@@ -412,53 +460,6 @@ module Make (Ord : OrderedType) = struct
     let result : 'a internal = filter_magic p map in
     Obj.magic result
 
-  let simple_merge t1 t2 =
-    match t1, t2 with
-    | Empty, t -> t
-    | t, Empty -> t
-    | _ ->
-        let x, d = min_binding_magic t2 in
-        bal t1 x d (remove_min_binding t2)
-
-  let rec update_magic x f map =
-    match map with
-    | Empty ->
-        begin
-          match f None with
-          | None -> Empty
-          | Some data -> Node (Empty, x, data, Empty, 1)
-        end
-    | Node (l, v, d, r, h) as m ->
-        let c = Ord.compare x v in
-        if c = 0 then
-          begin
-            match f (Some d) with
-            | None -> simple_merge l r
-            | Some data ->
-                if d == data then
-                  m
-                else
-                  Node (l, x, data, r, h)
-          end
-        else if c < 0 then
-          let ll = update_magic x f l in
-          if l == ll then
-            m
-          else
-            bal ll v d r
-        else
-          let rr = update_magic x f r in
-          if r == rr then
-            m
-          else
-            bal l v d rr
-
-  let update x f (map : 'a t) =
-    let map : 'a internal = Obj.magic map in
-    let result : 'a internal = update_magic x f map in
-    Obj.magic result
-
-
   let rec for_all_magic p = function
     | Empty -> true
     | Node (l, v, d, r, _h) -> p v d && for_all_magic p l && for_all_magic p r
@@ -574,6 +575,17 @@ module Make (Ord : OrderedType) = struct
     | Some (v, d) -> v, d
 @END_BEFORE_4_05_0@
 
+@BEGIN_BEFORE_4_06_0@
+  let update x f map =
+    let d = find_opt x map in
+    let d' = f x d in
+    match d, d' with
+    | None, None -> map
+    | Some _, None -> remove x map
+    | Some d, Some d' when d == d' -> map
+    | _, Some d' -> add x d' map
+@END_BEFORE_4_06_0@
+
 @BEGIN_BEFORE_3_12_0@
   let merge f map map' =
     let b = bindings map and b' = bindings map' in
@@ -660,15 +672,6 @@ module Make (Ord : OrderedType) = struct
         add x d map'
       else
         map') map empty
-
-  let update x f map =
-    let d = find_opt x map in
-    let d' = f x d in
-    match d, d' with
-    | None, None -> map
-    | Some _, None -> remove x map
-    | Some d, Some d' when d == d' -> map
-    | _, Some d' -> add x d' map
 
   let exists p map =
     try
