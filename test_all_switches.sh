@@ -7,4 +7,8 @@ for ocamlversion in `opam switch -i -s`; do
     make clean
     make
     make tests
+    ./configure --disable-magic
+    make clean
+    make
+    make tests
 done

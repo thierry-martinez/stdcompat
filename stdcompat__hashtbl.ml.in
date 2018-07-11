@@ -93,10 +93,10 @@ let filter_map_inplace filter table =
 let filter_map_inplace filter table =
   let dict = {
     Stdcompat__hashtbl_ext.clear = clear;
-    fold = fold;
-    add = add;
-    remove = remove;
-    replace = replace;
+    Stdcompat__hashtbl_ext.fold = fold;
+    Stdcompat__hashtbl_ext.add = add;
+    Stdcompat__hashtbl_ext.remove = remove;
+    Stdcompat__hashtbl_ext.replace = replace;
   } in
   Stdcompat__hashtbl_ext.filter_map_inplace dict filter table
 @END_WITHOUT_MAGIC@
@@ -232,10 +232,10 @@ module Make (H : HashedType) = struct
   let filter_map_inplace filter table =
     let dict = {
       Stdcompat__hashtbl_ext.clear = clear;
-      fold = fold;
-      add = add;
-      remove = remove;
-      replace = replace;
+      Stdcompat__hashtbl_ext.fold = fold;
+      Stdcompat__hashtbl_ext.add = add;
+      Stdcompat__hashtbl_ext.remove = remove;
+      Stdcompat__hashtbl_ext.replace = replace;
     } in
     Stdcompat__hashtbl_ext.filter_map_inplace dict filter table
 @END_WITHOUT_MAGIC@
@@ -358,10 +358,10 @@ module MakeSeeded (H : SeededHashedType) = struct
   let filter_map_inplace filter table =
     let dict = {
       Stdcompat__hashtbl_ext.clear = clear;
-      fold = fold;
-      add = add;
-      remove = remove;
-      replace = replace;
+      Stdcompat__hashtbl_ext.fold = fold;
+      Stdcompat__hashtbl_ext.add = add;
+      Stdcompat__hashtbl_ext.remove = remove;
+      Stdcompat__hashtbl_ext.replace = replace;
     } in
     Stdcompat__hashtbl_ext.filter_map_inplace dict filter table
 @END_WITHOUT_MAGIC@

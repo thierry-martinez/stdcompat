@@ -525,6 +525,11 @@ module Make (Ord : OrderedType) = struct
 @END_BEFORE_3_08_0@
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
+@BEGIN_BEFORE_3_12_0@
+  let bindings map =
+    List.rev (fold (fun v d accu -> (v, d) :: accu) map [])
+@END_BEFORE_3_12_0@
+
   let to_seq m =
     Stdcompat__list.to_seq (bindings m)
 
@@ -578,7 +583,7 @@ module Make (Ord : OrderedType) = struct
 @BEGIN_BEFORE_4_06_0@
   let update x f map =
     let d = find_opt x map in
-    let d' = f x d in
+    let d' = f d in
     match d, d' with
     | None, None -> map
     | Some _, None -> remove x map
@@ -587,16 +592,25 @@ module Make (Ord : OrderedType) = struct
 @END_BEFORE_4_06_0@
 
 @BEGIN_BEFORE_3_12_0@
+  let accu_binding v d accu =
+    match d with
+    | None -> accu
+    | Some d -> add v d accu
+
+  let rec add_left_bindings f b accu =
+    List.fold_left (fun accu (v, d) -> accu_binding v (f v (Some d) None) accu)
+      accu b
+
+  let rec add_right_bindings f b accu =
+    List.fold_left (fun accu (v, d) -> accu_binding v (f v None (Some d)) accu)
+      accu b
+
   let merge f map map' =
     let b = bindings map and b' = bindings map' in
-    let accu_binding v d accu =
-      match d with
-      | None -> accu
-      | Some d -> add v d accu in
     let rec merge_bindings b b' accu =
       match b, b' with
-      | [], _ -> add_right_bindings b' accu
-      | _, [] -> add_left_bindings b accu
+      | [], _ -> add_right_bindings f b' accu
+      | _, [] -> add_left_bindings f b accu
       | (v, d) :: tl, (v', d') :: tl' ->
           let c = Ord.compare v v' in
           if c < 0 then
@@ -633,7 +647,7 @@ module Make (Ord : OrderedType) = struct
   let min_binding_opt m =
     let binding = ref None in
     try
-      iter (fun (v, d) ->
+      iter (fun  v d ->
         binding := Some ((v, d));
         raise Local_exit) m;
       None
@@ -641,23 +655,20 @@ module Make (Ord : OrderedType) = struct
       !binding
 
   let min_binding m =
-    match m with
+    match min_binding_opt m with
     | None -> raise Not_found
     | Some result -> result
 
   let max_binding_opt m =
     let binding = ref None in
-    iter (fun (v, d) ->
+    iter (fun v d ->
       binding := Some (v, d)) m;
     !binding
 
   let max_binding m =
-    match m with
+    match max_binding_opt m with
     | None -> raise Not_found
     | Some result -> result
-
-  let bindings map =
-    List.rev (fold (fun v d accu -> (v, d) :: accu) map [])
 
   let partition p map =
     fold (fun x d (true_map, false_map) ->
@@ -665,6 +676,13 @@ module Make (Ord : OrderedType) = struct
         add x d true_map, false_map
       else
         true_map, add x d false_map) map (empty, empty)
+
+  let split x t =
+    fold (fun key value (ll, pres, rl) ->
+      let c = Ord.compare key x in
+      if c < 0 then (add key value ll, pres, rl)
+      else if c > 0 then (ll, pres, add key value rl)
+      else (ll, Some value, rl)) t (empty, None, empty)
 
   let filter p map =
     fold (fun x d map' ->

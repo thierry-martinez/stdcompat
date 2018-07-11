@@ -27,7 +27,7 @@ For instance, the function
 which is an alias for ``Stdcompat.Stdlib.Pervasives.really_input_string``,
 which is itself an alias for
 ``Pervasives.really_input_string`` when the version of the OCaml
-compiler is above 4.02.0, or an alternative definition otherwise. 
+compiler is above 4.02.0, or an alternative definition otherwise.
 
 The types ``Stdcompat.bytes`` and ``Stdcompat.floatarray`` are aliases
 to the built-in ones is the latter are available (above 4.02.0 for
@@ -58,7 +58,7 @@ the data structures when they are abstracted: it is the case for
 ``Hashtbl.filter_map_inplace``, ``Hashtbl.stats``, ``Stack.fold``,
 ``Set.find*``, ``Set.map``.
 Pure (but less efficient) implementations are available by configuring
-``Stdcompat`` with ``./configure --with-magic``.
+``Stdcompat`` with ``./configure --disable-magic``.
 Note that redefinitions can still have bad time complexity:
 for instance, ``Set.map`` uses the function ``union`` to rebuild trees
 instead of the internal function ``try_join``, because using the

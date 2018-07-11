@@ -108,6 +108,32 @@ module Make (Ord : OrderedType) = struct
     Stdcompat__list.to_seq (elements_from low s)
 @END_WITHOUT_MAGIC@
 
+@BEGIN_BEFORE_4_01_0@
+  exception Find of elt
+
+@BEGIN_WITH_MAGIC@
+  let rec find_internal x = function
+      Empty -> raise Not_found
+    | Node (l, v, r, _h) ->
+        let c = Ord.compare x v in
+        if c = 0 then v
+        else find_internal x (if c < 0 then l else r)
+
+  let find x (s : t) =
+    let s : internal = Obj.magic s in
+    find_internal x s
+@END_WITH_MAGIC@
+@BEGIN_WITHOUT_MAGIC@
+  let find x s =
+    try
+      iter (fun y ->
+        if Ord.compare x y = 0 then
+          raise (Find y)) s;
+      raise Not_found
+    with Find y -> y
+@END_WITHOUT_MAGIC@
+@END_BEFORE_4_01_0@
+
 @BEGIN_BEFORE_4_05_0@
   let min_elt_opt s =
     Stdcompat__tools.option_find min_elt s
@@ -264,6 +290,10 @@ module Make (Ord : OrderedType) = struct
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_05_0@
 
+@BEGIN_BEFORE_4_02_0@
+  let of_list l = List.fold_left (fun s item -> add item s) empty l
+@END_BEFORE_4_02_0@
+
 @BEGIN_BEFORE_4_04_0@
 @BEGIN_WITH_MAGIC@
   let rec map_internal f = function
@@ -303,36 +333,6 @@ module Make (Ord : OrderedType) = struct
     | Unchanged _ -> s
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_04_0@
-
-@BEGIN_BEFORE_4_02_0@
-  let of_list l = List.fold_left (fun s item -> add item s) empty l
-@END_BEFORE_4_02_0@
-
-@BEGIN_BEFORE_4_01_0@
-  exception Find of elt
-
-@BEGIN_WITH_MAGIC@
-  let rec find_internal x = function
-      Empty -> raise Not_found
-    | Node (l, v, r, _h) ->
-        let c = Ord.compare x v in
-        if c = 0 then v
-        else find_internal x (if c < 0 then l else r)
-
-  let find x (s : t) =
-    let s : internal = Obj.magic s in
-    find_internal x s
-@END_WITH_MAGIC@
-@BEGIN_WITHOUT_MAGIC@
-  let find x s =
-    try
-      iter (fun y ->
-        if Ord.compare x y = 0 then
-          raise (Find y)) s;
-      raise Not_found
-    with Find y -> y
-@END_WITHOUT_MAGIC@
-@END_BEFORE_4_01_0@
 
 @BEGIN_BEFORE_3_08_0@
    let split x s =

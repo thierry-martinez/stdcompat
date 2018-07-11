@@ -114,7 +114,7 @@ let filter_map_inplace dict filter hashtbl =
           (None, to_replace, to_add, key :: to_remove, false, true)
     | Some value0 ->
         if value == value0 then
-          (Some key, to_repl[]ace, (key, value0) :: to_add, to_remove, rebuild,
+          (Some key, to_replace, (key, value0) :: to_add, to_remove, rebuild,
            changed)
         else if rebuild || last_key = Some key then
           (Some key, to_replace, (key, value0) :: to_add, to_remove, true,
