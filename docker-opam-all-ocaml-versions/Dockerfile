@@ -19,5 +19,6 @@ RUN opam switch 4.02.3
 RUN opam switch 4.03.0
 RUN opam switch 4.04.2
 RUN opam switch 4.05.0
-RUN opam switch 4.06.1
-RUN opam switch 4.07.0+rc1
+RUN opam switch 4.06.0
+RUN opam update
+RUN opam switch 4.07.0
