@@ -2,7 +2,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 mypkgdir=$(pkglibdir)
 
-EXTRA_DIST=stdcompat.opam dune
+EXTRA_DIST=stdcompat.opam dune stdcompat.ml
 
 if OCAML_SUPPORTS_SHARED
 mypkg_SCRIPTS = \
