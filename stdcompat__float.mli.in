@@ -22,6 +22,7 @@ type fpclass =
       | FP_infinite 
       | FP_nan 
  *)
+
 @BEGIN_FROM_4_07_0@
 type t = float
 @END_FROM_4_07_0@
@@ -30,6 +31,7 @@ type t = float
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: type t = float
  *)
+
 @BEGIN_FROM_4_07_0@
 module Array = Float.Array
 @END_FROM_4_07_0@
@@ -63,16 +65,22 @@ end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Array = Float.Array
  *)
+
 external neg : float -> float = "%negfloat"
 (** @since 4.07.0: external neg : float -> float = "%negfloat" *)
+
 external add : float -> float -> float = "%addfloat"
 (** @since 4.07.0: external add : float -> float -> float = "%addfloat" *)
+
 external sub : float -> float -> float = "%subfloat"
 (** @since 4.07.0: external sub : float -> float -> float = "%subfloat" *)
+
 external mul : float -> float -> float = "%mulfloat"
 (** @since 4.07.0: external mul : float -> float -> float = "%mulfloat" *)
+
 external div : float -> float -> float = "%divfloat"
 (** @since 4.07.0: external div : float -> float -> float = "%divfloat" *)
+
 @BEGIN_FROM_4_03_0@
 external rem : float -> float -> float = "caml_fmod_float" "fmod"[@@unboxed ]
 [@@noalloc ]
@@ -90,26 +98,37 @@ external rem : float -> float -> float = "fmod_float" "fmod" "float"
     external rem : float -> float -> float = "caml_fmod_float" "fmod"
     [@@unboxed ][@@noalloc ]
  *)
+
 external abs : float -> float = "%absfloat"
 (** @since 4.07.0: external abs : float -> float = "%absfloat" *)
+
 val infinity : float
 (** @since 4.07.0: val infinity : float *)
+
 val neg_infinity : float
 (** @since 4.07.0: val neg_infinity : float *)
+
 val nan : float
 (** @since 4.07.0: val nan : float *)
+
 val pi : float
 (** @since 4.07.0: val pi : float *)
+
 val max_float : float
 (** @since 4.07.0: val max_float : float *)
+
 val min_float : float
 (** @since 4.07.0: val min_float : float *)
+
 val epsilon : float
 (** @since 4.07.0: val epsilon : float *)
+
 external of_int : int -> float = "%floatofint"
 (** @since 4.07.0: external of_int : int -> float = "%floatofint" *)
+
 external to_int : float -> int = "%intoffloat"
 (** @since 4.07.0: external to_int : float -> int = "%intoffloat" *)
+
 @BEGIN_FROM_3_08_0@
 external of_string : string -> float = "caml_float_of_string"
 @END_FROM_3_08_0@
@@ -119,10 +138,13 @@ external of_string : string -> float = "float_of_string"
 (** @since 4.07.0:
     external of_string : string -> float = "caml_float_of_string"
  *)
+
 val of_string_opt : string -> float option
 (** @since 4.07.0: val of_string_opt : string -> float option *)
+
 val to_string : float -> string
 (** @since 4.07.0: val to_string : float -> string *)
+
 @BEGIN_FROM_4_03_0@
 external classify_float :
   ((float)[@unboxed ]) -> fpclass = "caml_classify_float"
@@ -142,6 +164,7 @@ external classify_float : float -> fpclass = "classify_float"
       ((float)[@unboxed ]) -> fpclass = "caml_classify_float"
         "caml_classify_float_unboxed"[@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external pow : float -> float -> float = "caml_power_float" "pow"[@@unboxed ]
 [@@noalloc ]
@@ -159,6 +182,7 @@ external pow : float -> float -> float = "power_float" "pow" "float"
     external pow : float -> float -> float = "caml_power_float" "pow"
     [@@unboxed ][@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external sqrt : float -> float = "caml_sqrt_float" "sqrt"[@@unboxed ]
 [@@noalloc ]
@@ -176,6 +200,7 @@ external sqrt : float -> float = "sqrt_float" "sqrt" "float"
     external sqrt : float -> float = "caml_sqrt_float" "sqrt"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external exp : float -> float = "caml_exp_float" "exp"[@@unboxed ][@@noalloc
                                                                     ]
@@ -193,6 +218,7 @@ external exp : float -> float = "exp_float" "exp" "float"
     external exp : float -> float = "caml_exp_float" "exp"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external log : float -> float = "caml_log_float" "log"[@@unboxed ][@@noalloc
                                                                     ]
@@ -210,6 +236,7 @@ external log : float -> float = "log_float" "log" "float"
     external log : float -> float = "caml_log_float" "log"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external log10 : float -> float = "caml_log10_float" "log10"[@@unboxed ]
 [@@noalloc ]
@@ -227,6 +254,7 @@ external log10 : float -> float = "log10_float" "log10" "float"
     external log10 : float -> float = "caml_log10_float" "log10"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external expm1 : float -> float = "caml_expm1_float" "caml_expm1"[@@unboxed ]
 [@@noalloc ]
@@ -244,6 +272,7 @@ val expm1 : float -> float
     external expm1 : float -> float = "caml_expm1_float" "caml_expm1"
     [@@unboxed ][@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external log1p : float -> float = "caml_log1p_float" "caml_log1p"[@@unboxed ]
 [@@noalloc ]
@@ -261,6 +290,7 @@ val log1p : float -> float
     external log1p : float -> float = "caml_log1p_float" "caml_log1p"
     [@@unboxed ][@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external cos : float -> float = "caml_cos_float" "cos"[@@unboxed ][@@noalloc
                                                                     ]
@@ -278,6 +308,7 @@ external cos : float -> float = "cos_float" "cos" "float"
     external cos : float -> float = "caml_cos_float" "cos"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external sin : float -> float = "caml_sin_float" "sin"[@@unboxed ][@@noalloc
                                                                     ]
@@ -295,6 +326,7 @@ external sin : float -> float = "sin_float" "sin" "float"
     external sin : float -> float = "caml_sin_float" "sin"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external tan : float -> float = "caml_tan_float" "tan"[@@unboxed ][@@noalloc
                                                                     ]
@@ -312,6 +344,7 @@ external tan : float -> float = "tan_float" "tan" "float"
     external tan : float -> float = "caml_tan_float" "tan"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external acos : float -> float = "caml_acos_float" "acos"[@@unboxed ]
 [@@noalloc ]
@@ -329,6 +362,7 @@ external acos : float -> float = "acos_float" "acos" "float"
     external acos : float -> float = "caml_acos_float" "acos"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external asin : float -> float = "caml_asin_float" "asin"[@@unboxed ]
 [@@noalloc ]
@@ -346,6 +380,7 @@ external asin : float -> float = "asin_float" "asin" "float"
     external asin : float -> float = "caml_asin_float" "asin"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external atan : float -> float = "caml_atan_float" "atan"[@@unboxed ]
 [@@noalloc ]
@@ -363,6 +398,7 @@ external atan : float -> float = "atan_float" "atan" "float"
     external atan : float -> float = "caml_atan_float" "atan"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
 [@@unboxed ][@@noalloc ]
@@ -380,6 +416,7 @@ external atan2 : float -> float -> float = "atan2_float" "atan2" "float"
     external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
     [@@unboxed ][@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external hypot : float -> float -> float = "caml_hypot_float" "caml_hypot"
 [@@unboxed ][@@noalloc ]
@@ -399,6 +436,7 @@ val hypot : float -> float -> float
       float -> float -> float = "caml_hypot_float" "caml_hypot"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external cosh : float -> float = "caml_cosh_float" "cosh"[@@unboxed ]
 [@@noalloc ]
@@ -416,6 +454,7 @@ external cosh : float -> float = "cosh_float" "cosh" "float"
     external cosh : float -> float = "caml_cosh_float" "cosh"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external sinh : float -> float = "caml_sinh_float" "sinh"[@@unboxed ]
 [@@noalloc ]
@@ -433,6 +472,7 @@ external sinh : float -> float = "sinh_float" "sinh" "float"
     external sinh : float -> float = "caml_sinh_float" "sinh"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external tanh : float -> float = "caml_tanh_float" "tanh"[@@unboxed ]
 [@@noalloc ]
@@ -450,6 +490,7 @@ external tanh : float -> float = "tanh_float" "tanh" "float"
     external tanh : float -> float = "caml_tanh_float" "tanh"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external ceil : float -> float = "caml_ceil_float" "ceil"[@@unboxed ]
 [@@noalloc ]
@@ -467,6 +508,7 @@ external ceil : float -> float = "ceil_float" "ceil" "float"
     external ceil : float -> float = "caml_ceil_float" "ceil"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external floor : float -> float = "caml_floor_float" "floor"[@@unboxed ]
 [@@noalloc ]
@@ -484,6 +526,7 @@ external floor : float -> float = "floor_float" "floor" "float"
     external floor : float -> float = "caml_floor_float" "floor"[@@unboxed ]
     [@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external copysign :
   float -> float -> float = "caml_copysign_float" "caml_copysign"[@@unboxed ]
@@ -504,6 +547,7 @@ val copysign : float -> float -> float
       float -> float -> float = "caml_copysign_float" "caml_copysign"
     [@@unboxed ][@@noalloc ]
  *)
+
 @BEGIN_FROM_3_08_0@
 external frexp : float -> (float * int) = "caml_frexp_float"
 @END_FROM_3_08_0@
@@ -513,6 +557,7 @@ external frexp : float -> (float * int) = "frexp_float"
 (** @since 4.07.0:
     external frexp : float -> (float * int) = "caml_frexp_float"
  *)
+
 @BEGIN_FROM_4_03_0@
 external ldexp :
   ((float)[@unboxed ]) -> ((int)[@untagged ]) -> ((float)[@unboxed ]) =
@@ -532,6 +577,7 @@ val ldexp : float -> int -> float
       ((float)[@unboxed ]) -> ((int)[@untagged ]) -> ((float)[@unboxed ]) =
         "caml_ldexp_float" "caml_ldexp_float_unboxed"[@@noalloc ]
  *)
+
 @BEGIN_FROM_3_08_0@
 external modf : float -> (float * float) = "caml_modf_float"
 @END_FROM_3_08_0@
@@ -541,9 +587,13 @@ external modf : float -> (float * float) = "modf_float"
 (** @since 4.07.0:
     external modf : float -> (float * float) = "caml_modf_float"
  *)
+
 val compare : t -> t -> int
 (** @since 4.07.0: val compare : t -> t -> int *)
+
 val equal : t -> t -> bool
 (** @since 4.07.0: val equal : t -> t -> bool *)
+
 val hash : t -> int
 (** @since 4.07.0: val hash : t -> int *)
+

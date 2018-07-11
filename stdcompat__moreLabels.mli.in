@@ -155,6 +155,7 @@ end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Hashtbl = MoreLabels.Hashtbl
  *)
+
 @BEGIN_FROM_4_07_0@
 module Map = MoreLabels.Map
 @END_FROM_4_07_0@
@@ -257,6 +258,7 @@ end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Map = MoreLabels.Map
  *)
+
 @BEGIN_FROM_4_07_0@
 module Set = MoreLabels.Set
 @END_FROM_4_07_0@
@@ -357,3 +359,4 @@ end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Set = MoreLabels.Set
  *)
+

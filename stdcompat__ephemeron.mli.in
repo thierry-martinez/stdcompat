@@ -91,6 +91,7 @@ module type S  =
         val stats_alive : 'a t -> Hashtbl.statistics
       end
  *)
+
 @BEGIN_FROM_4_07_0@
 module type SeededS  =
   sig
@@ -184,6 +185,7 @@ module type SeededS  =
         val stats_alive : 'a t -> Hashtbl.statistics
       end
  *)
+
 @BEGIN_FROM_4_07_0@
 module K1 = Ephemeron.K1
 @END_FROM_4_07_0@
@@ -268,6 +270,7 @@ end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module K1 = Ephemeron.K1
  *)
+
 @BEGIN_FROM_4_07_0@
 module K2 = Ephemeron.K2
 @END_FROM_4_07_0@
@@ -361,6 +364,7 @@ end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module K2 = Ephemeron.K2
  *)
+
 @BEGIN_FROM_4_07_0@
 module Kn = Ephemeron.Kn
 @END_FROM_4_07_0@
@@ -445,6 +449,7 @@ end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Kn = Ephemeron.Kn
  *)
+
 @BEGIN_FROM_4_07_0@
 module GenHashTable = Ephemeron.GenHashTable
 @END_FROM_4_07_0@
@@ -500,3 +505,4 @@ end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module GenHashTable = Ephemeron.GenHashTable
  *)
+

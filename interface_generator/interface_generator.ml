@@ -1215,9 +1215,9 @@ let format_versioned_signature ~module_name ~version_high ~version_low
         | None -> ()
         | Some real_version ->
             if Interface_tools.Version.equal real_version last_version then
-              Format.fprintf formatter "(** Alias for {!%s} *)@." item_name
+              Format.fprintf formatter "(** Alias for {!%s} *)@.@." item_name
             else
-              Format.fprintf formatter "(** @[@since %s:@ %a@] *)@."
+              Format.fprintf formatter "(** @[@since %s:@ %a@] *)@.@."
                 (Interface_tools.Version.to_string real_version)
                 Pprintast.signature [item]
       end
@@ -1246,7 +1246,7 @@ let format_versioned_signature ~module_name ~version_high ~version_low
               (Interface_tools.Version.to_string real_version)
               Pprintast.signature [item] in
         List.iter format_doc_version versions in
-      Format.fprintf formatter "(** @[<v>%a@] *)@." format_doc versions
+      Format.fprintf formatter "(** @[<v>%a@] *)@.@." format_doc versions
 
 let main argv =
   let arg_list = Array.to_list Sys.argv in

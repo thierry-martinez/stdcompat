@@ -1,5 +1,6 @@
 module type OrderedType  = sig type t val compare : t -> t -> int end
 (** Alias for {!Map.OrderedType} *)
+
 @BEGIN_FROM_4_07_0@
 module type S  =
   sig
@@ -139,6 +140,7 @@ module type S  =
         val of_seq : (key * 'a) Seq.t -> 'a t
       end
  *)
+
 @BEGIN_FROM_4_07_0@
 module Make = Map.Make
 @END_FROM_4_07_0@
@@ -191,3 +193,4 @@ functor (Ord : OrderedType) ->
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Make = Map.Make
  *)
+
