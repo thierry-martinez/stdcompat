@@ -81,4 +81,4 @@ stdcompat_tests: stdcompat.$(CMAX)
 @INCLUDE_DEPEND@
 
 CLEANFILES = *.cmi *.cmo *.cmx *.o *.a stdcompat.cma stdcompat.cmxa \
-	stdcompat_tests $(bin_SCRIPTS) *~
+	stdcompat.cmxs stdcompat_tests $(bin_SCRIPTS) *~
