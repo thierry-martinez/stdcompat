@@ -107,7 +107,7 @@ let () =
     let module M = Map.Make (String) in
     let module M' = Stdcompat.Map.Make (String) in
     let m = M.add "1" 2 M.empty in
-    M.compare compare (
+    M'.compare compare (
       M'.update "1" (function None -> Some 0 | Some i -> Some (i + 1))
       (M'.update "2" (function None -> Some 0 | Some _ -> None)
          (M'.update "3" (function None -> None | Some i -> Some i) m)))
