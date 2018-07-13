@@ -1,3 +1,13 @@
+* Version 6
+- Fix license conflict: The project was intended to be under BSD license
+  since the beginning, and a LICENSE file was provided accordingly.
+  However, automake generated a COPYING file with the GPLv3 by default. The
+  COPYING file now contains the BSD license, and the LICENSE file is removed.
+  (reported by Török Edwin,
+   https://github.com/thierry-martinez/stdcompat/issues/5)
+
+- Fix implementations with --disable-magic
+
 * Version 5
 - Interfaces are auto-generated.
 
