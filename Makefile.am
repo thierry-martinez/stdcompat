@@ -73,7 +73,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__int64.ml stdcompat__int32.ml stdcompat__filename.ml \
 	stdcompat__array.ml stdcompat__arrayLabels.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
-	stdcompat__spacetime.ml stdcompat__moreLabels.ml
+	stdcompat__spacetime.ml stdcompat__moreLabels.ml stdcompat__lexing.ml
 
 .DEFAULT_GOAL = all
 

@@ -50,7 +50,7 @@ module Stdlib = struct
 
   module Lazy = Stdcompat__lazy
 
-  module Lexing = Lexing
+  module Lexing = Stdcompat__lexing
 
   module List = Stdcompat__list
 

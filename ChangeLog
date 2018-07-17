@@ -1,4 +1,6 @@
 * Version 6
+- Lexing.new_line
+
 - Fix implementations with --disable-magic
 
 - Fix license conflict: The project was intended to be under BSD license

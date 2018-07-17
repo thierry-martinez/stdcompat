@@ -1,0 +1,10 @@
+include Lexing
+
+@BEGIN_BEFORE_3_11_0@
+let new_line lexbuf =
+  let lex_curr_p = lexbuf.Lexing.lex_curr_p in
+  if lex_curr_p != Lexing.dummy_pos then
+    lexbuf.Lexing.lex_curr_p <- { lex_curr_p with
+      Lexing.pos_lnum = succ lex_curr_p.Lexing.pos_lnum;
+      Lexing.pos_bol = lex_curr_p.Lexing.pos_cnum; }
+@END_BEFORE_3_11_0@

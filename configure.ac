@@ -195,6 +195,7 @@ AC_CONFIG_FILES([
   stdcompat__int32.ml
   stdcompat__int64.ml
   stdcompat__lazy.ml
+  stdcompat__lexing.ml
   stdcompat__list.ml
   stdcompat__listLabels.ml
   stdcompat__map.ml
