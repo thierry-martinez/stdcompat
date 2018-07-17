@@ -522,6 +522,16 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
           ({ loc; txt = Ldot (Lident "Stdcompat__hashtbl_ext", "statistics") },
            []) in
       { core_type with ptyp_desc }
+  | Ptyp_constr ({ loc; txt =
+      Ldot (Lapply (Ldot (Lident "Hashtbl", "MakeSeeded"),
+        Lident "H"), "t") }, args) ->
+      let ptyp_desc =
+        Parsetree.Ptyp_constr
+          ({ loc; txt =
+             Ldot (Lapply (Ldot (Lident "Stdcompat__hashtbl_ext",
+               "MakeSeeded"), Lident "H"), "t") },
+           args) in
+      { core_type with ptyp_desc }
   | Ptyp_constr (constr, args) ->
       let rec remove_module_name (constr : Longident.t) : Longident.t =
         match constr with
@@ -594,7 +604,20 @@ let compat_type_declaration ~module_name
     { type_decl with ptype_manifest =
       Some (core_type_of_desc
         (Ptyp_constr
-           (loc_of_txt (Longident.Ldot (Lident "Stdcompat__hashtbl_ext", "statistics")), []))) }
+           (loc_of_txt
+              (Longident.Ldot
+                 (Lident "Stdcompat__hashtbl_ext", "statistics")), []))) }
+  | Ldot (Lapply (Ldot (Lident "Hashtbl", "MakeSeeded"), Lident "H"), "t") ->
+    { type_decl with ptype_manifest =
+      Some (core_type_of_desc
+        (Ptyp_constr
+           (loc_of_txt
+              (Longident.Ldot
+                 (Lapply
+                    (Ldot
+                       (Lident "Stdcompat__hashtbl_ext", "MakeSeeded"),
+                     Lident "H"), "t")),
+            type_decl.ptype_params |> List.map fst))) }
   | _ ->
 (*
     match type_decl.ptype_manifest with
@@ -1138,10 +1161,16 @@ let item_name module_name (item : Parsetree.signature_item) =
     | _ -> assert false in
   Printf.sprintf "%s.%s" (string_of_longident module_name) name
 
-let add_self_type_manifest_to_type_decl ~module_name
+let add_self_type_manifest_to_type_decl ~(module_name : Longident.t)
     (type_decl : Parsetree.type_declaration) =
   match type_decl.ptype_manifest with
   | None ->
+      let module_name : Longident.t =
+        match module_name with
+        | Lapply (Ldot (Lident "Hashtbl", "MakeSeeded"), Lident "H") ->
+            Lapply (Ldot (Lident "Stdcompat__hashtbl_ext", "MakeSeeded"),
+              Lident "H")
+        | _ -> module_name in
       { type_decl with ptype_manifest =
         let params = type_decl.ptype_params |> List.map fst in
         Some ({ ptyp_desc =
@@ -1191,11 +1220,12 @@ and add_self_type_manifest_to_module_type ~module_name
           (add_self_type_manifest_to_module_type ~module_name ty, cstr) }
   | _ -> module_type
 
-let print_signature_item ~module_name real formatter item =
-  if real <> None || module_name = Longident.Lident "Hashtbl"
-   || module_name = Longident.Lident "Set"
-   || module_name = Longident.Lident "Map"
-   || module_name = Longident.Lident "Weak" then
+let print_signature_item ~(module_name : Longident.t) real formatter
+    (item : Parsetree.signature_item) =
+  if real <> None || module_name = Lident "Hashtbl"
+   || module_name = Lident "Set"
+   || module_name = Lident "Map"
+   || module_name = Lident "Weak" then
     let self_item = add_self_type_manifest ~module_name item in
     Pprintast.signature formatter [self_item]
   else

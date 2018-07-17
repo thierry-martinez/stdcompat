@@ -122,12 +122,7 @@ sig
   functor (H : SeededHashedType) ->
     sig
       type key = H.t
-@BEGIN_FROM_4_00_0@
-      type 'a t = 'a Hashtbl.MakeSeeded(H).t
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-      type 'a t
-@END_BEFORE_4_00_0@
+      and 'a t = 'a Stdcompat__hashtbl_ext.MakeSeeded(H).t
       val create : ?random:bool -> int -> 'a t
       val clear : 'a t -> unit
       val reset : 'a t -> unit

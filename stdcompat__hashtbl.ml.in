@@ -311,16 +311,10 @@ module MakeSeeded = Hashtbl.MakeSeeded
 @BEGIN_BEFORE_4_07_0@
 module MakeSeeded (H : SeededHashedType) = struct
 @BEGIN_FROM_4_00_0@
-  include Hashtbl.MakeSeeded (H)
+  include Hashtbl.MakeSeeded(H)
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
-  include Hashtbl.Make (struct
-    type t = H.t
-
-    let equal = H.equal
-
-    let hash x = H.hash 0 x
-  end)
+  include Hashtbl.Make(Stdcompat__hashtbl_ext.UnseedHashedType(H))
 @END_BEFORE_4_00_0@
 
 @BEGIN_WITH_MAGIC@
