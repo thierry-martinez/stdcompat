@@ -211,7 +211,8 @@ AC_CONFIG_FILES([
   stdcompat__stringLabels.ml
   stdcompat__sys.ml
   stdcompat__uchar.ml
-  stdcompat__weak.ml])
+  stdcompat__weak.ml
+  stdcompat.ml])
 
 AC_OUTPUT
 

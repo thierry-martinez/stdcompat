@@ -11,10 +11,16 @@ module Stdlib = struct
 
   module ArrayLabels = Stdcompat__arrayLabels
 
-(* (* Bigarray is not exported to allow programs not
-  to be compiled with this module, this may change in the future. *)
+  (* Bigarray is not exported before 4.02.0 to allow programs not
+     to be compiled with this module, this may change in the future.
+     From 4.02.0 and before 4.07.0, Bigarray is effectively
+     available only if the library is linked, but --no-alias-deps
+     allows the alias to be defined here without requiring such
+     a link. *)
+
+@BEGIN_FROM_4_02_0@
   module Bigarray = Bigarray
-*)
+@END_FROM_4_02_0@
 
   module Buffer = Stdcompat__buffer
 

@@ -1,6 +1,11 @@
 * Version 6
 - Lexing.new_line
 
+- Bigarray: only available from 4.02.0. From 4.02.0 and before 4.07.0,
+  --no-alias-deps is used to allow the alias to appear in Stdcompat without
+  requiring the library to be linked. Bigarray library should be linked if it is
+  effectively used.
+
 - Fix implementations with --disable-magic
 
 - Fix license conflict: The project was intended to be under BSD license
