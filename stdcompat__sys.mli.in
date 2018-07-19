@@ -22,6 +22,9 @@ type signal_behavior = Sys.signal_behavior =
   | Signal_handle of (int -> unit) 
 (** Alias for {!Sys.signal_behavior} *)
 
+exception Break 
+(** Alias for {!Sys.Break} *)
+
 val getenv_opt : string -> string option
 (** @since 4.05.0: val getenv_opt : string -> string option *)
 

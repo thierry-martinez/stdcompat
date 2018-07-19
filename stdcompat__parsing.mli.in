@@ -1,3 +1,6 @@
+exception Parse_error 
+(** Alias for {!Parsing.Parse_error} *)
+
 @BEGIN_FROM_3_08_0@
 type parser_env = Parsing.parser_env
 @END_FROM_3_08_0@
@@ -67,6 +70,9 @@ type parse_tables =
       names_const: string ;
       names_block: string }
  *)
+
+exception YYexit of Obj.t 
+(** Alias for {!Parsing.YYexit} *)
 
 val set_trace : bool -> bool
 (** @since 3.11.0: val set_trace : bool -> bool *)

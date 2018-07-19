@@ -38,6 +38,9 @@ type ('a, 'b, 'c, 'd) scanner =
       ('a, Scanning.in_channel, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c
  *)
 
+exception Scan_failure of string 
+(** Alias for {!Scanf.Scan_failure} *)
+
 val ksscanf :
   string -> (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
 (** @since 4.02.0:

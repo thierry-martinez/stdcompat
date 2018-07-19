@@ -17,6 +17,9 @@
 
 - Fix auto-generated interfaces for Hashtbl.MakeSeeded
 
+- Exceptions are reexported again. They were missing in auto-generated
+  interfaces.
+
 * Version 5
 - Interfaces are auto-generated.
 

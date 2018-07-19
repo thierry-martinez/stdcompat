@@ -1,6 +1,9 @@
 type 'a t = 'a lazy_t
 (** Alias for {!Lazy.t} *)
 
+exception Undefined 
+(** Alias for {!Lazy.Undefined} *)
+
 val from_fun : (unit -> 'a) -> 'a t
 (** @since 4.00.0: val from_fun : (unit -> 'a) -> 'a t *)
 

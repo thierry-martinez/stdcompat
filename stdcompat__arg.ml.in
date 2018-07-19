@@ -2,6 +2,10 @@
 include Arg
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
+exception Help of string
+
+exception Bad of string
+
 let not_implemented () =
   failwith "Stdcompat.Arg is not fully implemented yet. Please fill an issue: https://github.com/thierry-martinez/stdcompat/issues ."
 

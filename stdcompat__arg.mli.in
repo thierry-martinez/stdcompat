@@ -86,6 +86,12 @@ type anon_fun = string -> unit
 (** @since 3.08.0: type anon_fun = string -> unit
  *)
 
+exception Help of string 
+(** Alias for {!Arg.Help} *)
+
+exception Bad of string 
+(** Alias for {!Arg.Bad} *)
+
 val parse_and_expand_argv_dynamic :
   int ref ->
     string array ref ->

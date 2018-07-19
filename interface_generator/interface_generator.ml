@@ -1026,6 +1026,8 @@ let version_signature_item ~reference_version ~module_name ~signatures
                 false, module_type_declaration' in
           real, version,
           { item with psig_desc = Psig_modtype module_type_declaration' }))
+  | Psig_exception extension_constructor ->
+      Some ([true, reference_version, item])
   | _ ->
       None
 
@@ -1158,6 +1160,8 @@ let item_name module_name (item : Parsetree.signature_item) =
         module_declaration.pmd_name.txt
     | Psig_modtype module_type_declaration ->
         module_type_declaration.pmtd_name.txt
+    | Psig_exception extension_constructor ->
+        extension_constructor.pext_name.txt
     | _ -> assert false in
   Printf.sprintf "%s.%s" (string_of_longident module_name) name
 
@@ -1185,7 +1189,7 @@ let rec add_self_type_manifest ~module_name (item : Parsetree.signature_item) =
       let type_decl_list = type_decl_list |>
         List.map (add_self_type_manifest_to_type_decl ~module_name) in
       { item with psig_desc = Psig_type (rec_flag, type_decl_list) }
-  | Psig_value _ | Psig_modtype _ -> item
+  | Psig_value _ | Psig_modtype _ | Psig_exception _ -> item
   | Psig_module module_declaration ->
       let module_name : Longident.t =
         Ldot (module_name, module_declaration.pmd_name.txt) in

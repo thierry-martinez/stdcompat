@@ -1,3 +1,6 @@
+exception Exit 
+(** Alias for {!Pervasives.Exit} *)
+
 type fpclass = Pervasives.fpclass =
   | FP_normal 
   | FP_subnormal 

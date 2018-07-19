@@ -1,6 +1,9 @@
 type 'a t = 'a Stack.t
 (** Alias for {!Stack.t} *)
 
+exception Empty 
+(** Alias for {!Stack.Empty} *)
+
 @BEGIN_FROM_4_07_0@
 val to_seq : 'a t -> 'a Seq.t
 @END_FROM_4_07_0@

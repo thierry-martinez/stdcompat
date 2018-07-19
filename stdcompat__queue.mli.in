@@ -1,6 +1,9 @@
 type 'a t = 'a Queue.t
 (** Alias for {!Queue.t} *)
 
+exception Empty 
+(** Alias for {!Queue.Empty} *)
+
 @BEGIN_FROM_4_07_0@
 val to_seq : 'a t -> 'a Seq.t
 @END_FROM_4_07_0@
