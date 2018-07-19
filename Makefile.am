@@ -94,6 +94,8 @@ stdcompat.cma : stdcompat__native.cmo $(MODULES:.ml=.cmo) stdcompat.cmo
 stdcompat.cmxa : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -a $^ -o $@
 
+stdcompat.a : stdcompat.cmxa
+
 stdcompat.cmxs : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -shared $^ -o $@
 
