@@ -1,8 +1,6 @@
 pipeline {
     agent {
-        node {
-            label 'stdcompat-ubuntu-18-04-amd64'
-        }
+        label 'slave'
     }
 
     stages {
@@ -12,11 +10,6 @@ pipeline {
             }
         }
         stage('Test') {
-            agent {
-                node {
-                    label 'stdcompat-ubuntu-18-04-amd64'
-                }
-            }
             steps {
                 sh './test_all_switches_in_docker.sh'
             }
