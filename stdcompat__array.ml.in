@@ -70,10 +70,31 @@ end
 @END_BEFORE_4_06_0@
 
 @BEGIN_BEFORE_4_07_0@
-let of_seq g =
-  of_list (Stdcompat__list.of_seq g)
-
 let to_seq s = Stdcompat__tools.vec_to_seq length unsafe_get s
 
 let to_seqi s = Stdcompat__tools.vec_to_seqi length unsafe_get s
 @END_BEFORE_4_07_0@
+
+@BEGIN_BEFORE_4_07_1@
+(* Array.of_seq is redefined in OCaml 4.07.0 to circumvent a bug in the
+   implementation of the standard library. See:
+   - https://caml.inria.fr/mantis/view.php?id=7820
+   - https://github.com/ocaml/ocaml/pull/1897 *)
+
+let of_rev_list l =
+  match l with
+  | [] -> [||]
+  | hd :: tl ->
+      let len = List.length l in
+      let result = make len hd in
+      let rec fill i l =
+        match l with
+        | [] -> result
+        | hd :: tl ->
+            unsafe_set result i hd;
+            fill (pred i) tl in
+      fill (len - 2) tl
+
+let of_seq g =
+  of_rev_list (Stdcompat__seq.fold_left (fun accu x -> x :: accu) [] g)
+@END_BEFORE_4_07_1@

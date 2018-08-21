@@ -22,6 +22,11 @@
 
 - min_binding_opt and max_binding_opt are not redefined if OCaml >=4.05.
 
+- Array.of_seq is redefined in OCaml 4.07.0 to circumvent a bug in the
+  implementation of the standard library. See:
+    - https://caml.inria.fr/mantis/view.php?id=7820
+    - https://github.com/ocaml/ocaml/pull/1897
+
 * Version 5
 - Interfaces are auto-generated.
 
