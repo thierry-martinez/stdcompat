@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'autoreconf && ./configure && make'
+                sh 'eval `opam config env` && autoreconf && ./configure && make'
             }
         }
         stage('Test') {
