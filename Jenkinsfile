@@ -5,16 +5,13 @@ pipeline {
 
     stages {
         stage('Build') {
-            agent {
-                dockerfile true
-            }
             steps {
                 sh 'autoreconf && ./configure && make'
             }
         }
         stage('Test') {
             steps {
-                sh 'make tests'
+                sh './test_all_switches_in_docker.sh'
             }
         }
         stage('Deploy') {
