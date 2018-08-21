@@ -1,6 +1,8 @@
 pipeline {
     agent {
-        label 'slave'
+        dockerfile {
+            label 'slave'
+        }
     }
 
     stages {
@@ -11,7 +13,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh './test_all_switches_in_docker.sh'
+                sh './test_all_switches.sh'
             }
         }
         stage('Deploy') {
