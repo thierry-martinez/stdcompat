@@ -11,7 +11,6 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'groups'
                 sh './test_all_switches_in_docker.sh'
             }
         }
