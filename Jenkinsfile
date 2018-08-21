@@ -1,11 +1,13 @@
 pipeline {
     agent {
         label 'slave'
-        dockerfile true
     }
 
     stages {
         stage('Build') {
+            agent {
+                dockerfile true
+            }
             steps {
                 sh 'autoreconf && ./configure && make'
             }
