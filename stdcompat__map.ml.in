@@ -636,6 +636,7 @@ module Make (Ord : OrderedType) = struct
     merge f' map map'
 @END_BEFORE_4_03_0@
 
+@BEGIN_BEFORE_4_05_0@
 @BEGIN_FROM_3_12_0@
   let min_binding_opt m =
     Stdcompat__tools.option_find min_binding m
@@ -709,6 +710,7 @@ module Make (Ord : OrderedType) = struct
     with Local_exit ->
       false
 @END_BEFORE_3_12_0@
+@END_BEFORE_4_05_0@
 
 @BEGIN_BEFORE_3_08_0@
    let is_empty map =

@@ -20,6 +20,8 @@
 - Exceptions are reexported again. They were missing in auto-generated
   interfaces.
 
+- min_binding_opt and max_binding_opt are not redefined if OCaml >=4.05.
+
 * Version 5
 - Interfaces are auto-generated.
 
