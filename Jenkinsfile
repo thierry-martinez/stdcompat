@@ -10,6 +10,9 @@ pipeline {
             }
         }
         stage('Test') {
+            agent {
+                label 'stdcompat-ubuntu-18-04-amd64'
+            }
             steps {
                 sh './test_all_switches_in_docker.sh'
             }
