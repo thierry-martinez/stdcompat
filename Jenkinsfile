@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'slave'
+        label 'stdcompat-ubuntu-18-04-amd64'
     }
 
     stages {
