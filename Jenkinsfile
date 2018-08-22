@@ -21,13 +21,13 @@ pipeline {
             }
         }
         stage('Test') {
-            parallel {
-    stage('3.07') {
-        steps {
-            sh "opam switch 3.07 && eval `opam config env` && mkdir build/3.07 && cd build/3.07 && ../../configure && make && make tests"
-        }
-    }
-}
+            steps {
+                parallel(
+                    '3.07': {
+                        sh "opam switch 3.07 && eval `opam config env` && mkdir build/3.07 && cd build/3.07 && ../../configure && make && make tests"
+                    }
+                )
+            }
         }
         stage('Deploy') {
             steps {
