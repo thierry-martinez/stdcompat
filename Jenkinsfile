@@ -22,7 +22,7 @@ pipeline {
                     for (i in switches) {
                         def switch_name = i
                         branches[switch_name] = {
-                            sh "opam switch $switch_name && eval `opam config env` && mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests"
+                            sh "opam config exec --switch $switch_name sh -c 'eval `opam config env` && mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests'"
                         }
                     }
                     parallel branches
