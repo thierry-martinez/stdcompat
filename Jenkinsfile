@@ -7,6 +7,9 @@ def branches = ['3.07', '3.08.4', '3.09.3'].collect {
     }
 }
 */
+
+def ocaml_version = '3.07'
+
 pipeline {
     agent {
         dockerfile {
@@ -22,11 +25,11 @@ pipeline {
         }
         stage('Test') {
             steps {
-                parallel([
-                    '3.07': {
+                parallel(
+                    ocaml_version: {
                         sh "opam switch 3.07 && eval `opam config env` && mkdir build/3.07 && cd build/3.07 && ../../configure && make && make tests"
                     }
-                ])
+                )
             }
         }
         stage('Deploy') {
