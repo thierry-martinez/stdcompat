@@ -1,17 +1,3 @@
-/*
-def branches = ['3.07', '3.08.4', '3.09.3'].collect {
-    stage(it) {
-        steps {
-            sh "opam switch $it && eval `opam config env` && mkdir build/$it && cd build/$it && ../../configure && make && make tests"
-        }
-    }
-}
-*/
-
-def command = {
-    sh "opam switch 3.07 && eval `opam config env` && mkdir build/3.07 && cd build/3.07 && ../../configure && make && make tests"
-}
-
 pipeline {
     agent {
         dockerfile {
@@ -26,10 +12,16 @@ pipeline {
             }
         }
         stage('Test') {
-            steps {
-                parallel(
-                    '3.07': command
-                )
+            parallel {
+                script {
+                    for (switch_name in ['3.07', '3.08.4', '3.09.3']) {
+                        stage(switch_name) {
+                            steps {
+                                sh "opam switch $switch_name && eval `opam config env` && mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests"
+                            }
+                        }
+                    }
+                }
             }
         }
         stage('Deploy') {
