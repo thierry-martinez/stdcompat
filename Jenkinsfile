@@ -36,7 +36,7 @@ pipeline {
                     for (i in switches) {
                         def switch_name = i
                         branches[switch_name] = {
-                            node('slave') {
+                            node {
                                 sh "opam config exec --switch $switch_name -- sh -c 'eval `opam config env` && mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests'"
                             }
                         }
