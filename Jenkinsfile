@@ -1,31 +1,12 @@
-def stringsToEcho = ["a", "b", "c", "d"]
-
-// The map we'll store the parallel steps in before executing them.
-def stepsForParallel = stringsToEcho.collectEntries {
-    ["echoing ${it}" : transformIntoStep(it)]
-}
-
 /*
-def branches = ['3.07', '3.08.4', '3.09.3'].collectEntries {
-    [$it : {
+def branches = ['3.07', '3.08.4', '3.09.3'].collect {
+    stage(it) {
+        steps {
             sh "opam switch $it && eval `opam config env` && mkdir build/$it && cd build/$it && ../../configure && make && make tests"
-        }]
-}
-*/
-
-// Take the string and echo it.
-def transformIntoStep(inputString) {
-    // We need to wrap what we return in a Groovy closure, or else it's invoked
-    // when this method is called, not when we pass it to parallel.
-    // To do this, you need to wrap the code below in { }, and either return
-    // that explicitly, or use { -> } syntax.
-    return {
-        node {
-            echo inputString
         }
     }
 }
-
+*/
 pipeline {
     agent {
         dockerfile {
@@ -41,7 +22,11 @@ pipeline {
         }
         stage('Test') {
             steps {
-                parallel stepsForParallel
+                parallel(
+                    '3.07': {
+                        sh "opam switch 3.07 && eval `opam config env` && mkdir build/3.07 && cd build/3.07 && ../../configure && make && make tests"
+                    }
+                )
             }
         }
         stage('Deploy') {
