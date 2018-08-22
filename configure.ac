@@ -144,6 +144,9 @@ AC_CONFIG_FILES([
   stdcompat__root.ml
   stdcompat__tools.mli
   stdcompat__tools.ml
+  stdcompat__native.ml_byte
+  stdcompat__native.ml_native
+  stdcompat_tests.ml
 ])
 AC_CONFIG_FILES([
   stdcompat__pervasives.mli

@@ -1,4 +1,7 @@
 * Version 6
+- Support VPATH build, i.e. when configure is executed in a build directory
+  distinct from the source directory
+
 - Lexing.new_line
 
 - Bigarray: only available from 4.02.0. From 4.02.0 and before 4.07.0,
