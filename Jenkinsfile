@@ -27,8 +27,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'make dist'
-                archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
+                sh 'cd build && make dist'
+                archiveArtifacts artifacts: 'build/*.tar.gz', fingerprint: true
             }
         }
     }
