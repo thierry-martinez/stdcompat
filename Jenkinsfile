@@ -14,8 +14,12 @@ pipeline {
         stage('Test') {
             steps {
                 script {
+                    def switches = sh (
+                        script: 'opam switch -i -s',
+                        returnStdout: true
+                    ).split('\n')
                     def branches = [:]
-                    for (i in ['3.07', '3.08.4', '3.09.3']) {
+                    for (i in switches) {
                         def switch_name = i
                         branches[switch_name] = {
                             sh "opam switch $switch_name && eval `opam config env` && mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests"
