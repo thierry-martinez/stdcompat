@@ -13,14 +13,11 @@ pipeline {
         }
         stage('Test') {
             parallel {
-                stage('3.07') {
-                    steps {
-                        sh 'opam switch 3.07 && eval `opam config env` && mkdir build/3.07 && cd build/3.07 && ../../configure && make && make tests'
-                    }
-                }
-                stage('3.08.4') {
-                    steps {
-                        sh 'opam switch 3.08.4 && eval `opam config env` && mkdir build/3.08.4 && cd build/3.08.4 && ../../configure && make && make tests'
+                for (switch_name in ['3.07' '3.08.4' '3.09.3']) {
+                    stage(switch_name) {
+                        steps {
+                            sh "opam switch $(switch_name) && eval `opam config env` && mkdir build/$(switch_name) && cd build/$(switch_name) && ../../configure && make && make tests"
+                        }
                     }
                 }
             }
