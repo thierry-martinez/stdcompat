@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Test') {
             parallel {
-                for (switch_name in ['3.07' '3.08.4' '3.09.3']) {
+                for (switch_name in ['3.07', '3.08.4', '3.09.3']) {
                     stage(switch_name) {
                         steps {
                             sh "opam switch $(switch_name) && eval `opam config env` && mkdir build/$(switch_name) && cd build/$(switch_name) && ../../configure && make && make tests"
