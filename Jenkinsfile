@@ -1,3 +1,17 @@
+properties([
+  [
+    $class: 'ThrottleJobProperty',
+    categories: ['category'],
+    limitOneJobWithMatchingParams: false,
+    maxConcurrentPerNode: 4,
+    maxConcurrentTotal: 0,
+    paramsToUseForLimit: '',
+    throttleEnabled: true,
+    throttleOption: 'category'
+  ],
+])
+
+
 pipeline {
     agent {
         dockerfile {
@@ -25,7 +39,9 @@ pipeline {
                             sh "opam config exec --switch $switch_name -- sh -c 'eval `opam config env` && mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests'"
                         }
                     }
-                    parallel branches
+                    throttle(['category']) {
+                        parallel branches
+                    }
                 }
             }
         }
