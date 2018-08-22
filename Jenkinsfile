@@ -8,7 +8,9 @@ def branches = ['3.07', '3.08.4', '3.09.3'].collect {
 }
 */
 
-def command = "opam switch 3.07 && eval `opam config env` && mkdir build/3.07 && cd build/3.07 && ../../configure && make && make tests"
+def command = {
+    sh "opam switch 3.07 && eval `opam config env` && mkdir build/3.07 && cd build/3.07 && ../../configure && make && make tests"
+}
 
 pipeline {
     agent {
@@ -26,9 +28,7 @@ pipeline {
         stage('Test') {
             steps {
                 parallel(
-                    '3.07': {
-                        sh command
-                    }
+                    '3.07': command
                 )
             }
         }
