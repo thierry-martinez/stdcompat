@@ -12,13 +12,13 @@ pipeline {
             }
         }
         stage('Test') {
-            parallel ['3.07', '3.08.4', '3.09.3'].collect {
+            parallel (['3.07', '3.08.4', '3.09.3'].collect {
                 stage(it) {
                     steps {
                         sh "opam switch $it && eval `opam config env` && mkdir build/$it && cd build/$it && ../../configure && make && make tests"
                     }
                 }
-            }
+            })
         }
         stage('Deploy') {
             steps {
