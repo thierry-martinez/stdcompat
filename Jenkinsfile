@@ -48,7 +48,7 @@ pipeline {
                         def switch_name = i
                         branches[switch_name] = {
                             node {
-                                sh "docker run -v $pwd:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests'\\'"
+                                sh "docker run -v $pwd:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests && ../../configure --disable-magic && make && make tests'\\'"
                             }
                         }
                     }
