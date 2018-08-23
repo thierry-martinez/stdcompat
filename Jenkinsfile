@@ -29,7 +29,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker run -v $PWD:/workspace stdcompat sh -c "cd /workspace && eval `opam config env` && autoreconf && mkdir build && cd build && ../configure && make"'
+                sh 'docker run -v $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && autoreconf && mkdir build && cd build && ../configure && make\''
             }
         }
         stage('Test') {
@@ -44,7 +44,7 @@ pipeline {
                         def switch_name = i
                         branches[switch_name] = {
                             node {
-                                sh "docker run -v $PWD:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\''eval `opam config env` && mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests'\'"
+                                sh "docker run -v $PWD:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\''mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests'\'"
                             }
                         }
                     }
