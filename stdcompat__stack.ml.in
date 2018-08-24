@@ -22,7 +22,7 @@ let top_opt (s : 'a t) =
 @BEGIN_WITHOUT_MAGIC@
 let pop_opt s =
   try Some (pop s)
-  with Empy -> None
+  with Empty -> None
 
 let top_opt s =
   try Some (top s)
