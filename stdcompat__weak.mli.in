@@ -1,5 +1,6 @@
 type 'a t = 'a Weak.t
 (** Alias for {!Weak.t} *)
+
 @BEGIN_FROM_4_05_0@
 module type S  =
   sig
@@ -60,6 +61,7 @@ module type S  =
         val stats : t -> (int * int * int * int * int * int)
       end
  *)
+
 @BEGIN_FROM_4_05_0@
 module Make = Weak.Make
 @END_FROM_4_05_0@
@@ -68,7 +70,7 @@ module Make :
 functor (H : Hashtbl.HashedType) ->
   sig
     type data = H.t
-    type t
+    type t = Weak.Make(H).t
     val create : int -> t
     val clear : t -> unit
     val merge : t -> data -> data
@@ -86,19 +88,28 @@ functor (H : Hashtbl.HashedType) ->
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: module Make = Weak.Make
  *)
+
 val create : int -> 'a t
 (** Alias for {!Weak.create} *)
+
 val length : 'a t -> int
 (** Alias for {!Weak.length} *)
+
 val set : 'a t -> int -> 'a option -> unit
 (** Alias for {!Weak.set} *)
+
 val get : 'a t -> int -> 'a option
 (** Alias for {!Weak.get} *)
+
 val get_copy : 'a t -> int -> 'a option
 (** Alias for {!Weak.get_copy} *)
+
 val check : 'a t -> int -> bool
 (** Alias for {!Weak.check} *)
+
 val fill : 'a t -> int -> int -> 'a option -> unit
 (** Alias for {!Weak.fill} *)
+
 val blit : 'a t -> int -> 'a t -> int -> int -> unit
 (** Alias for {!Weak.blit} *)
+

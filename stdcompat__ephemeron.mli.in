@@ -49,7 +49,7 @@ module type S  =
     val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
     val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     val length : 'a t -> int
-    val stats : 'a t -> Stdcompat_hashtbl_ext.statistics
+    val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
     val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
     val to_seq_keys : 'a t -> key Stdcompat__seq.t
     val to_seq_values : 'a t -> 'a Stdcompat__seq.t
@@ -57,7 +57,7 @@ module type S  =
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
     val clean : 'a t -> unit
-    val stats_alive : 'a t -> Stdcompat_hashtbl_ext.statistics
+    val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics
   end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0:
@@ -91,6 +91,7 @@ module type S  =
         val stats_alive : 'a t -> Hashtbl.statistics
       end
  *)
+
 @BEGIN_FROM_4_07_0@
 module type SeededS  =
   sig
@@ -142,7 +143,7 @@ module type SeededS  =
     val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
     val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     val length : 'a t -> int
-    val stats : 'a t -> Stdcompat_hashtbl_ext.statistics
+    val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
     val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
     val to_seq_keys : 'a t -> key Stdcompat__seq.t
     val to_seq_values : 'a t -> 'a Stdcompat__seq.t
@@ -150,7 +151,7 @@ module type SeededS  =
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
     val clean : 'a t -> unit
-    val stats_alive : 'a t -> Stdcompat_hashtbl_ext.statistics
+    val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics
   end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0:
@@ -184,6 +185,7 @@ module type SeededS  =
         val stats_alive : 'a t -> Hashtbl.statistics
       end
  *)
+
 @BEGIN_FROM_4_07_0@
 module K1 = Ephemeron.K1
 @END_FROM_4_07_0@
@@ -224,7 +226,7 @@ sig
       val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
       val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
       val length : 'a t -> int
-      val stats : 'a t -> Stdcompat_hashtbl_ext.statistics
+      val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
       val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
       val to_seq_keys : 'a t -> key Stdcompat__seq.t
       val to_seq_values : 'a t -> 'a Stdcompat__seq.t
@@ -232,7 +234,7 @@ sig
       val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
       val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
       val clean : 'a t -> unit
-      val stats_alive : 'a t -> Stdcompat_hashtbl_ext.statistics
+      val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics
     end
   module MakeSeeded :
   functor (H : Stdcompat__hashtbl.SeededHashedType) ->
@@ -254,7 +256,7 @@ sig
       val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
       val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
       val length : 'a t -> int
-      val stats : 'a t -> Stdcompat_hashtbl_ext.statistics
+      val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
       val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
       val to_seq_keys : 'a t -> key Stdcompat__seq.t
       val to_seq_values : 'a t -> 'a Stdcompat__seq.t
@@ -262,12 +264,13 @@ sig
       val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
       val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
       val clean : 'a t -> unit
-      val stats_alive : 'a t -> Stdcompat_hashtbl_ext.statistics
+      val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics
     end
 end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module K1 = Ephemeron.K1
  *)
+
 @BEGIN_FROM_4_07_0@
 module K2 = Ephemeron.K2
 @END_FROM_4_07_0@
@@ -316,7 +319,7 @@ sig
         val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
         val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
         val length : 'a t -> int
-        val stats : 'a t -> Stdcompat_hashtbl_ext.statistics
+        val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
         val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
         val to_seq_keys : 'a t -> key Stdcompat__seq.t
         val to_seq_values : 'a t -> 'a Stdcompat__seq.t
@@ -324,7 +327,7 @@ sig
         val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
         val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
         val clean : 'a t -> unit
-        val stats_alive : 'a t -> Stdcompat_hashtbl_ext.statistics
+        val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics
       end
   module MakeSeeded :
   functor (H1 : Stdcompat__hashtbl.SeededHashedType) ->
@@ -347,7 +350,7 @@ sig
         val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
         val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
         val length : 'a t -> int
-        val stats : 'a t -> Stdcompat_hashtbl_ext.statistics
+        val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
         val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
         val to_seq_keys : 'a t -> key Stdcompat__seq.t
         val to_seq_values : 'a t -> 'a Stdcompat__seq.t
@@ -355,12 +358,13 @@ sig
         val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
         val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
         val clean : 'a t -> unit
-        val stats_alive : 'a t -> Stdcompat_hashtbl_ext.statistics
+        val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics
       end
 end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module K2 = Ephemeron.K2
  *)
+
 @BEGIN_FROM_4_07_0@
 module Kn = Ephemeron.Kn
 @END_FROM_4_07_0@
@@ -401,7 +405,7 @@ sig
       val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
       val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
       val length : 'a t -> int
-      val stats : 'a t -> Stdcompat_hashtbl_ext.statistics
+      val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
       val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
       val to_seq_keys : 'a t -> key Stdcompat__seq.t
       val to_seq_values : 'a t -> 'a Stdcompat__seq.t
@@ -409,7 +413,7 @@ sig
       val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
       val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
       val clean : 'a t -> unit
-      val stats_alive : 'a t -> Stdcompat_hashtbl_ext.statistics
+      val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics
     end
   module MakeSeeded :
   functor (H : Stdcompat__hashtbl.SeededHashedType) ->
@@ -431,7 +435,7 @@ sig
       val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
       val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
       val length : 'a t -> int
-      val stats : 'a t -> Stdcompat_hashtbl_ext.statistics
+      val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
       val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
       val to_seq_keys : 'a t -> key Stdcompat__seq.t
       val to_seq_values : 'a t -> 'a Stdcompat__seq.t
@@ -439,12 +443,13 @@ sig
       val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
       val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
       val clean : 'a t -> unit
-      val stats_alive : 'a t -> Stdcompat_hashtbl_ext.statistics
+      val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics
     end
 end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Kn = Ephemeron.Kn
  *)
+
 @BEGIN_FROM_4_07_0@
 module GenHashTable = Ephemeron.GenHashTable
 @END_FROM_4_07_0@
@@ -486,7 +491,7 @@ sig
       val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
       val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
       val length : 'a t -> int
-      val stats : 'a t -> Stdcompat_hashtbl_ext.statistics
+      val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
       val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
       val to_seq_keys : 'a t -> key Stdcompat__seq.t
       val to_seq_values : 'a t -> 'a Stdcompat__seq.t
@@ -494,9 +499,10 @@ sig
       val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
       val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
       val clean : 'a t -> unit
-      val stats_alive : 'a t -> Stdcompat_hashtbl_ext.statistics
+      val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics
     end
 end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module GenHashTable = Ephemeron.GenHashTable
  *)
+

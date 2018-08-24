@@ -58,6 +58,7 @@ type stat =
       top_heap_words: int ;
       stack_size: int }
  *)
+
 @BEGIN_FROM_4_03_0@
 type control = Gc.control =
   {
@@ -94,8 +95,10 @@ type control =
       mutable allocation_policy: int ;
       window_size: int }
  *)
+
 type alarm = Gc.alarm
 (** Alias for {!Gc.alarm} *)
+
 @BEGIN_FROM_4_05_0@
 external minor_words :
   unit -> ((float)[@unboxed ]) = "caml_gc_minor_words"
@@ -121,8 +124,10 @@ external minor_words :
   unit -> ((float)[@unboxed ]) = "caml_gc_minor_words"
     "caml_gc_minor_words_unboxed"[@@noalloc ]
  *)
+
 val finalise_last : (unit -> unit) -> 'a -> unit
 (** @since 4.04.0: val finalise_last : (unit -> unit) -> 'a -> unit *)
+
 @BEGIN_FROM_4_05_0@
 external get_minor_free : unit -> int = "caml_get_minor_free"
 @END_FROM_4_05_0@
@@ -140,6 +145,7 @@ val get_minor_free : unit -> int
 @since 4.03.0:
 external get_minor_free : unit -> int = "caml_get_minor_free"[@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external get_bucket : int -> int = "caml_get_major_bucket"[@@noalloc ]
 @END_FROM_4_03_0@
@@ -149,6 +155,7 @@ val get_bucket : int -> int
 (** @since 4.03.0:
     external get_bucket : int -> int = "caml_get_major_bucket"[@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external get_credit : unit -> int = "caml_get_major_credit"[@@noalloc ]
 @END_FROM_4_03_0@
@@ -158,6 +165,7 @@ val get_credit : unit -> int
 (** @since 4.03.0:
     external get_credit : unit -> int = "caml_get_major_credit"[@@noalloc ]
  *)
+
 @BEGIN_FROM_4_03_0@
 external huge_fallback_count : unit -> int = "caml_gc_huge_fallback_count"
 @END_FROM_4_03_0@
@@ -168,6 +176,7 @@ val huge_fallback_count : unit -> int
     external huge_fallback_count :
       unit -> int = "caml_gc_huge_fallback_count"
  *)
+
 @BEGIN_FROM_3_08_0@
 external quick_stat : unit -> stat = "caml_gc_quick_stat"
 @END_FROM_3_08_0@
@@ -176,8 +185,10 @@ val quick_stat : unit -> stat
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: external quick_stat : unit -> stat = "caml_gc_quick_stat"
  *)
+
 val finalise_release : unit -> unit
 (** @since 3.08.0: val finalise_release : unit -> unit *)
+
 @BEGIN_FROM_3_08_0@
 external stat : unit -> stat = "caml_gc_stat"
 @END_FROM_3_08_0@
@@ -187,6 +198,7 @@ external stat : unit -> stat = "gc_stat"
 (** @since 3.08.0: external stat : unit -> stat = "caml_gc_stat"
 @since 3.07.0: external stat : unit -> stat = "gc_stat"
  *)
+
 @BEGIN_FROM_3_08_0@
 external counters : unit -> (float * float * float) = "caml_gc_counters"
 @END_FROM_3_08_0@
@@ -198,6 +210,7 @@ external counters : unit -> (float * float * float) = "gc_counters"
 @since 3.07.0:
 external counters : unit -> (float * float * float) = "gc_counters"
  *)
+
 @BEGIN_FROM_3_08_0@
 external get : unit -> control = "caml_gc_get"
 @END_FROM_3_08_0@
@@ -207,6 +220,7 @@ external get : unit -> control = "gc_get"
 (** @since 3.08.0: external get : unit -> control = "caml_gc_get"
 @since 3.07.0: external get : unit -> control = "gc_get"
  *)
+
 @BEGIN_FROM_3_08_0@
 external set : control -> unit = "caml_gc_set"
 @END_FROM_3_08_0@
@@ -216,6 +230,7 @@ external set : control -> unit = "gc_set"
 (** @since 3.08.0: external set : control -> unit = "caml_gc_set"
 @since 3.07.0: external set : control -> unit = "gc_set"
  *)
+
 @BEGIN_FROM_3_08_0@
 external minor : unit -> unit = "caml_gc_minor"
 @END_FROM_3_08_0@
@@ -225,6 +240,7 @@ external minor : unit -> unit = "gc_minor"
 (** @since 3.08.0: external minor : unit -> unit = "caml_gc_minor"
 @since 3.07.0: external minor : unit -> unit = "gc_minor"
  *)
+
 @BEGIN_FROM_3_08_0@
 external major_slice : int -> int = "caml_gc_major_slice"
 @END_FROM_3_08_0@
@@ -234,6 +250,7 @@ external major_slice : int -> int = "gc_major_slice"
 (** @since 3.08.0: external major_slice : int -> int = "caml_gc_major_slice"
 @since 3.07.0: external major_slice : int -> int = "gc_major_slice"
  *)
+
 @BEGIN_FROM_3_08_0@
 external major : unit -> unit = "caml_gc_major"
 @END_FROM_3_08_0@
@@ -243,6 +260,7 @@ external major : unit -> unit = "gc_major"
 (** @since 3.08.0: external major : unit -> unit = "caml_gc_major"
 @since 3.07.0: external major : unit -> unit = "gc_major"
  *)
+
 @BEGIN_FROM_3_08_0@
 external full_major : unit -> unit = "caml_gc_full_major"
 @END_FROM_3_08_0@
@@ -252,6 +270,7 @@ external full_major : unit -> unit = "gc_full_major"
 (** @since 3.08.0: external full_major : unit -> unit = "caml_gc_full_major"
 @since 3.07.0: external full_major : unit -> unit = "gc_full_major"
  *)
+
 @BEGIN_FROM_3_08_0@
 external compact : unit -> unit = "caml_gc_compaction"
 @END_FROM_3_08_0@
@@ -261,13 +280,19 @@ external compact : unit -> unit = "gc_compaction"
 (** @since 3.08.0: external compact : unit -> unit = "caml_gc_compaction"
 @since 3.07.0: external compact : unit -> unit = "gc_compaction"
  *)
+
 val print_stat : out_channel -> unit
 (** Alias for {!Gc.print_stat} *)
+
 val allocated_bytes : unit -> float
 (** Alias for {!Gc.allocated_bytes} *)
+
 val finalise : ('a -> unit) -> 'a -> unit
 (** Alias for {!Gc.finalise} *)
+
 val create_alarm : (unit -> unit) -> alarm
 (** Alias for {!Gc.create_alarm} *)
+
 val delete_alarm : alarm -> unit
 (** Alias for {!Gc.delete_alarm} *)
+
