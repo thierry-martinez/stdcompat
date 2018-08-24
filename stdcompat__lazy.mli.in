@@ -1,18 +1,11 @@
 type 'a t = 'a lazy_t
 (** Alias for {!Lazy.t} *)
-
-exception Undefined 
-(** Alias for {!Lazy.Undefined} *)
-
 val from_fun : (unit -> 'a) -> 'a t
 (** @since 4.00.0: val from_fun : (unit -> 'a) -> 'a t *)
-
 val from_val : 'a -> 'a t
 (** @since 4.00.0: val from_val : 'a -> 'a t *)
-
 val is_val : 'a t -> bool
 (** @since 4.00.0: val is_val : 'a t -> bool *)
-
 @BEGIN_FROM_3_11_0@
 external force : 'a t -> 'a = "%lazy_force"
 @END_FROM_3_11_0@
@@ -22,10 +15,8 @@ val force : 'a t -> 'a
 (** @since 3.11.0: external force : 'a t -> 'a = "%lazy_force"
 @since 3.07.0: val force : 'a t -> 'a
  *)
-
 val force_val : 'a t -> 'a
 (** Alias for {!Lazy.force_val} *)
-
 @BEGIN_FROM_4_02_0@
 val lazy_from_fun : (unit -> 'a) -> 'a t[@@ocaml.deprecated
                                           "Use Lazy.from_fun instead."]
@@ -38,7 +29,6 @@ val lazy_from_fun : (unit -> 'a) -> 'a t
                                               "Use Lazy.from_fun instead."]
 @since 3.07.0: val lazy_from_fun : (unit -> 'a) -> 'a t
  *)
-
 @BEGIN_FROM_4_02_0@
 val lazy_from_val : 'a -> 'a t[@@ocaml.deprecated
                                 "Use Lazy.from_val instead."]
@@ -51,7 +41,6 @@ val lazy_from_val : 'a -> 'a t
                                     "Use Lazy.from_val instead."]
 @since 3.07.0: val lazy_from_val : 'a -> 'a t
  *)
-
 @BEGIN_FROM_4_02_0@
 val lazy_is_val : 'a t -> bool[@@ocaml.deprecated "Use Lazy.is_val instead."]
 @END_FROM_4_02_0@
@@ -63,4 +52,3 @@ val lazy_is_val : 'a t -> bool
                                     "Use Lazy.is_val instead."]
 @since 3.07.0: val lazy_is_val : 'a t -> bool
  *)
-

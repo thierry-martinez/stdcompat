@@ -24,7 +24,6 @@ end
 @END_BEFORE_4_06_0@
 (** @since 4.06.0: module Scanning = Scanf.Scanning
  *)
-
 @BEGIN_FROM_3_12_0@
 type ('a, 'b, 'c, 'd) scanner =
   ('a, Scanning.in_channel, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c
@@ -37,17 +36,12 @@ type ('a, 'b, 'c, 'd) scanner =
     type ('a, 'b, 'c, 'd) scanner =
       ('a, Scanning.in_channel, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c
  *)
-
-exception Scan_failure of string 
-(** Alias for {!Scanf.Scan_failure} *)
-
 val ksscanf :
   string -> (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
 (** @since 4.02.0:
     val ksscanf :
       string ->
         (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner *)
-
 @BEGIN_FROM_4_03_0@
 val kfscanf :
   in_channel ->
@@ -69,14 +63,11 @@ val kfscanf :
   in_channel ->
     (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
  *)
-
 val unescaped : string -> string
 (** @since 4.00.0: val unescaped : string -> string *)
-
 val bscanf : Scanning.in_channel -> ('a, 'b, 'c, 'd) scanner
 (** @since 3.12.0:
     val bscanf : Scanning.in_channel -> ('a, 'b, 'c, 'd) scanner *)
-
 @BEGIN_FROM_4_00_0@
 val kscanf :
   Scanning.in_channel ->
@@ -104,7 +95,6 @@ val kscanf :
   Scanning.in_channel ->
     (Scanning.in_channel -> exn -> 'a) -> ('b, 'c, 'd, 'a) scanner
  *)
-
 val bscanf_format :
   Scanning.in_channel ->
     ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
@@ -114,13 +104,10 @@ val bscanf_format :
       Scanning.in_channel ->
         ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
           (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g *)
-
 val sscanf : string -> ('a, 'b, 'c, 'd) scanner
 (** @since 3.10.0: val sscanf : string -> ('a, 'b, 'c, 'd) scanner *)
-
 val scanf : ('a, 'b, 'c, 'd) scanner
 (** @since 3.10.0: val scanf : ('a, 'b, 'c, 'd) scanner *)
-
 val sscanf_format :
   string ->
     ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
@@ -130,7 +117,6 @@ val sscanf_format :
       string ->
         ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
           (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g *)
-
 val format_from_string :
   string ->
     ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6
@@ -138,7 +124,6 @@ val format_from_string :
     val format_from_string :
       string ->
         ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6 *)
-
 @BEGIN_FROM_4_03_0@
 val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner[@@ocaml.deprecated
                                                      "Use Scanning.from_channel then Scanf.bscanf."]
@@ -151,4 +136,3 @@ val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
                                                          "Use Scanning.from_channel then Scanf.bscanf."]
 @since 3.10.0: val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
  *)
-

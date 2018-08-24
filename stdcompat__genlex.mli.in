@@ -6,7 +6,5 @@ type token = Genlex.token =
   | String of string 
   | Char of char 
 (** Alias for {!Genlex.token} *)
-
 val make_lexer : string list -> char Stream.t -> token Stream.t
 (** Alias for {!Genlex.make_lexer} *)
-

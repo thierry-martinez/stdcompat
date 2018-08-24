@@ -1,5 +1,15 @@
 include Queue
 
+@BEGIN_BEFORE_4_08_0@
+let take_opt q =
+  try Some (take q)
+  with Empty -> raise Empty
+
+let peek_opt q =
+  try Some (peek q)
+  with Empty -> raise Empty
+@END_BEFORE_4_08_0@
+
 @BEGIN_BEFORE_4_07_0@
 @BEGIN_WITH_MAGIC@
 @BEGIN_FROM_4_03_0@

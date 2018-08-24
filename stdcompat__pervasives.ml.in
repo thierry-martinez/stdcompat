@@ -1,5 +1,31 @@
 include Pervasives
 
+@BEGIN_BEFORE_4_03_0@
+type ('a, 'b) result
+@BEGIN_WITH_RESULT_PKG@
+  = ('a, 'b) Result.result
+@END_WITH_RESULT_PKG@
+  = Ok of 'a | Error of 'b
+@END_BEFORE_4_03_0@
+
+@BEGIN_BEFORE_4_02_0@
+external raise_notrace : exn -> 'a = "%raise"
+@END_BEFORE_4_02_0@
+
+@BEGIN_BEFORE_4_08_0@
+let protect ~finally f =
+  let value =
+    try
+      Ok (f ())
+    with exn ->
+      Error exn in
+  finally ();
+  match value with
+  | Ok result -> result
+  | Error exn -> raise_notrace exn
+      
+@END_BEFORE_4_08_0@
+
 @BEGIN_BEFORE_4_05_0@
 let bool_of_string_opt s =
   Stdcompat__tools.option_invalid bool_of_string s
@@ -17,17 +43,7 @@ let read_float_opt () =
   Stdcompat__tools.option_fail read_float ()
 @END_BEFORE_4_05_0@
 
-@BEGIN_BEFORE_4_03_0@
-type ('a, 'b) result
-@BEGIN_WITH_RESULT_PKG@
-  = ('a, 'b) Result.result
-@END_WITH_RESULT_PKG@
-  = Ok of 'a | Error of 'b
-@END_BEFORE_4_03_0@
-
 @BEGIN_BEFORE_4_02_0@
-external raise_notrace : exn -> 'a = "%raise"
-
 let print_bytes = print_string
 
 let prerr_bytes = prerr_string

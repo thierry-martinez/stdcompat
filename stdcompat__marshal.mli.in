@@ -15,7 +15,6 @@ type extern_flags =
                      | Closures 
                      | Compat_32 
  *)
-
 @BEGIN_FROM_4_07_0@
 external to_bytes :
   'a -> extern_flags list -> bytes = "caml_output_value_to_bytes"
@@ -37,7 +36,6 @@ val to_bytes : 'a -> extern_flags list -> Stdcompat__init.bytes
 external to_bytes :
   'a -> extern_flags list -> bytes = "caml_output_value_to_string"
  *)
-
 @BEGIN_FROM_4_02_0@
 val to_buffer : bytes -> int -> int -> 'a -> extern_flags list -> int
 @END_FROM_4_02_0@
@@ -48,7 +46,6 @@ val to_buffer :
 (** @since 4.02.0:
     val to_buffer : bytes -> int -> int -> 'a -> extern_flags list -> int
  *)
-
 @BEGIN_FROM_4_02_0@
 val from_bytes : bytes -> int -> 'a
 @END_FROM_4_02_0@
@@ -57,7 +54,6 @@ val from_bytes : Stdcompat__init.bytes -> int -> 'a
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val from_bytes : bytes -> int -> 'a
  *)
-
 @BEGIN_FROM_4_02_0@
 val data_size : bytes -> int -> int
 @END_FROM_4_02_0@
@@ -66,7 +62,6 @@ val data_size : Stdcompat__init.bytes -> int -> int
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val data_size : bytes -> int -> int
  *)
-
 @BEGIN_FROM_4_02_0@
 val total_size : bytes -> int -> int
 @END_FROM_4_02_0@
@@ -75,10 +70,8 @@ val total_size : Stdcompat__init.bytes -> int -> int
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val total_size : bytes -> int -> int
  *)
-
 val to_channel : out_channel -> 'a -> extern_flags list -> unit
 (** Alias for {!Marshal.to_channel} *)
-
 @BEGIN_FROM_3_08_0@
 external to_string :
   'a -> extern_flags list -> string = "caml_output_value_to_string"
@@ -94,13 +87,9 @@ external to_string :
 external to_string :
   'a -> extern_flags list -> string = "output_value_to_string"
  *)
-
 val from_channel : in_channel -> 'a
 (** Alias for {!Marshal.from_channel} *)
-
 val from_string : string -> int -> 'a
 (** Alias for {!Marshal.from_string} *)
-
 val header_size : int
 (** Alias for {!Marshal.header_size} *)
-

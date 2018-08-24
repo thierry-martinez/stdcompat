@@ -1,10 +1,34 @@
 include Stack
 
-@BEGIN_BEFORE_4_07_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_WITH_MAGIC@
 type 'a internal = { mutable c : 'a list; mutable len : int; }
+
+let pop_opt (s : 'a t) =
+  let s : 'a internal = Obj.magic s in
+  match s.c with
+  | [] -> None
+  | hd :: tl ->
+      s.c <- tl;
+      s.len <- pred s.len;
+      Some hd
+
+let top_opt (s : 'a t) =
+  let s : 'a internal = Obj.magic s in
+  match s.c with
+  | [] -> None
+  | hd :: _tl -> Some hd
 @END_WITH_MAGIC@
-@END_BEFORE_4_07_0@
+@BEGIN_WITHOUT_MAGIC@
+let pop_opt s =
+  try Some (pop s)
+  with Empy -> None
+
+let top_opt s =
+  try Some (top s)
+  with Empty -> None
+@END_WITHOUT_MAGIC@
+@END_BEFORE_4_08_0@
 
 @BEGIN_BEFORE_4_03_0@
 @BEGIN_WITH_MAGIC@
@@ -29,7 +53,7 @@ let of_seq g =
   s
 
 @BEGIN_WITH_MAGIC@
-let to_seq s =
+let to_seq (s : 'a t) =
   let s : 'a internal = Obj.magic s in
   Stdcompat__list.to_seq s.c
 @END_WITH_MAGIC@

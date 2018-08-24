@@ -1,4 +1,6 @@
 * Version 6
+- Support for OCaml 4.08.0
+
 - Support VPATH build, i.e. when configure is executed in a build directory
   distinct from the source directory
 

@@ -1,6 +1,3 @@
-exception Parse_error 
-(** Alias for {!Parsing.Parse_error} *)
-
 @BEGIN_FROM_3_08_0@
 type parser_env = Parsing.parser_env
 @END_FROM_3_08_0@
@@ -9,7 +6,6 @@ type parser_env
 @END_BEFORE_3_08_0@
 (** @since 3.08.0: type parser_env
  *)
-
 @BEGIN_FROM_3_08_0@
 type parse_tables = Parsing.parse_tables =
   {
@@ -70,50 +66,32 @@ type parse_tables =
       names_const: string ;
       names_block: string }
  *)
-
-exception YYexit of Obj.t 
-(** Alias for {!Parsing.YYexit} *)
-
 val set_trace : bool -> bool
 (** @since 3.11.0: val set_trace : bool -> bool *)
-
 val symbol_start : unit -> int
 (** Alias for {!Parsing.symbol_start} *)
-
 val symbol_end : unit -> int
 (** Alias for {!Parsing.symbol_end} *)
-
 val rhs_start : int -> int
 (** Alias for {!Parsing.rhs_start} *)
-
 val rhs_end : int -> int
 (** Alias for {!Parsing.rhs_end} *)
-
 val symbol_start_pos : unit -> Lexing.position
 (** Alias for {!Parsing.symbol_start_pos} *)
-
 val symbol_end_pos : unit -> Lexing.position
 (** Alias for {!Parsing.symbol_end_pos} *)
-
 val rhs_start_pos : int -> Lexing.position
 (** Alias for {!Parsing.rhs_start_pos} *)
-
 val rhs_end_pos : int -> Lexing.position
 (** Alias for {!Parsing.rhs_end_pos} *)
-
 val clear_parser : unit -> unit
 (** Alias for {!Parsing.clear_parser} *)
-
 val yyparse :
   parse_tables -> int -> (Lexing.lexbuf -> 'a) -> Lexing.lexbuf -> 'b
 (** Alias for {!Parsing.yyparse} *)
-
 val peek_val : parser_env -> int -> 'a
 (** Alias for {!Parsing.peek_val} *)
-
 val is_current_lookahead : 'a -> bool
 (** Alias for {!Parsing.is_current_lookahead} *)
-
 val parse_error : string -> unit
 (** Alias for {!Parsing.parse_error} *)
-

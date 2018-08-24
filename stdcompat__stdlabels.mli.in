@@ -6,7 +6,6 @@ module Array = ArrayLabels
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Array = StdLabels.Array
  *)
-
 @BEGIN_FROM_4_07_0@
 module Bytes = StdLabels.Bytes
 @END_FROM_4_07_0@
@@ -15,7 +14,6 @@ module Bytes = BytesLabels
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Bytes = StdLabels.Bytes
  *)
-
 @BEGIN_FROM_4_07_0@
 module List = StdLabels.List
 @END_FROM_4_07_0@
@@ -24,7 +22,6 @@ module List = ListLabels
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module List = StdLabels.List
  *)
-
 @BEGIN_FROM_4_07_0@
 module String = StdLabels.String
 @END_FROM_4_07_0@
@@ -33,4 +30,3 @@ module String = StringLabels
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module String = StdLabels.String
  *)
-

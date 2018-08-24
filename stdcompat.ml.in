@@ -90,7 +90,9 @@ module Stdlib = struct
 
   module Set = Stdcompat__set
 
+@BEGIN_BEFORE_4_08_0@
   module Sort = Sort
+@END_BEFORE_4_08_0@
 
   module Spacetime = Stdcompat__spacetime
 

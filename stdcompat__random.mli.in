@@ -4,7 +4,7 @@ module State = Random.State
 @BEGIN_BEFORE_4_02_0@
 module State :
 sig
-  type t = Random.State.t
+  type t = Random.t
   val make : int array -> t
   val make_self_init : unit -> t
   val copy : t -> t
@@ -34,40 +34,27 @@ sig
   val bool : t -> bool
 end
  *)
-
 val init : int -> unit
 (** Alias for {!Random.init} *)
-
 val full_init : int array -> unit
 (** Alias for {!Random.full_init} *)
-
 val self_init : unit -> unit
 (** Alias for {!Random.self_init} *)
-
 val bits : unit -> int
 (** Alias for {!Random.bits} *)
-
 val int : int -> int
 (** Alias for {!Random.int} *)
-
 val int32 : Int32.t -> Int32.t
 (** Alias for {!Random.int32} *)
-
 val nativeint : Nativeint.t -> Nativeint.t
 (** Alias for {!Random.nativeint} *)
-
 val int64 : Int64.t -> Int64.t
 (** Alias for {!Random.int64} *)
-
 val float : float -> float
 (** Alias for {!Random.float} *)
-
 val bool : unit -> bool
 (** Alias for {!Random.bool} *)
-
 val get_state : unit -> State.t
 (** Alias for {!Random.get_state} *)
-
 val set_state : State.t -> unit
 (** Alias for {!Random.set_state} *)
-

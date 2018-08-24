@@ -1,6 +1,4 @@
 val register : string -> 'a -> unit
 (** Alias for {!Callback.register} *)
-
 val register_exception : string -> exn -> unit
 (** Alias for {!Callback.register_exception} *)
-
