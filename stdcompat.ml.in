@@ -74,6 +74,8 @@ module Stdlib = struct
 
   module Oo = Oo
 
+  module Option = Stdcompat__option
+
   module Parsing = Parsing
 
   module Printexc = Printexc
@@ -83,6 +85,8 @@ module Stdlib = struct
   module Queue = Stdcompat__queue
 
   module Random = Random
+
+  module Result = Stdcompat__result
 
   module Scanf = Scanf
 

@@ -10,9 +10,9 @@ for ocaml_version in 4.08.0+trunk; do
   for module in \
       Pervasives Arg Array ArrayLabels Buffer Bytes BytesLabels Callback Char \
       Complex Digest Ephemeron Filename Float Format Gc Genlex Hashtbl Int32 \
-      Int64 Lazy Lexing List ListLabels Map Marshal MoreLabels Nativeint Obj Oo \
-      Parsing Printexc Printf Queue Random Scanf Seq Set Sort Spacetime Stack \
-      StdLabels Stream String StringLabels Sys Uchar Weak; do
+      Int64 Lazy Lexing List ListLabels Map Marshal MoreLabels Nativeint Obj \
+      Oo Option Parsing Printexc Printf Queue Random Result Scanf Seq Set Sort \
+      Spacetime Stack StdLabels Stream String StringLabels Sys Uchar Weak; do
     target=$target_dir/`echo ${module:0:1} | tr A-Z a-z`${module:1}.mli
     opam config exec --switch=$ocaml_version -- \
       ./interface_dumper $module ocaml >$target

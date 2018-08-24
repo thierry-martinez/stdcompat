@@ -1,0 +1,93 @@
+@BEGIN_FROM_4_08_0@
+type ('a, 'e) t = ('a, 'e) Result.result =
+  | Ok of 'a 
+  | Error of 'e 
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type ('a, 'e) t = ('a, 'e) result =
+  | Ok of 'a 
+  | Error of 'e 
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
+    type ('a, 'e) t = ('a, 'e) Result.result =
+      | Ok of 'a 
+      | Error of 'e 
+ *)
+
+val ok : 'a -> ('a, 'e) result
+(** @since 4.08.0: val ok : 'a -> ('a, 'e) result *)
+
+val error : 'e -> ('a, 'e) result
+(** @since 4.08.0: val error : 'e -> ('a, 'e) result *)
+
+val value : ('a, 'e) result -> default:'a -> 'a
+(** @since 4.08.0: val value : ('a, 'e) result -> default:'a -> 'a *)
+
+val get_ok : ('a, 'e) result -> 'a
+(** @since 4.08.0: val get_ok : ('a, 'e) result -> 'a *)
+
+val get_error : ('a, 'e) result -> 'e
+(** @since 4.08.0: val get_error : ('a, 'e) result -> 'e *)
+
+val bind : ('a, 'e) result -> ('a -> ('b, 'e) result) -> ('b, 'e) result
+(** @since 4.08.0:
+    val bind : ('a, 'e) result -> ('a -> ('b, 'e) result) -> ('b, 'e) result *)
+
+val join : (('a, 'e) result, 'e) result -> ('a, 'e) result
+(** @since 4.08.0: val join : (('a, 'e) result, 'e) result -> ('a, 'e) result *)
+
+val map : ('a -> 'b) -> ('a, 'e) result -> ('b, 'e) result
+(** @since 4.08.0: val map : ('a -> 'b) -> ('a, 'e) result -> ('b, 'e) result *)
+
+val map_error : ('e -> 'f) -> ('a, 'e) result -> ('a, 'f) result
+(** @since 4.08.0:
+    val map_error : ('e -> 'f) -> ('a, 'e) result -> ('a, 'f) result *)
+
+val fold : ok:('a -> 'c) -> error:('e -> 'c) -> ('a, 'e) result -> 'c
+(** @since 4.08.0:
+    val fold : ok:('a -> 'c) -> error:('e -> 'c) -> ('a, 'e) result -> 'c *)
+
+val iter : ('a -> unit) -> ('a, 'e) result -> unit
+(** @since 4.08.0: val iter : ('a -> unit) -> ('a, 'e) result -> unit *)
+
+val iter_error : ('e -> unit) -> ('a, 'e) result -> unit
+(** @since 4.08.0: val iter_error : ('e -> unit) -> ('a, 'e) result -> unit *)
+
+val is_ok : ('a, 'e) result -> bool
+(** @since 4.08.0: val is_ok : ('a, 'e) result -> bool *)
+
+val is_error : ('a, 'e) result -> bool
+(** @since 4.08.0: val is_error : ('a, 'e) result -> bool *)
+
+val equal :
+  ok:('a -> 'a -> bool) ->
+    error:('e -> 'e -> bool) -> ('a, 'e) result -> ('a, 'e) result -> bool
+(** @since 4.08.0:
+    val equal :
+      ok:('a -> 'a -> bool) ->
+        error:('e -> 'e -> bool) ->
+          ('a, 'e) result -> ('a, 'e) result -> bool *)
+
+val compare :
+  ok:('a -> 'a -> int) ->
+    error:('e -> 'e -> int) -> ('a, 'e) result -> ('a, 'e) result -> int
+(** @since 4.08.0:
+    val compare :
+      ok:('a -> 'a -> int) ->
+        error:('e -> 'e -> int) -> ('a, 'e) result -> ('a, 'e) result -> int *)
+
+val to_option : ('a, 'e) result -> 'a option
+(** @since 4.08.0: val to_option : ('a, 'e) result -> 'a option *)
+
+val to_list : ('a, 'e) result -> 'a list
+(** @since 4.08.0: val to_list : ('a, 'e) result -> 'a list *)
+
+@BEGIN_FROM_4_08_0@
+val to_seq : ('a, 'e) result -> 'a Seq.t
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+val to_seq : ('a, 'e) result -> 'a Stdcompat__seq.t
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: val to_seq : ('a, 'e) result -> 'a Seq.t
+ *)
+

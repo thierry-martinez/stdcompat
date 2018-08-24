@@ -9,8 +9,8 @@ for module in \
     Pervasives Arg Array ArrayLabels Buffer Bytes BytesLabels Callback Char \
     Complex Digest Ephemeron Filename Float Format Gc Genlex Hashtbl Int32 \
     Int64 Lazy Lexing List ListLabels Map Marshal MoreLabels Nativeint Obj Oo \
-    Parsing Printexc Printf Queue Random Scanf Seq Set Sort Spacetime Stack \
-    StdLabels Stream String StringLabels Sys Uchar Weak; do
+    Option Parsing Printexc Printf Queue Random Result Scanf Seq Set Sort \
+    Spacetime Stack StdLabels Stream String StringLabels Sys Uchar Weak; do
     target=stdcompat__`echo $module | tr A-Z a-z`.mli.in
     echo $module
     ./interface_generator $module \

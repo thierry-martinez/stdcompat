@@ -172,7 +172,9 @@ AC_CONFIG_FILES([
   stdcompat__map.mli
   stdcompat__moreLabels.mli
   stdcompat__nativeint.mli
+  stdcompat__option.mli
   stdcompat__queue.mli
+  stdcompat__result.mli
   stdcompat__seq.mli
   stdcompat__set.mli
   stdcompat__spacetime.mli
@@ -206,7 +208,9 @@ AC_CONFIG_FILES([
   stdcompat__map.ml
   stdcompat__moreLabels.ml
   stdcompat__nativeint.ml
+  stdcompat__option.ml
   stdcompat__queue.ml
+  stdcompat__result.ml
   stdcompat__seq.ml
   stdcompat__set.ml
   stdcompat__spacetime.ml
