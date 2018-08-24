@@ -99,6 +99,12 @@ stdcompat.a : stdcompat.cmxa
 stdcompat.cmxs : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -shared $^ -o $@
 
+stdcompat__native.cmo : stdcompat__native.ml_byte
+	$(OCAMLC) $(OCAMLCFLAGS) -c -impl stdcompat__native.ml_byte
+
+stdcompat__native.cmx : stdcompat__native.ml_native
+	$(OCAMLOPT) $(OCAMLCFLAGS) -c -impl stdcompat__native.ml_native
+
 .PHONY : depend
 depend : .depend
 
