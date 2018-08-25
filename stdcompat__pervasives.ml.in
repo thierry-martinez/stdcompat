@@ -23,7 +23,6 @@ let protect ~finally f =
   match value with
   | Ok result -> result
   | Error exn -> raise_notrace exn
-      
 @END_BEFORE_4_08_0@
 
 @BEGIN_BEFORE_4_05_0@
