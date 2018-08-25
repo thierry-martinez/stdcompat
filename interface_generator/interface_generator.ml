@@ -505,6 +505,11 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
         Parsetree.Ptyp_constr
           ({ loc; txt = Ldot (Lident "Stdcompat__init", "floatarray") }, []) in
       { core_type with ptyp_desc }
+  | Ptyp_constr ({ loc; txt = Lident "result" }, []) ->
+      let ptyp_desc =
+        Parsetree.Ptyp_constr
+          ({ loc; txt = Ldot (Lident "Stdcompat__pervasives", "result") }, []) in
+      { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Ldot (Lident "Seq", "t") }, [arg]) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr

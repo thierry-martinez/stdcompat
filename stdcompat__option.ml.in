@@ -3,8 +3,8 @@ include Option
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
 type 'a t = 'a option =
-  | None 
-  | Some of 'a 
+  | None
+  | Some of 'a
 
 let none = None
 
@@ -72,8 +72,8 @@ let to_list o =
   | None -> []
   | Some v -> [v]
 
-let to_seq o () =
+let to_seq o =
   match o with
-  | None -> Stdcompat__seq.Empty
-  | Some v -> Stdcompat__seq.Cons (v, Stdcompat__seq.empty)
+  | Some v -> fun () -> Stdcompat__seq.Cons (v, Stdcompat__seq.empty)
+  | None -> Stdcompat__seq.empty
 @END_BEFORE_4_08_0@

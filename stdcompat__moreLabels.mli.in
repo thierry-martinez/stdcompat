@@ -259,10 +259,10 @@ end
 (** @since 4.07.0: module Map = MoreLabels.Map
  *)
 
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_08_0@
 module Set = MoreLabels.Set
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 module Set :
 sig
   module type OrderedType  = Set.OrderedType
@@ -278,6 +278,7 @@ sig
       val remove : elt -> t -> t
       val union : t -> t -> t
       val inter : t -> t -> t
+      val disjoint : t -> t -> bool
       val diff : t -> t -> t
       val compare : t -> t -> int
       val equal : t -> t -> bool
@@ -323,6 +324,7 @@ sig
       val remove : elt -> t -> t
       val union : t -> t -> t
       val inter : t -> t -> t
+      val disjoint : t -> t -> bool
       val diff : t -> t -> t
       val compare : t -> t -> int
       val equal : t -> t -> bool
@@ -356,7 +358,7 @@ sig
       val of_seq : elt Stdcompat__seq.t -> t
     end
 end
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: module Set = MoreLabels.Set
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: module Set = MoreLabels.Set
  *)
 

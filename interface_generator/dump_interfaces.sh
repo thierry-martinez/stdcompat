@@ -16,6 +16,7 @@ for ocaml_version in 4.08.0+trunk; do
     target=$target_dir/`echo ${module:0:1} | tr A-Z a-z`${module:1}.mli
     opam config exec --switch=$ocaml_version -- \
       ./interface_dumper $module ocaml >$target
-    [ `stat --format="%s" $target` -gt 1 ] || rm $target
+#    [ `stat --format="%s" $target` -gt 1 ] || rm $target
+    [ `stat -f%z $target` -gt 1 ] || rm $target
   done
 done
