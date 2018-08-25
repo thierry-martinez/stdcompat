@@ -1,5 +1,5 @@
 @BEGIN_FROM_4_08_0@
-type ('a, 'e) t = ('a, 'e) Result.result =
+type ('a, 'e) t = ('a, 'e) result =
   | Ok of 'a 
   | Error of 'e 
 @END_FROM_4_08_0@
@@ -9,7 +9,7 @@ type ('a, 'e) t = ('a, 'e) result =
   | Error of 'e 
 @END_BEFORE_4_08_0@
 (** @since 4.08.0:
-    type ('a, 'e) t = ('a, 'e) Result.result =
+    type ('a, 'e) t = ('a, 'e) result =
       | Ok of 'a 
       | Error of 'e 
  *)
