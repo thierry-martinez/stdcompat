@@ -54,8 +54,14 @@ val compare : ('a -> 'a -> int) -> 'a option -> 'a option -> int
 (** @since 4.08.0:
     val compare : ('a -> 'a -> int) -> 'a option -> 'a option -> int *)
 
+@BEGIN_FROM_4_08_0@
 val to_result : none:'e -> 'a option -> ('a, 'e) result
-(** @since 4.08.0: val to_result : none:'e -> 'a option -> ('a, 'e) result *)
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+val to_result : none:'e -> 'a option -> ('a, 'e) Stdcompat__pervasives.result
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: val to_result : none:'e -> 'a option -> ('a, 'e) result
+ *)
 
 val to_list : 'a option -> 'a list
 (** @since 4.08.0: val to_list : 'a option -> 'a list *)

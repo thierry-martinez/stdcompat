@@ -506,10 +506,11 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
         Parsetree.Ptyp_constr
           ({ loc; txt = Ldot (Lident "Stdcompat__init", "floatarray") }, []) in
       { core_type with ptyp_desc }
-  | Ptyp_constr ({ loc; txt = Lident "result" }, []) ->
+  | Ptyp_constr ({ loc; txt = Lident "result" }, [v; e]) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__pervasives", "result") }, []) in
+          ({ loc; txt = Ldot (Lident "Stdcompat__pervasives", "result") },
+           [v; e]) in
       { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Ldot (Lident "Seq", "t") }, [arg]) ->
       let ptyp_desc =
@@ -606,6 +607,13 @@ let compat_type_declaration ~module_name
           Some { core_type with ptyp_desc }
       | _ -> assert false in
     { type_decl with ptype_manifest }
+  | Lident "result" ->
+    { type_decl with ptype_manifest =
+      Some (core_type_of_desc
+        (Ptyp_constr
+           (loc_of_txt
+              (Longident.Ldot
+                 (Lident "Stdcompat__pervasives", "result")), []))) }
   | Ldot (Lident "Hashtbl", "statistics") ->
     { type_decl with ptype_manifest =
       Some (core_type_of_desc

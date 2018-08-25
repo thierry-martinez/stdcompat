@@ -82,14 +82,23 @@ val pp_print_option :
       ?none:(formatter -> unit -> unit) ->
         (formatter -> 'a -> unit) -> formatter -> 'a option -> unit *)
 
+@BEGIN_FROM_4_08_0@
 val pp_print_result :
   ok:(formatter -> 'a -> unit) ->
     error:(formatter -> 'e -> unit) -> formatter -> ('a, 'e) result -> unit
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+val pp_print_result :
+  ok:(formatter -> 'a -> unit) ->
+    error:(formatter -> 'e -> unit) ->
+      formatter -> ('a, 'e) Stdcompat__pervasives.result -> unit
+@END_BEFORE_4_08_0@
 (** @since 4.08.0:
     val pp_print_result :
       ok:(formatter -> 'a -> unit) ->
         error:(formatter -> 'e -> unit) ->
-          formatter -> ('a, 'e) result -> unit *)
+          formatter -> ('a, 'e) result -> unit
+ *)
 
 val dprintf : ('a, formatter, unit, formatter -> unit) format4 -> 'a
 (** @since 4.08.0:
