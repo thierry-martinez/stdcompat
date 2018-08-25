@@ -1,5 +1,5 @@
 @BEGIN_FROM_4_08_0@
-type 'a t = 'a Option.option =
+type 'a t = 'a option =
   | None 
   | Some of 'a 
 @END_FROM_4_08_0@
@@ -8,7 +8,7 @@ type 'a t = 'a option =
   | None 
   | Some of 'a 
 @END_BEFORE_4_08_0@
-(** @since 4.08.0: type 'a t = 'a Option.option =
+(** @since 4.08.0: type 'a t = 'a option =
                      | None 
                      | Some of 'a 
  *)
