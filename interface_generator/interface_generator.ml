@@ -493,8 +493,9 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
            compat_core_type ~module_name right) in
       { core_type with ptyp_desc }
   | Ptyp_tuple args ->
+      let args = List.map (compat_core_type ~module_name) args in
       let ptyp_desc =
-        Parsetree.Ptyp_tuple (List.map (compat_core_type ~module_name) args) in
+        Parsetree.Ptyp_tuple args in
       { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Lident "bytes" }, []) ->
       let ptyp_desc =
@@ -507,12 +508,15 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
           ({ loc; txt = Ldot (Lident "Stdcompat__init", "floatarray") }, []) in
       { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Lident "result" }, [v; e]) ->
+      let v = compat_core_type ~module_name v in
+      let e = compat_core_type ~module_name e in
       let ptyp_desc =
         Parsetree.Ptyp_constr
           ({ loc; txt = Ldot (Lident "Stdcompat__pervasives", "result") },
            [v; e]) in
       { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Ldot (Lident "Seq", "t") }, [arg]) ->
+      let arg = compat_core_type ~module_name arg in
       let ptyp_desc =
         Parsetree.Ptyp_constr
           ({ loc; txt = Ldot (Lident "Stdcompat__seq", "t") },
@@ -532,6 +536,7 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
   | Ptyp_constr ({ loc; txt =
       Ldot (Lapply (Ldot (Lident "Hashtbl", "MakeSeeded"),
         Lident "H"), "t") }, args) ->
+      let args = List.map (compat_core_type ~module_name) args in
       let ptyp_desc =
         Parsetree.Ptyp_constr
           ({ loc; txt =

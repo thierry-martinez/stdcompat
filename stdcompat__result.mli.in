@@ -77,7 +77,7 @@ val join : (('a, 'e) result, 'e) result -> ('a, 'e) result
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
 val join :
-  (('a, 'e) result, 'e) Stdcompat__pervasives.result ->
+  (('a, 'e) Stdcompat__pervasives.result, 'e) Stdcompat__pervasives.result ->
     ('a, 'e) Stdcompat__pervasives.result
 @END_BEFORE_4_08_0@
 (** @since 4.08.0: val join : (('a, 'e) result, 'e) result -> ('a, 'e) result
