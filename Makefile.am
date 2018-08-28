@@ -68,7 +68,7 @@ stdcompat.cmxa : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
 
 stdcompat.a : stdcompat.cmxa
 
-stdcompat.cmxs : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
+stdcompat.cmxs : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmi stdcompat.cmx
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -shared $^ -o $@
 
 stdcompat__native.cmo : stdcompat__native.ml_byte
