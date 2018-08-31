@@ -60,6 +60,8 @@ SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs
 
 stdcompat.cmi : stdcompat.cmo
 
+stdcompat.cmx : stdcompat.cmi
+
 stdcompat.cma : stdcompat__native.cmo $(MODULES:.ml=.cmo) stdcompat.cmo
 	$(OCAMLC) $(OCAMLLDFLAGS) -a $^ -o $@
 
@@ -68,7 +70,7 @@ stdcompat.cmxa : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
 
 stdcompat.a : stdcompat.cmxa
 
-stdcompat.cmxs : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmi stdcompat.cmx
+stdcompat.cmxs : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -shared $^ -o $@
 
 stdcompat__native.cmo : stdcompat__native.ml_byte
@@ -93,6 +95,6 @@ stdcompat_tests: stdcompat.$(CMAX)
 
 @INCLUDE_DEPEND@
 
-CLEANFILES = *.cmi *.cmo *.cmx *.o *.a stdcompat.cma stdcompat.cmxa \
-	stdcompat__native.ml \
-	stdcompat.cmxs stdcompat_tests $(bin_SCRIPTS) *~
+CLEANFILES = *.cmi *.cmo *.cmx *.cmt *.cmti *.o *.a stdcompat.cma \
+	stdcompat.cmxa stdcompat__native.ml \
+	stdcompat.cmxs stdcompat_tests $(bin_SCRIPTS)
