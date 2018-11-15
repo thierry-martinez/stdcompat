@@ -1,5 +1,5 @@
 @BEGIN_FROM_4_08_0@
-type 'a t = 'a List.list =
+type 'a t = 'a List.t =
   | [] 
   | (::) of 'a * 'a list 
 @END_FROM_4_08_0@

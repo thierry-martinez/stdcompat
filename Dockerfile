@@ -21,4 +21,3 @@ RUN opam update && opam switch 4.04.2
 RUN opam update && opam switch 4.05.0
 RUN opam update && opam switch 4.06.0
 RUN opam update && opam switch 4.07.0
-RUN opam update && opam switch 4.08.0+trunk
