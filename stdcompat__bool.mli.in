@@ -1,5 +1,5 @@
 @BEGIN_FROM_4_08_0@
-type t = Bool.bool =
+type t = Bool.t =
   | false 
   | true 
 @END_FROM_4_08_0@

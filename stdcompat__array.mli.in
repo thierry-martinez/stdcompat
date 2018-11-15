@@ -1,5 +1,5 @@
 @BEGIN_FROM_4_08_0@
-type 'a t = 'a Array.array
+type 'a t = 'a Array.t
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
 type 'a t = 'a array
