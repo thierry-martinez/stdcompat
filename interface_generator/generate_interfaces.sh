@@ -2,8 +2,8 @@
 set -e
 
 for module in \
-    Pervasives Arg Array ArrayLabels Buffer Bytes BytesLabels Callback Char \
-    Complex Digest Ephemeron Filename Float Format Gc Genlex Hashtbl Int32 \
+    Pervasives Arg Array ArrayLabels Bool Buffer Bytes BytesLabels Callback Char \
+    Complex Digest Ephemeron Filename Float Format Fun Gc Genlex Hashtbl Int32 \
     Int64 Lazy Lexing List ListLabels Map Marshal MoreLabels Nativeint Obj Oo \
     Option Parsing Printexc Printf Queue Random Result Scanf Seq Set Spacetime \
     Stack StdLabels Stream String StringLabels Sys Uchar Weak; do

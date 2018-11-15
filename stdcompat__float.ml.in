@@ -544,3 +544,77 @@ external modf : float -> (float * float) = "modf_float"
 @END_BEFORE_3_08_0@
 (** Alias for {!Float.modf} *)
 @END_BEFORE_4_07_0@
+
+@BEGIN_BEFORE_4_08_0@
+let min_max_num _ =
+  failwith "Not implemented."
+
+let max_num _ =
+  failwith "Not implemented."
+
+let min_num _ =
+  failwith "Not implemented."
+
+let min_max _ =
+  failwith "Not implemented."
+
+let max _ =
+  failwith "Not implemented."
+
+let min _ =
+  failwith "Not implemented."
+
+let sign_bit _ =
+  failwith "Not implemented."
+
+@BEGIN_FROM_4_03_0@
+external copy_sign :
+  float -> float -> float = "caml_copysign_float" "caml_copysign"[@@unboxed ]
+[@@noalloc ]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+@BEGIN_FROM_4_00_0@
+external copy_sign :
+  float -> float -> float = "caml_copysign_float" "caml_copysign" "float"
+@END_FROM_4_00_0@
+@BEGIN_BEFORE_4_00_0@
+let copy_sign = Stdcompat__pervasives.copy_sign
+@END_BEFORE_4_00_0@
+@END_BEFORE_4_03_0@
+
+let next_after _ =
+  failwith "Not implemented."
+
+let round _ =
+  failwith "Not implemented."
+
+let trunc _ =
+  failwith "Not implemented."
+
+let is_integer _ =
+  failwith "Not implemented."
+
+let is_nan _ =
+  failwith "Not implemented."
+
+let is_infinite _ =
+  failwith "Not implemented."
+
+let is_finite _ =
+  failwith "Not implemented."
+
+let pred _ =
+  failwith "Not implemented."
+
+let succ _ =
+  failwith "Not implemented."
+
+let fma _ =
+  failwith "Not implemented."
+
+let minus_one = -1.
+
+let one = 1.
+
+let zero = 0.
+@END_BEFORE_4_08_0@

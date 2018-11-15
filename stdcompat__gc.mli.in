@@ -59,7 +59,7 @@ type stat =
       stack_size: int }
  *)
 
-@BEGIN_FROM_4_03_0@
+@BEGIN_FROM_4_08_0@
 type control = Gc.control =
   {
   mutable minor_heap_size: int ;
@@ -69,9 +69,12 @@ type control = Gc.control =
   mutable max_overhead: int ;
   mutable stack_limit: int ;
   mutable allocation_policy: int ;
-  window_size: int }
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
+  window_size: int ;
+  custom_major_ratio: int ;
+  custom_minor_ratio: int ;
+  custom_minor_max_size: int }
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 type control =
   {
   mutable minor_heap_size: int ;
@@ -81,9 +84,12 @@ type control =
   mutable max_overhead: int ;
   mutable stack_limit: int ;
   mutable allocation_policy: int ;
-  window_size: int }
-@END_BEFORE_4_03_0@
-(** @since 4.03.0:
+  window_size: int ;
+  custom_major_ratio: int ;
+  custom_minor_ratio: int ;
+  custom_minor_max_size: int }
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
     type control =
       {
       mutable minor_heap_size: int ;
@@ -93,7 +99,10 @@ type control =
       mutable max_overhead: int ;
       mutable stack_limit: int ;
       mutable allocation_policy: int ;
-      window_size: int }
+      window_size: int ;
+      custom_major_ratio: int ;
+      custom_minor_ratio: int ;
+      custom_minor_max_size: int }
  *)
 
 type alarm = Gc.alarm

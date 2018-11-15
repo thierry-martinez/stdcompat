@@ -1,3 +1,12 @@
+@BEGIN_FROM_4_08_0@
+type t = Printexc.exn = ..
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type t = exn = ..
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: type t = Printexc.exn = ..
+ *)
+
 @BEGIN_FROM_4_01_0@
 type raw_backtrace = Printexc.raw_backtrace
 @END_FROM_4_01_0@

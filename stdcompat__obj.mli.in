@@ -1,10 +1,25 @@
 type t = Obj.t
 (** Alias for {!Obj.t} *)
 
-@BEGIN_FROM_4_03_0@
+@BEGIN_FROM_4_08_0@
+module Extension_constructor = Obj.Extension_constructor
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+module Extension_constructor :
+sig
+  type t = extension_constructor
+  val of_val : 'a -> t
+  val name : t -> string
+  val id : t -> int
+end
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: module Extension_constructor = Obj.Extension_constructor
+ *)
+
+@BEGIN_FROM_4_08_0@
 module Ephemeron = Obj.Ephemeron
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 module Ephemeron :
 sig
   type obj_t = t
@@ -23,9 +38,10 @@ sig
   val unset_data : t -> unit
   val check_data : t -> bool
   val blit_data : t -> t -> unit
+  val max_ephe_length : int
 end
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: module Ephemeron = Obj.Ephemeron
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: module Ephemeron = Obj.Ephemeron
  *)
 
 @BEGIN_FROM_4_04_0@
@@ -53,17 +69,27 @@ val first_non_constant_constructor_tag : int
 val last_non_constant_constructor_tag : int
 (** @since 4.02.0: val last_non_constant_constructor_tag : int *)
 
+@BEGIN_FROM_4_08_0@
+val marshal : t -> bytes
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 val marshal : t -> bytes[@@ocaml.deprecated "Use Marshal.to_bytes instead."]
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val marshal : t -> Stdcompat__init.bytes
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
-    val marshal : t -> bytes[@@ocaml.deprecated
-                              "Use Marshal.to_bytes instead."]
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: val marshal : t -> bytes
+@since 4.02.0:
+val marshal : t -> bytes[@@ocaml.deprecated "Use Marshal.to_bytes instead."]
  *)
 
+@BEGIN_FROM_4_08_0@
+val unmarshal : bytes -> int -> (t * int)
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 val unmarshal : bytes -> int -> (t * int)[@@ocaml.deprecated
                                            "Use Marshal.from_bytes and Marshal.total_size instead."]
@@ -71,9 +97,12 @@ val unmarshal : bytes -> int -> (t * int)[@@ocaml.deprecated
 @BEGIN_BEFORE_4_02_0@
 val unmarshal : Stdcompat__init.bytes -> int -> (t * int)
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
-    val unmarshal : bytes -> int -> (t * int)[@@ocaml.deprecated
-                                               "Use Marshal.from_bytes and Marshal.total_size instead."]
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: val unmarshal : bytes -> int -> (t * int)
+@since 4.02.0:
+val unmarshal : bytes -> int -> (t * int)[@@ocaml.deprecated
+                                           "Use Marshal.from_bytes and Marshal.total_size instead."]
  *)
 
 @BEGIN_FROM_3_12_0@
@@ -222,14 +251,21 @@ val double_array_tag : int
 val custom_tag : int
 (** Alias for {!Obj.custom_tag} *)
 
+@BEGIN_FROM_4_08_0@
+val final_tag : int
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 val final_tag : int[@@ocaml.deprecated "Replaced by custom_tag."]
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 val final_tag : int
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
-    val final_tag : int[@@ocaml.deprecated "Replaced by custom_tag."]
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: val final_tag : int
+@since 4.02.0:
+val final_tag : int[@@ocaml.deprecated "Replaced by custom_tag."]
 @since 3.07.0: val final_tag : int
  *)
 

@@ -154,6 +154,7 @@ AC_CONFIG_FILES([
   stdcompat__arg.mli
   stdcompat__array.mli
   stdcompat__arrayLabels.mli
+  stdcompat__bool.mli
   stdcompat__buffer.mli
   stdcompat__bytes.mli
   stdcompat__bytesLabels.mli
@@ -162,6 +163,7 @@ AC_CONFIG_FILES([
   stdcompat__ephemeron.mli
   stdcompat__filename.mli
   stdcompat__float.mli
+  stdcompat__fun.mli
   stdcompat__hashtbl.mli
   stdcompat__int32.mli
   stdcompat__int64.mli
@@ -190,6 +192,7 @@ AC_CONFIG_FILES([
   stdcompat__arg.ml
   stdcompat__array.ml
   stdcompat__arrayLabels.ml
+  stdcompat__bool.ml
   stdcompat__buffer.ml
   stdcompat__bytes.ml
   stdcompat__bytesLabels.ml
@@ -198,6 +201,7 @@ AC_CONFIG_FILES([
   stdcompat__ephemeron.ml
   stdcompat__filename.ml
   stdcompat__float.ml
+  stdcompat__fun.ml
   stdcompat__hashtbl.ml
   stdcompat__int32.ml
   stdcompat__int64.ml

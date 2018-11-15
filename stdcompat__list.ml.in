@@ -1,4 +1,7 @@
 include List
+@BEGIN_BEFORE_4_08_0@
+type 'a t = 'a list = [] | (::) of 'a * 'a list
+@END_BEFORE_4_08_0@
 
 @BEGIN_BEFORE_4_00_0@
 let rec iteri_aux i f l =

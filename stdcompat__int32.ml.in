@@ -1,5 +1,19 @@
 include Int32
 
+@BEGIN_BEFORE_4_08_0@
+let unsigned_compare _ =
+  failwith "Not implemented."
+
+let unsigned_to_int _ =
+  failwith "Not implemented."
+
+let unsigned_rem _ =
+  failwith "Not implemented."
+
+let unsigned_div _ =
+  failwith "Not implemented."
+@END_BEFORE_4_08_0@
+
 @BEGIN_BEFORE_4_03_0@
 let equal : t -> t -> bool = ( = )
 @END_BEFORE_4_03_0@

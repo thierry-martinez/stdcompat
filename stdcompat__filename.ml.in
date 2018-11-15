@@ -1,5 +1,10 @@
 include Filename
 
+@BEGIN_BEFORE_4_08_0@
+let chop_suffix_opt ~suffix _ =
+  failwith "Not implemented."
+@END_BEFORE_4_08_0@
+
 @BEGIN_BEFORE_3_09_0@
 let temp_dir_name =
   match Sys.os_type with

@@ -1,5 +1,9 @@
 include Array
 
+@BEGIN_BEFORE_4_08_0@
+type 'a t = 'a array
+@END_BEFORE_4_08_0@
+
 @BEGIN_BEFORE_4_02_0@
 let create_float l = Array.make l 0.
 

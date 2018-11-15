@@ -1,7 +1,7 @@
-@BEGIN_FROM_4_06_0@
+@BEGIN_FROM_4_08_0@
 module Scanning = Scanf.Scanning
-@END_FROM_4_06_0@
-@BEGIN_BEFORE_4_06_0@
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 module Scanning :
 sig
   type in_channel
@@ -15,14 +15,14 @@ sig
   val from_file_bin : string -> in_channel
   val from_string : string -> in_channel
   val from_function : (unit -> char) -> in_channel
-  val from_channel : Pervasives.in_channel -> in_channel
+  val from_channel : Stdlib.in_channel -> in_channel
   val end_of_input : in_channel -> bool
   val beginning_of_input : in_channel -> bool
   val name_of_input : in_channel -> string
   val stdib : in_channel
 end
-@END_BEFORE_4_06_0@
-(** @since 4.06.0: module Scanning = Scanf.Scanning
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: module Scanning = Scanf.Scanning
  *)
 
 @BEGIN_FROM_3_12_0@
@@ -48,6 +48,12 @@ val ksscanf :
       string ->
         (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner *)
 
+@BEGIN_FROM_4_08_0@
+val kfscanf :
+  in_channel ->
+    (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_03_0@
 val kfscanf :
   in_channel ->
@@ -59,11 +65,17 @@ val kfscanf :
   in_channel ->
     (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
 @END_BEFORE_4_03_0@
-(** @since 4.03.0:
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
     val kfscanf :
       in_channel ->
         (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner
-    [@@ocaml.deprecated "Use Scanning.from_channel then Scanf.kscanf."]
+@since 4.03.0:
+val kfscanf :
+  in_channel ->
+    (Scanning.in_channel -> exn -> 'd) -> ('a, 'b, 'c, 'd) scanner[@@ocaml.deprecated
+                                                                    "Use Scanning.from_channel then Scanf.kscanf."]
 @since 4.02.0:
 val kfscanf :
   in_channel ->
@@ -139,6 +151,10 @@ val format_from_string :
       string ->
         ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6 *)
 
+@BEGIN_FROM_4_08_0@
+val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_03_0@
 val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner[@@ocaml.deprecated
                                                      "Use Scanning.from_channel then Scanf.bscanf."]
@@ -146,9 +162,12 @@ val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner[@@ocaml.deprecated
 @BEGIN_BEFORE_4_03_0@
 val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
 @END_BEFORE_4_03_0@
-(** @since 4.03.0:
-    val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner[@@ocaml.deprecated
-                                                         "Use Scanning.from_channel then Scanf.bscanf."]
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
+@since 4.03.0:
+val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner[@@ocaml.deprecated
+                                                     "Use Scanning.from_channel then Scanf.bscanf."]
 @since 3.10.0: val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
  *)
 

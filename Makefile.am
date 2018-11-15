@@ -19,7 +19,8 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__array.ml stdcompat__arrayLabels.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
 	stdcompat__spacetime.ml stdcompat__moreLabels.ml stdcompat__lexing.ml \
-	stdcompat__option.ml stdcompat__result.ml
+	stdcompat__option.ml stdcompat__result.ml stdcompat__bool.ml \
+	stdcompat__fun.ml
 
 mypkg_SCRIPTS = META stdcompat.cmi stdcompat__native.cmi $(MODULES:.ml=.cmi)
 

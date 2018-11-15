@@ -19,6 +19,10 @@ val chr : int -> char
 val escaped : char -> string
 (** Alias for {!Char.escaped} *)
 
+@BEGIN_FROM_4_08_0@
+val lowercase : char -> char
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_03_0@
 val lowercase : char -> char[@@ocaml.deprecated
                               "Use Char.lowercase_ascii instead."]
@@ -26,12 +30,19 @@ val lowercase : char -> char[@@ocaml.deprecated
 @BEGIN_BEFORE_4_03_0@
 val lowercase : char -> char
 @END_BEFORE_4_03_0@
-(** @since 4.03.0:
-    val lowercase : char -> char[@@ocaml.deprecated
-                                  "Use Char.lowercase_ascii instead."]
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: val lowercase : char -> char
+@since 4.03.0:
+val lowercase : char -> char[@@ocaml.deprecated
+                              "Use Char.lowercase_ascii instead."]
 @since 3.07.0: val lowercase : char -> char
  *)
 
+@BEGIN_FROM_4_08_0@
+val uppercase : char -> char
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_03_0@
 val uppercase : char -> char[@@ocaml.deprecated
                               "Use Char.uppercase_ascii instead."]
@@ -39,9 +50,12 @@ val uppercase : char -> char[@@ocaml.deprecated
 @BEGIN_BEFORE_4_03_0@
 val uppercase : char -> char
 @END_BEFORE_4_03_0@
-(** @since 4.03.0:
-    val uppercase : char -> char[@@ocaml.deprecated
-                                  "Use Char.uppercase_ascii instead."]
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: val uppercase : char -> char
+@since 4.03.0:
+val uppercase : char -> char[@@ocaml.deprecated
+                              "Use Char.uppercase_ascii instead."]
 @since 3.07.0: val uppercase : char -> char
  *)
 

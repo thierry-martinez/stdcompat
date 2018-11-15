@@ -22,6 +22,8 @@ module Stdlib = struct
   module Bigarray = Bigarray
 @END_FROM_4_02_0@
 
+  module Bool = Stdcompat__bool
+
   module Buffer = Stdcompat__buffer
 
   module Bytes = Stdcompat__bytes

@@ -1,33 +1,51 @@
 exception Exit 
 (** Alias for {!Pervasives.Exit} *)
 
-type fpclass = Pervasives.fpclass =
+@BEGIN_FROM_4_08_0@
+type nonrec fpclass = Pervasives.fpclass =
   | FP_normal 
   | FP_subnormal 
   | FP_zero 
   | FP_infinite 
   | FP_nan 
-(** Alias for {!Pervasives.fpclass} *)
-
-@BEGIN_FROM_3_08_0@
-type in_channel = Pervasives.in_channel
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-type in_channel
-@END_BEFORE_3_08_0@
-(** @since 3.08.0: type in_channel
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type nonrec fpclass =
+  | FP_normal 
+  | FP_subnormal 
+  | FP_zero 
+  | FP_infinite 
+  | FP_nan 
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
+    type nonrec fpclass = Pervasives.fpclass =
+      | FP_normal 
+      | FP_subnormal 
+      | FP_zero 
+      | FP_infinite 
+      | FP_nan 
  *)
 
-@BEGIN_FROM_3_08_0@
-type out_channel = Pervasives.out_channel
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-type out_channel
-@END_BEFORE_3_08_0@
-(** @since 3.08.0: type out_channel
+@BEGIN_FROM_4_08_0@
+type nonrec in_channel = Pervasives.in_channel
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type nonrec in_channel
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: type nonrec in_channel = Pervasives.in_channel
  *)
 
-type open_flag = Pervasives.open_flag =
+@BEGIN_FROM_4_08_0@
+type nonrec out_channel = Pervasives.out_channel
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type nonrec out_channel
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: type nonrec out_channel = Pervasives.out_channel
+ *)
+
+@BEGIN_FROM_4_08_0@
+type nonrec open_flag = Pervasives.open_flag =
   | Open_rdonly 
   | Open_wronly 
   | Open_append 
@@ -37,45 +55,60 @@ type open_flag = Pervasives.open_flag =
   | Open_binary 
   | Open_text 
   | Open_nonblock 
-(** Alias for {!Pervasives.open_flag} *)
-
-@BEGIN_FROM_4_02_0@
-module LargeFile = Pervasives.LargeFile
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-module LargeFile :
-sig
-  val seek_out : out_channel -> int64 -> unit
-  val pos_out : out_channel -> int64
-  val out_channel_length : out_channel -> int64
-  val seek_in : in_channel -> int64 -> unit
-  val pos_in : in_channel -> int64
-  val in_channel_length : in_channel -> int64
-end
-@END_BEFORE_4_02_0@
-(** @since 4.02.0: module LargeFile = Pervasives.LargeFile
-@since 3.07.0:
-module LargeFile :
-sig
-  val seek_out : out_channel -> int64 -> unit
-  val pos_out : out_channel -> int64
-  val out_channel_length : out_channel -> int64
-  val seek_in : in_channel -> int64 -> unit
-  val pos_in : in_channel -> int64
-  val in_channel_length : in_channel -> int64
-end
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type nonrec open_flag =
+  | Open_rdonly 
+  | Open_wronly 
+  | Open_append 
+  | Open_creat 
+  | Open_trunc 
+  | Open_excl 
+  | Open_binary 
+  | Open_text 
+  | Open_nonblock 
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
+    type nonrec open_flag = Pervasives.open_flag =
+      | Open_rdonly 
+      | Open_wronly 
+      | Open_append 
+      | Open_creat 
+      | Open_trunc 
+      | Open_excl 
+      | Open_binary 
+      | Open_text 
+      | Open_nonblock 
  *)
 
-type 'a ref = 'a Pervasives.ref = {
-  mutable contents: 'a }
-(** Alias for {!Pervasives.ref} *)
+@BEGIN_FROM_4_08_0@
+module LargeFile = Pervasives.LargeFile
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+module LargeFile = LargeFile
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: module LargeFile = Pervasives.LargeFile
+ *)
 
-@BEGIN_FROM_4_03_0@
+@BEGIN_FROM_4_08_0@
+type nonrec 'a ref = 'a Pervasives.ref = {
+  mutable contents: 'a }
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type nonrec 'a ref = {
+  mutable contents: 'a }
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
+    type nonrec 'a ref = 'a Pervasives.ref = {
+      mutable contents: 'a }
+ *)
+
+@BEGIN_FROM_4_08_0@
 type ('a, 'b) result = ('a, 'b) Pervasives.result =
   | Ok of 'a 
   | Error of 'b 
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_WITH_RESULT_PKG@
 type ('a, 'b) result = ('a, 'b) Result.result =
   | Ok of 'a 
@@ -87,10 +120,11 @@ type ('a, 'b) result =
   | Error of 'b 
 @END_WITHOUT_RESULT_PKG@
 
-@END_BEFORE_4_03_0@
-(** @since 4.03.0: type ('a, 'b) result =
-                     | Ok of 'a 
-                     | Error of 'b 
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
+    type ('a, 'b) result = ('a, 'b) Pervasives.result =
+      | Ok of 'a 
+      | Error of 'b 
  *)
 
 @BEGIN_FROM_4_02_0@
@@ -119,8 +153,170 @@ type ('a, 'b, 'c, 'd) format4 = ('a, 'b, 'c, 'c, 'c, 'd) format6
 type ('a, 'b, 'c) format = ('a, 'b, 'c, 'c) format4
 (** Alias for {!Pervasives.format} *)
 
-val protect : finally:(unit -> unit) -> (unit -> 'a) -> 'a
-(** @since 4.08.0: val protect : finally:(unit -> unit) -> (unit -> 'a) -> 'a *)
+val stdin : Stdlib.in_channel
+(** @since 4.08.0: val stdin : Stdlib.in_channel *)
+
+val stdout : Stdlib.out_channel
+(** @since 4.08.0: val stdout : Stdlib.out_channel *)
+
+val stderr : Stdlib.out_channel
+(** @since 4.08.0: val stderr : Stdlib.out_channel *)
+
+val open_out : string -> Stdlib.out_channel
+(** @since 4.08.0: val open_out : string -> Stdlib.out_channel *)
+
+val open_out_bin : string -> Stdlib.out_channel
+(** @since 4.08.0: val open_out_bin : string -> Stdlib.out_channel *)
+
+val open_out_gen :
+  Stdlib.open_flag list -> int -> string -> Stdlib.out_channel
+(** @since 4.08.0:
+    val open_out_gen :
+      Stdlib.open_flag list -> int -> string -> Stdlib.out_channel *)
+
+val flush : Stdlib.out_channel -> unit
+(** @since 4.08.0: val flush : Stdlib.out_channel -> unit *)
+
+val output_char : Stdlib.out_channel -> char -> unit
+(** @since 4.08.0: val output_char : Stdlib.out_channel -> char -> unit *)
+
+val output_string : Stdlib.out_channel -> string -> unit
+(** @since 4.08.0: val output_string : Stdlib.out_channel -> string -> unit *)
+
+@BEGIN_FROM_4_08_0@
+val output_bytes : Stdlib.out_channel -> bytes -> unit
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+val output_bytes : Stdlib.out_channel -> Stdcompat__init.bytes -> unit
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: val output_bytes : Stdlib.out_channel -> bytes -> unit
+ *)
+
+@BEGIN_FROM_4_08_0@
+val output : Stdlib.out_channel -> bytes -> int -> int -> unit
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+val output :
+  Stdlib.out_channel -> Stdcompat__init.bytes -> int -> int -> unit
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
+    val output : Stdlib.out_channel -> bytes -> int -> int -> unit
+ *)
+
+val output_substring : Stdlib.out_channel -> string -> int -> int -> unit
+(** @since 4.08.0:
+    val output_substring : Stdlib.out_channel -> string -> int -> int -> unit *)
+
+val output_byte : Stdlib.out_channel -> int -> unit
+(** @since 4.08.0: val output_byte : Stdlib.out_channel -> int -> unit *)
+
+val output_binary_int : Stdlib.out_channel -> int -> unit
+(** @since 4.08.0: val output_binary_int : Stdlib.out_channel -> int -> unit *)
+
+val output_value : Stdlib.out_channel -> 'a -> unit
+(** @since 4.08.0: val output_value : Stdlib.out_channel -> 'a -> unit *)
+
+val seek_out : Stdlib.out_channel -> int -> unit
+(** @since 4.08.0: val seek_out : Stdlib.out_channel -> int -> unit *)
+
+val pos_out : Stdlib.out_channel -> int
+(** @since 4.08.0: val pos_out : Stdlib.out_channel -> int *)
+
+val out_channel_length : Stdlib.out_channel -> int
+(** @since 4.08.0: val out_channel_length : Stdlib.out_channel -> int *)
+
+val close_out : Stdlib.out_channel -> unit
+(** @since 4.08.0: val close_out : Stdlib.out_channel -> unit *)
+
+val close_out_noerr : Stdlib.out_channel -> unit
+(** @since 4.08.0: val close_out_noerr : Stdlib.out_channel -> unit *)
+
+val set_binary_mode_out : Stdlib.out_channel -> bool -> unit
+(** @since 4.08.0:
+    val set_binary_mode_out : Stdlib.out_channel -> bool -> unit *)
+
+val open_in : string -> Stdlib.in_channel
+(** @since 4.08.0: val open_in : string -> Stdlib.in_channel *)
+
+val open_in_bin : string -> Stdlib.in_channel
+(** @since 4.08.0: val open_in_bin : string -> Stdlib.in_channel *)
+
+val open_in_gen : Stdlib.open_flag list -> int -> string -> Stdlib.in_channel
+(** @since 4.08.0:
+    val open_in_gen :
+      Stdlib.open_flag list -> int -> string -> Stdlib.in_channel *)
+
+val input_char : Stdlib.in_channel -> char
+(** @since 4.08.0: val input_char : Stdlib.in_channel -> char *)
+
+val input_line : Stdlib.in_channel -> string
+(** @since 4.08.0: val input_line : Stdlib.in_channel -> string *)
+
+@BEGIN_FROM_4_08_0@
+val input : Stdlib.in_channel -> bytes -> int -> int -> int
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+val input : Stdlib.in_channel -> Stdcompat__init.bytes -> int -> int -> int
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
+    val input : Stdlib.in_channel -> bytes -> int -> int -> int
+ *)
+
+@BEGIN_FROM_4_08_0@
+val really_input : Stdlib.in_channel -> bytes -> int -> int -> unit
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+val really_input :
+  Stdlib.in_channel -> Stdcompat__init.bytes -> int -> int -> unit
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
+    val really_input : Stdlib.in_channel -> bytes -> int -> int -> unit
+ *)
+
+val really_input_string : Stdlib.in_channel -> int -> string
+(** @since 4.08.0:
+    val really_input_string : Stdlib.in_channel -> int -> string *)
+
+val input_byte : Stdlib.in_channel -> int
+(** @since 4.08.0: val input_byte : Stdlib.in_channel -> int *)
+
+val input_binary_int : Stdlib.in_channel -> int
+(** @since 4.08.0: val input_binary_int : Stdlib.in_channel -> int *)
+
+val input_value : Stdlib.in_channel -> 'a
+(** @since 4.08.0: val input_value : Stdlib.in_channel -> 'a *)
+
+val seek_in : Stdlib.in_channel -> int -> unit
+(** @since 4.08.0: val seek_in : Stdlib.in_channel -> int -> unit *)
+
+val pos_in : Stdlib.in_channel -> int
+(** @since 4.08.0: val pos_in : Stdlib.in_channel -> int *)
+
+val in_channel_length : Stdlib.in_channel -> int
+(** @since 4.08.0: val in_channel_length : Stdlib.in_channel -> int *)
+
+val close_in : Stdlib.in_channel -> unit
+(** @since 4.08.0: val close_in : Stdlib.in_channel -> unit *)
+
+val close_in_noerr : Stdlib.in_channel -> unit
+(** @since 4.08.0: val close_in_noerr : Stdlib.in_channel -> unit *)
+
+val set_binary_mode_in : Stdlib.in_channel -> bool -> unit
+(** @since 4.08.0: val set_binary_mode_in : Stdlib.in_channel -> bool -> unit *)
+
+val string_of_format : ('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6 -> string
+(** @since 4.08.0:
+    val string_of_format : ('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6 -> string *)
+
+val (^^) :
+  ('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6 ->
+    ('f, 'b, 'c, 'e, 'g, 'h) Stdlib.format6 ->
+      ('a, 'b, 'c, 'd, 'g, 'h) Stdlib.format6
+(** @since 4.08.0:
+    val (^^) :
+      ('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6 ->
+        ('f, 'b, 'c, 'e, 'g, 'h) Stdlib.format6 ->
+          ('a, 'b, 'c, 'd, 'g, 'h) Stdlib.format6 *)
 
 val bool_of_string_opt : string -> bool option
 (** @since 4.05.0: val bool_of_string_opt : string -> bool option *)
@@ -236,61 +432,6 @@ val prerr_bytes : bytes -> unit
 val prerr_bytes : Stdcompat__init.bytes -> unit
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: val prerr_bytes : bytes -> unit
- *)
-
-@BEGIN_FROM_4_02_0@
-val output_bytes : out_channel -> bytes -> unit
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val output_bytes : out_channel -> Stdcompat__init.bytes -> unit
-@END_BEFORE_4_02_0@
-(** @since 4.02.0: val output_bytes : out_channel -> bytes -> unit
- *)
-
-@BEGIN_FROM_4_02_0@
-val output : out_channel -> bytes -> int -> int -> unit
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val output : out_channel -> Stdcompat__init.bytes -> int -> int -> unit
-@END_BEFORE_4_02_0@
-(** @since 4.02.0: val output : out_channel -> bytes -> int -> int -> unit
- *)
-
-val output_substring : out_channel -> string -> int -> int -> unit
-(** @since 4.02.0:
-    val output_substring : out_channel -> string -> int -> int -> unit *)
-
-@BEGIN_FROM_4_02_0@
-val input : in_channel -> bytes -> int -> int -> int
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val input : in_channel -> Stdcompat__init.bytes -> int -> int -> int
-@END_BEFORE_4_02_0@
-(** @since 4.02.0: val input : in_channel -> bytes -> int -> int -> int
- *)
-
-@BEGIN_FROM_4_02_0@
-val really_input : in_channel -> bytes -> int -> int -> unit
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val really_input : in_channel -> Stdcompat__init.bytes -> int -> int -> unit
-@END_BEFORE_4_02_0@
-(** @since 4.02.0:
-    val really_input : in_channel -> bytes -> int -> int -> unit
- *)
-
-val really_input_string : in_channel -> int -> string
-(** @since 4.02.0: val really_input_string : in_channel -> int -> string *)
-
-@BEGIN_FROM_4_02_0@
-val unsafe_really_input : in_channel -> bytes -> int -> int -> unit
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val unsafe_really_input :
-  in_channel -> Stdcompat__init.bytes -> int -> int -> unit
-@END_BEFORE_4_02_0@
-(** @since 4.02.0:
-    val unsafe_really_input : in_channel -> bytes -> int -> int -> unit
  *)
 
 @BEGIN_FROM_4_01_0@
@@ -452,6 +593,10 @@ external not : bool -> bool = "%boolnot"
 external (&&) : bool -> bool -> bool = "%sequand"
 (** Alias for {!Pervasives.&&} *)
 
+@BEGIN_FROM_4_08_0@
+external (&) : bool -> bool -> bool = "%sequand"
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 external (&) : bool -> bool -> bool = "%sequand"[@@ocaml.deprecated
                                                   "Use (&&) instead."]
@@ -459,15 +604,22 @@ external (&) : bool -> bool -> bool = "%sequand"[@@ocaml.deprecated
 @BEGIN_BEFORE_4_02_0@
 external (&) : bool -> bool -> bool = "%sequand"
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
-    external (&) : bool -> bool -> bool = "%sequand"[@@ocaml.deprecated
-                                                      "Use (&&) instead."]
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: external (&) : bool -> bool -> bool = "%sequand"
+@since 4.02.0:
+external (&) : bool -> bool -> bool = "%sequand"[@@ocaml.deprecated
+                                                  "Use (&&) instead."]
 @since 3.07.0: external (&) : bool -> bool -> bool = "%sequand"
  *)
 
 external (||) : bool -> bool -> bool = "%sequor"
 (** Alias for {!Pervasives.||} *)
 
+@BEGIN_FROM_4_08_0@
+external (or) : bool -> bool -> bool = "%sequor"
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 external (or) : bool -> bool -> bool = "%sequor"[@@ocaml.deprecated
                                                   "Use (||) instead."]
@@ -475,9 +627,12 @@ external (or) : bool -> bool -> bool = "%sequor"[@@ocaml.deprecated
 @BEGIN_BEFORE_4_02_0@
 external (or) : bool -> bool -> bool = "%sequor"
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
-    external (or) : bool -> bool -> bool = "%sequor"[@@ocaml.deprecated
-                                                      "Use (||) instead."]
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: external (or) : bool -> bool -> bool = "%sequor"
+@since 4.02.0:
+external (or) : bool -> bool -> bool = "%sequor"[@@ocaml.deprecated
+                                                  "Use (||) instead."]
 @since 3.07.0: external (or) : bool -> bool -> bool = "%sequor"
  *)
 
@@ -1086,15 +1241,6 @@ external snd : ('a * 'b) -> 'b = "%field1"
 val (@) : 'a list -> 'a list -> 'a list
 (** Alias for {!Pervasives.@} *)
 
-val stdin : in_channel
-(** Alias for {!Pervasives.stdin} *)
-
-val stdout : out_channel
-(** Alias for {!Pervasives.stdout} *)
-
-val stderr : out_channel
-(** Alias for {!Pervasives.stderr} *)
-
 val print_char : char -> unit
 (** Alias for {!Pervasives.print_char} *)
 
@@ -1140,95 +1286,8 @@ val read_int : unit -> int
 val read_float : unit -> float
 (** Alias for {!Pervasives.read_float} *)
 
-val open_out : string -> out_channel
-(** Alias for {!Pervasives.open_out} *)
-
-val open_out_bin : string -> out_channel
-(** Alias for {!Pervasives.open_out_bin} *)
-
-val open_out_gen : open_flag list -> int -> string -> out_channel
-(** Alias for {!Pervasives.open_out_gen} *)
-
-val flush : out_channel -> unit
-(** Alias for {!Pervasives.flush} *)
-
 val flush_all : unit -> unit
 (** Alias for {!Pervasives.flush_all} *)
-
-val output_char : out_channel -> char -> unit
-(** Alias for {!Pervasives.output_char} *)
-
-val output_string : out_channel -> string -> unit
-(** Alias for {!Pervasives.output_string} *)
-
-val output_byte : out_channel -> int -> unit
-(** Alias for {!Pervasives.output_byte} *)
-
-val output_binary_int : out_channel -> int -> unit
-(** Alias for {!Pervasives.output_binary_int} *)
-
-val output_value : out_channel -> 'a -> unit
-(** Alias for {!Pervasives.output_value} *)
-
-val seek_out : out_channel -> int -> unit
-(** Alias for {!Pervasives.seek_out} *)
-
-val pos_out : out_channel -> int
-(** Alias for {!Pervasives.pos_out} *)
-
-val out_channel_length : out_channel -> int
-(** Alias for {!Pervasives.out_channel_length} *)
-
-val close_out : out_channel -> unit
-(** Alias for {!Pervasives.close_out} *)
-
-val close_out_noerr : out_channel -> unit
-(** Alias for {!Pervasives.close_out_noerr} *)
-
-val set_binary_mode_out : out_channel -> bool -> unit
-(** Alias for {!Pervasives.set_binary_mode_out} *)
-
-val open_in : string -> in_channel
-(** Alias for {!Pervasives.open_in} *)
-
-val open_in_bin : string -> in_channel
-(** Alias for {!Pervasives.open_in_bin} *)
-
-val open_in_gen : open_flag list -> int -> string -> in_channel
-(** Alias for {!Pervasives.open_in_gen} *)
-
-val input_char : in_channel -> char
-(** Alias for {!Pervasives.input_char} *)
-
-val input_line : in_channel -> string
-(** Alias for {!Pervasives.input_line} *)
-
-val input_byte : in_channel -> int
-(** Alias for {!Pervasives.input_byte} *)
-
-val input_binary_int : in_channel -> int
-(** Alias for {!Pervasives.input_binary_int} *)
-
-val input_value : in_channel -> 'a
-(** Alias for {!Pervasives.input_value} *)
-
-val seek_in : in_channel -> int -> unit
-(** Alias for {!Pervasives.seek_in} *)
-
-val pos_in : in_channel -> int
-(** Alias for {!Pervasives.pos_in} *)
-
-val in_channel_length : in_channel -> int
-(** Alias for {!Pervasives.in_channel_length} *)
-
-val close_in : in_channel -> unit
-(** Alias for {!Pervasives.close_in} *)
-
-val close_in_noerr : in_channel -> unit
-(** Alias for {!Pervasives.close_in_noerr} *)
-
-val set_binary_mode_in : in_channel -> bool -> unit
-(** Alias for {!Pervasives.set_binary_mode_in} *)
 
 external ref : 'a -> 'a ref = "%makemutable"
 (** Alias for {!Pervasives.ref} *)
@@ -1246,25 +1305,6 @@ external decr : int ref -> unit = "%decr"
 (** Alias for {!Pervasives.decr} *)
 
 @BEGIN_FROM_3_10_0@
-val string_of_format : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> string
-@END_FROM_3_10_0@
-@BEGIN_BEFORE_3_10_0@
-@BEGIN_FROM_3_08_0@
-val string_of_format : ('a, 'b, 'c, 'd) format4 -> string
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external string_of_format : ('a, 'b, 'c, 'd) format4 -> string = "%identity"
-@END_BEFORE_3_08_0@
-
-@END_BEFORE_3_10_0@
-(** @since 3.10.0:
-    val string_of_format : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> string
-@since 3.08.0: val string_of_format : ('a, 'b, 'c, 'd) format4 -> string
-@since 3.07.0:
-external string_of_format : ('a, 'b, 'c, 'd) format4 -> string = "%identity"
- *)
-
-@BEGIN_FROM_3_10_0@
 external format_of_string :
   ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6 =
     "%identity"
@@ -1280,26 +1320,6 @@ external format_of_string :
 @since 3.07.0:
 external format_of_string :
   ('a, 'b, 'c, 'd) format4 -> ('a, 'b, 'c, 'd) format4 = "%identity"
- *)
-
-@BEGIN_FROM_3_10_0@
-val (^^) :
-  ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
-    ('f, 'b, 'c, 'e, 'g, 'h) format6 -> ('a, 'b, 'c, 'd, 'g, 'h) format6
-@END_FROM_3_10_0@
-@BEGIN_BEFORE_3_10_0@
-val (^^) :
-  ('a, 'b, 'c, 'd) format4 ->
-    ('d, 'b, 'c, 'e) format4 -> ('a, 'b, 'c, 'e) format4
-@END_BEFORE_3_10_0@
-(** @since 3.10.0:
-    val (^^) :
-      ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
-        ('f, 'b, 'c, 'e, 'g, 'h) format6 -> ('a, 'b, 'c, 'd, 'g, 'h) format6
-@since 3.07.0:
-val (^^) :
-  ('a, 'b, 'c, 'd) format4 ->
-    ('d, 'b, 'c, 'e) format4 -> ('a, 'b, 'c, 'e) format4
  *)
 
 val exit : int -> 'a

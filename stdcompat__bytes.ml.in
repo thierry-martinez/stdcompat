@@ -1,3 +1,89 @@
+@BEGIN_BEFORE_4_08_0@
+let get_int8 _ =
+  failwith "Not implemented."
+
+let get_uint8 _ =
+  failwith "Not implemented."
+
+let get_int16_le _ =
+  failwith "Not implemented."
+
+let get_int16_be _ =
+  failwith "Not implemented."
+
+let get_int16_ne _ =
+  failwith "Not implemented."
+
+let get_uint16_le _ =
+  failwith "Not implemented."
+
+let get_uint16_be _ =
+  failwith "Not implemented."
+
+let get_uint16_ne _ =
+  failwith "Not implemented."
+
+let get_int32_le _ =
+  failwith "Not implemented."
+
+let get_int32_be _ =
+  failwith "Not implemented."
+
+let get_int32_ne _ =
+  failwith "Not implemented."
+
+let get_int64_le _ =
+  failwith "Not implemented."
+
+let get_int64_be _ =
+  failwith "Not implemented."
+
+let get_int64_ne _ =
+  failwith "Not implemented."
+
+let set_int8 _ =
+  failwith "Not implemented."
+
+let set_uint8 _ =
+  failwith "Not implemented."
+
+let set_int16_le _ =
+  failwith "Not implemented."
+
+let set_int16_be _ =
+  failwith "Not implemented."
+
+let set_int16_ne _ =
+  failwith "Not implemented."
+
+let set_uint16_le _ =
+  failwith "Not implemented."
+
+let set_uint16_be _ =
+  failwith "Not implemented."
+
+let set_uint16_ne _ =
+  failwith "Not implemented."
+
+let set_int32_le _ =
+  failwith "Not implemented."
+
+let set_int32_be _ =
+  failwith "Not implemented."
+
+let set_int32_ne _ =
+  failwith "Not implemented."
+
+let set_int64_le _ =
+  failwith "Not implemented."
+
+let set_int64_be _ =
+  failwith "Not implemented."
+
+let set_int64_ne _ =
+  failwith "Not implemented."
+@END_BEFORE_4_08_0@
+
 @BEGIN_BEFORE_4_02_0@
 include Stdcompat__string
 

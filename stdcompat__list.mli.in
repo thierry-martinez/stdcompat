@@ -1,3 +1,18 @@
+@BEGIN_FROM_4_08_0@
+type 'a t = 'a List.list =
+  | [] 
+  | (::) of 'a * 'a list 
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type 'a t = 'a list =
+  | [] 
+  | (::) of 'a * 'a list 
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: type 'a t = 'a List.list =
+                     | [] 
+                     | (::) of 'a * 'a list 
+ *)
+
 @BEGIN_FROM_4_07_0@
 val to_seq : 'a list -> 'a Seq.t
 @END_FROM_4_07_0@
