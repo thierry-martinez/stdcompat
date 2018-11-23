@@ -172,7 +172,7 @@ module Type_declaration_block = struct
     | type_decl :: _ -> type_decl.ptype_name.txt
 
   let is_isomorphic kind b b' =
-    b.rec_flag = b'.rec_flag &&
+    (kind == Ignore_attributes || b.rec_flag = b'.rec_flag) &&
     List.equal (is_type_declaration_isomorphic kind) b.type_decl b'.type_decl
 end
 
@@ -221,8 +221,8 @@ module Signature = struct
   let add_item (item : Parsetree.signature_item) s =
     match item.psig_desc with
     | Psig_value value_desc -> add_value value_desc s
-    | Psig_type (rec_flag, type_decl) ->
-        add_type_declaration_block { rec_flag; type_decl } s
+    | Psig_type (_rec_flag, type_decl) ->
+        add_type_declaration_block { rec_flag = Recursive; type_decl } s
     | Psig_modtype module_type_declaration ->
         add_module_type_declaration module_type_declaration s
     | Psig_module module_declaration ->
@@ -464,7 +464,8 @@ let qualify_type_decl ~module_name (type_decl : Parsetree.type_declaration) =
         when ident <> "char" && ident <> "string" && ident <> "lazy_t"
             && ident <> "nativeint" && ident <> "int32" && ident <> "int64"
             && ident <> "format6" && ident <> "format4" && ident <> "bytes"
-            && ident <> "float" && ident <> "result" && ident <> "option" ->
+            && ident <> "float" && ident <> "result" && ident <> "option"
+             && ident <> "list" && ident <> "bool" && ident <> "array"->
           let txt = Longident.Ldot (module_name, ident) in
           let ptyp_desc = Parsetree.Ptyp_constr ({ Location.txt; loc }, args) in
           { ty with ptyp_desc }
@@ -521,6 +522,13 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
         Parsetree.Ptyp_constr
           ({ loc; txt = Ldot (Lident "Stdcompat__seq", "t") },
            [compat_core_type ~module_name arg]) in
+      { core_type with ptyp_desc }
+  | Ptyp_constr ({ loc; txt = Ldot (Lident "Stdlib", t) }, args) ->
+      let args = List.map (compat_core_type ~module_name) args in
+      let ptyp_desc =
+        Parsetree.Ptyp_constr
+          ({ loc; txt = Ldot (Lident "Stdcompat__stdlib", t) },
+           args) in
       { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Ldot (Lident "Uchar", "t") }, []) ->
       let ptyp_desc =
@@ -935,8 +943,8 @@ and fake_signature_item ~module_name ~reference_version ~version
 let version_signature_item ~reference_version ~module_name ~signatures
     (item : Parsetree.signature_item) =
   match item.psig_desc with
-  | Psig_type (rec_flag, type_decl) ->
-      let block = { Type_declaration_block.rec_flag; type_decl } in
+  | Psig_type (_rec_flag, type_decl) ->
+      let block = { Type_declaration_block.rec_flag = Recursive; type_decl } in
       let first_type_name = Type_declaration_block.get_first_type_name block in
       Some (signatures |>
         List.map (fun (version, (s : Signature.t)) ->
@@ -954,7 +962,7 @@ let version_signature_item ~reference_version ~module_name ~signatures
                 block'.type_decl |>
                 List.map @@ qualify_type_decl ~module_name in
               (real, version,
-               { item with psig_desc = Psig_type (rec_flag, type_decl) })))
+               { item with psig_desc = Psig_type (Recursive, type_decl) })))
   | Psig_value value_desc ->
       Some (signatures |>
         List.map (fun (version, (s : Signature.t)) ->

@@ -1,10 +1,10 @@
 @BEGIN_FROM_4_08_0@
-type 'a t = 'a Array.t
+type 'a t = 'a array
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
 type 'a t = 'a array
 @END_BEFORE_4_08_0@
-(** @since 4.08.0: type 'a t = 'a Array.array
+(** @since 4.08.0: type 'a t = 'a array
  *)
 
 @BEGIN_FROM_4_06_0@

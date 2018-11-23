@@ -15,7 +15,7 @@ sig
   val from_file_bin : string -> in_channel
   val from_string : string -> in_channel
   val from_function : (unit -> char) -> in_channel
-  val from_channel : Stdlib.in_channel -> in_channel
+  val from_channel : Stdcompat__stdlib.in_channel -> in_channel
   val end_of_input : in_channel -> bool
   val beginning_of_input : in_channel -> bool
   val name_of_input : in_channel -> string

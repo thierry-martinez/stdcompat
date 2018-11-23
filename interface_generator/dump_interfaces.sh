@@ -7,7 +7,7 @@ for ocaml_version in 4.08.0; do \
 #    4.07.0 4.08.0;
   target_dir=../interfaces/${ocaml_version:0:4}
   mkdir -p $target_dir
-  for module in Fun; do
+  for module in Stdlib; do
 #      Pervasives Arg Array ArrayLabels Bool Buffer Bytes BytesLabels Callback Char \
 #      Complex Digest Ephemeron Filename Float Format Fun Gc Genlex Hashtbl Int32 \
 #      Int64 Lazy Lexing List ListLabels Map Marshal MoreLabels Nativeint Obj \
