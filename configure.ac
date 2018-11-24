@@ -148,47 +148,84 @@ AC_CONFIG_FILES([
   stdcompat__native.ml_byte
   stdcompat__native.ml_native
   stdcompat_tests.ml
-])
-AC_CONFIG_FILES([
-  stdcompat__pervasives.mli
-  stdcompat__arg.mli
-  stdcompat__array.mli
-  stdcompat__arrayLabels.mli
-  stdcompat__bool.mli
-  stdcompat__buffer.mli
-  stdcompat__bytes.mli
-  stdcompat__bytesLabels.mli
-  stdcompat__char.mli
-  stdcompat__digest.mli
-  stdcompat__ephemeron.mli
-  stdcompat__filename.mli
-  stdcompat__float.mli
-  stdcompat__fun.mli
-  stdcompat__hashtbl.mli
-  stdcompat__int32.mli
-  stdcompat__int64.mli
-  stdcompat__lazy.mli
-  stdcompat__lexing.mli
-  stdcompat__list.mli
-  stdcompat__listLabels.mli
-  stdcompat__map.mli
-  stdcompat__moreLabels.mli
-  stdcompat__nativeint.mli
-  stdcompat__option.mli
-  stdcompat__queue.mli
-  stdcompat__result.mli
-  stdcompat__seq.mli
-  stdcompat__set.mli
-  stdcompat__spacetime.mli
-  stdcompat__stack.mli
-  stdcompat__stream.mli
-  stdcompat__string.mli
-  stdcompat__stringLabels.mli
-  stdcompat__sys.mli
-  stdcompat__uchar.mli
-  stdcompat__weak.mli])
-AC_CONFIG_FILES([
-  stdcompat__pervasives.ml
+  stdcompat__pervasives_s.mli
+  stdcompat__arg_s.mli
+  stdcompat__array_s.mli
+  stdcompat__arrayLabels_s.mli
+  stdcompat__bool_s.mli
+  stdcompat__buffer_s.mli
+  stdcompat__bytes_s.mli
+  stdcompat__bytesLabels_s.mli
+  stdcompat__char_s.mli
+  stdcompat__digest_s.mli
+  stdcompat__ephemeron_s.mli
+  stdcompat__filename_s.mli
+  stdcompat__float_s.mli
+  stdcompat__fun_s.mli
+  stdcompat__hashtbl_s.mli
+  stdcompat__int_s.mli
+  stdcompat__int32_s.mli
+  stdcompat__int64_s.mli
+  stdcompat__lazy_s.mli
+  stdcompat__lexing_s.mli
+  stdcompat__list_s.mli
+  stdcompat__listLabels_s.mli
+  stdcompat__map_s.mli
+  stdcompat__moreLabels_s.mli
+  stdcompat__nativeint_s.mli
+  stdcompat__option_s.mli
+  stdcompat__queue_s.mli
+  stdcompat__result_s.mli
+  stdcompat__seq_s.mli
+  stdcompat__set_s.mli
+  stdcompat__spacetime_s.mli
+  stdcompat__stack_s.mli
+  stdcompat__stream_s.mli
+  stdcompat__string_s.mli
+  stdcompat__stringLabels_s.mli
+  stdcompat__sys_s.mli
+  stdcompat__uchar_s.mli
+  stdcompat__weak_s.mli
+  stdcompat__stdlib_s.mli
+  stdcompat__pervasives_s.ml
+  stdcompat__arg_s.ml
+  stdcompat__array_s.ml
+  stdcompat__arrayLabels_s.ml
+  stdcompat__bool_s.ml
+  stdcompat__buffer_s.ml
+  stdcompat__bytes_s.ml
+  stdcompat__bytesLabels_s.ml
+  stdcompat__char_s.ml
+  stdcompat__digest_s.ml
+  stdcompat__ephemeron_s.ml
+  stdcompat__filename_s.ml
+  stdcompat__float_s.ml
+  stdcompat__fun_s.ml
+  stdcompat__hashtbl_s.ml
+  stdcompat__int_s.ml
+  stdcompat__int32_s.ml
+  stdcompat__int64_s.ml
+  stdcompat__lazy_s.ml
+  stdcompat__lexing_s.ml
+  stdcompat__list_s.ml
+  stdcompat__listLabels_s.ml
+  stdcompat__map_s.ml
+  stdcompat__moreLabels_s.ml
+  stdcompat__nativeint_s.ml
+  stdcompat__option_s.ml
+  stdcompat__queue_s.ml
+  stdcompat__result_s.ml
+  stdcompat__seq_s.ml
+  stdcompat__set_s.ml
+  stdcompat__spacetime_s.ml
+  stdcompat__stack_s.ml
+  stdcompat__stdlib_s.ml
+  stdcompat__stream_s.ml
+  stdcompat__string_s.ml
+  stdcompat__stringLabels_s.ml
+  stdcompat__sys_s.ml
+  stdcompat__uchar_s.ml
+  stdcompat__weak_s.ml
   stdcompat__arg.ml
   stdcompat__array.ml
   stdcompat__arrayLabels.ml
@@ -203,6 +240,7 @@ AC_CONFIG_FILES([
   stdcompat__float.ml
   stdcompat__fun.ml
   stdcompat__hashtbl.ml
+  stdcompat__int.ml
   stdcompat__int32.ml
   stdcompat__int64.ml
   stdcompat__lazy.ml
@@ -219,13 +257,13 @@ AC_CONFIG_FILES([
   stdcompat__set.ml
   stdcompat__spacetime.ml
   stdcompat__stack.ml
+  stdcompat__stdlib.ml
   stdcompat__stream.ml
   stdcompat__string.ml
   stdcompat__stringLabels.ml
   stdcompat__sys.ml
   stdcompat__uchar.ml
-  stdcompat__weak.ml
-  stdcompat.ml])
+  stdcompat__weak.ml])
 
 AC_OUTPUT
 

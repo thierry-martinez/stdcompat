@@ -7,6 +7,21 @@ EXTRA_DIST=stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
 
 MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__tools.ml \
+	stdcompat__pervasives_s.ml stdcompat__arg_s.ml stdcompat__lazy_s.ml \
+	stdcompat__char_s.ml stdcompat__uchar_s.ml stdcompat__buffer_s.ml \
+	stdcompat__string_s.ml stdcompat__stringLabels_s.ml stdcompat__bytes_s.ml \
+	stdcompat__bytesLabels_s.ml stdcompat__list_s.ml stdcompat__listLabels_s.ml \
+	stdcompat__stack_s.ml \
+	stdcompat__hashtbl_s.ml stdcompat__set_s.ml \
+	stdcompat__map_s.ml stdcompat__weak_s.ml stdcompat__sys_s.ml \
+	stdcompat__stream_s.ml stdcompat__digest_s.ml stdcompat__nativeint_s.ml \
+	stdcompat__int_s.ml \
+	stdcompat__int64_s.ml stdcompat__int32_s.ml stdcompat__filename_s.ml \
+	stdcompat__array_s.ml stdcompat__arrayLabels_s.ml \
+	stdcompat__float_s.ml stdcompat__queue_s.ml stdcompat__ephemeron_s.ml \
+	stdcompat__spacetime_s.ml stdcompat__moreLabels_s.ml stdcompat__lexing_s.ml \
+	stdcompat__option_s.ml stdcompat__result_s.ml stdcompat__bool_s.ml \
+	stdcompat__fun_s.ml stdcompat__stdlib_s.ml \
 	stdcompat__pervasives.ml stdcompat__arg.ml stdcompat__lazy.ml \
 	stdcompat__char.ml stdcompat__uchar.ml stdcompat__buffer.ml \
 	stdcompat__string.ml stdcompat__stringLabels.ml stdcompat__bytes.ml \
@@ -15,12 +30,13 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__hashtbl.ml stdcompat__set.ml \
 	stdcompat__map.ml stdcompat__weak.ml stdcompat__sys.ml \
 	stdcompat__stream.ml stdcompat__digest.ml stdcompat__nativeint.ml \
+	stdcompat__int.ml \
 	stdcompat__int64.ml stdcompat__int32.ml stdcompat__filename.ml \
 	stdcompat__array.ml stdcompat__arrayLabels.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
 	stdcompat__spacetime.ml stdcompat__moreLabels.ml stdcompat__lexing.ml \
 	stdcompat__option.ml stdcompat__result.ml stdcompat__bool.ml \
-	stdcompat__fun.ml
+	stdcompat__fun.ml stdcompat__stdlib.ml
 
 mypkg_SCRIPTS = META stdcompat.cmi stdcompat__native.cmi $(MODULES:.ml=.cmi)
 
@@ -59,10 +75,6 @@ SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs
 .ml.cmx :
 	$(OCAMLOPT) -c $(OCAMLFLAGS) $< -o $@
 
-stdcompat.cmi : stdcompat.cmo
-
-stdcompat.cmx : stdcompat.cmi
-
 stdcompat.cma : stdcompat__native.cmo $(MODULES:.ml=.cmo) stdcompat.cmo
 	$(OCAMLC) $(OCAMLLDFLAGS) -a $^ -o $@
 
@@ -83,7 +95,7 @@ stdcompat__native.cmx : stdcompat__native.ml_native
 .PHONY : depend
 depend : .depend
 
-.depend : $(MODULES) $(MODULES:.ml=.mli) stdcompat.ml stdcompat__native.ml_byte
+.depend : $(MODULES) $(MODULES:.ml=.mli) stdcompat.ml stdcompat.mli stdcompat__native.ml_byte
 	cp stdcompat__native.ml_byte stdcompat__native.ml
 	$(OCAMLDEP) stdcompat__native.ml $^ >$@ || rm -f .depend
 
@@ -98,4 +110,4 @@ stdcompat_tests: stdcompat.$(CMAX)
 
 CLEANFILES = *.cmi *.cmo *.cmx *.cmt *.cmti *.o *.a stdcompat.cma \
 	stdcompat.cmxa stdcompat__native.ml \
-	stdcompat.cmxs stdcompat_tests $(bin_SCRIPTS)
+	stdcompat.cmxs stdcompat_tests $(bin_SCRIPTS) .depend

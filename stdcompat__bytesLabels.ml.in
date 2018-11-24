@@ -59,3 +59,61 @@ let blit_string = blit
 
 let cat = ( ^ )
 @END_BEFORE_4_05_0@
+
+@BEGIN_BEFORE_4_08_0@
+let get_int8 = Stdcompat__bytes.get_int8
+
+let get_uint8 = Stdcompat__bytes.get_uint8
+
+let get_int16_le = Stdcompat__bytes.get_int16_le
+
+let get_int16_be = Stdcompat__bytes.get_int16_be
+
+let get_int16_ne = Stdcompat__bytes.get_int16_ne
+
+let get_uint16_le = Stdcompat__bytes.get_uint16_le
+
+let get_uint16_be = Stdcompat__bytes.get_uint16_be
+
+let get_uint16_ne = Stdcompat__bytes.get_uint16_ne
+
+let get_int32_le = Stdcompat__bytes.get_int32_le
+
+let get_int32_be = Stdcompat__bytes.get_int32_be
+
+let get_int32_ne = Stdcompat__bytes.get_int32_ne
+
+let get_int64_le = Stdcompat__bytes.get_int64_le
+
+let get_int64_be = Stdcompat__bytes.get_int64_be
+
+let get_int64_ne = Stdcompat__bytes.get_int64_ne
+
+let set_int8 = Stdcompat__bytes.set_int8
+
+let set_uint8 = Stdcompat__bytes.set_uint8
+
+let set_int16_le = Stdcompat__bytes.set_int16_le
+
+let set_int16_be = Stdcompat__bytes.set_int16_be
+
+let set_int16_ne = Stdcompat__bytes.set_int16_ne
+
+let set_uint16_le = Stdcompat__bytes.set_uint16_le
+
+let set_uint16_be = Stdcompat__bytes.set_uint16_be
+
+let set_uint16_ne = Stdcompat__bytes.set_uint16_ne
+
+let set_int32_le = Stdcompat__bytes.set_int32_le
+
+let set_int32_be = Stdcompat__bytes.set_int32_be
+
+let set_int32_ne = Stdcompat__bytes.set_int32_ne
+
+let set_int64_le = Stdcompat__bytes.set_int64_le
+
+let set_int64_be = Stdcompat__bytes.set_int64_be
+
+let set_int64_ne = Stdcompat__bytes.set_int64_ne
+@END_BEFORE_4_08_0@

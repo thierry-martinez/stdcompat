@@ -1,0 +1,90 @@
+module type S = sig
+@BEGIN_FROM_4_08_0@
+  include module type of struct
+    include Stdlib
+  end
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+  module Pervasives : Stdcompat__pervasives_s.S
+
+  include Stdcompat__pervasives_s.S
+
+  module Arg : Stdcompat__arg_s.S
+
+  module Array : Stdcompat__array_s.S
+
+  module ArrayLabels : Stdcompat__arrayLabels_s.S
+
+  module Bool : Stdcompat__bool_s.S
+
+  module Buffer : Stdcompat__buffer_s.S
+
+  module Bytes : Stdcompat__bytes_s.S
+
+  module BytesLabels : Stdcompat__bytesLabels_s.S
+
+  module Char : Stdcompat__char_s.S
+
+  module Digest : Stdcompat__digest_s.S
+
+  module Ephemeron : Stdcompat__ephemeron_s.S
+
+  module Filename : Stdcompat__filename_s.S
+
+  module Float : Stdcompat__float_s.S
+
+  module Hashtbl : Stdcompat__hashtbl_s.S
+
+  module Int32 : Stdcompat__int32_s.S
+
+  module Int64 : Stdcompat__int64_s.S
+
+  module Lazy : Stdcompat__lazy_s.S
+
+  module Lexing : Stdcompat__lexing_s.S
+
+  module List : Stdcompat__list_s.S
+
+  module ListLabels : Stdcompat__listLabels_s.S
+
+  module Map : Stdcompat__map_s.S
+
+  module Nativeint : Stdcompat__nativeint_s.S
+
+  module Option : Stdcompat__option_s.S
+
+  module Queue : Stdcompat__queue_s.S
+
+  module Result : Stdcompat__result_s.S
+
+  module Seq : Stdcompat__seq_s.S
+
+  module Set : Stdcompat__set_s.S
+
+  module Spacetime : Stdcompat__spacetime_s.S
+
+  module Stack : Stdcompat__stack_s.S
+
+  module StdLabels : sig
+    module Array : Stdcompat__arrayLabels_s.S
+
+    module Bytes : Stdcompat__bytesLabels_s.S
+
+    module List : Stdcompat__listLabels_s.S
+
+    module String : Stdcompat__stringLabels_s.S
+  end
+
+  module Stream : Stdcompat__stream_s.S
+
+  module String : Stdcompat__string_s.S
+
+  module StringLabels : Stdcompat__stringLabels_s.S
+
+  module Sys : Stdcompat__sys_s.S
+
+  module Uchar : Stdcompat__uchar_s.S
+
+  module Weak : Stdcompat__weak_s.S
+@END_BEFORE_4_08_0@
+end

@@ -1,3 +1,9 @@
+type in_channel_ = in_channel
+type in_channel = in_channel_
+
+type out_channel_ = out_channel
+type out_channel = out_channel_
+
 @BEGIN_FROM_4_06_0@
 type nonrec floatarray = floatarray
 

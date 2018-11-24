@@ -1,0 +1,14 @@
+module type S = sig
+type token = Genlex.token =
+  | Kwd of string 
+  | Ident of string 
+  | Int of int 
+  | Float of float 
+  | String of string 
+  | Char of char 
+(** Alias for {!Genlex.token} *)
+
+val make_lexer : string list -> char Stream.t -> token Stream.t
+(** Alias for {!Genlex.make_lexer} *)
+
+end

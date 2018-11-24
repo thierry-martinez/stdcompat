@@ -71,3 +71,7 @@ let to_seq = Stdcompat__list.to_seq
 
 let of_seq = Stdcompat__list.of_seq
 @END_BEFORE_4_07_0@
+
+@BEGIN_BEFORE_4_08_0@
+type 'a t = 'a list = [] | (::) of 'a * 'a list
+@END_BEFORE_4_08_0@

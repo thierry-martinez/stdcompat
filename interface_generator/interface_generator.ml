@@ -871,6 +871,11 @@ and is_module_type_declaration_isomorphic kind
   is_attributes_isomorphic kind module_type_declaration.pmtd_attributes
     module_type_declaration'.pmtd_attributes
 
+and is_extension_constructor_isomorphic kind ~version
+    (extension_constructor : Parsetree.extension_constructor)
+    ~version' (extension_constructor' : Parsetree.extension_constructor) =
+  extension_constructor.pext_name.txt = extension_constructor'.pext_name.txt
+
 and is_signature_item_isomorphic kind
     ~version (item : Parsetree.signature_item)
     ~version' (item' : Parsetree.signature_item) =
@@ -892,6 +897,14 @@ and is_signature_item_isomorphic kind
       is_module_type_declaration_isomorphic kind ~version
           module_type_declaration
         ~version' module_type_declaration'
+  | Psig_exception extension_constructor,
+        Psig_exception extension_constructor' ->
+      is_extension_constructor_isomorphic kind ~version
+            extension_constructor
+            ~version' extension_constructor'
+  | Psig_typext type_extension,
+          Psig_typext type_extension' ->
+            true
   | _ ->
       failwith "is_signature_item_isomorphic"
 
@@ -1335,6 +1348,7 @@ let main argv =
         ~module_name ~signatures in
   let version_high, _ = List.hd signatures in
   let version_low, _ = List.last signatures in
+  print_endline "module type S = sig";
   versioned_signature |>
     List.map gather_similar_versions |>
     List.sort compare_versioned_signature |>
@@ -1342,7 +1356,8 @@ let main argv =
       format_versioned_signature ~module_name
       ~version_high ~version_low
       ~reference_version
-      Format.std_formatter
+      Format.std_formatter;
+  print_endline "end"
 (*
   let mli_filenames = argv |> Array.to_list |> List.tl in
   let signatures = mli_filenames |> List.map read_interface in
