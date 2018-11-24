@@ -226,6 +226,7 @@ AC_CONFIG_FILES([
   stdcompat__sys_s.ml
   stdcompat__uchar_s.ml
   stdcompat__weak_s.ml
+  stdcompat__pervasives.ml
   stdcompat__arg.ml
   stdcompat__array.ml
   stdcompat__arrayLabels.ml
