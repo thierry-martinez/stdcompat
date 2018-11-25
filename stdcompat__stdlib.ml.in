@@ -44,7 +44,7 @@ module Filename = Stdcompat__filename
 
 module Float = Stdcompat__float
 
-module Format = Format
+module Format = Stdcompat__format
 
 module Fun = Stdcompat__fun
 
