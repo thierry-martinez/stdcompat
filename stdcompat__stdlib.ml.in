@@ -2,56 +2,7 @@
 include Stdlib
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
-module Pervasives = struct
-  include Pervasives
-
-  let protect ~finally f =
-    let value =
-      try
-        Ok (f ())
-      with exn ->
-        Error exn in
-    finally ();
-    match value with
-    | Ok result -> result
-    | Error exn -> raise_notrace exn
-
-exception Match_failure of (string * int * int) 
-(** Alias for {!Stdlib.Match_failure} *)
-
-exception Assert_failure of (string * int * int) 
-(** Alias for {!Stdlib.Assert_failure} *)
-
-exception Invalid_argument of string 
-(** Alias for {!Stdlib.Invalid_argument} *)
-
-exception Failure of string 
-(** Alias for {!Stdlib.Failure} *)
-
-exception Not_found 
-(** Alias for {!Stdlib.Not_found} *)
-
-exception Out_of_memory 
-(** Alias for {!Stdlib.Out_of_memory} *)
-
-exception Stack_overflow 
-(** Alias for {!Stdlib.Stack_overflow} *)
-
-exception Sys_error of string 
-(** Alias for {!Stdlib.Sys_error} *)
-
-exception End_of_file 
-(** Alias for {!Stdlib.End_of_file} *)
-
-exception Division_by_zero 
-(** Alias for {!Stdlib.Division_by_zero} *)
-
-exception Sys_blocked_io 
-(** Alias for {!Stdlib.Sys_blocked_io} *)
-
-exception Undefined_recursive_module of (string * int * int) 
-(** Alias for {!Stdlib.Undefined_recursive_module} *)
-end
+module Pervasives = Stdcompat__pervasives
 
 include Pervasives
 
