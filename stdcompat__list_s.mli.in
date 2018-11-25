@@ -5,9 +5,10 @@ type 'a t = 'a list =
   | (::) of 'a * 'a list 
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
-type 'a t = 'a list =
-  | [] 
-  | (::) of 'a * 'a list 
+type 'a t = 'a list
+@BEGIN_FROM_4_03_0@
+  = [] | (::) of 'a * 'a list 
+@END_FROM_4_03_0@
 @END_BEFORE_4_08_0@
 (** @since 4.08.0: type 'a t = 'a list =
                      | [] 
