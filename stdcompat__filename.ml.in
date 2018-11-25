@@ -1,8 +1,24 @@
 include Filename
 
 @BEGIN_BEFORE_4_08_0@
-let chop_suffix_opt ~suffix _ =
-  failwith "Not implemented."
+let chop_suffix_opt ~suffix filename =
+  let len_suffix = String.length suffix in
+  let len_filename = String.length filename in
+  if len_suffix <= len_filename then
+    let len_base = len_filename - len_suffix in
+    let filename_suffix = String.sub filename len_base len_suffix in
+    let filename_suffix, suffix =
+      if Sys.unix then
+        filename_suffix, suffix
+      else
+        String.lowercase_ascii filename_suffix,
+        String.lowercase_ascii suffix in
+    if filename_suffix = suffix then
+      Some (String.sub filename 0 len_base)
+    else
+      None
+  else
+    None
 @END_BEFORE_4_08_0@
 
 @BEGIN_BEFORE_3_09_0@

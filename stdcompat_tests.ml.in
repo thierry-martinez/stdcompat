@@ -191,4 +191,13 @@ let () =
     let q = Stdcompat.Hashtbl.of_seq (M.to_seq (M.of_seq l)) in
     let m = M.of_seq (Stdcompat.Hashtbl.to_seq q) in
     M.cardinal m = 3 && M.find "a" m = 1 && M.find "b" m = 2
-      && M.find "c" m = 3)
+      && M.find "c" m = 3);
+  assert (
+    Stdcompat.Filename.chop_suffix_opt ~suffix:".txt" "readme.txt"
+      = Some "readme");
+  assert (
+    Stdcompat.Filename.chop_suffix_opt ~suffix:".txt" "x"
+      = None);
+  assert (
+    Stdcompat.Filename.chop_suffix_opt ~suffix:".txt" "readme.md"
+      = None)
