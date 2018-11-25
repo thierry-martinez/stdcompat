@@ -88,29 +88,6 @@ external hypot :
   float -> float -> float = "caml_hypot_float" "caml_hypot" "float"
  *)
 @BEGIN_FROM_4_03_0@
-external copysign :
-  float -> float -> float = "caml_copysign_float" "caml_copysign"[@@unboxed ]
-[@@noalloc ]
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-@BEGIN_FROM_4_00_0@
-external copysign :
-  float -> float -> float = "caml_copysign_float" "caml_copysign" "float"
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-let copysign = Stdcompat__pervasives.copysign
-@END_BEFORE_4_00_0@
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0:
-    external copysign :
-      float -> float -> float = "caml_copysign_float" "caml_copysign"
-    [@@unboxed ][@@noalloc ]
-@since 4.00.0:
-external copysign :
-  float -> float -> float = "caml_copysign_float" "caml_copysign" "float"
- *)
-@BEGIN_FROM_4_03_0@
 external expm1 : float -> float = "caml_expm1_float" "caml_expm1"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
@@ -578,7 +555,7 @@ external copy_sign :
   float -> float -> float = "caml_copysign_float" "caml_copysign" "float"
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
-let copy_sign = Stdcompat__pervasives.copy_sign
+let copy_sign = Stdcompat__pervasives.copysign
 @END_BEFORE_4_00_0@
 @END_BEFORE_4_03_0@
 
