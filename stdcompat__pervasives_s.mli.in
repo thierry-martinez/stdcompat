@@ -77,9 +77,9 @@ module type S = sig
   
   val output_string : out_channel -> string -> unit
   
-  val output_bytes : out_channel -> bytes -> unit
+  val output_bytes : out_channel -> Stdcompat__init.bytes -> unit
   
-  val output : out_channel -> bytes -> int -> int -> unit
+  val output : out_channel -> Stdcompat__init.bytes -> int -> int -> unit
   
   val output_substring : out_channel -> string -> int -> int -> unit
   
@@ -111,9 +111,9 @@ module type S = sig
   
   val input_line : in_channel -> string
   
-  val input : in_channel -> bytes -> int -> int -> int
+  val input : in_channel -> Stdcompat__init.bytes -> int -> int -> int
   
-  val really_input : in_channel -> bytes -> int -> int -> unit
+  val really_input : in_channel -> Stdcompat__init.bytes -> int -> int -> unit
   
   val really_input_string : in_channel -> int -> string
   
