@@ -36,8 +36,8 @@ let pp_print_option ?none some formatter value =
 
 let pp_print_result ~ok ~error formatter value =
   match value with
-  | Ok v -> ok formatter v
-  | Error e -> error formatter e
+  | Stdcompat__result.Ok v -> ok formatter v
+  | Stdcompat__result.Error e -> error formatter e
 
 let dprintf _ =
   failwith "Not implemented."
