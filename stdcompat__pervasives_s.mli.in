@@ -138,9 +138,9 @@ module type S = sig
   val string_of_format : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> string
   
   val (^^) :
-    ('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6 ->
-      ('f, 'b, 'c, 'e, 'g, 'h) Stdlib.format6 ->
-        ('a, 'b, 'c, 'd, 'g, 'h) Stdlib.format6
+    ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
+      ('f, 'b, 'c, 'e, 'g, 'h) format6 ->
+        ('a, 'b, 'c, 'd, 'g, 'h) format6
   
   val bool_of_string_opt : string -> bool option
   
