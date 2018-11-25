@@ -9,9 +9,9 @@ and 'a node = 'a Seq.node =
 @BEGIN_BEFORE_4_07_0@
 type 'a t = unit -> 'a node
 and 'a node =
-@BEGIN_HAS_SEQ@
+@BEGIN_WITH_SEQ_PKG@
   'a Seq.node =
-@END_HAS_SEQ@
+@END_WITH_SEQ_PKG@
   | Nil
   | Cons of 'a * 'a t
 @END_BEFORE_4_07_0@
