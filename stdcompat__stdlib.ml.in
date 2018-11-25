@@ -18,9 +18,9 @@ module ArrayLabels = Stdcompat__arrayLabels
    available only if the library is linked, but --no-alias-deps
    allows the alias to be defined here without requiring such
    a link. *)
-
-
+@BEGIN_FROM_4_02_0@
 module Bigarray = Bigarray
+@END_FROM_4_02_0@
 
 module Bool = Stdcompat__bool
 
