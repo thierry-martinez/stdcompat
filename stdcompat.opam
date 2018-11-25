@@ -1,4 +1,6 @@
 opam-version: "1.2"
+synopsis: "Compatibility module for OCaml standard library"
+description: "Compatibility module for OCaml standard library allowing programs to use some recent additions to the OCaml standard library while preserving the ability to be compiled on former versions of OCaml."
 maintainer: "Thierry Martinez <martinez@nsup.org>"
 authors: "Thierry Martinez <martinez@nsup.org>"
 homepage: "https://github.com/thierry-martinez/stdcompat"
