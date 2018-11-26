@@ -201,10 +201,31 @@ let () =
   assert (
     Stdcompat.Filename.chop_suffix_opt ~suffix:".txt" "readme.md"
       = None);
-  assert (not (Stdcompat.Float.is_nan 42.));
-  assert (Stdcompat.Float.is_nan (0. /. 0.));
   assert (not (Stdcompat.Float.sign_bit 1.));
   assert (not (Stdcompat.Float.sign_bit 0.));
+  assert (not (Stdcompat.Float.is_nan 42.));
+  assert (Stdcompat.Float.is_nan (0. /. 0.));
+  assert (not (Stdcompat.Float.is_infinite 0.));
+  assert (Stdcompat.Float.is_infinite (1. /. 0.));
+  assert (not (Stdcompat.Float.is_infinite (0. /. 0.)));
+  assert (Stdcompat.Float.is_finite 0.);
+  assert (not (Stdcompat.Float.is_finite (1. /. 0.)));
+  assert (not (Stdcompat.Float.is_finite (0. /. 0.)));
+  assert (Stdcompat.Float.trunc 1.5 = 1.);
+  assert (Stdcompat.Float.trunc (-2.6) = -2.);
+  assert (Stdcompat.Float.is_infinite (Stdcompat.Float.trunc (1. /. 0.)));
+  assert (Stdcompat.Float.is_nan (Stdcompat.Float.trunc (0. /. 0.)));
+  assert (Stdcompat.Float.is_integer 1.);
+  assert (not (Stdcompat.Float.is_integer 1.5));
+  assert (Stdcompat.Float.is_infinite (Stdcompat.Float.trunc (1. /. 0.)));
+  assert (Stdcompat.Float.is_nan (Stdcompat.Float.trunc (0. /. 0.)));
+  assert (Stdcompat.Float.round 1.5 = 2.);
+  assert (Stdcompat.Float.round 1.4 = 1.);
+  assert (Stdcompat.Float.round (-2.6) = -3.);
+  assert (Stdcompat.Float.round (-3.5) = -4.);
+  assert (Stdcompat.Float.round (-4.4) = -4.);
+  assert (Stdcompat.Float.is_infinite (Stdcompat.Float.round (1. /. 0.)));
+  assert (Stdcompat.Float.is_nan (Stdcompat.Float.round (0. /. 0.)));
   assert (Stdcompat.Float.sign_bit (-1.));
   assert (Stdcompat.Float.min_num 1. (0. /. 0.) = 1.);
   assert (Stdcompat.Float.min_num (0. /. 0.) 1. = 1.);
@@ -275,4 +296,10 @@ let () =
   assert (
     let min, max = Stdcompat.Float.min_max (0. /. 0.) (0. /. 0.) in
     Stdcompat.Float.is_nan min &&
-    Stdcompat.Float.is_nan max)
+    Stdcompat.Float.is_nan max);
+  assert (Stdcompat.Float.next_after max_float infinity = infinity);
+  assert (Stdcompat.Float.next_after 0. infinity = Int64.float_of_bits Stdcompat.Int64.one);
+  assert (Stdcompat.Float.next_after (Int64.float_of_bits Stdcompat.Int64.one) 0. = 0.);
+  assert (Stdcompat.Float.next_after 1. 1. = 1.);
+  assert (Stdcompat.Float.is_nan (Stdcompat.Float.next_after (0. /. 0.) 1.));
+  assert (Stdcompat.Float.is_nan (Stdcompat.Float.next_after 1. (0. /. 0.)))

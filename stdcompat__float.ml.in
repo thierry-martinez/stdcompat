@@ -523,12 +523,46 @@ external modf : float -> (float * float) = "modf_float"
 @END_BEFORE_4_07_0@
 
 @BEGIN_BEFORE_4_08_0@
+let sign_of_bits bits =
+  not (Stdcompat__int64.equal (Int64.shift_right_logical bits 63) Int64.zero)
+
+let sign_bit x = 
+  sign_of_bits (Int64.bits_of_float x)
+
 let is_nan (x : float) =
   x <> x
 
-let sign_bit (x : float) = 
-  let bits =Int64.bits_of_float x in
-  not (Stdcompat__int64.equal (Int64.shift_right_logical bits 63) Int64.zero)
+let is_infinite x =
+  1. /. x = 0.
+
+let is_finite x =
+  x -. x = 0.
+
+let trunc x =
+  if sign_bit x then
+    ceil x
+  else
+    floor x
+
+let is_integer x =
+  x = trunc x && is_finite x
+
+let round x =
+  if is_finite x then
+    let ceil = ceil x in
+    let floor = floor x in
+    let o = compare (x -. floor) (ceil -. x) in
+    if o < 0 then
+      floor
+    else if o > 0 then
+      ceil
+    else
+      if sign_bit x then
+        floor
+      else
+        ceil
+  else
+    x
 
 let min_max_num x y =
   if is_nan x then (y, y)
@@ -581,32 +615,61 @@ let copy_sign = Stdcompat__pervasives.copysign
 @END_BEFORE_4_00_0@
 @END_BEFORE_4_03_0@
 
-let next_after _ =
-  failwith "Not implemented."
+let pred_ x =
+  let bits = Int64.bits_of_float x in
+  if is_finite x then
+    let bits' =
+      if sign_of_bits bits then
+        Int64.succ bits
+      else
+        Int64.pred bits in
+    Int64.float_of_bits bits'
+  else
+    if sign_of_bits bits then
+      x
+    else
+      Int64.float_of_bits (Int64.pred bits)
 
-let round _ =
-  failwith "Not implemented."
+let succ_ x =
+  let bits = Int64.bits_of_float x in
+  if is_finite x then
+    let bits' =
+      if sign_of_bits bits then
+        Int64.pred bits
+      else
+        Int64.succ bits in
+    Int64.float_of_bits bits'
+  else
+    if sign_of_bits bits then
+      Int64.float_of_bits (Int64.pred bits)
+    else
+      x
 
-let trunc _ =
-  failwith "Not implemented."
+let next_after x y =
+  if is_nan x || is_nan y then nan
+  else
+    let o = compare x y in
+    if o < 0 then
+      succ_ x
+    else if o > 0 then
+      pred_ x
+    else
+      y
 
-let is_integer _ =
-  failwith "Not implemented."
+let pred x =
+  if is_nan x then
+    x
+  else
+    pred_ x
 
-let is_infinite _ =
-  failwith "Not implemented."
+let succ x =
+  if is_nan x then
+    x
+  else
+    succ_ x
 
-let is_finite _ =
-  failwith "Not implemented."
-
-let pred _ =
-  failwith "Not implemented."
-
-let succ _ =
-  failwith "Not implemented."
-
-let fma _ =
-  failwith "Not implemented."
+let fma x y z =
+  x *. y +. z
 
 let minus_one = -1.
 
