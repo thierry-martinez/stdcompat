@@ -200,4 +200,79 @@ let () =
       = None);
   assert (
     Stdcompat.Filename.chop_suffix_opt ~suffix:".txt" "readme.md"
-      = None)
+      = None);
+  assert (not (Stdcompat.Float.is_nan 42.));
+  assert (Stdcompat.Float.is_nan (0. /. 0.));
+  assert (not (Stdcompat.Float.sign_bit 1.));
+  assert (not (Stdcompat.Float.sign_bit 0.));
+  assert (Stdcompat.Float.sign_bit (-1.));
+  assert (Stdcompat.Float.min_num 1. (0. /. 0.) = 1.);
+  assert (Stdcompat.Float.min_num (0. /. 0.) 1. = 1.);
+  assert (Stdcompat.Float.min_num 1. (-1.) = (-1.));
+  assert (Stdcompat.Float.min_num (-1.) 1. = (-1.));
+  assert (Stdcompat.Float.sign_bit (Stdcompat.Float.min_num 0. (-0.)));
+  assert (Stdcompat.Float.sign_bit (Stdcompat.Float.min_num (-0.) 0.));
+  assert (Stdcompat.Float.is_nan (
+    Stdcompat.Float.min_num (0. /. 0.) (0. /. 0.)));
+  assert (Stdcompat.Float.max_num 1. (0. /. 0.) = 1.);
+  assert (Stdcompat.Float.max_num (0. /. 0.) 1. = 1.);
+  assert (Stdcompat.Float.max_num 1. (-1.) = 1.);
+  assert (Stdcompat.Float.max_num (-1.) 1. = 1.);
+  assert (not (Stdcompat.Float.sign_bit (Stdcompat.Float.max_num 0. (-0.))));
+  assert (not (Stdcompat.Float.sign_bit (Stdcompat.Float.max_num (-0.) 0.)));
+  assert (Stdcompat.Float.is_nan (
+    Stdcompat.Float.max_num (0. /. 0.) (0. /. 0.)));
+  assert (Stdcompat.Float.min_max_num 1. (0. /. 0.) = (1., 1.));
+  assert (Stdcompat.Float.min_max_num (0. /. 0.) 1. = (1., 1.));
+  assert (Stdcompat.Float.min_max_num 1. (-1.) = (-1., 1.));
+  assert (Stdcompat.Float.min_max_num (-1.) 1. = (-1., 1.));
+  assert (
+    let min, max = Stdcompat.Float.min_max_num 0. (-0.) in
+    Stdcompat.Float.sign_bit min &&
+    not (Stdcompat.Float.sign_bit max));
+  assert (
+    let min, max = Stdcompat.Float.min_max_num (-0.) 0. in
+    Stdcompat.Float.sign_bit min &&
+    not (Stdcompat.Float.sign_bit max));
+  assert (
+    let min, max = Stdcompat.Float.min_max_num (0. /. 0.) (0. /. 0.) in
+    Stdcompat.Float.is_nan min &&
+    Stdcompat.Float.is_nan max);
+  assert (Stdcompat.Float.is_nan (Stdcompat.Float.min 1. (0. /. 0.)));
+  assert (Stdcompat.Float.is_nan (Stdcompat.Float.min (0. /. 0.) 1.));
+  assert (Stdcompat.Float.min 1. (-1.) = (-1.));
+  assert (Stdcompat.Float.min (-1.) 1. = (-1.));
+  assert (Stdcompat.Float.sign_bit (Stdcompat.Float.min 0. (-0.)));
+  assert (Stdcompat.Float.sign_bit (Stdcompat.Float.min (-0.) 0.));
+  assert (Stdcompat.Float.is_nan (
+    Stdcompat.Float.min (0. /. 0.) (0. /. 0.)));
+  assert (Stdcompat.Float.is_nan (Stdcompat.Float.max 1. (0. /. 0.)));
+  assert (Stdcompat.Float.is_nan (Stdcompat.Float.max (0. /. 0.) 1.));
+  assert (Stdcompat.Float.max 1. (-1.) = 1.);
+  assert (Stdcompat.Float.max (-1.) 1. = 1.);
+  assert (not (Stdcompat.Float.sign_bit (Stdcompat.Float.max 0. (-0.))));
+  assert (not (Stdcompat.Float.sign_bit (Stdcompat.Float.max (-0.) 0.)));
+  assert (Stdcompat.Float.is_nan (
+    Stdcompat.Float.max (0. /. 0.) (0. /. 0.)));
+  assert (
+    let min, max = Stdcompat.Float.min_max 1. (0. /. 0.) in
+    Stdcompat.Float.is_nan min &&
+    Stdcompat.Float.is_nan max);
+  assert (
+    let min, max = Stdcompat.Float.min_max (0. /. 0.) 1. in
+    Stdcompat.Float.is_nan min &&
+    Stdcompat.Float.is_nan max);
+  assert (Stdcompat.Float.min_max 1. (-1.) = (-1., 1.));
+  assert (Stdcompat.Float.min_max (-1.) 1. = (-1., 1.));
+  assert (
+    let min, max = Stdcompat.Float.min_max 0. (-0.) in
+    Stdcompat.Float.sign_bit min &&
+    not (Stdcompat.Float.sign_bit max));
+  assert (
+    let min, max = Stdcompat.Float.min_max (-0.) 0. in
+    Stdcompat.Float.sign_bit min &&
+    not (Stdcompat.Float.sign_bit max));
+  assert (
+    let min, max = Stdcompat.Float.min_max (0. /. 0.) (0. /. 0.) in
+    Stdcompat.Float.is_nan min &&
+    Stdcompat.Float.is_nan max)

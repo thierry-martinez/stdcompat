@@ -523,26 +523,48 @@ external modf : float -> (float * float) = "modf_float"
 @END_BEFORE_4_07_0@
 
 @BEGIN_BEFORE_4_08_0@
-let min_max_num _ =
-  failwith "Not implemented."
+let is_nan (x : float) =
+  x <> x
 
-let max_num _ =
-  failwith "Not implemented."
+let sign_bit (x : float) = 
+  let bits =Int64.bits_of_float x in
+  not (Stdcompat__int64.equal (Int64.shift_right_logical bits 63) Int64.zero)
 
-let min_num _ =
-  failwith "Not implemented."
+let min_max_num x y =
+  if is_nan x then (y, y)
+  else if is_nan y then (x, x)
+  else if x <= y && (sign_bit x || not (sign_bit y)) then (x, y)
+  else (y, x)
 
-let min_max _ =
-  failwith "Not implemented."
+let max_num x y =
+  if is_nan x then y
+  else if is_nan y then x
+  else if x <= y && (sign_bit x || not (sign_bit y)) then y
+  else x
 
-let max _ =
-  failwith "Not implemented."
+let min_num x y =
+  if is_nan x then y
+  else if is_nan y then x
+  else if x <= y && (sign_bit x || not (sign_bit y)) then x
+  else y
 
-let min _ =
-  failwith "Not implemented."
+let min_max x y =
+  if is_nan x then (x, x)
+  else if is_nan y then (y, y)
+  else if x <= y && (sign_bit x || not (sign_bit y)) then (x, y)
+  else (y, x)
 
-let sign_bit _ =
-  failwith "Not implemented."
+let max x y =
+  if is_nan x then x
+  else if is_nan y then y
+  else if x <= y && (sign_bit x || not (sign_bit y)) then y
+  else x
+
+let min x y =
+  if is_nan x then x
+  else if is_nan y then y
+  else if x <= y && (sign_bit x || not (sign_bit y)) then x
+  else y
 
 @BEGIN_FROM_4_03_0@
 external copy_sign :
@@ -569,9 +591,6 @@ let trunc _ =
   failwith "Not implemented."
 
 let is_integer _ =
-  failwith "Not implemented."
-
-let is_nan _ =
   failwith "Not implemented."
 
 let is_infinite _ =

@@ -67,13 +67,13 @@ SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs
 .DEFAULT_GOAL = all
 
 .mli.cmi :
-	$(OCAMLBEST) -c $(OCAMLFLAGS) $< -o $@
+	$(OCAMLBEST) -c $(OCAMLCFLAGS) $< -o $@
 
 .ml.cmo :
-	$(OCAMLC) -c $(OCAMLFLAGS) $< -o $@
+	$(OCAMLC) -c $(OCAMLCFLAGS) $< -o $@
 
 .ml.cmx :
-	$(OCAMLOPT) -c $(OCAMLFLAGS) $< -o $@
+	$(OCAMLOPT) -c $(OCAMLCFLAGS) $< -o $@
 
 stdcompat.cma : stdcompat__native.cmo $(MODULES:.ml=.cmo) stdcompat.cmo
 	$(OCAMLC) $(OCAMLLDFLAGS) -a $^ -o $@
@@ -103,7 +103,7 @@ depend : .depend
 tests : stdcompat_tests
 	./stdcompat_tests
 
-stdcompat_tests: stdcompat.$(CMAX)
+stdcompat_tests: stdcompat.$(CMAX) stdcompat_tests.ml
 	$(OCAMLBEST) stdcompat.$(CMAX) stdcompat_tests.ml -o $@
 
 @INCLUDE_DEPEND@
