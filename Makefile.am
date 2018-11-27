@@ -21,7 +21,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__float_s.ml stdcompat__queue_s.ml stdcompat__ephemeron_s.ml \
 	stdcompat__spacetime_s.ml stdcompat__moreLabels_s.ml stdcompat__lexing_s.ml \
 	stdcompat__option_s.ml stdcompat__result_s.ml stdcompat__bool_s.ml \
-	stdcompat__fun_s.ml stdcompat__stdlib_s.ml \
+	stdcompat__fun_s.ml stdcompat__stdlib_s.ml stdcompat__printf_s.ml \
 	stdcompat__pervasives.ml stdcompat__arg.ml stdcompat__lazy.ml \
 	stdcompat__char.ml stdcompat__uchar.ml stdcompat__sys.ml stdcompat__buffer.ml \
 	stdcompat__string.ml stdcompat__stringLabels.ml stdcompat__bytes.ml \
@@ -36,7 +36,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
 	stdcompat__spacetime.ml stdcompat__moreLabels.ml stdcompat__lexing.ml \
 	stdcompat__option.ml stdcompat__result.ml stdcompat__bool.ml \
-	stdcompat__fun.ml stdcompat__format.ml stdcompat__stdlib.ml
+	stdcompat__fun.ml stdcompat__format.ml stdcompat__printf.ml stdcompat__stdlib.ml
 
 mypkg_SCRIPTS = META stdcompat.cmi stdcompat__native.cmi $(MODULES:.ml=.cmi)
 

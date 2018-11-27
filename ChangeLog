@@ -13,7 +13,7 @@
 
 - Fix implementations with --disable-magic
 
-- Module Format added to the set of redefined modules
+- Modules Format and Printf added to the set of redefined modules
 
 - Fix license conflict: The project was intended to be under BSD license
   since the beginning, and a LICENSE file was provided accordingly.

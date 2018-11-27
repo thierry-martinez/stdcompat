@@ -1,47 +1,69 @@
 include Buffer
 
 @BEGIN_BEFORE_4_08_0@
-let add_int8 _ =
-  failwith "Not implemented."
+let add_uint8 b v =
+  add_char b (char_of_int (v land 0xFF))
 
-let add_uint8 _ =
-  failwith "Not implemented."
+let add_int8 b v =
+  add_uint8 b v
 
-let add_int16_le _ =
-  failwith "Not implemented."
+let add_uint16_le b v =
+  add_uint8 b v;
+  add_uint8 b (v lsr 8)
 
-let add_int16_be _ =
-  failwith "Not implemented."
+let add_uint16_be b v =
+  add_uint8 b (v lsr 8);
+  add_uint8 b v
 
-let add_int16_ne _ =
-  failwith "Not implemented."
+let add_uint16_ne b v =
+  if Stdcompat__sys.big_endian then add_uint16_be b v
+  else add_uint16_le b v
 
-let add_uint16_le _ =
-  failwith "Not implemented."
+let add_int16_le = add_uint16_le
 
-let add_uint16_be _ =
-  failwith "Not implemented."
+let add_int16_be = add_uint16_be
 
-let add_uint16_ne _ =
-  failwith "Not implemented."
+let add_int16_ne = add_uint16_ne
 
-let add_int32_le _ =
-  failwith "Not implemented."
+let add_int32_le b v =
+  add_uint8 b (Int32.to_int v);
+  add_uint8 b (Int32.to_int (Int32.shift_right v 8));
+  add_uint8 b (Int32.to_int (Int32.shift_right v 16));
+  add_uint8 b (Int32.to_int (Int32.shift_right v 24))
 
-let add_int32_be _ =
-  failwith "Not implemented."
+let add_int32_be b v =
+  add_uint8 b (Int32.to_int (Int32.shift_right v 24));
+  add_uint8 b (Int32.to_int (Int32.shift_right v 16));
+  add_uint8 b (Int32.to_int (Int32.shift_right v 8));
+  add_uint8 b (Int32.to_int v)
 
-let add_int32_ne _ =
-  failwith "Not implemented."
+let add_int32_ne b v =
+  if Stdcompat__sys.big_endian then add_int32_be b v
+  else add_int32_le b v
 
-let add_int64_le _ =
-  failwith "Not implemented."
+let add_int64_le b v =
+  add_uint8 b (Int64.to_int v);
+  add_uint8 b (Int64.to_int (Int64.shift_right v 8));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 16));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 24));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 32));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 40));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 48));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 56))
 
-let add_int64_be _ =
-  failwith "Not implemented."
+let add_int64_be b v =
+  add_uint8 b (Int64.to_int (Int64.shift_right v 56));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 48));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 40));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 32));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 24));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 16));
+  add_uint8 b (Int64.to_int (Int64.shift_right v 8));
+  add_uint8 b (Int64.to_int v)
 
-let add_int64_ne _ =
-  failwith "Not implemented."
+let add_int64_ne b v =
+  if Stdcompat__sys.big_endian then add_int64_be b v
+  else add_int64_le b v
 @END_BEFORE_4_08_0@
 
 @BEGIN_BEFORE_4_02_0@

@@ -175,6 +175,7 @@ AC_CONFIG_FILES([
   stdcompat__moreLabels_s.mli
   stdcompat__nativeint_s.mli
   stdcompat__option_s.mli
+  stdcompat__printf_s.mli
   stdcompat__queue_s.mli
   stdcompat__result_s.mli
   stdcompat__seq_s.mli
@@ -215,6 +216,7 @@ AC_CONFIG_FILES([
   stdcompat__moreLabels_s.ml
   stdcompat__nativeint_s.ml
   stdcompat__option_s.ml
+  stdcompat__printf_s.ml
   stdcompat__queue_s.ml
   stdcompat__result_s.ml
   stdcompat__seq_s.ml
@@ -255,6 +257,7 @@ AC_CONFIG_FILES([
   stdcompat__moreLabels.ml
   stdcompat__nativeint.ml
   stdcompat__option.ml
+  stdcompat__printf.ml
   stdcompat__queue.ml
   stdcompat__result.ml
   stdcompat__seq.ml

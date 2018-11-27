@@ -63,6 +63,8 @@ module type S = sig
 
   module Option : Stdcompat__option_s.S
 
+  module Printf : Stdcompat__printf_s.S
+
   module Queue : Stdcompat__queue_s.S
 
   module Result : Stdcompat__result_s.S
