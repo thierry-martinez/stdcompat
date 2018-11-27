@@ -1,3 +1,10 @@
+* Version 7
+
+- OCaml 4.08.0 additions: Bool, Fun, Array.t, List.t, Bytes and Buffer
+  operations on u?int(8|16|32|64), operations on Float, Filename.chop_suffix_opt
+
+- Modules Format and Printf added to the set of redefined modules
+
 * Version 6
 - Support for OCaml 4.08.0
 
@@ -12,8 +19,6 @@
   effectively used.
 
 - Fix implementations with --disable-magic
-
-- Modules Format and Printf added to the set of redefined modules
 
 - Fix license conflict: The project was intended to be under BSD license
   since the beginning, and a LICENSE file was provided accordingly.
