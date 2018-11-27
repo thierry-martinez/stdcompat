@@ -303,7 +303,7 @@ let () =
   assert (Stdcompat.Float.next_after 1. 1. = 1.);
   assert (Stdcompat.Float.is_nan (Stdcompat.Float.next_after (0. /. 0.) 1.));
   assert (Stdcompat.Float.is_nan (Stdcompat.Float.next_after 1. (0. /. 0.)));
-  let b = Bytes.of_string "\x20\x30\x40\x50\x60\x70\x80\x90" in
+  let b = Stdcompat.Bytes.of_string "\x20\x30\x40\x50\x60\x70\x80\x90" in
   assert (Stdcompat.Bytes.get_uint8 b 1 = 0x30);
   assert (Stdcompat.Bytes.get_int8 b 1 = 0x30);
   assert (Stdcompat.Bytes.get_uint8 b 6 = 0x80);
