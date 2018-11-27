@@ -117,10 +117,10 @@ let get_int32_le b i =
   let i1 = unsafe_get_uint8 b (i + 1) in
   let i2 = unsafe_get_uint8 b (i + 2) in
   let i3 = unsafe_get_uint8 b (i + 3) in
-  Int32.(logor (of_int i0)
-    (logor (shift_left (of_int i1) 8)
-      (logor (shift_left (of_int i2) 16)
-        (shift_left (of_int i3) 24))))
+  Int32.logor (of_int i0)
+    (Int32.logor (Int32.shift_left (of_int i1) 8)
+      (Int32.logor (Int32.shift_left (of_int i2) 16)
+        (Int32.shift_left (of_int i3) 24)))
 
 let get_int32_be b i =
   if i < 0 || i + 3 >= length b then
@@ -129,10 +129,11 @@ let get_int32_be b i =
   let i2 = unsafe_get_uint8 b (i + 1) in
   let i1 = unsafe_get_uint8 b (i + 2) in
   let i0 = unsafe_get_uint8 b (i + 3) in
-  Int32.(logor (of_int i0)
-    (logor (shift_left (of_int i1) 8)
-      (logor (shift_left (of_int i2) 16)
-        (shift_left (of_int i3) 24))))
+  let open Int32 in
+  Int32.logor (of_int i0)
+    (Int32.logor (Int32.shift_left (of_int i1) 8)
+      (Int32.logor (Int32.shift_left (of_int i2) 16)
+        (Int32.shift_left (of_int i3) 24)))
 
 let get_int32_ne b i =
   if Stdcompat__sys.big_endian then get_int32_be b i
@@ -149,14 +150,14 @@ let get_int64_le b i =
   let i5 = unsafe_get_uint8 b (i + 5) in
   let i6 = unsafe_get_uint8 b (i + 6) in
   let i7 = unsafe_get_uint8 b (i + 7) in
-  Int64.(logor (of_int i0)
-    (logor (shift_left (of_int i1) 8)
-      (logor (shift_left (of_int i2) 16)
-        (logor (shift_left (of_int i3) 24)
-          (logor (shift_left (of_int i4) 32)
-            (logor (shift_left (of_int i5) 40)
-              (logor (shift_left (of_int i6) 48)
-                (shift_left (of_int i7) 56))))))))
+  Int64.logor (of_int i0)
+    (Int64.logor (Int64.shift_left (of_int i1) 8)
+      (Int64.logor (Int64.shift_left (of_int i2) 16)
+        (Int64.logor (Int64.shift_left (of_int i3) 24)
+          (Int64.logor (Int64.shift_left (of_int i4) 32)
+            (Int64.logor (Int64.shift_left (of_int i5) 40)
+              (Int64.logor (Int64.shift_left (of_int i6) 48)
+                (Int64.shift_left (of_int i7) 56)))))))
 
 let get_int64_be b i =
   if i < 0 || i + 7 >= length b then
@@ -169,14 +170,14 @@ let get_int64_be b i =
   let i2 = unsafe_get_uint8 b (i + 5) in
   let i1 = unsafe_get_uint8 b (i + 6) in
   let i0 = unsafe_get_uint8 b (i + 7) in
-  Int64.(logor (of_int i0)
-    (logor (shift_left (of_int i1) 8)
-      (logor (shift_left (of_int i2) 16)
-        (logor (shift_left (of_int i3) 24)
-          (logor (shift_left (of_int i4) 32)
-            (logor (shift_left (of_int i5) 40)
-              (logor (shift_left (of_int i6) 48)
-                (shift_left (of_int i7) 56))))))))
+  Int64.logor (of_int i0)
+    (Int64.logor (Int64.shift_left (of_int i1) 8)
+      (Int64.logor (Int64.shift_left (of_int i2) 16)
+        (Int64.logor (Int64.shift_left (of_int i3) 24)
+          (Int64.logor (Int64.shift_left (of_int i4) 32)
+            (Int64.logor (Int64.shift_left (of_int i5) 40)
+              (Int64.logor (Int64.shift_left (of_int i6) 48)
+                (Int64.shift_left (of_int i7) 56)))))))
 
 let get_int64_ne b i =
   if Stdcompat__sys.big_endian then get_int64_be b i
