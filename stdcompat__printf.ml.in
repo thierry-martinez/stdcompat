@@ -1,1 +1,14 @@
+let not_implemented _ =
+  failwith "Not implemented"
+
+let ifprintf = not_implemented
+
+let ikfprintf = not_implemented
+
+let kbprintf = not_implemented
+
+let kfprintf = not_implemented
+
+let ksprintf = not_implemented
+
 include Printf
