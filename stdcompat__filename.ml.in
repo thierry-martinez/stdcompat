@@ -8,7 +8,7 @@ let chop_suffix_opt ~suffix filename =
     let len_base = len_filename - len_suffix in
     let filename_suffix = String.sub filename len_base len_suffix in
     let filename_suffix, suffix =
-      if Sys.unix then
+      if Stdcompat__sys.unix then
         filename_suffix, suffix
       else
         String.lowercase_ascii filename_suffix,
