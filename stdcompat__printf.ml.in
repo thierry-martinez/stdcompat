@@ -1,5 +1,5 @@
 let not_implemented _ =
-  failwith "Not implemented"
+  failwith "Stdcompat.Printf is not implemented yet. Please fill an issue: https://github.com/thierry-martinez/stdcompat/issues ."
 
 let ifprintf = not_implemented
 
