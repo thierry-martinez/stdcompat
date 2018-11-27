@@ -86,7 +86,7 @@ module Parsing = Parsing
 
 module Printexc = Printexc
 
-module Printf = Printf
+module Printf = Stdcompat__printf
 
 module Queue = Stdcompat__queue
 
@@ -100,9 +100,7 @@ module Seq = Stdcompat__seq
 
 module Set = Stdcompat__set
 
-
 module Sort = Sort
-
 
 module Spacetime = Stdcompat__spacetime
 

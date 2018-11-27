@@ -33,7 +33,19 @@ module type S = sig
 
   module BytesLabels : Stdcompat__bytesLabels_s.S
 
+  @BEGIN_FROM_3_12_0@
+  module Callback : module type of (struct
+    include Callback
+  end)
+  @END_FROM_3_12_0@
+
   module Char : Stdcompat__char_s.S
+
+  @BEGIN_FROM_3_12_0@
+  module Complex : module type of (struct
+    include Complex
+  end)
+  @END_FROM_3_12_0@
 
   module Digest : Stdcompat__digest_s.S
 
@@ -42,6 +54,18 @@ module type S = sig
   module Filename : Stdcompat__filename_s.S
 
   module Float : Stdcompat__float_s.S
+
+  @BEGIN_FROM_3_12_0@
+  module Gc : module type of (struct
+    include Gc
+  end)
+  @END_FROM_3_12_0@
+
+  @BEGIN_FROM_3_12_0@
+  module Genlex : module type of (struct
+    include Genlex
+  end)
+  @END_FROM_3_12_0@
 
   module Hashtbl : Stdcompat__hashtbl_s.S
 
@@ -61,13 +85,43 @@ module type S = sig
 
   module Nativeint : Stdcompat__nativeint_s.S
 
+  @BEGIN_FROM_3_12_0@
+  module Obj : module type of (struct
+    include Obj
+  end)
+  @END_FROM_3_12_0@
+
+  @BEGIN_FROM_3_12_0@
+  module Oo : module type of (struct
+    include Oo
+  end)
+  @END_FROM_3_12_0@
+
   module Option : Stdcompat__option_s.S
+
+  @BEGIN_FROM_3_12_0@
+  module Parsing : module type of (struct
+    include Parsing
+  end)
+  @END_FROM_3_12_0@
 
   module Printf : Stdcompat__printf_s.S
 
   module Queue : Stdcompat__queue_s.S
 
+  @BEGIN_FROM_3_12_0@
+  module Random : module type of (struct
+    include Random
+  end)
+  @END_FROM_3_12_0@
+
   module Result : Stdcompat__result_s.S
+
+  @BEGIN_FROM_3_12_0@
+  module Scanf : module type of (struct
+    include Scanf
+  end)
+  @END_FROM_3_12_0@
 
   module Seq : Stdcompat__seq_s.S
 
