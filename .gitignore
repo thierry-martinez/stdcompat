@@ -18,8 +18,14 @@ _build/
 /stdcompat.ml_native
 /.depend
 /stdcompat_*.ml
-/*_s.mli
+/stdcompat_*.mli
 /configure
 /interface_generator/interface_dumper
 /interface_generator/interface_generator
 /interface_generator/.depend
+/stdcompat.ml
+/stdcompat.mli
+/config.guess
+/config.log
+/config.status
+/config.sub

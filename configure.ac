@@ -271,6 +271,47 @@ AC_CONFIG_FILES([
   stdcompat__sys.ml
   stdcompat__uchar.ml
   stdcompat__weak.ml
+  stdcompat__pervasives.mli
+  stdcompat__arg.mli
+  stdcompat__array.mli
+  stdcompat__arrayLabels.mli
+  stdcompat__bool.mli
+  stdcompat__buffer.mli
+  stdcompat__bytes.mli
+  stdcompat__bytesLabels.mli
+  stdcompat__char.mli
+  stdcompat__digest.mli
+  stdcompat__ephemeron.mli
+  stdcompat__filename.mli
+  stdcompat__float.mli
+  stdcompat__format.mli
+  stdcompat__fun.mli
+  stdcompat__hashtbl.mli
+  stdcompat__int.mli
+  stdcompat__int32.mli
+  stdcompat__int64.mli
+  stdcompat__lazy.mli
+  stdcompat__lexing.mli
+  stdcompat__list.mli
+  stdcompat__listLabels.mli
+  stdcompat__map.mli
+  stdcompat__moreLabels.mli
+  stdcompat__nativeint.mli
+  stdcompat__option.mli
+  stdcompat__printf.mli
+  stdcompat__queue.mli
+  stdcompat__result.mli
+  stdcompat__seq.mli
+  stdcompat__set.mli
+  stdcompat__spacetime.mli
+  stdcompat__stack.mli
+  stdcompat__stdlib.mli
+  stdcompat__stream.mli
+  stdcompat__string.mli
+  stdcompat__stringLabels.mli
+  stdcompat__sys.mli
+  stdcompat__uchar.mli
+  stdcompat__weak.mli
   stdcompat.mli
   stdcompat.ml])
 

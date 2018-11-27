@@ -75,7 +75,7 @@ let kasprintf _ =
 @END_BEFORE_4_03_0@
 
 @BEGIN_BEFORE_4_02_0@
-let pp_print_list ~pp_sep pp_item formatter list =
+let pp_print_list ?pp_sep pp_item formatter list =
   match list with
   | [] -> ()
   | hd :: tl ->
@@ -84,7 +84,11 @@ let pp_print_list ~pp_sep pp_item formatter list =
       | [] -> ()
       | _ ->
           List.iter (fun item ->
-            pp_sep formatter ();
+            begin
+              match pp_sep with
+              | None -> ()
+              | Some pp_sep -> pp_sep formatter ()
+            end;
             pp_item formatter item) tl
 
 let pp_print_text formatter s =
