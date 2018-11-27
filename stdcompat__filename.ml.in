@@ -11,8 +11,8 @@ let chop_suffix_opt ~suffix filename =
       if Stdcompat__sys.unix then
         filename_suffix, suffix
       else
-        String.lowercase_ascii filename_suffix,
-        String.lowercase_ascii suffix in
+        Stdcompat__string.lowercase_ascii filename_suffix,
+        Stdcompat__string.lowercase_ascii suffix in
     if filename_suffix = suffix then
       Some (String.sub filename 0 len_base)
     else
