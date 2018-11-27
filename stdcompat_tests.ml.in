@@ -302,4 +302,74 @@ let () =
   assert (Stdcompat.Float.next_after (Int64.float_of_bits Stdcompat.Int64.one) 0. = 0.);
   assert (Stdcompat.Float.next_after 1. 1. = 1.);
   assert (Stdcompat.Float.is_nan (Stdcompat.Float.next_after (0. /. 0.) 1.));
-  assert (Stdcompat.Float.is_nan (Stdcompat.Float.next_after 1. (0. /. 0.)))
+  assert (Stdcompat.Float.is_nan (Stdcompat.Float.next_after 1. (0. /. 0.)));
+  let b = Bytes.of_string "\x20\x30\x40\x50\x60\x70\x80\x90" in
+  assert (Stdcompat.Bytes.get_uint8 b 1 = 0x30);
+  assert (Stdcompat.Bytes.get_int8 b 1 = 0x30);
+  assert (Stdcompat.Bytes.get_uint8 b 6 = 0x80);
+  assert (Stdcompat.Bytes.get_int8 b 6 = -0x80);
+  assert (Stdcompat.Bytes.get_uint16_le b 4 = 0x7060);
+  assert (Stdcompat.Bytes.get_uint16_be b 4 = 0x6070);
+  assert (Stdcompat.Bytes.get_int16_le b 4 = 0x7060);
+  assert (Stdcompat.Bytes.get_int16_be b 4 = 0x6070);
+  assert (Stdcompat.Bytes.get_uint16_le b 6 = 0x9080);
+  assert (Stdcompat.Bytes.get_uint16_be b 6 = 0x8090);
+  assert (Stdcompat.Bytes.get_int16_le b 6 = -0x6F80);
+  assert (Stdcompat.Bytes.get_int16_be b 6 = -0x7F70);
+  assert (Stdcompat.Bytes.get_int32_le b 0 = 0x50403020l);
+  assert (Stdcompat.Bytes.get_int32_be b 0 = 0x20304050l);
+  assert (Stdcompat.Bytes.get_int64_le b 0 = 0x9080706050403020L);
+  assert (Stdcompat.Bytes.get_int64_be b 0 = 0x2030405060708090L);
+  let check_invalid_arg f =
+    try
+      f ();
+      false
+    with Invalid_argument _ ->
+      true in
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.get_uint8 b (-1)));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.get_uint8 b 8));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.get_uint16_le b (-1)));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.get_uint16_le b 7));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.get_int32_le b (-1)));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.get_int32_le b 5));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.get_int64_le b (-1)));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.get_int64_le b 1));
+  assert (
+    Stdcompat.Bytes.set_uint8 b 1 0x90;
+    Stdcompat.Bytes.get_uint8 b 1 = 0x90);
+  assert (
+    Stdcompat.Bytes.set_int8 b 1 (-0x20);
+    Stdcompat.Bytes.get_int8 b 1 = (-0x20));
+  assert (
+    Stdcompat.Bytes.set_uint16_le b 1 0x1234;
+    Stdcompat.Bytes.get_uint16_le b 1 = 0x1234);
+  assert (
+    Stdcompat.Bytes.set_uint16_be b 1 0x1234;
+    Stdcompat.Bytes.get_uint16_be b 1 = 0x1234);
+  assert (
+    Stdcompat.Bytes.set_int16_le b 1 (-0x1234);
+    Stdcompat.Bytes.get_int16_le b 1 = (-0x1234));
+  assert (
+    Stdcompat.Bytes.set_int16_be b 1 (-0x1234);
+    Stdcompat.Bytes.get_int16_be b 1 = (-0x1234));
+  assert (
+    Stdcompat.Bytes.set_int32_le b 1 0x12345678l;
+    Stdcompat.Bytes.get_int32_le b 1 = 0x12345678l);
+  assert (
+    Stdcompat.Bytes.set_int32_be b 1 0x12345678l;
+    Stdcompat.Bytes.get_int32_be b 1 = 0x12345678l);
+  assert (
+    Stdcompat.Bytes.set_int64_le b 0 0x123456789ABCDEF0L;
+    Stdcompat.Bytes.get_int64_le b 0 = 0x123456789ABCDEF0L);
+  assert (
+    Stdcompat.Bytes.set_int64_be b 0 0x123456789ABCDEF0L;
+    Stdcompat.Bytes.get_int64_be b 0 = 0x123456789ABCDEF0L);
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_uint8 b (-1) 0));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_uint8 b 8 0));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_uint16_le b (-1) 0));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_uint16_le b 7 0));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_int32_le b (-1) 0l));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_int32_le b 5 0l));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_int64_le b (-1) 0L));
+  assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_int64_le b 1 0L));
+  assert (Stdcompat.Bytes.get_int64_be b 0 = 0x123456789ABCDEF0L)

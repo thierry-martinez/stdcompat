@@ -23,12 +23,12 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__option_s.ml stdcompat__result_s.ml stdcompat__bool_s.ml \
 	stdcompat__fun_s.ml stdcompat__stdlib_s.ml \
 	stdcompat__pervasives.ml stdcompat__arg.ml stdcompat__lazy.ml \
-	stdcompat__char.ml stdcompat__uchar.ml stdcompat__buffer.ml \
+	stdcompat__char.ml stdcompat__uchar.ml stdcompat__sys.ml stdcompat__buffer.ml \
 	stdcompat__string.ml stdcompat__stringLabels.ml stdcompat__bytes.ml \
 	stdcompat__bytesLabels.ml stdcompat__list.ml stdcompat__listLabels.ml \
 	stdcompat__stack.ml stdcompat__hashtbl_ext.ml \
 	stdcompat__hashtbl.ml stdcompat__set.ml \
-	stdcompat__map.ml stdcompat__weak.ml stdcompat__sys.ml \
+	stdcompat__map.ml stdcompat__weak.ml \
 	stdcompat__stream.ml stdcompat__digest.ml stdcompat__nativeint.ml \
 	stdcompat__int.ml \
 	stdcompat__int64.ml stdcompat__int32.ml stdcompat__filename.ml \
