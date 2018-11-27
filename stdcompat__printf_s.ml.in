@@ -1,6 +1,16 @@
 module type S = sig
+
+@BEGIN_FROM_4_03_0@
 val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a
-(** @since 4.03.0: val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a *)
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+@BEGIN_FROM_3_10_0@
+val ifprintf : 'a -> ('b, 'a, unit) format -> 'b
+@END_FROM_3_10_0@
+@BEGIN_BEFORE_3_10_0@
+val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a
+@END_BEFORE_3_10_0@
+@END_BEFORE_4_03_0@
 
 val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a
 (** @since 4.03.0:
