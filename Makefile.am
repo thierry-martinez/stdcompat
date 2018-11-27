@@ -3,7 +3,23 @@ ACLOCAL_AMFLAGS = -I m4
 mypkgdir=$(pkglibdir)
 
 EXTRA_DIST=stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
-	stdcompat__native.ml_native stdcompat_tests.ml stdcompat__native.mli
+	stdcompat__native.ml_native stdcompat_tests.ml stdcompat__native.mli \
+	stdcompat__pervasives.mli stdcompat__arg.mli stdcompat__lazy.mli \
+	stdcompat__char.mli stdcompat__uchar.mli stdcompat__sys.mli stdcompat__buffer.mli \
+	stdcompat__string.mli stdcompat__stringLabels.mli stdcompat__bytes.mli \
+	stdcompat__bytesLabels.mli stdcompat__list.mli stdcompat__listLabels.mli \
+	stdcompat__stack.mli \
+	stdcompat__hashtbl.mli stdcompat__set.mli \
+	stdcompat__map.mli stdcompat__weak.mli \
+	stdcompat__stream.mli stdcompat__digest.mli stdcompat__nativeint.mli \
+	stdcompat__int.mli \
+	stdcompat__int64.mli stdcompat__int32.mli stdcompat__filename.mli \
+	stdcompat__array.mli stdcompat__arrayLabels.mli \
+	stdcompat__float.mli stdcompat__queue.mli stdcompat__ephemeron.mli \
+	stdcompat__spacetime.mli stdcompat__moreLabels.mli stdcompat__lexing.mli \
+	stdcompat__option.mli stdcompat__result.mli stdcompat__bool.mli \
+	stdcompat__fun.mli stdcompat__format.mli stdcompat__printf.mli stdcompat__stdlib.mli \
+	stdcompat__seq.mli
 
 MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq.ml \
 	stdcompat__tools.ml \
