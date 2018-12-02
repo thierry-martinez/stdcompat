@@ -55,6 +55,8 @@ module type S = sig
 
   module Float : Stdcompat__float_s.S
 
+  module Fun : Stdcompat__fun_s.S
+
   @BEGIN_FROM_3_12_0@
   module Gc : module type of (struct
     include Gc
