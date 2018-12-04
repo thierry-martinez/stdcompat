@@ -4,7 +4,7 @@
 
 - Fix: value Stdlib.protect was not exported
 
-- Fix: equality between Stdlib.result and aliases
+- Fix: equality between aliases of Stdlib.result and of Seq.t
 
 * Version 7
 
