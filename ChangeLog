@@ -2,6 +2,8 @@
 
 - Fix: module Fun was not exported
 
+- Fix: value Stdlib.protect was not exported
+
 * Version 7
 
 - OCaml 4.08.0 additions: Bool, Fun, Array.t, List.t, Bytes and Buffer
