@@ -1,7 +1,6 @@
 FROM ubuntu:16.04
-RUN apt update
-RUN echo yes | apt install autoconf automake unzip aspcud rsync git mercurial \
-    darcs wget build-essential sudo vim curl
+RUN apt update; echo yes | apt install autoconf automake unzip aspcud rsync \
+    git mercurial darcs wget build-essential sudo vim curl
 RUN useradd -m -s /bin/bash ci
 Run echo ci      ALL=\(ALL\) NOPASSWD:ALL >/etc/sudoers
 USER ci
