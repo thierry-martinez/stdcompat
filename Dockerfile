@@ -5,6 +5,7 @@ RUN useradd -m -s /bin/bash ci
 Run echo ci      ALL=\(ALL\) NOPASSWD:ALL >/etc/sudoers
 USER ci
 RUN wget -O ~/opam https://github.com/ocaml/opam/releases/download/2.0.1/opam-2.0.1-x86_64-linux
+RUN chmod +x opam
 RUN sudo mv ~/opam /usr/local/bin/opam
 RUN opam init --disable-sandboxing --auto-setup
 RUN opam update && opam switch 3.07
