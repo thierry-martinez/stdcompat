@@ -4,7 +4,8 @@ RUN apt update; echo yes | apt install autoconf automake unzip aspcud rsync \
 RUN useradd -m -s /bin/bash ci
 Run echo ci      ALL=\(ALL\) NOPASSWD:ALL >/etc/sudoers
 USER ci
-RUN curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh | sh
+RUN wget https://github.com/ocaml/opam/releases/download/2.0.1/opam-2.0.1-x86_64-linux
+RUN sudo mv opam-2.0.1-x86_64-linux /usr/local/bin/opam
 RUN opam init --disable-sandboxing --auto-setup
 RUN opam update && opam switch 3.07
 RUN opam update && opam switch 3.08.4
