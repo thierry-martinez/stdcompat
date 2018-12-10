@@ -380,4 +380,17 @@ let () =
   assert (
     try
       Stdcompat.protect ~finally:(fun () -> raise Exit) (fun () -> failwith "protect")
-    with Exit -> true | _ -> false)
+    with Exit -> true | _ -> false);
+  let _ : 'a Stdcompat.Seq.t = Stdcompat.Stdlib.Seq.empty in
+  let _ : 'a Stdcompat.Stdlib.Seq.t = Stdcompat.Seq.empty in
+  let _ : (unit, 'a) Stdcompat.result = Stdcompat.Ok () in
+  let _ : (unit, 'a) Stdcompat.Result.t = Stdcompat.Ok () in
+  let _ : (unit, 'a) Stdcompat.Stdlib.Result.t = Stdcompat.Ok () in
+  let _ : (unit, 'a) Stdcompat.result = Stdcompat.Result.Ok () in
+  let _ : (unit, 'a) Stdcompat.Result.t = Stdcompat.Result.Ok () in
+  let _ : (unit, 'a) Stdcompat.Stdlib.Result.t = Stdcompat.Result.Ok () in
+  let _ : (unit, 'a) Stdcompat.result = Stdcompat.Stdlib.Result.Ok () in
+  let _ : (unit, 'a) Stdcompat.Result.t = Stdcompat.Stdlib.Result.Ok () in
+  let _ : (unit, 'a) Stdcompat.Stdlib.Result.t = Stdcompat.Stdlib.Result.Ok () in
+  ()
+  
