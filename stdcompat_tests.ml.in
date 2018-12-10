@@ -372,4 +372,12 @@ let () =
   assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_int32_le b 5 0l));
   assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_int64_le b (-1) 0L));
   assert (check_invalid_arg (fun () -> Stdcompat.Bytes.set_int64_le b 1 0L));
-  assert (Stdcompat.Bytes.get_int64_be b 0 = 0x123456789ABCDEF0L)
+  assert (Stdcompat.Bytes.get_int64_be b 0 = 0x123456789ABCDEF0L);
+  assert (
+    let finalized = ref false in
+    Stdcompat.protect ~finally:(fun () -> finalized := true) (fun () -> true) &&
+    !finalized);
+  assert (
+    try
+      Stdcompat.protect ~finally:(fun () -> raise Exit) (fun () -> failwith "protect")
+    with Exit -> true | _ -> false)
