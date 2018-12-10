@@ -1,4 +1,4 @@
-AC_INIT([[stdcompat]], [7], [[Thierry.Martinez@inria.fr]], [[stdcompat]],
+AC_INIT([[stdcompat]], [8], [[Thierry.Martinez@inria.fr]], [[stdcompat]],
   [[https://github.com/thierry.martinez/stdcompat/]])
 AM_INIT_AUTOMAKE
 
