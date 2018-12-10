@@ -1,10 +1,12 @@
-* Next version
+* Version 8
 
 - Fix: module Fun was not exported
 
 - Fix: value Stdlib.protect was not exported
 
 - Fix: equality between aliases of Stdlib.result and of Seq.t
+
+- Fix: Stdlib.result redefined before 4.03 (instead of 4.06)
 
 * Version 7
 
