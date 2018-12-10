@@ -392,5 +392,9 @@ let () =
   let _ : (unit, 'a) Stdcompat.result = Stdcompat.Stdlib.Result.Ok () in
   let _ : (unit, 'a) Stdcompat.Result.t = Stdcompat.Stdlib.Result.Ok () in
   let _ : (unit, 'a) Stdcompat.Stdlib.Result.t = Stdcompat.Stdlib.Result.Ok () in
+  assert (Stdcompat.Fun.id true);
+  assert (Stdcompat.Fun.const true false);
+  assert (Stdcompat.Fun.flip ( - ) 1 2 = 1);
+  assert (Stdcompat.Fun.negate not true);
   ()
   
