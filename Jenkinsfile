@@ -40,7 +40,7 @@ pipeline {
                         returnStdout: true
                     ).trim()
                     def switches = sh (
-                        script: 'docker run stdcompat opam switch -i -s',
+                        script: 'docker run stdcompat opam switch -s',
                         returnStdout: true
                     ).split('\n')
                     def branches = [:]
