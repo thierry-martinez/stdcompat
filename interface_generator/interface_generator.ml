@@ -1183,7 +1183,7 @@ let format_default_item ~module_name formatter
       format_with_without "UCHAR_PKG"
         Pprintast.signature formatter [result_item] [item]
   | Psig_type (_, _)
-      when module_name = Longident.Lident "List" ->
+      when module_name = Longident.Lident "List" || module_name = Longident.Lident "ListLabels" ->
       Format.fprintf formatter "\
 @@BEGIN_FROM_4_03_0@@
 type 'a t = 'a list =
