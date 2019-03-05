@@ -375,12 +375,12 @@ let () =
   assert (Stdcompat.Bytes.get_int64_be b 0 = 0x123456789ABCDEF0L);
   assert (
     let finalized = ref false in
-    Stdcompat.protect ~finally:(fun () -> finalized := true) (fun () -> true) &&
+    Stdcompat.Fun.protect ~finally:(fun () -> finalized := true) (fun () -> true) &&
     !finalized);
   assert (
     try
-      Stdcompat.protect ~finally:(fun () -> raise Exit) (fun () -> failwith "protect")
-    with Exit -> true | _ -> false);
+      Stdcompat.Fun.protect ~finally:(fun () -> raise Exit) (fun () -> failwith "protect")
+    with Stdcompat.Fun.Finally_raised Exit -> true | _ -> false);
   let (_ : 'a Stdcompat.Seq.t) = Stdcompat.Stdlib.Seq.empty in
   let (_ : 'a Stdcompat.Stdlib.Seq.t) = Stdcompat.Seq.empty in
   let (_ : (unit, 'a) Stdcompat.result) = Stdcompat.Ok () in
