@@ -1,5 +1,10 @@
 include ListLabels
 
+@BEGIN_BEFORE_4_08_0@
+let filter_map ~f l =
+  Stdcompat__list.filter_map f l
+@END_BEFORE_4_08_0@
+
 @BEGIN_BEFORE_4_00_0@
 let iteri ~f l =
   Stdcompat__list.iteri f l

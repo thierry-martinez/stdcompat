@@ -179,7 +179,10 @@ let module_type_of_name ~command_line ~module_name =
             pmty_desc = Pmty_typeof module_expr;
             pmty_loc = Location.none;
             pmty_attributes = [] });
-          pmtd_attributes = [];
+          pmtd_attributes = [
+            { Location.txt = "ocaml.warning"; loc = Location.none },
+            Parsetree.PStr [{Parsetree.pstr_desc = Pstr_eval ({ Parsetree.pexp_desc = Pexp_constant (Parsetree.Pconst_string ("-3", None)); pexp_attributes = []; pexp_loc = Location.none }, []); pstr_loc = Location.none }]
+      ];
           pmtd_loc = Location.none; }
       else
         Pstr_module {

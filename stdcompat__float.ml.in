@@ -1,6 +1,226 @@
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_08_0@
  include Float
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+
+module Array = struct
+  type t = Stdcompat__init.floatarray
+
+  include Stdcompat__array.Floatarray
+
+  let unsafe_fill array offset len v =
+    for i = offset to offset + len - 1 do
+      unsafe_set array i v
+    done
+
+  let unsafe_blit src src_offset dst dst_offset len =
+    for i = 0 to len - 1 do
+      unsafe_set dst (dst_offset + i) (unsafe_get src (src_offset + i))
+    done
+
+  let make len v =
+    let result = create len in
+    unsafe_fill result 0 len v;
+    result
+
+  let init len f =
+    let result = create len in
+    for i = 0 to len - 1 do
+      unsafe_set result i (f i)
+    done;
+    result
+
+  let append a1 a2 =
+    let l1 = length a1 in
+    let l2 = length a2 in
+    let result = create (l1 + l2) in
+    unsafe_blit a1 0 result 0 l1;
+    unsafe_blit a2 0 result l1 l2;
+    result
+
+  let concat l =
+    let len = List.fold_left (fun acc a -> acc + length a) 0 l in
+    let result = create len in
+    let rec loop l i =
+      match l with
+      | [] -> ()
+      | hd :: tl ->
+          let len = length hd in
+          unsafe_blit hd 0 result i len;
+          loop tl (i + len) in
+    loop l 0;
+    result
+
+  let check a offset len msg =
+    if offset < 0 || len < 0 || offset + len < 0 || offset + len > length a then
+      failwith msg
+
+  let sub a offset len =
+    check a offset len "Float.Array.sub";
+    let result = create len in
+    unsafe_blit a offset result 0 len;
+    result
+
+  let copy a =
+    let len = length a in
+    let result = create len in
+    unsafe_blit a 0 result 0 len;
+    result
+
+  let fill a offset len v =
+    check a offset len "Float.Array.fill";
+    unsafe_fill a offset len v
+
+  let blit src src_offset dst dst_offset len =
+    check src src_offset len "Float.Array.blit";
+    check dst dst_offset len "Float.Array.blit";
+    unsafe_blit dst src_offset dst dst_offset len
+
+  let to_list a =
+    Stdcompat__list.init (length a) (unsafe_get a)
+
+  let of_list l =
+    let result = create (List.length l) in
+    let rec fill i l =
+      match l with
+      | [] -> result
+      | hd :: tl ->
+          unsafe_set result i hd;
+          fill (succ i) tl in
+    fill 0 l
+
+  let iter f a =
+    for i = 0 to length a - 1 do
+      f (unsafe_get a i)
+    done
+
+  let iteri f a =
+    for i = 0 to length a - 1 do
+      f i (unsafe_get a i)
+    done
+
+  let map f a =
+    let len = length a in
+    let result = create len in
+    for i = 0 to len - 1 do
+      unsafe_set result i (f (unsafe_get a i))
+    done;
+    result
+
+  let mapi f a =
+    let len = length a in
+    let result = create len in
+    for i = 0 to len - 1 do
+      unsafe_set result i (f i (unsafe_get a i))
+    done;
+    result
+
+  let fold_left f acc a =
+    let len = length a in
+    let rec aux i acc =
+      if i < len then
+        aux (succ i) (f acc (unsafe_get a i))
+      else
+        acc in
+    aux 0 acc
+
+  let fold_right f a acc =
+    let len = length a in
+    let rec aux i acc =
+      if i > 0 then
+        let j = pred i in
+        aux j (f (unsafe_get a j) acc)
+      else
+        acc in
+    aux len acc
+
+  let iter2 f a b =
+    let len = length a in
+    if len <> length b then
+      failwith "Float.Array.iter2";
+    for i = 0 to len - 1 do
+      f (unsafe_get a i) (unsafe_get b i)
+    done
+
+  let map2 f a b =
+    let len = length a in
+    if len <> length b then
+      failwith "Float.Array.iter2";
+    let result = create len in
+    for i = 0 to len - 1 do
+      unsafe_set result i (f (unsafe_get a i) (unsafe_get b i))
+    done;
+    result
+
+  let for_all f a =
+    let len = length a in
+    let rec aux i =
+      i >= len || f (unsafe_get a i) && aux (succ i) in
+    aux 0
+
+  let exists f a =
+    let len = length a in
+    let rec aux i =
+      i < len && (f (unsafe_get a i) || aux (succ i)) in
+    aux 0
+
+  let mem x a =
+    exists (fun y -> compare x y = 0) a
+
+  let mem_ieee x a =
+    exists (( = ) x) a
+
+  let sort p a =
+    failwith "unimplemented"
+
+  let stable_sort = sort
+
+  let fast_sort = sort
+
+  let to_seq a =
+    let rec aux i () =
+      if i < length a then
+        let x = unsafe_get a i in
+        Stdcompat__seq.Cons (x, aux (i + 1))
+      else
+        Stdcompat__seq.Nil in
+    aux 0
+
+  let to_seqi a =
+    let rec aux i () =
+      if i < length a then
+        let x = unsafe_get a i in
+        Stdcompat__seq.Cons ((i, x), aux (i + 1))
+      else
+        Stdcompat__seq.Nil in
+    aux 0
+
+  let of_rev_list l =
+    let len = List.length l in
+    let result = create len in
+    let rec fill i l =
+      match l with
+      | [] -> result
+      | hd :: tl ->
+          unsafe_set result i hd;
+          fill (pred i) tl in
+    fill (len - 1) l
+
+  let of_seq i =
+    let l = Seq.fold_left (fun acc x -> x :: acc) [] i in
+    of_rev_list l
+
+  let map_to_array f a =
+    Array.init (length a) (fun i -> f (unsafe_get a i))
+
+  let map_from_array f a =
+    init (Array.length a) (fun i -> f (Array.unsafe_get a i))
+end
+
+@BEGIN_FROM_4_07_0@
+ include (Float : module type of Float with module Array := Array)
 @END_FROM_4_07_0@
+@END_BEFORE_4_08_0@
 @BEGIN_BEFORE_4_07_0@
 type fpclass = Pervasives.fpclass =
   | FP_normal 
@@ -19,11 +239,6 @@ type fpclass = Pervasives.fpclass =
 type t = float
 (** @since 4.07.0: type t = float
  *)
-module Array = struct
-  type t = Stdcompat__init.floatarray
-
-  include Stdcompat__array.Floatarray
-end
 let infinity = Pervasives.infinity
 (** @since 4.07.0: val infinity : float
  *)
@@ -676,4 +891,50 @@ let minus_one = -1.
 let one = 1.
 
 let zero = 0.
+
+module ArrayLabels = struct
+  include Array
+
+  let init i ~f = init i f
+
+  let sub a ~pos ~len = sub a pos len
+
+  let fill a ~pos ~len v = fill a pos len v
+
+  let blit ~src ~src_pos ~dst ~dst_pos ~len = blit src src_pos dst dst_pos len
+
+  let iter ~f a = iter f a
+
+  let iteri ~f a = iteri f a
+
+  let map ~f a = map f a
+
+  let mapi ~f a = mapi f a
+
+  let fold_left ~f ~init a = fold_left f init a
+
+  let fold_right ~f a ~init = fold_right f a init
+
+  let iter2 ~f a = iter2 f a
+
+  let map2 ~f a = map2 f a
+
+  let for_all ~f a = for_all f a
+
+  let exists ~f a = exists f a
+
+  let mem v ~set = mem v set
+
+  let mem_ieee v ~set = mem_ieee v set
+
+  let sort ~cmp a = sort cmp a
+
+  let stable_sort ~cmp a = stable_sort cmp a
+
+  let fast_sort ~cmp a = fast_sort cmp a
+
+  let map_to_array ~f a = map_to_array f a
+
+  let map_from_array ~f a = map_from_array f a
+end
 @END_BEFORE_4_08_0@

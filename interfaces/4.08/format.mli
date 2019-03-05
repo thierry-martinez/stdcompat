@@ -29,6 +29,9 @@ val pp_print_cut : formatter -> unit -> unit
 val print_cut : unit -> unit
 val pp_print_break : formatter -> int -> int -> unit
 val print_break : int -> int -> unit
+val pp_print_custom_break :
+  formatter ->
+    fits:(string * int * string) -> breaks:(string * int * string) -> unit
 val pp_force_newline : formatter -> unit -> unit
 val force_newline : unit -> unit
 val pp_print_if_newline : formatter -> unit -> unit
@@ -45,6 +48,16 @@ val pp_set_max_indent : formatter -> int -> unit
 val set_max_indent : int -> unit
 val pp_get_max_indent : formatter -> unit -> int
 val get_max_indent : unit -> int
+type geometry = {
+  max_indent: int ;
+  margin: int }
+val check_geometry : geometry -> bool
+val pp_set_geometry : formatter -> max_indent:int -> margin:int -> unit
+val set_geometry : max_indent:int -> margin:int -> unit
+val pp_safe_set_geometry : formatter -> max_indent:int -> margin:int -> unit
+val safe_set_geometry : max_indent:int -> margin:int -> unit
+val pp_get_geometry : formatter -> unit -> geometry
+val get_geometry : unit -> geometry
 val pp_set_max_boxes : formatter -> int -> unit
 val set_max_boxes : int -> unit
 val pp_get_max_boxes : formatter -> unit -> int
@@ -65,11 +78,14 @@ val pp_set_ellipsis_text : formatter -> string -> unit
 val set_ellipsis_text : string -> unit
 val pp_get_ellipsis_text : formatter -> unit -> string
 val get_ellipsis_text : unit -> string
+type stag = ..
 type tag = string
-val pp_open_tag : formatter -> string -> unit
-val open_tag : tag -> unit
-val pp_close_tag : formatter -> unit -> unit
-val close_tag : unit -> unit
+type stag +=  
+  | String_tag of tag 
+val pp_open_stag : formatter -> stag -> unit
+val open_stag : stag -> unit
+val pp_close_stag : formatter -> unit -> unit
+val close_stag : unit -> unit
 val pp_set_tags : formatter -> bool -> unit
 val set_tags : bool -> unit
 val pp_set_print_tags : formatter -> bool -> unit
@@ -103,18 +119,18 @@ val set_formatter_out_functions : formatter_out_functions -> unit
 val pp_get_formatter_out_functions :
   formatter -> unit -> formatter_out_functions
 val get_formatter_out_functions : unit -> formatter_out_functions
-type formatter_tag_functions =
+type formatter_stag_functions =
   {
-  mark_open_tag: tag -> string ;
-  mark_close_tag: tag -> string ;
-  print_open_tag: tag -> unit ;
-  print_close_tag: tag -> unit }
-val pp_set_formatter_tag_functions :
-  formatter -> formatter_tag_functions -> unit
-val set_formatter_tag_functions : formatter_tag_functions -> unit
-val pp_get_formatter_tag_functions :
-  formatter -> unit -> formatter_tag_functions
-val get_formatter_tag_functions : unit -> formatter_tag_functions
+  mark_open_stag: stag -> string ;
+  mark_close_stag: stag -> string ;
+  print_open_stag: stag -> unit ;
+  print_close_stag: stag -> unit }
+val pp_set_formatter_stag_functions :
+  formatter -> formatter_stag_functions -> unit
+val set_formatter_stag_functions : formatter_stag_functions -> unit
+val pp_get_formatter_stag_functions :
+  formatter -> unit -> formatter_stag_functions
+val get_formatter_stag_functions : unit -> formatter_stag_functions
 val formatter_of_out_channel : out_channel -> formatter
 val std_formatter : formatter
 val err_formatter : formatter
@@ -166,29 +182,39 @@ val ikfprintf :
   (formatter -> 'a) -> formatter -> ('b, formatter, unit, 'a) format4 -> 'b
 val ksprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 val kasprintf : (string -> 'a) -> ('b, formatter, unit, 'a) format4 -> 'b
-val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a[@@ocaml.deprecated
-                                                              "- : Buffer.t -> ('a, Format.formatter, unit) format -> 'a = <fun>"]
-val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b[@@ocaml.deprecated
-                                                                    "Use Format.ksprintf instead."]
+val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a
+val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 val set_all_formatter_output_functions :
   out:(string -> int -> int -> unit) ->
     flush:(unit -> unit) ->
-      newline:(unit -> unit) -> spaces:(int -> unit) -> unit[@@ocaml.deprecated
-                                                              "Use Format.set_formatter_out_functions instead."]
+      newline:(unit -> unit) -> spaces:(int -> unit) -> unit
 val get_all_formatter_output_functions :
   unit ->
     ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
-      (int -> unit))[@@ocaml.deprecated
-                      "Use Format.get_formatter_out_functions instead."]
+      (int -> unit))
 val pp_set_all_formatter_output_functions :
   formatter ->
     out:(string -> int -> int -> unit) ->
       flush:(unit -> unit) ->
-        newline:(unit -> unit) -> spaces:(int -> unit) -> unit[@@ocaml.deprecated
-                                                                "Use Format.pp_set_formatter_out_functions instead."]
+        newline:(unit -> unit) -> spaces:(int -> unit) -> unit
 val pp_get_all_formatter_output_functions :
   formatter ->
     unit ->
       ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
-        (int -> unit))[@@ocaml.deprecated
-                        "Use Format.pp_get_formatter_out_functions instead."]
+        (int -> unit))
+val pp_open_tag : formatter -> tag -> unit
+val open_tag : tag -> unit
+val pp_close_tag : formatter -> unit -> unit
+val close_tag : unit -> unit
+type formatter_tag_functions =
+  {
+  mark_open_tag: tag -> string ;
+  mark_close_tag: tag -> string ;
+  print_open_tag: tag -> unit ;
+  print_close_tag: tag -> unit }
+val pp_set_formatter_tag_functions :
+  formatter -> formatter_tag_functions -> unit
+val set_formatter_tag_functions : formatter_tag_functions -> unit
+val pp_get_formatter_tag_functions :
+  formatter -> unit -> formatter_tag_functions
+val get_formatter_tag_functions : unit -> formatter_tag_functions

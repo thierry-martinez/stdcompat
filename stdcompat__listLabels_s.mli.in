@@ -5,15 +5,17 @@ type 'a t = 'a list =
   | (::) of 'a * 'a list 
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
-type 'a t = 'a list
-@BEGIN_FROM_4_03_0@
-  =  [] | (::) of 'a * 'a list
-@END_FROM_4_03_0@
+type 'a t = 'a list =
+  | [] 
+  | (::) of 'a * 'a list 
 @END_BEFORE_4_08_0@
 (** @since 4.08.0: type 'a t = 'a list =
                      | [] 
                      | (::) of 'a * 'a list 
  *)
+
+val filter_map : f:('a -> 'b option) -> 'a list -> 'b list
+(** @since 4.08.0: val filter_map : f:('a -> 'b option) -> 'a list -> 'b list *)
 
 @BEGIN_FROM_4_07_0@
 val to_seq : 'a list -> 'a Seq.t

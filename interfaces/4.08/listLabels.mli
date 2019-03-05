@@ -20,6 +20,7 @@ val iteri : f:(int -> 'a -> unit) -> 'a list -> unit
 val map : f:('a -> 'b) -> 'a list -> 'b list
 val mapi : f:(int -> 'a -> 'b) -> 'a list -> 'b list
 val rev_map : f:('a -> 'b) -> 'a list -> 'b list
+val filter_map : f:('a -> 'b option) -> 'a list -> 'b list
 val fold_left : f:('a -> 'b -> 'a) -> init:'a -> 'b list -> 'a
 val fold_right : f:('a -> 'b -> 'b) -> 'a list -> init:'b -> 'b
 val iter2 : f:('a -> 'b -> unit) -> 'a list -> 'b list -> unit

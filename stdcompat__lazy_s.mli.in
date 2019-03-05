@@ -1,6 +1,12 @@
 module type S = sig
-type 'a t = 'a lazy_t
-(** Alias for {!Lazy.t} *)
+@BEGIN_FROM_4_08_0@
+type 'a t = 'a CamlinternalLazy.t
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type 'a t = 'a Stdcompat__init.lazy_t
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: type 'a t = 'a CamlinternalLazy.t
+ *)
 
 exception Undefined 
 (** Alias for {!Lazy.Undefined} *)

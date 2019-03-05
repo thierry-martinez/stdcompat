@@ -10,4 +10,39 @@ let const c _ = c
 let flip f x y = f y x
 
 let negate f x = not (f x)
+
+exception Finally_raised of exn
+
+let protect ~finally f =
+  let value =
+    try
+      Stdcompat__pervasives.Ok (f ())
+    with exn ->
+@BEGIN_FROM_4_01_0@
+      let bt = Printexc.get_raw_backtrace () in
+      Stdcompat__pervasives.Error (exn, bt)
+@END_FROM_4_01_0@
+@BEGIN_BEFORE_4_01_0@
+      Stdcompat__pervasives.Error exn
+@END_BEFORE_4_01_0@ in
+  begin
+    try
+      finally ()
+    with exn ->
+@BEGIN_FROM_4_01_0@
+      let bt = Printexc.get_raw_backtrace () in
+      Printexc.raise_with_backtrace (Finally_raised exn) bt
+@END_FROM_4_01_0@
+@BEGIN_BEFORE_4_01_0@
+      raise_notrace (Finally_raised exn)
+@END_BEFORE_4_01_0@
+  end;
+  match value with
+  | Ok result -> result
+@BEGIN_FROM_4_01_0@
+  | Error (exn, bt) -> Printexc.raise_with_backtrace exn bt
+@END_FROM_4_01_0@
+@BEGIN_BEFORE_4_01_0@
+  | Error exn -> raise_notrace exn
+@END_BEFORE_4_01_0@
 @END_BEFORE_4_08_0@

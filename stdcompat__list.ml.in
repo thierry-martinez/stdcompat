@@ -1,9 +1,22 @@
 include List
+
 @BEGIN_BEFORE_4_08_0@
 type 'a t = 'a list
 @BEGIN_FROM_4_03_0@
   = [] | (::) of 'a * 'a list
 @END_FROM_4_03_0@
+
+let filter_map f list =
+  let rec aux accu list =
+    match list with
+    | [] -> rev accu
+    | head :: tail ->
+        let accu' =
+          match f head with
+          | None -> accu
+          | Some head' -> head' :: accu in
+        aux accu' tail in
+  aux [] list
 @END_BEFORE_4_08_0@
 
 @BEGIN_BEFORE_4_00_0@

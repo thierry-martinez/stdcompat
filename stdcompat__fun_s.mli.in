@@ -1,4 +1,7 @@
 module type S = sig
+exception Finally_raised of exn 
+(** Alias for {!Fun.Finally_raised} *)
+
 external id : 'a -> 'a = "%identity"
 (** @since 4.08.0: external id : 'a -> 'a = "%identity" *)
 
@@ -10,5 +13,8 @@ val flip : ('a -> 'b -> 'c) -> 'b -> 'a -> 'c
 
 val negate : ('a -> bool) -> 'a -> bool
 (** @since 4.08.0: val negate : ('a -> bool) -> 'a -> bool *)
+
+val protect : finally:(unit -> unit) -> (unit -> 'a) -> 'a
+(** @since 4.08.0: val protect : finally:(unit -> unit) -> (unit -> 'a) -> 'a *)
 
 end

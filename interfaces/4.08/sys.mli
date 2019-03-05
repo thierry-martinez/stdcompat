@@ -28,6 +28,7 @@ val int_size : int
 val big_endian : bool
 val max_string_length : int
 val max_array_length : int
+val max_floatarray_length : int
 external runtime_variant : unit -> string = "caml_runtime_variant"
 external runtime_parameters : unit -> string = "caml_runtime_parameters"
 type signal_behavior =

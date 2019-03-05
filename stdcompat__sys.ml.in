@@ -1,5 +1,9 @@
 include Sys
 
+@BEGIN_BEFORE_4_08_0@
+let max_floatarray_length = max_array_length / (64 / word_size)
+@END_BEFORE_4_08_0@
+
 @BEGIN_BEFORE_4_05_0@
 let getenv_opt var =
   Stdcompat__tools.option_find getenv var

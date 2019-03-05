@@ -1,3 +1,11 @@
+@BEGIN_FROM_4_08_0@
+type 'a lazy_t = 'a CamlinternalLazy.t
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type 'a lazy_t_ = 'a lazy_t
+type 'a lazy_t = 'a lazy_t_
+@END_BEFORE_4_08_0@
+
 type in_channel_ = in_channel
 type in_channel = in_channel_
 

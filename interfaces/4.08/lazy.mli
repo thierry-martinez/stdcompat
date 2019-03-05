@@ -1,4 +1,4 @@
-type 'a t = 'a lazy_t
+type 'a t = 'a CamlinternalLazy.t
 exception Undefined 
 external force : 'a t -> 'a = "%lazy_force"
 val force_val : 'a t -> 'a

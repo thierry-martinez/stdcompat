@@ -135,8 +135,8 @@ endif
 endif
 ']])
 
-AC_CONFIG_FILES([META Makefile])
 AC_CONFIG_FILES([
+  META Makefile
   stdcompat__hashtbl_ext.mli
   stdcompat__hashtbl_ext.ml
   stdcompat__init.mli
@@ -313,7 +313,8 @@ AC_CONFIG_FILES([
   stdcompat__uchar.mli
   stdcompat__weak.mli
   stdcompat.mli
-  stdcompat.ml])
+  stdcompat.ml
+])
 
 AC_OUTPUT
 

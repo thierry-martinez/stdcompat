@@ -3,7 +3,6 @@ external raise_notrace : exn -> 'a = "%raise_notrace"
 val invalid_arg : string -> 'a
 val failwith : string -> 'a
 exception Exit 
-val protect : finally:(unit -> unit) -> (unit -> 'a) -> 'a
 exception Match_failure of (string * int * int) 
 exception Assert_failure of (string * int * int) 
 exception Invalid_argument of string 

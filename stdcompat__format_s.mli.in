@@ -2,6 +2,35 @@ module type S = sig
 type formatter = Format.formatter
 (** Alias for {!Format.formatter} *)
 
+@BEGIN_FROM_4_08_0@
+type geometry = Format.geometry = {
+  max_indent: int ;
+  margin: int }
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type geometry = {
+  max_indent: int ;
+  margin: int }
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: type geometry = {
+                     max_indent: int ;
+                     margin: int }
+ *)
+
+@BEGIN_FROM_4_08_0@
+type stag = Format.stag = ..
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+@BEGIN_FROM_4_02_0@
+type stag = ..
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+type stag
+@END_BEFORE_4_02_0@
+@END_BEFORE_4_08_0@
+(** @since 4.08.0: type stag = ..
+ *)
+
 type tag = string
 (** Alias for {!Format.tag} *)
 
@@ -15,15 +44,6 @@ type formatter_out_functions = Format.formatter_out_functions =
   out_indent: int -> unit }
 @END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
-@BEGIN_FROM_4_01_0@
-type formatter_out_functions = Format.formatter_out_functions =
-  {
-  out_string: string -> int -> int -> unit ;
-  out_flush: unit -> unit ;
-  out_newline: unit -> unit ;
-  out_spaces: int -> unit }
-@END_FROM_4_01_0@
-@BEGIN_BEFORE_4_01_0@
 type formatter_out_functions =
   {
   out_string: string -> int -> int -> unit ;
@@ -31,7 +51,6 @@ type formatter_out_functions =
   out_newline: unit -> unit ;
   out_spaces: int -> unit ;
   out_indent: int -> unit }
-@END_BEFORE_4_01_0@
 @END_BEFORE_4_06_0@
 (** @since 4.06.0:
     type formatter_out_functions =
@@ -43,13 +62,30 @@ type formatter_out_functions =
       out_indent: int -> unit }
  *)
 
-type formatter_tag_functions = Format.formatter_tag_functions =
+@BEGIN_FROM_4_08_0@
+type formatter_stag_functions = Format.formatter_stag_functions =
   {
-  mark_open_tag: tag -> string ;
-  mark_close_tag: tag -> string ;
-  print_open_tag: tag -> unit ;
-  print_close_tag: tag -> unit }
-(** Alias for {!Format.formatter_tag_functions} *)
+  mark_open_stag: stag -> string ;
+  mark_close_stag: stag -> string ;
+  print_open_stag: stag -> unit ;
+  print_close_stag: stag -> unit }
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+type formatter_stag_functions =
+  {
+  mark_open_stag: stag -> string ;
+  mark_close_stag: stag -> string ;
+  print_open_stag: stag -> unit ;
+  print_close_stag: stag -> unit }
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
+    type formatter_stag_functions =
+      {
+      mark_open_stag: stag -> string ;
+      mark_close_stag: stag -> string ;
+      print_open_stag: stag -> unit ;
+      print_close_stag: stag -> unit }
+ *)
 
 @BEGIN_FROM_4_06_0@
 type symbolic_output_item = Format.symbolic_output_item =
@@ -84,6 +120,80 @@ type symbolic_output_buffer
 @END_BEFORE_4_06_0@
 (** @since 4.06.0: type symbolic_output_buffer
  *)
+
+type formatter_tag_functions = Format.formatter_tag_functions =
+  {
+  mark_open_tag: tag -> string ;
+  mark_close_tag: tag -> string ;
+  print_open_tag: tag -> unit ;
+  print_close_tag: tag -> unit }
+(** Alias for {!Format.formatter_tag_functions} *)
+
+val pp_print_custom_break :
+  formatter ->
+    fits:(string * int * string) -> breaks:(string * int * string) -> unit
+(** @since 4.08.0:
+    val pp_print_custom_break :
+      formatter ->
+        fits:(string * int * string) ->
+          breaks:(string * int * string) -> unit *)
+
+val check_geometry : geometry -> bool
+(** @since 4.08.0: val check_geometry : geometry -> bool *)
+
+val pp_set_geometry : formatter -> max_indent:int -> margin:int -> unit
+(** @since 4.08.0:
+    val pp_set_geometry : formatter -> max_indent:int -> margin:int -> unit *)
+
+val set_geometry : max_indent:int -> margin:int -> unit
+(** @since 4.08.0: val set_geometry : max_indent:int -> margin:int -> unit *)
+
+val pp_safe_set_geometry : formatter -> max_indent:int -> margin:int -> unit
+(** @since 4.08.0:
+    val pp_safe_set_geometry :
+      formatter -> max_indent:int -> margin:int -> unit *)
+
+val safe_set_geometry : max_indent:int -> margin:int -> unit
+(** @since 4.08.0:
+    val safe_set_geometry : max_indent:int -> margin:int -> unit *)
+
+val pp_get_geometry : formatter -> unit -> geometry
+(** @since 4.08.0: val pp_get_geometry : formatter -> unit -> geometry *)
+
+val get_geometry : unit -> geometry
+(** @since 4.08.0: val get_geometry : unit -> geometry *)
+
+val pp_open_stag : formatter -> stag -> unit
+(** @since 4.08.0: val pp_open_stag : formatter -> stag -> unit *)
+
+val open_stag : stag -> unit
+(** @since 4.08.0: val open_stag : stag -> unit *)
+
+val pp_close_stag : formatter -> unit -> unit
+(** @since 4.08.0: val pp_close_stag : formatter -> unit -> unit *)
+
+val close_stag : unit -> unit
+(** @since 4.08.0: val close_stag : unit -> unit *)
+
+val pp_set_formatter_stag_functions :
+  formatter -> formatter_stag_functions -> unit
+(** @since 4.08.0:
+    val pp_set_formatter_stag_functions :
+      formatter -> formatter_stag_functions -> unit *)
+
+val set_formatter_stag_functions : formatter_stag_functions -> unit
+(** @since 4.08.0:
+    val set_formatter_stag_functions : formatter_stag_functions -> unit *)
+
+val pp_get_formatter_stag_functions :
+  formatter -> unit -> formatter_stag_functions
+(** @since 4.08.0:
+    val pp_get_formatter_stag_functions :
+      formatter -> unit -> formatter_stag_functions *)
+
+val get_formatter_stag_functions : unit -> formatter_stag_functions
+(** @since 4.08.0:
+    val get_formatter_stag_functions : unit -> formatter_stag_functions *)
 
 val pp_print_option :
   ?none:(formatter -> unit -> unit) ->
@@ -120,6 +230,9 @@ val kdprintf :
 (** @since 4.08.0:
     val kdprintf :
       ((formatter -> unit) -> 'a) -> ('b, formatter, unit, 'a) format4 -> 'b *)
+
+val pp_open_tag : formatter -> tag -> unit
+(** @since 4.08.0: val pp_open_tag : formatter -> tag -> unit *)
 
 val formatter_of_out_functions : formatter_out_functions -> formatter
 (** @since 4.06.0:
@@ -584,18 +697,6 @@ val pp_get_ellipsis_text : formatter -> unit -> string
 val get_ellipsis_text : unit -> string
 (** Alias for {!Format.get_ellipsis_text} *)
 
-val pp_open_tag : formatter -> string -> unit
-(** Alias for {!Format.pp_open_tag} *)
-
-val open_tag : tag -> unit
-(** Alias for {!Format.open_tag} *)
-
-val pp_close_tag : formatter -> unit -> unit
-(** Alias for {!Format.pp_close_tag} *)
-
-val close_tag : unit -> unit
-(** Alias for {!Format.close_tag} *)
-
 val pp_set_tags : formatter -> bool -> unit
 (** Alias for {!Format.pp_set_tags} *)
 
@@ -648,20 +749,6 @@ val get_formatter_output_functions :
   unit -> ((string -> int -> int -> unit) * (unit -> unit))
 (** Alias for {!Format.get_formatter_output_functions} *)
 
-val pp_set_formatter_tag_functions :
-  formatter -> formatter_tag_functions -> unit
-(** Alias for {!Format.pp_set_formatter_tag_functions} *)
-
-val set_formatter_tag_functions : formatter_tag_functions -> unit
-(** Alias for {!Format.set_formatter_tag_functions} *)
-
-val pp_get_formatter_tag_functions :
-  formatter -> unit -> formatter_tag_functions
-(** Alias for {!Format.pp_get_formatter_tag_functions} *)
-
-val get_formatter_tag_functions : unit -> formatter_tag_functions
-(** Alias for {!Format.get_formatter_tag_functions} *)
-
 val formatter_of_out_channel : out_channel -> formatter
 (** Alias for {!Format.formatter_of_out_channel} *)
 
@@ -699,6 +786,10 @@ val eprintf : ('a, formatter, unit) format -> 'a
 val sprintf : ('a, unit, string) format -> 'a
 (** Alias for {!Format.sprintf} *)
 
+@BEGIN_FROM_4_08_0@
+val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a[@@ocaml.deprecated
                                                               "- : Buffer.t -> ('a, Format.formatter, unit) format -> 'a = <fun>"]
@@ -706,12 +797,20 @@ val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a[@@ocaml.deprecated
 @BEGIN_BEFORE_4_02_0@
 val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
-    val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a[@@ocaml.deprecated
-                                                                  "- : Buffer.t -> ('a, Format.formatter, unit) format -> 'a = <fun>"]
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
+    val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a
+@since 4.02.0:
+val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a[@@ocaml.deprecated
+                                                              "- : Buffer.t -> ('a, Format.formatter, unit) format -> 'a = <fun>"]
 @since 3.07.0: val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a
  *)
 
+@BEGIN_FROM_4_08_0@
+val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b[@@ocaml.deprecated
                                                                     "Use Format.ksprintf instead."]
@@ -719,13 +818,24 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b[@@ocaml.dep
 @BEGIN_BEFORE_4_02_0@
 val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
     val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
-    [@@ocaml.deprecated "Use Format.ksprintf instead."]
+@since 4.02.0:
+val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b[@@ocaml.deprecated
+                                                                    "Use Format.ksprintf instead."]
 @since 3.07.0:
 val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
  *)
 
+@BEGIN_FROM_4_08_0@
+val set_all_formatter_output_functions :
+  out:(string -> int -> int -> unit) ->
+    flush:(unit -> unit) ->
+      newline:(unit -> unit) -> spaces:(int -> unit) -> unit
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 val set_all_formatter_output_functions :
   out:(string -> int -> int -> unit) ->
@@ -739,12 +849,19 @@ val set_all_formatter_output_functions :
     flush:(unit -> unit) ->
       newline:(unit -> unit) -> spaces:(int -> unit) -> unit
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
     val set_all_formatter_output_functions :
       out:(string -> int -> int -> unit) ->
         flush:(unit -> unit) ->
-          newline:(unit -> unit) -> spaces:(int -> unit) -> unit[@@ocaml.deprecated
-                                                                  "Use Format.set_formatter_out_functions instead."]
+          newline:(unit -> unit) -> spaces:(int -> unit) -> unit
+@since 4.02.0:
+val set_all_formatter_output_functions :
+  out:(string -> int -> int -> unit) ->
+    flush:(unit -> unit) ->
+      newline:(unit -> unit) -> spaces:(int -> unit) -> unit[@@ocaml.deprecated
+                                                              "Use Format.set_formatter_out_functions instead."]
 @since 3.07.0:
 val set_all_formatter_output_functions :
   out:(string -> int -> int -> unit) ->
@@ -752,6 +869,13 @@ val set_all_formatter_output_functions :
       newline:(unit -> unit) -> spaces:(int -> unit) -> unit
  *)
 
+@BEGIN_FROM_4_08_0@
+val get_all_formatter_output_functions :
+  unit ->
+    ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
+      (int -> unit))
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 val get_all_formatter_output_functions :
   unit ->
@@ -765,12 +889,19 @@ val get_all_formatter_output_functions :
     ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
       (int -> unit))
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
     val get_all_formatter_output_functions :
       unit ->
         ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
-          (int -> unit))[@@ocaml.deprecated
-                          "Use Format.get_formatter_out_functions instead."]
+          (int -> unit))
+@since 4.02.0:
+val get_all_formatter_output_functions :
+  unit ->
+    ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
+      (int -> unit))[@@ocaml.deprecated
+                      "Use Format.get_formatter_out_functions instead."]
 @since 3.07.0:
 val get_all_formatter_output_functions :
   unit ->
@@ -778,6 +909,14 @@ val get_all_formatter_output_functions :
       (int -> unit))
  *)
 
+@BEGIN_FROM_4_08_0@
+val pp_set_all_formatter_output_functions :
+  formatter ->
+    out:(string -> int -> int -> unit) ->
+      flush:(unit -> unit) ->
+        newline:(unit -> unit) -> spaces:(int -> unit) -> unit
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 val pp_set_all_formatter_output_functions :
   formatter ->
@@ -793,13 +932,21 @@ val pp_set_all_formatter_output_functions :
       flush:(unit -> unit) ->
         newline:(unit -> unit) -> spaces:(int -> unit) -> unit
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
     val pp_set_all_formatter_output_functions :
       formatter ->
         out:(string -> int -> int -> unit) ->
           flush:(unit -> unit) ->
-            newline:(unit -> unit) -> spaces:(int -> unit) -> unit[@@ocaml.deprecated
-                                                                    "Use Format.pp_set_formatter_out_functions instead."]
+            newline:(unit -> unit) -> spaces:(int -> unit) -> unit
+@since 4.02.0:
+val pp_set_all_formatter_output_functions :
+  formatter ->
+    out:(string -> int -> int -> unit) ->
+      flush:(unit -> unit) ->
+        newline:(unit -> unit) -> spaces:(int -> unit) -> unit[@@ocaml.deprecated
+                                                                "Use Format.pp_set_formatter_out_functions instead."]
 @since 3.07.0:
 val pp_set_all_formatter_output_functions :
   formatter ->
@@ -808,6 +955,14 @@ val pp_set_all_formatter_output_functions :
         newline:(unit -> unit) -> spaces:(int -> unit) -> unit
  *)
 
+@BEGIN_FROM_4_08_0@
+val pp_get_all_formatter_output_functions :
+  formatter ->
+    unit ->
+      ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
+        (int -> unit))
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 val pp_get_all_formatter_output_functions :
   formatter ->
@@ -823,13 +978,21 @@ val pp_get_all_formatter_output_functions :
       ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
         (int -> unit))
 @END_BEFORE_4_02_0@
-(** @since 4.02.0:
+
+@END_BEFORE_4_08_0@
+(** @since 4.08.0:
     val pp_get_all_formatter_output_functions :
       formatter ->
         unit ->
           ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
-            (int -> unit))[@@ocaml.deprecated
-                            "Use Format.pp_get_formatter_out_functions instead."]
+            (int -> unit))
+@since 4.02.0:
+val pp_get_all_formatter_output_functions :
+  formatter ->
+    unit ->
+      ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
+        (int -> unit))[@@ocaml.deprecated
+                        "Use Format.pp_get_formatter_out_functions instead."]
 @since 3.07.0:
 val pp_get_all_formatter_output_functions :
   formatter ->
@@ -837,5 +1000,28 @@ val pp_get_all_formatter_output_functions :
       ((string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
         (int -> unit))
  *)
+
+val open_tag : tag -> unit
+(** Alias for {!Format.open_tag} *)
+
+val pp_close_tag : formatter -> unit -> unit
+(** Alias for {!Format.pp_close_tag} *)
+
+val close_tag : unit -> unit
+(** Alias for {!Format.close_tag} *)
+
+val pp_set_formatter_tag_functions :
+  formatter -> formatter_tag_functions -> unit
+(** Alias for {!Format.pp_set_formatter_tag_functions} *)
+
+val set_formatter_tag_functions : formatter_tag_functions -> unit
+(** Alias for {!Format.set_formatter_tag_functions} *)
+
+val pp_get_formatter_tag_functions :
+  formatter -> unit -> formatter_tag_functions
+(** Alias for {!Format.pp_get_formatter_tag_functions} *)
+
+val get_formatter_tag_functions : unit -> formatter_tag_functions
+(** Alias for {!Format.get_formatter_tag_functions} *)
 
 end

@@ -498,6 +498,11 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
       let ptyp_desc =
         Parsetree.Ptyp_tuple args in
       { core_type with ptyp_desc }
+  | Ptyp_constr ({ loc; txt = Ldot (Lident "CamlinternalLazy", "t") }, [arg]) ->
+      let ptyp_desc =
+        Parsetree.Ptyp_constr
+          ({ loc; txt = Ldot (Lident "Stdcompat__init", "lazy_t") }, [arg]) in
+      { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Lident "bytes" }, []) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
@@ -1186,6 +1191,14 @@ and 'a node =
   | Cons of 'a * 'a t"
         (format_with "SEQ_PKG" Format.pp_print_string)
          "  'a Seq.node ="
+  | Psig_type (_, [{ ptype_name = { txt }; ptype_kind = Ptype_open }]) ->
+      Format.fprintf formatter "\
+@@BEGIN_FROM_4_02_0@@
+type %s = ..
+@@END_FROM_4_02_0@@
+@@BEGIN_BEFORE_4_02_0@@
+type %s
+@@END_BEFORE_4_02_0@@" txt txt
   | _ ->
       Format.fprintf formatter "%a" Pprintast.signature [item]
 
