@@ -1183,6 +1183,17 @@ let format_default_item ~module_name formatter
       format_with_without "UCHAR_PKG"
         Pprintast.signature formatter [result_item] [item]
   | Psig_type (_, _)
+      when module_name = Longident.Lident "List" ->
+      Format.fprintf formatter "\
+@@BEGIN_FROM_4_03_0@@
+type 'a t = 'a list =
+  | []
+  | (::) of 'a * 'a list
+@@END_FROM_4_03_0@@
+@@BEGIN_BEFORE_4_03_0@@
+type 'a t = 'a list
+@@END_BEFORE_4_03_0@@"
+  | Psig_type (_, _)
       when module_name = Longident.Lident "Seq" ->
       Format.fprintf formatter "\
 type 'a t = unit -> 'a node
