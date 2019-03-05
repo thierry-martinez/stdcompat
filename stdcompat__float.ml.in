@@ -207,7 +207,7 @@ module Array = struct
     fill (len - 1) l
 
   let of_seq i =
-    let l = Seq.fold_left (fun acc x -> x :: acc) [] i in
+    let l = Stdcompat__seq.fold_left (fun acc x -> x :: acc) [] i in
     of_rev_list l
 
   let map_to_array f a =
