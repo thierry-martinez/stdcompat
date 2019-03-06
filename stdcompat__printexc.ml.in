@@ -27,8 +27,7 @@ type location =
 @END_BEFORE_4_02_0@
 
 @BEGIN_BEFORE_4_04_0@
-module Slot :
-sig
+module Slot = struct
   type t = backtrace_slot
 
   let is_raise _ =
