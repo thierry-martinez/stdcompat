@@ -3,7 +3,7 @@ module type S = sig
 val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a
 @END_FROM_4_01_0@
 @BEGIN_BEFORE_4_01_0@
-val ifprintf : 'b -> ('a, 'b, unit) format4 -> 'a
+val ifprintf : 'b -> ('a, 'b, unit) format -> 'a
 @END_BEFORE_4_01_0@
 (** @since 4.03.0: val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a *)
 
