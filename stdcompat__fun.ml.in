@@ -18,31 +18,16 @@ let protect ~finally f =
     try
       Stdcompat__pervasives.Ok (f ())
     with exn ->
-@BEGIN_FROM_4_01_0@
-      let bt = Printexc.get_raw_backtrace () in
-      Stdcompat__pervasives.Error (exn, bt)
-@END_FROM_4_01_0@
-@BEGIN_BEFORE_4_01_0@
-      Stdcompat__pervasives.Error exn
-@END_BEFORE_4_01_0@ in
+      let bt = Stdcompat__printexc.get_raw_backtrace () in
+      Stdcompat__pervasives.Error (exn, bt) in
   begin
     try
       finally ()
     with exn ->
-@BEGIN_FROM_4_01_0@
-      let bt = Printexc.get_raw_backtrace () in
-      Printexc.raise_with_backtrace (Finally_raised exn) bt
-@END_FROM_4_01_0@
-@BEGIN_BEFORE_4_01_0@
-      raise_notrace (Finally_raised exn)
-@END_BEFORE_4_01_0@
+      let bt = Stdcompat__printexc.get_raw_backtrace () in
+      Stdcompat__printexc.raise_with_backtrace (Finally_raised exn) bt
   end;
   match value with
   | Ok result -> result
-@BEGIN_FROM_4_01_0@
-  | Error (exn, bt) -> Printexc.raise_with_backtrace exn bt
-@END_FROM_4_01_0@
-@BEGIN_BEFORE_4_01_0@
-  | Error exn -> raise_notrace exn
-@END_BEFORE_4_01_0@
+  | Error (exn, bt) -> Stdcompat__printexc.raise_with_backtrace exn bt
 @END_BEFORE_4_08_0@

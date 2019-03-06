@@ -84,7 +84,7 @@ module Option = Stdcompat__option
 
 module Parsing = Parsing
 
-module Printexc = Printexc
+module Printexc = Stdcompat__printexc
 
 module Printf = Stdcompat__printf
 

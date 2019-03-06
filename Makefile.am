@@ -17,7 +17,7 @@ EXTRA_DIST=stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
 	stdcompat__array.mli stdcompat__arrayLabels.mli \
 	stdcompat__float.mli stdcompat__queue.mli stdcompat__ephemeron.mli \
 	stdcompat__spacetime.mli stdcompat__moreLabels.mli stdcompat__lexing.mli \
-	stdcompat__option.mli stdcompat__result.mli stdcompat__bool.mli \
+	stdcompat__option.mli stdcompat__printexc.mli stdcompat__result.mli stdcompat__bool.mli \
 	stdcompat__fun.mli stdcompat__format.mli stdcompat__printf.mli stdcompat__stdlib.mli \
 	stdcompat__seq.mli
 
@@ -51,7 +51,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__array.ml stdcompat__arrayLabels.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
 	stdcompat__spacetime.ml stdcompat__moreLabels.ml stdcompat__lexing.ml \
-	stdcompat__option.ml stdcompat__result.ml stdcompat__bool.ml \
+	stdcompat__option.ml stdcompat__printexc.ml stdcompat__result.ml stdcompat__bool.ml \
 	stdcompat__fun.ml stdcompat__format.ml stdcompat__printf.ml stdcompat__stdlib.ml
 
 mypkg_SCRIPTS = META stdcompat.cmi stdcompat__native.cmi $(MODULES:.ml=.cmi)

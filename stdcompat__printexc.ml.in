@@ -1,0 +1,113 @@
+include Printexc
+
+@BEGIN_BEFORE_4_08_0@
+@BEGIN_FROM_4_02_0@
+type t = ..
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+type t
+@END_BEFORE_4_02_0@
+@END_BEFORE_4_08_0@
+
+@BEGIN_BEFORE_4_01_0@
+type raw_backtrace = ()
+@END_BEFORE_4_01_0@
+
+@BEGIN_BEFORE_4_02_0@
+type backtrace_slot
+@END_BEFORE_4_02_0@
+
+@BEGIN_BEFORE_4_02_0@
+type location =
+  {
+  filename: string ;
+  line_number: int ;
+  start_char: int ;
+  end_char: int }
+@END_BEFORE_4_02_0@
+
+@BEGIN_BEFORE_4_04_0@
+module Slot :
+sig
+  type t = backtrace_slot
+
+  let is_raise _ =
+    failwith "Unimplemented."
+
+  let is_inline _ =
+    failwith "Unimplemented."
+
+  let location _ =
+    failwith "Unimplemented."
+
+  let format _ _ =
+    failwith "Unimplemented."
+end
+@END_BEFORE_4_04_0@
+
+@BEGIN_BEFORE_4_02_0@
+type raw_backtrace_slot
+@END_BEFORE_4_02_0@
+
+@BEGIN_BEFORE_4_05_0@
+let raise_with_backtrace exn _ =
+  raise exn
+@END_BEFORE_4_05_0@
+
+@BEGIN_BEFORE_4_04_0@
+let get_raw_backtrace_next_slot _ _ =
+  failwith "Unimplemented."
+@END_BEFORE_4_04_0@
+
+@BEGIN_BEFORE_4_02_0@
+let set_uncaught_exception_handler _ =
+  failwith "Unimplemented."
+
+let backtrace_slots _ =
+  failwith "Unimplemented."
+
+let raw_backtrace_length _ =
+  failwith "Unimplemented."
+
+let get_raw_backtrace_slot _ =
+  failwith "Unimplemented."
+
+let convert_raw_backtrace_slot _ =
+  failwith "Unimplemented."
+
+let exn_slot_id _ =
+  failwith "Unimplemented."
+
+let exn_slot_name _ =
+  failwith "Unimplemented."
+@END_BEFORE_4_02_0@
+
+@BEGIN_BEFORE_4_01_0@
+let get_raw_backtrace _ = ()
+
+let print_raw_backtrace _ =
+  failwith "Unimplemented."
+
+let raw_backtrace_to_string _ =
+  failwith "Unimplemented."
+
+let get_callstack _ =
+  failwith "Unimplemented."
+@END_BEFORE_4_01_0@
+
+@BEGIN_BEFORE_3_11_0@
+let print_backtrace _ =
+  failwith "Unimplemented."
+
+let get_backtrace _ =
+  failwith "Unimplemented."
+
+let record_backtrace _ =
+  failwith "Unimplemented."
+
+let backtrace_status _ =
+  failwith "Unimplemented."
+
+let register_printer _ =
+  failwith "Unimplemented."
+@END_BEFORE_3_11_0@

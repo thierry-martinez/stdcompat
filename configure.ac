@@ -175,6 +175,7 @@ AC_CONFIG_FILES([
   stdcompat__moreLabels_s.mli
   stdcompat__nativeint_s.mli
   stdcompat__option_s.mli
+  stdcompat__printexc_s.mli
   stdcompat__printf_s.mli
   stdcompat__queue_s.mli
   stdcompat__result_s.mli
@@ -216,6 +217,7 @@ AC_CONFIG_FILES([
   stdcompat__moreLabels_s.ml:stdcompat__moreLabels_s.mli.in
   stdcompat__nativeint_s.ml:stdcompat__nativeint_s.mli.in
   stdcompat__option_s.ml:stdcompat__option_s.mli.in
+  stdcompat__printexc_s.ml:stdcompat__printexc_s.mli.in
   stdcompat__printf_s.ml:stdcompat__printf_s.mli.in
   stdcompat__queue_s.ml:stdcompat__queue_s.mli.in
   stdcompat__result_s.ml:stdcompat__result_s.mli.in
@@ -257,6 +259,7 @@ AC_CONFIG_FILES([
   stdcompat__moreLabels.ml
   stdcompat__nativeint.ml
   stdcompat__option.ml
+  stdcompat__printexc.ml
   stdcompat__printf.ml
   stdcompat__queue.ml
   stdcompat__result.ml
@@ -298,6 +301,7 @@ AC_CONFIG_FILES([
   stdcompat__moreLabels.mli
   stdcompat__nativeint.mli
   stdcompat__option.mli
+  stdcompat__printexc.mli
   stdcompat__printf.mli
   stdcompat__queue.mli
   stdcompat__result.mli
