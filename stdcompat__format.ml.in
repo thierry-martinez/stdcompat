@@ -1,6 +1,8 @@
+@BEGIN_FROM_4_06_0@
 include Format
-
+@END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
+@BEGIN_FROM_4_01_0@
 type formatter_out_functions =
   {
   out_string: string -> int -> int -> unit ;
@@ -9,6 +11,15 @@ type formatter_out_functions =
   out_spaces: int -> unit ;
   out_indent: int -> unit }
 
+include (Format : module type of Format with type formatter_out_functions := formatter_out_functions)
+@END_FROM_4_01_0@
+@BEGIN_BEFORE_4_01_0@
+include Format
+@END_BEFORE_4_01_0@
+@END_BEFORE_4_06_0@
+
+
+@BEGIN_BEFORE_4_06_0@
 type symbolic_output_item =
   | Output_flush 
   | Output_newline 
