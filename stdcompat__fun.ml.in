@@ -28,6 +28,6 @@ let protect ~finally f =
       Stdcompat__printexc.raise_with_backtrace (Finally_raised exn) bt
   end;
   match value with
-  | Ok result -> result
-  | Error (exn, bt) -> Stdcompat__printexc.raise_with_backtrace exn bt
+  | Stdcompat__pervasives.Ok result -> result
+  | Stdcompat__pervasives.Error (exn, bt) -> Stdcompat__printexc.raise_with_backtrace exn bt
 @END_BEFORE_4_08_0@
