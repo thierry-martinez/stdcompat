@@ -7,10 +7,7 @@ and 'a node = 'a Seq.node =
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 type 'a t = unit -> 'a node
-and 'a node =
-@BEGIN_WITH_SEQ_PKG@
-  'a Seq.node =
-@END_WITH_SEQ_PKG@
+and 'a node = Stdcompat__init.seq =
   | Nil
   | Cons of 'a * 'a t
 @END_BEFORE_4_07_0@
