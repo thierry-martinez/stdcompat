@@ -465,7 +465,8 @@ let qualify_type_decl ~module_name (type_decl : Parsetree.type_declaration) =
             && ident <> "nativeint" && ident <> "int32" && ident <> "int64"
             && ident <> "format6" && ident <> "format4" && ident <> "bytes"
             && ident <> "float" && ident <> "result" && ident <> "option"
-             && ident <> "list" && ident <> "bool" && ident <> "array"->
+             && ident <> "list" && ident <> "bool" && ident <> "array"
+        && ident <> "exn" ->
           let txt = Longident.Ldot (module_name, ident) in
           let ptyp_desc = Parsetree.Ptyp_constr ({ Location.txt; loc }, args) in
           { ty with ptyp_desc }
