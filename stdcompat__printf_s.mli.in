@@ -11,7 +11,7 @@ val ifprintf : 'b -> ('a, 'b, unit) format -> 'a
 val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-val ikfprintf : (out_channel -> 'a) -> out_channel -> ('b, out_channel, unit, 'a) format4 -> 'a
+val ikfprintf : (out_channel -> 'a) -> out_channel -> ('b, out_channel, unit, 'a) format4 -> 'b
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a *)
