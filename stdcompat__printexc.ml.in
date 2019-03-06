@@ -54,7 +54,7 @@ let raise_with_backtrace exn _ =
 @END_BEFORE_4_05_0@
 
 @BEGIN_BEFORE_4_04_0@
-let get_raw_backtrace_next_slot _ _ =
+let get_raw_backtrace_next_slot _ =
   failwith "Unimplemented."
 @END_BEFORE_4_04_0@
 
