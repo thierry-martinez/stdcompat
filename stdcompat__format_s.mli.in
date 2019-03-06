@@ -34,16 +34,18 @@ type stag
 type tag = string
 (** Alias for {!Format.tag} *)
 
-@BEGIN_FROM_4_06_0@
+@BEGIN_FROM_4_01_0@
 type formatter_out_functions = Format.formatter_out_functions =
   {
   out_string: string -> int -> int -> unit ;
   out_flush: unit -> unit ;
+@BEGIN_FROM_4_06_0@
   out_newline: unit -> unit ;
+@END_FROM_4_06_0@
   out_spaces: int -> unit ;
   out_indent: int -> unit }
-@END_FROM_4_06_0@
-@BEGIN_BEFORE_4_06_0@
+@END_FROM_4_01_0@
+@BEGIN_BEFORE_4_01_0@
 type formatter_out_functions =
   {
   out_string: string -> int -> int -> unit ;
@@ -51,7 +53,7 @@ type formatter_out_functions =
   out_newline: unit -> unit ;
   out_spaces: int -> unit ;
   out_indent: int -> unit }
-@END_BEFORE_4_06_0@
+@END_BEFORE_4_01_0@
 (** @since 4.06.0:
     type formatter_out_functions =
       {
