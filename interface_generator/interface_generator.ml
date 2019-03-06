@@ -1198,7 +1198,7 @@ type 'a t = 'a list
       when module_name = Longident.Lident "Seq" ->
       Format.fprintf formatter "\
 type 'a t = unit -> 'a node
-and 'a node = 'a Stdcompat__init.seq =
+and 'a node = 'a Stdcompat__init.seq_node =
   | Nil
   | Cons of 'a * 'a t"
   | Psig_type (_, [{ ptype_name = { txt }; ptype_manifest = Some t; ptype_kind = Ptype_open }]) ->
