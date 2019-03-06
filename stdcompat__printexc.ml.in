@@ -2,10 +2,10 @@ include Printexc
 
 @BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
-type t = ..
+type t = exn = ..
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
-type t
+type t = exn
 @END_BEFORE_4_02_0@
 @END_BEFORE_4_08_0@
 
