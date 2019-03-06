@@ -1203,6 +1203,14 @@ and 'a node =
   | Cons of 'a * 'a t"
         (format_with "SEQ_PKG" Format.pp_print_string)
          "  'a Seq.node ="
+  | Psig_type (_, [{ ptype_name = { txt }; ptype_manifest = Some t; ptype_kind = Ptype_open }]) ->
+      Format.fprintf formatter "\
+@@BEGIN_FROM_4_02_0@@
+type %s = %a = ..
+@@END_FROM_4_02_0@@
+@@BEGIN_BEFORE_4_02_0@@
+type %s = %a
+@@END_BEFORE_4_02_0@@" txt Pprintast.core_type t txt Pprintast.core_type t
   | Psig_type (_, [{ ptype_name = { txt }; ptype_kind = Ptype_open }]) ->
       Format.fprintf formatter "\
 @@BEGIN_FROM_4_02_0@@
