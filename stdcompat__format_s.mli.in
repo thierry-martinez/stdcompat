@@ -39,11 +39,11 @@ type formatter_out_functions = Format.formatter_out_functions =
   {
   out_string: string -> int -> int -> unit ;
   out_flush: unit -> unit ;
-@BEGIN_FROM_4_06_0@
   out_newline: unit -> unit ;
-@END_FROM_4_06_0@
   out_spaces: int -> unit ;
-  out_indent: int -> unit }
+@BEGIN_FROM_4_06_0@
+  out_indent: int -> unit 
+@END_FROM_4_06_0@}
 @END_FROM_4_01_0@
 @BEGIN_BEFORE_4_01_0@
 type formatter_out_functions =
