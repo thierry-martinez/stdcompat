@@ -1198,11 +1198,9 @@ type 'a t = 'a list
       when module_name = Longident.Lident "Seq" ->
       Format.fprintf formatter "\
 type 'a t = unit -> 'a node
-and 'a node =
-%a  | Nil
+and 'a node = Stdcompat__init.seq =
+  | Nil
   | Cons of 'a * 'a t"
-        (format_with "SEQ_PKG" Format.pp_print_string)
-         "  'a Seq.node ="
   | Psig_type (_, [{ ptype_name = { txt }; ptype_manifest = Some t; ptype_kind = Ptype_open }]) ->
       Format.fprintf formatter "\
 @@BEGIN_FROM_4_02_0@@
