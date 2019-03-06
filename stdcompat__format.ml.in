@@ -1,6 +1,6 @@
 include Format
 
-@BEGIN_BEFORE_4_01_0@
+@BEGIN_BEFORE_4_06_0@
 type formatter_out_functions =
   {
   out_string: string -> int -> int -> unit ;
@@ -8,9 +8,7 @@ type formatter_out_functions =
   out_newline: unit -> unit ;
   out_spaces: int -> unit ;
   out_indent: int -> unit }
-@END_BEFORE_4_01_0@
 
-@BEGIN_BEFORE_4_06_0@
 type symbolic_output_item =
   | Output_flush 
   | Output_newline 
