@@ -76,7 +76,8 @@ type raw_backtrace_slot
 @END_BEFORE_4_02_0@
 
 @BEGIN_FROM_4_05_0@
-let raise_with_backtrace = Printexc.raise_with_backtrace
+external raise_with_backtrace :
+  exn -> raw_backtrace -> 'a = "%raise_with_backtrace"
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 let raise_with_backtrace exn _ =
