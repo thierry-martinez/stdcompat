@@ -1,3 +1,20 @@
+* Version 9
+
+- [compatibility break] Pervasives.protect has been moved to Fun.protect
+  since its introduction in OCaml trunk
+
+- Support for OCaml 4.08.0: additions to modules Float, Format (mostly
+  unimplemented), Fun, List (filter_map), Sys (max_floatarray_length)
+
+- ocamlfind has been added as depopt since its presence changes the behvior
+  of configure script
+
+- Printexc has been added: substitution functions are mostly unimplemented,
+  except for get_raw_backtrace (which returns ()) and raise_with_backtrace
+  (which calls raise)
+
+- Fix: equality between aliases of Seq.t
+
 * Version 8
 
 - Fix: module Fun was not exported
@@ -16,6 +33,7 @@
 - Modules Format and Printf added to the set of redefined modules
 
 * Version 6
+
 - Support for OCaml 4.08.0
 
 - Support VPATH build, i.e. when configure is executed in a build directory
