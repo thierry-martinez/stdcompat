@@ -1,3 +1,7 @@
+* Next version
+
+- Printexc is no longer opaque
+
 * Version 9
 
 - [compatibility break] Pervasives.protect has been moved to Fun.protect
