@@ -24,6 +24,9 @@ AS_IF([test "x$OCAMLFIND" = "x"],
    AC_CHECK_TOOL([OCAMLDEP], [ocamldep.opt], [])
    AS_IF([test "x$OCAMLDEP" = "x"],
      [AC_CHECK_TOOL([OCAMLDEP], [ocamldep], [])])
+   AC_CHECK_TOOL([OCAMLMKLIB], [ocamlmklib.opt], [])
+   AS_IF([test "x$OCAMLMKLIB" = "x"],
+     [AC_CHECK_TOOL([OCAMLMKLIB], [ocamlmklib], [])])
    AC_SUBST([RESULT_PKG], [])
    AC_SUBST([SEQ_PKG], [])
    AC_SUBST([UCHAR_PKG], [])],
@@ -31,6 +34,7 @@ AS_IF([test "x$OCAMLFIND" = "x"],
    AC_SUBST([OCAMLOPT], [["$OCAMLFIND ocamlopt"]])
    AC_SUBST([OCAMLDOC], [["$OCAMLFIND ocamldoc"]])
    AC_SUBST([OCAMLDEP], [["$OCAMLFIND ocamldep"]])
+   AC_SUBST([OCAMLMKLIB], [["$OCAMLFIND ocamlmklib"]])
    AC_OCAMLFIND_PKG([RESULT_PKG], [result])
    AC_OCAMLFIND_PKG([SEQ_PKG], [seq])
    AC_OCAMLFIND_PKG([UCHAR_PKG], [uchar])])
@@ -148,6 +152,7 @@ AC_CONFIG_FILES([
   stdcompat__native.ml_byte
   stdcompat__native.ml_native
   stdcompat_tests.ml
+  stdcompat__stubs.c
   stdcompat__pervasives_s.mli
   stdcompat__arg_s.mli
   stdcompat__array_s.mli

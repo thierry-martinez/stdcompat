@@ -21,7 +21,7 @@ EXTRA_DIST=stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
 	stdcompat__fun.mli stdcompat__format.mli stdcompat__printf.mli stdcompat__stdlib.mli \
 	stdcompat__seq.mli stdcompat__printexc.mli
 
-MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
+MODULES = stdcompat__native.ml stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__seq.ml stdcompat__tools.ml \
 	stdcompat__pervasives_s.ml stdcompat__arg_s.ml stdcompat__lazy_s.ml \
 	stdcompat__char_s.ml stdcompat__uchar_s.ml stdcompat__buffer_s.ml \
@@ -53,17 +53,17 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
 	stdcompat__spacetime.ml stdcompat__moreLabels.ml stdcompat__lexing.ml \
 	stdcompat__option.ml stdcompat__printexc.ml stdcompat__result.ml stdcompat__bool.ml \
-	stdcompat__fun.ml stdcompat__format.ml stdcompat__printf.ml stdcompat__stdlib.ml
+	stdcompat__fun.ml stdcompat__format.ml stdcompat__printf.ml stdcompat__stdlib.ml \
+	stdcompat.ml
 
-mypkg_SCRIPTS = META stdcompat.cmi stdcompat__native.cmi $(MODULES:.ml=.cmi)
+mypkg_SCRIPTS = META $(MODULES:.ml=.cmi) libstdcompat__stubs.a
 
 if OCAML_SUPPORTS_BYTECODE
 mypkg_SCRIPTS += stdcompat.cma
 endif
 
 if OCAML_SUPPORTS_NATIVE
-mypkg_SCRIPTS += stdcompat.cmxa stdcompat.a stdcompat.cmx \
-	stdcompat__native.cmx $(MODULES:.ml=.cmx)
+mypkg_SCRIPTS += stdcompat.cmxa stdcompat.a $(MODULES:.ml=.cmx)
 endif
 
 if OCAML_SUPPORTS_SHARED
@@ -74,6 +74,7 @@ PACKAGES = $(RESULT_PKG) $(SEQ_PKG) $(UCHAR_PKG)
 OCAMLFLAGS = $(PACKAGES:%=-package %)
 OCAMLCFLAGS = $(OCAMLFLAGS) -I @srcdir@
 OCAMLLDFLAGS = $(OCAMLFLAGS)
+OCAMLLIBFLAGS = -cclib "-L. -lstdcompat__stubs"
 
 if OCAML_SUPPORTS_NO_ALIAS_DEPS
 OCAMLFLAGS += -no-alias-deps
@@ -92,16 +93,22 @@ SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs
 .ml.cmx :
 	$(OCAMLOPT) -c $(OCAMLCFLAGS) $< -o $@
 
-stdcompat.cma : stdcompat__native.cmo $(MODULES:.ml=.cmo) stdcompat.cmo
-	$(OCAMLC) $(OCAMLLDFLAGS) -a $^ -o $@
+stdcompat__stubs.o : stdcompat__stubs.c
+	$(OCAMLC) -c -o $@ $<
 
-stdcompat.cmxa : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
-	$(OCAMLOPT) $(OCAMLLDFLAGS) -a $^ -o $@
+libstdcompat__stubs.a : stdcompat__stubs.o
+	$(OCAMLMKLIB) -o $(basename $<) $<
+
+stdcompat.cma : $(MODULES:.ml=.cmo) libstdcompat__stubs.a
+	$(OCAMLC) $(OCAMLLDFLAGS) -a $(MODULES:.ml=.cmo) $(OCAMLLIBFLAGS) -o $@
+
+stdcompat.cmxa : $(MODULES:.ml=.cmx) libstdcompat__stubs.a
+	$(OCAMLOPT) $(OCAMLLDFLAGS) -a $(MODULES:.ml=.cmx) $(OCAMLLIBFLAGS) -o $@
 
 stdcompat.a : stdcompat.cmxa
 
-stdcompat.cmxs : stdcompat__native.cmx $(MODULES:.ml=.cmx) stdcompat.cmx
-	$(OCAMLOPT) $(OCAMLLDFLAGS) -shared $^ -o $@
+stdcompat.cmxs : $(MODULES:.ml=.cmx) libstdcompat__stubs.a
+	$(OCAMLOPT) $(OCAMLLDFLAGS) -shared $(MODULES:.ml=.cmx) $(OCAMLLIBFLAGS) -o $@
 
 stdcompat__native.cmo : stdcompat__native.ml_byte
 	$(OCAMLC) $(OCAMLCFLAGS) -c -impl stdcompat__native.ml_byte
@@ -112,9 +119,9 @@ stdcompat__native.cmx : stdcompat__native.ml_native
 .PHONY : depend
 depend : .depend
 
-.depend : $(MODULES) $(MODULES:.ml=.mli) stdcompat.ml stdcompat.mli stdcompat__native.ml_byte
+.depend : $(MODULES) $(MODULES:.ml=.mli) stdcompat.ml stdcompat__native.ml_byte
 	cp stdcompat__native.ml_byte stdcompat__native.ml
-	$(OCAMLDEP) stdcompat__native.ml $^ >$@ || rm -f .depend
+	$(OCAMLDEP) $^ >$@ || rm -f .depend
 
 .PHONY : tests
 tests : stdcompat_tests
