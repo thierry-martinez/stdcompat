@@ -1,8 +1,10 @@
-* Next version
+* Version 10
 
 - New C stub with definition of caml_alloc_initialized_string for OCaml <4.05.0
 
 - Fix: Printexc is no longer opaque
+
+- Generate -bin-annot .cmt files for OCaml >=4.00.0
 
 * Version 9
 

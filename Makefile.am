@@ -78,11 +78,16 @@ OCAMLCFLAGS = $(OCAMLFLAGS) -I @srcdir@
 OCAMLLDFLAGS = $(OCAMLFLAGS)
 OCAMLLIBFLAGS = -cclib "-L. -lstdcompat__stubs"
 
+if OCAML_SUPPORTS_BIN_ANNOT
+OCAMLFLAGS += -bin-annot
+mypkg_SCRIPTS += $(MODULES_native:.ml=.cmt)
+endif
+
 if OCAML_SUPPORTS_NO_ALIAS_DEPS
 OCAMLFLAGS += -no-alias-deps
 endif
 
-SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs
+SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs .cmt
 
 .DEFAULT_GOAL = all
 
