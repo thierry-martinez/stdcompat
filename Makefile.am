@@ -58,7 +58,8 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 
 MODULES_native = stdcompat__native.ml $(MODULES)
 
-mypkg_SCRIPTS = META $(MODULES_native:.ml=.cmi) libstdcompat__stubs.a
+mypkg_SCRIPTS = META $(MODULES_native) $(MODULES_native:.ml=.cmi) \
+	libstdcompat__stubs.a
 
 if OCAML_SUPPORTS_BYTECODE
 mypkg_SCRIPTS += stdcompat.cma
