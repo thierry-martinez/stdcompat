@@ -1,3 +1,7 @@
+* Version 11
+
+- caml_alloc_initialized_string is now available for OCaml 4.05.0
+
 * Version 10
 
 - New C stub with definition of caml_alloc_initialized_string for OCaml <4.05.0
