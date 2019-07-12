@@ -71,6 +71,8 @@ module type S = sig
 
   module Hashtbl : Stdcompat__hashtbl_s.S
 
+  module Int : Stdcompat__int_s.S
+
   module Int32 : Stdcompat__int32_s.S
 
   module Int64 : Stdcompat__int64_s.S
