@@ -157,6 +157,12 @@ val register_printer : (exn -> string option) -> unit
 val to_string : exn -> string
 (** Alias for {!Printexc.to_string} *)
 
+val to_string_default : exn -> string
+(** @since 4.09 *)
+
+val use_printers : exn -> string option
+(** @since 4.09 *)
+
 val print : ('a -> 'b) -> 'a -> 'b
 (** Alias for {!Printexc.print} *)
 

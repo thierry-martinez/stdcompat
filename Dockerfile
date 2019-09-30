@@ -24,3 +24,4 @@ RUN opam update && opam switch create 4.06.0
 RUN opam update && opam switch create 4.07.0
 RUN opam update && opam switch create 4.07.1
 RUN opam update && opam switch create 4.08.0
+RUN opam update && opam switch create 4.09.0
