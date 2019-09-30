@@ -41,6 +41,8 @@ type location =
   end_char: int }
 @END_BEFORE_4_02_0@
 
+let to_string = Printexc.to_string
+
 @BEGIN_BEFORE_4_09_0@
 let use_printers e =
   Some (to_string e)
@@ -188,6 +190,5 @@ let register_printer _ =
   failwith "Unimplemented."
 @END_BEFORE_3_11_0@
 
-let to_string = Printexc.to_string
 let print = Printexc.print
 let catch = Printexc.catch
