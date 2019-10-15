@@ -6,6 +6,7 @@ bug-reports: "https://github.com/thierry-martinez/stdcompat/issues"
 license: "BSD"
 dev-repo: "git+https://github.com/thierry-martinez/stdcompat.git"
 build: [
+  ["./bootstrap.sh"]
   ["./configure" "--prefix=%{prefix}%"]
   [make]
 ]
