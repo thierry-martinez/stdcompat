@@ -1,0 +1,14 @@
+.PHONY : all
+all : config.h.in aclocal.m4 Makefile.in configure
+
+config.h.in :
+	autoheader
+
+aclocal.m4 :
+	aclocal
+
+Makefile.in : aclocal.m4
+	automake
+
+configure : aclocal.m4
+	autoconf
