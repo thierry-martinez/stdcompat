@@ -132,7 +132,7 @@ let null =
    "/dev/null"
 @END_WITH_UNIX_OR_CYGWIN@
 
-open Stdcompat__stdlib
+open Stdcompat__pervasives
 
 let quote_redirections buffer quote_string stdin stdout stderr =
   stdin |> Stdcompat__option.iter (fun f ->
