@@ -26,6 +26,29 @@ type signal_behavior = Sys.signal_behavior =
 exception Break 
 (** Alias for {!Sys.Break} *)
 
+@BEGIN_FROM_4_10_0@
+module Immediate64 = Sys.Immediate64
+@END_FROM_4_10_0@
+@BEGIN_BEFORE_4_10_0@
+module Immediate64 :
+sig
+  module type Non_immediate  = sig type t end
+  module type Immediate  = sig type t[@@immediate ] end
+  module Make :
+  functor (Immediate : Immediate) ->
+    functor (Non_immediate : Non_immediate) ->
+      sig
+        type t[@@immediate64 ]
+        type 'a repr =
+          | Immediate: Immediate.t repr 
+          | Non_immediate: Non_immediate.t repr 
+        val repr : t repr
+      end
+end
+@END_BEFORE_4_10_0@
+(** @since 4.10.0: module Immediate64 = Sys.Immediate64
+ *)
+
 val max_floatarray_length : int
 (** @since 4.08.0: val max_floatarray_length : int *)
 
@@ -116,8 +139,15 @@ val is_directory : string -> bool
     external is_directory : string -> bool = "caml_sys_is_directory"
  *)
 
+@BEGIN_FROM_4_09_0@
+external argv : string array = "%sys_argv"
+@END_FROM_4_09_0@
+@BEGIN_BEFORE_4_09_0@
 val argv : string array
-(** Alias for {!Sys.argv} *)
+@END_BEFORE_4_09_0@
+(** @since 4.09.0: external argv : string array = "%sys_argv"
+@since 3.07.0: val argv : string array
+ *)
 
 val executable_name : string
 (** Alias for {!Sys.executable_name} *)

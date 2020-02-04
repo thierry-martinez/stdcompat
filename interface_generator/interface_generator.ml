@@ -56,8 +56,9 @@ end
 
 type isomorphism_kind = Ignore_attributes | Attributes_equal
 
-let is_attribute_isomorphic kind (id, payload) (id', payload') =
-  Name.equal id id'
+let is_attribute_isomorphic kind (a : Parsetree.attribute)
+    (b : Parsetree.attribute) =
+  Name.equal a.attr_name b.attr_name
 
 let is_attributes_isomorphic kind (a : Parsetree.attributes)
     (a' : Parsetree.attributes) =
@@ -104,10 +105,10 @@ let rec is_core_type_isomorphic kind (t : Parsetree.core_type)
 
 and is_object_field_isomorphic kind (f : Parsetree.object_field)
     (f' : Parsetree.object_field) =
-  match f, f' with
-  | Otag (l, a, t), Otag (l', a', t') ->
+  is_attributes_isomorphic kind f.pof_attributes f'.pof_attributes &&
+  match f.pof_desc, f'.pof_desc with
+  | Otag (l, t), Otag (l', t') ->
       l.txt = l'.txt &&
-      is_attributes_isomorphic kind a a' &&
       is_core_type_isomorphic kind t t'
   | Oinherit t, Oinherit t' ->
       is_core_type_isomorphic kind t t'
@@ -214,7 +215,8 @@ module Signature = struct
   let add_module_declaration (module_declaration : Parsetree.module_declaration)
       s =
     let modules =
-      String.Map.add module_declaration.pmd_name.txt module_declaration
+      String.Map.add (Option.get module_declaration.pmd_name.txt)
+        module_declaration
         s.modules in
     { s with modules }
 
@@ -255,7 +257,7 @@ let loc_of_txt txt : 'a Location.loc =
   { txt; loc = Location.none }
 
 let core_type_of_desc ptyp_desc : Parsetree.core_type =
-  { ptyp_desc; ptyp_loc = Location.none; ptyp_attributes = [] }
+  Ast_helper.Typ.mk ptyp_desc
 
 let module_type_of_desc pmty_desc : Parsetree.module_type =
   { pmty_desc; pmty_loc = Location.none; pmty_attributes = [] }
@@ -275,27 +277,40 @@ let module_type_of_name version module_name =
     | [] -> assert false in
   let root_signature =
     try
+      prerr_endline "in cache";
       SignaturesTable.find signatures (version, root_module)
     with Not_found ->
       let root_module_mli =
         Printf.sprintf "../interfaces/%s/%s.mli"
           (Interface_tools.Version.to_string ~include_patch:false version)
           (String.uncapitalize_ascii root_module) in
+      prerr_endline root_module_mli;
       let root_signature =
         match lex_file root_module_mli Parse.interface with
         | root_signature -> root_signature
         | exception (Sys_error _) -> [] in
+      if root_signature = [] then
+        prerr_endline "Parsed an empty signature!";
       SignaturesTable.add signatures (version, root_module) root_signature;
       root_signature in
   let rec lookup_submodule signature hd tl =
+    Format.eprintf "Looking for submodule %s@." hd;
+    if signature = [] then
+      prerr_endline "Empty signature!";
     let module_type =
       signature |> Interface_tools.List.find_map @@
       fun (signature_item : Parsetree.signature_item) ->
         match signature_item.psig_desc with
         | Psig_module module_declaration
-          when module_declaration.pmd_name.txt = hd ->
+          when Option.get module_declaration.pmd_name.txt = hd ->
             Some module_declaration.pmd_type
-        | _ -> None in
+        | Psig_module module_declaration ->
+            prerr_endline (Option.get module_declaration.pmd_name.txt);
+            None
+        | _ ->
+            Format.eprintf "%a@."
+              Pprintast.signature [signature_item];
+            None in
     match tl with
     | [] -> module_type
     | hd :: tl ->
@@ -303,7 +318,8 @@ let module_type_of_name version module_name =
         lookup_submodule signature hd tl in
   match submodule_path with
   | [] -> module_type_of_signature root_signature
-  | hd :: tl -> lookup_submodule root_signature hd tl
+  | hd :: tl ->
+      lookup_submodule root_signature hd tl
 
 module PolymorphicHash (T : Type) = struct
   type t = T.t
@@ -737,7 +753,7 @@ let rec compat_signature_item ~module_name ~reference_version ~version
       { item with psig_desc = Psig_value value_desc}
   | Psig_module module_declaration ->
       let module_name =
-        Longident.Ldot (module_name, module_declaration.pmd_name.txt) in
+        Longident.Ldot (module_name, Option.get module_declaration.pmd_name.txt) in
       let pmd_type =
         module_declaration.pmd_type |>
         compat_module_type ~module_name ~reference_version ~version in
@@ -770,16 +786,16 @@ and compat_module_type ~module_name ~reference_version ~version
           (compat_signature_item ~module_name ~reference_version ~version)
           signature in
       { module_type with pmty_desc = Pmty_signature signature }
-  | Pmty_functor (var, arg, body) ->
+  | Pmty_functor (Named (var, arg), body) ->
       let arg =
         Interface_tools.Option.map
           (compat_module_type ~module_name ~reference_version ~version)
-          arg in
+          (Some arg) in
       let module_name =
-        Longident.Lapply (module_name, Lident var.txt) in
+        Longident.Lapply (module_name, Lident (Option.get var.txt)) in
       let body =
         compat_module_type ~module_name ~reference_version ~version body in
-      { module_type with pmty_desc = Pmty_functor (var, arg, body) }
+      { module_type with pmty_desc = Pmty_functor (Named (var, Option.get arg), body) }
   | Pmty_alias ident ->
       compat_module_type ~module_name ~reference_version ~version
         (module_type_of_name reference_version ident.txt)
@@ -837,11 +853,11 @@ let rec is_module_type_desc_isomorphic kind
       is_module_type_isomorphic kind
         ~version (module_type_of_desc module_type_desc)
         ~version' (module_type_of_name version ident'.txt)
-  | Pmty_functor (x, arg, body), Pmty_functor (x', arg', body') ->
-      Name.equal x x' &&
+  | Pmty_functor (Named (x, arg), body), Pmty_functor (Named (x', arg'), body') ->
+      Option.get x.txt = Option.get x'.txt &&
       Interface_tools.Option.equal
         (is_module_type_isomorphic kind ~version ~version')
-        arg arg' &&
+        (Some arg) (Some arg') &&
       is_module_type_isomorphic kind ~version body ~version' body'
   | Pmty_with _, Pmty_with _ -> true
   | Pmty_typeof _, Pmty_typeof _ -> true
@@ -858,7 +874,8 @@ and is_module_type_isomorphic kind
 and is_module_declaration_isomorphic kind
     ~version (module_declaration : Parsetree.module_declaration)
     ~version' (module_declaration' : Parsetree.module_declaration) =
-  Name.equal module_declaration.pmd_name module_declaration'.pmd_name &&
+  Option.get module_declaration.pmd_name.txt =
+  Option.get module_declaration'.pmd_name.txt &&
   is_module_type_isomorphic kind ~version module_declaration.pmd_type
     ~version' module_declaration'.pmd_type &&
   is_attributes_isomorphic kind module_declaration.pmd_attributes
@@ -881,6 +898,13 @@ and is_extension_constructor_isomorphic kind ~version
     (extension_constructor : Parsetree.extension_constructor)
     ~version' (extension_constructor' : Parsetree.extension_constructor) =
   extension_constructor.pext_name.txt = extension_constructor'.pext_name.txt
+
+and is_type_exception_isomorphic kind ~version
+    (type_exception : Parsetree.type_exception)
+    ~version' (type_exception' : Parsetree.type_exception) =
+  is_extension_constructor_isomorphic kind ~version
+    type_exception.ptyexn_constructor
+    ~version' type_exception'.ptyexn_constructor
 
 and is_signature_item_isomorphic kind
     ~version (item : Parsetree.signature_item)
@@ -905,7 +929,7 @@ and is_signature_item_isomorphic kind
         ~version' module_type_declaration'
   | Psig_exception extension_constructor,
         Psig_exception extension_constructor' ->
-      is_extension_constructor_isomorphic kind ~version
+      is_type_exception_isomorphic kind ~version
             extension_constructor
             ~version' extension_constructor'
   | Psig_typext type_extension,
@@ -937,12 +961,12 @@ let rec fake_module_type ~module_name ~reference_version ~version
       let s = s |> List.map @@
         fake_signature_item ~module_name ~reference_version ~version in
       { module_type with pmty_desc = Pmty_signature s }
-  | Pmty_functor (var, arg, body) ->
-      let arg = arg |> Interface_tools.Option.map @@
-        fake_module_type ~module_name ~reference_version ~version in
+  | Pmty_functor (Named (var, arg), body) ->
+      let arg =
+        fake_module_type ~module_name ~reference_version ~version arg in
       let body =
         fake_module_type ~module_name ~reference_version ~version body in
-      { module_type with pmty_desc = Pmty_functor (var, arg, body) }
+      { module_type with pmty_desc = Pmty_functor (Named (var, arg), body) }
   | _ -> module_type
 
 and fake_signature_item ~module_name ~reference_version ~version
@@ -1016,7 +1040,7 @@ let version_signature_item ~reference_version ~module_name ~signatures
           let real, module_declaration' =
             match
               match
-                String.Map.find_opt module_declaration.pmd_name.txt s.modules
+                String.Map.find_opt (Option.get module_declaration.pmd_name.txt) s.modules
               with
               | None -> None
               | Some module_declaration' ->
@@ -1034,7 +1058,7 @@ let version_signature_item ~reference_version ~module_name ~signatures
                             { loc = Location.none; txt =
                               Ldot
                                 (module_name,
-                                 module_declaration.pmd_name.txt) };
+                                 (Option.get module_declaration.pmd_name.txt)) };
                           pmty_loc = Location.none;
                           pmty_attributes = [] }}
                       else
@@ -1129,7 +1153,7 @@ let rec gather_similar_versions versions =
       head' :: (gather_similar_versions tail')
 
 let type_of_desc ptyp_desc : Parsetree.core_type =
-  { ptyp_desc; ptyp_loc = Location.none; ptyp_attributes = [] }
+  Ast_helper.Typ.mk ptyp_desc
 
 let format_block block sub formatter item =
   Format.fprintf formatter "\
@@ -1228,11 +1252,11 @@ let item_name module_name (item : Parsetree.signature_item) =
     | Psig_value value_desc ->
         value_desc.pval_name.txt
     | Psig_module module_declaration ->
-        module_declaration.pmd_name.txt
+        Option.get module_declaration.pmd_name.txt
     | Psig_modtype module_type_declaration ->
         module_type_declaration.pmtd_name.txt
     | Psig_exception extension_constructor ->
-        extension_constructor.pext_name.txt
+        extension_constructor.ptyexn_constructor.pext_name.txt
     | _ -> assert false in
   Printf.sprintf "%s.%s" (string_of_longident module_name) name
 
@@ -1248,10 +1272,9 @@ let add_self_type_manifest_to_type_decl ~(module_name : Longident.t)
         | _ -> module_name in
       { type_decl with ptype_manifest =
         let params = type_decl.ptype_params |> List.map fst in
-        Some ({ ptyp_desc =
-          Ptyp_constr ({ loc = Location.none; txt =
-            Ldot (module_name, type_decl.ptype_name.txt) }, params);
-              ptyp_loc = Location.none; ptyp_attributes = [] })}
+        Some (Ast_helper.Typ.constr
+          ({ loc = Location.none; txt =
+            Ldot (module_name, type_decl.ptype_name.txt) }) params)}
   | Some manifest -> type_decl
 
 let rec add_self_type_manifest ~module_name (item : Parsetree.signature_item) =
@@ -1263,7 +1286,7 @@ let rec add_self_type_manifest ~module_name (item : Parsetree.signature_item) =
   | Psig_value _ | Psig_modtype _ | Psig_exception _ -> item
   | Psig_module module_declaration ->
       let module_name : Longident.t =
-        Ldot (module_name, module_declaration.pmd_name.txt) in
+        Ldot (module_name, Option.get module_declaration.pmd_name.txt) in
       { item with psig_desc = Psig_module { module_declaration with
         pmd_type = module_declaration.pmd_type |>
           (add_self_type_manifest_to_module_type ~module_name) }}
@@ -1280,15 +1303,15 @@ and add_self_type_manifest_to_module_type ~module_name
       let signature = signature |>
         List.map (add_self_type_manifest ~module_name) in
       { module_type with pmty_desc = Pmty_signature signature }
-  | Pmty_functor (var, arg, body) ->
+  | Pmty_functor (Named (var, arg), body) ->
 (*
       let arg = arg |> Option.map
         (add_self_type_manifest_to_module_type ~module_name) in
 *)
       let module_name : Longident.t =
-        Lapply (module_name, Lident var.txt) in
+        Lapply (module_name, Lident (Option.get var.txt)) in
       let body = body |> add_self_type_manifest_to_module_type ~module_name in
-      { module_type with pmty_desc = Pmty_functor (var, arg, body) }
+      { module_type with pmty_desc = Pmty_functor (Named (var, arg), body) }
   | Pmty_with (ty, cstr) ->
       { module_type with pmty_desc =
         Pmty_with
@@ -1402,4 +1425,9 @@ let main argv =
 
 let () =
   if not !Sys.interactive then
-    Sys.argv |> main
+    try
+      Sys.argv |> main
+    with e ->
+      prerr_endline (Printexc.to_string e);
+      Printexc.print_backtrace stderr;
+      exit 1
