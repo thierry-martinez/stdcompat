@@ -47,12 +47,12 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__hashtbl.ml stdcompat__set.ml \
 	stdcompat__map.ml stdcompat__weak.ml \
 	stdcompat__stream.ml stdcompat__digest.ml stdcompat__nativeint.ml \
-	stdcompat__int.ml \
-	stdcompat__int64.ml stdcompat__int32.ml stdcompat__filename.ml \
+	stdcompat__int.ml stdcompat__int64.ml stdcompat__int32.ml \
+	stdcompat__option.ml stdcompat__filename.ml \
 	stdcompat__array.ml stdcompat__arrayLabels.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
 	stdcompat__spacetime.ml stdcompat__moreLabels.ml stdcompat__lexing.ml \
-	stdcompat__option.ml stdcompat__printexc.ml stdcompat__result.ml stdcompat__bool.ml \
+	stdcompat__printexc.ml stdcompat__result.ml stdcompat__bool.ml \
 	stdcompat__fun.ml stdcompat__format.ml stdcompat__printf.ml stdcompat__stdlib.ml \
 	stdcompat.ml
 
