@@ -33,12 +33,18 @@ module Immediate64 = Sys.Immediate64
 module Immediate64 :
 sig
   module type Non_immediate  = sig type t end
-  module type Immediate  = sig type t[@@immediate ] end
+  module type Immediate  = sig type t
+@BEGIN_FROM_4_02_0@
+[@@immediate ]
+@END_FROM_4_02_0@ end
   module Make :
   functor (Immediate : Immediate) ->
     functor (Non_immediate : Non_immediate) ->
       sig
-        type t[@@immediate64 ]
+        type t
+@BEGIN_FROM_4_02_0@
+[@@immediate64 ]
+@END_FROM_4_02_0@
         type 'a repr =
           | Immediate: Immediate.t repr 
           | Non_immediate: Non_immediate.t repr 
