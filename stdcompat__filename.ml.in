@@ -221,7 +221,7 @@ let quote_string buffer (s : string) =
   s |> String.iter (fun c ->
     match c with
     | '\'' ->
-        Buffer.add_string buffer {|'\''|}
+        Buffer.add_string buffer "'\\''"
     | _ ->
         Buffer.add_char buffer c);
   Buffer.add_char buffer '\''
