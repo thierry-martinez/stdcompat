@@ -59,7 +59,7 @@ let pp_get_formatter_out_functions _ =
   failwith "Not implemented."
 
 let get_formatter_out_functions _ =
-  failwith "Not implemented."+
+  failwith "Not implemented."
 @END_BEFORE_4_01_0@
 @END_BEFORE_4_06_0@
 
