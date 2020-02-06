@@ -149,7 +149,15 @@ let () =
   assert (Stdcompat.List.assoc_opt 2 [1, 0; 2, 1; 3, 2] = Some 1);
   assert (Stdcompat.List.assoc_opt 4 [1, 0; 2, 1; 3, 2] = None);
   assert (Stdcompat.List.assq_opt 2 [1, 0; 2, 1; 3, 2] = Some 1);
-  assert (Stdcompat.List.assq_opt "a" ["a", 1; "b", 2; "c", 3] = None);
+  assert ("a" == "a" || (* "a" == "a" since OCaml 4.10.0 *)
+    Stdcompat.List.assq_opt "a" ["a", 1; "b", 2; "c", 3] = None);
+  assert (
+    let r1 = ref 1 in
+    let r1' = ref 1 in
+    let r2 = ref 2 in
+    let r3 = ref 3 in
+    Stdcompat.List.assoc_opt r1' [r1, 1; r2, 2; r3, 3] = Some 1 &&
+    Stdcompat.List.assq_opt r1' [r1, 1; r2, 2; r3, 3] = None);
   assert (Stdcompat.Filename.extension "a.b/c.de" = ".de");
   assert (Stdcompat.Filename.extension "a.b/cd" = "");
   assert (Stdcompat.Filename.remove_extension "a.b/c.de" = "a.b/c");
@@ -396,5 +404,17 @@ let () =
   assert (Stdcompat.Fun.const true false);
   assert (Stdcompat.Fun.flip ( - ) 1 2 = 1);
   assert (Stdcompat.Fun.negate not true);
+  assert (
+    let bytes = Stdcompat.Bytes.of_string "abcde" in
+    Stdcompat.Bytes.unsafe_blit_string "ABCDEF" 2 bytes 1 3;
+    Stdcompat.Bytes.compare bytes (Stdcompat.Bytes.of_string "aCDEe") == 0);
+  assert (
+    Stdcompat.List.concat_map
+      (fun x -> [x * 2; x - 1]) [1; 2; 3] = [2; 0; 4; 1; 6; 2]);
+  assert (
+    Stdcompat.List.find_map (Stdcompat.List.assoc_opt 1)
+      [[2, 3; 4, 1]; [5, 2;1, 7]] = Some 7);
+  assert (
+    Stdcompat.List.find_map (Stdcompat.List.assoc_opt 1)
+      [[2, 3; 4, 1]; [5, 2;2, 7]] = None);
   ()
-  
