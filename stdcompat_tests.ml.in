@@ -185,7 +185,15 @@ let () =
   assert (Stdcompat.Array.mem "a" [| "a"; "b"; "c" |]);
   assert (not (Stdcompat.Array.mem "d" [| "a"; "b"; "c" |]));
   assert (Stdcompat.Array.memq 2 [| 1; 2; 3 |]);
-  assert (not (Stdcompat.Array.memq "a" [| "a"; "b"; "c" |]));
+  assert ("a" == "a" || (* "a" == "a" since OCaml 4.10.0 *)
+    not (Stdcompat.Array.memq "a" [| "a"; "b"; "c" |]));
+  assert (
+    let r1 = ref 1 in
+    let r1' = ref 1 in
+    let r2 = ref 2 in
+    let r3 = ref 3 in
+    Stdcompat.List.mem r1' [r1; r2; r3] &&
+    not (Stdcompat.List.memq r1' [r1; r2; r3]));
   assert (
     let q = Stdcompat.Queue.create () in
     Stdcompat.Array.of_seq (Stdcompat.Queue.to_seq q) = [| |]);
