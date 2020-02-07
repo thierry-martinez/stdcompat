@@ -29,7 +29,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && autoreconf && mkdir build && cd build && ../configure && make\''
+                sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && make -f Makefile.bootstrap && mkdir build && cd build && ../configure && make\''
             }
         }
         stage('Test') {
