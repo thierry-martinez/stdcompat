@@ -441,19 +441,21 @@ let () =
   assert (
     Stdcompat.List.find_map (Stdcompat.List.assoc_opt 1)
       [[2, 3; 4, 1]; [5, 2;2, 7]] = None);
-  let () =
+  let check_quote_string s =
     let (file, channel) = Filename.open_temp_file "test_quote_command" ".ml" in
     Stdcompat.Fun.protect (fun () ->
       Stdcompat.Fun.protect (fun () ->
-        output_string channel {|
-          assert (Sys.argv.(1) = "a\\\\")
-        |})
+        Printf.fprintf channel {|
+          assert (Sys.argv.(1) = "%s")
+        |} (String.escaped s))
       ~finally:(fun () -> close_out channel);
       let file_exe = Filename.chop_suffix file ".ml" ^ ".exe" in
       assert (
         Sys.command (Stdcompat.Filename.quote_command "ocamlopt.opt"
           [file; "-o"; file_exe]) == 0);
       assert (
-        Sys.command (Stdcompat.Filename.quote_command file_exe ["a\\\\"]) == 0))
+        Sys.command (Stdcompat.Filename.quote_command file_exe [s]) == 0))
     ~finally:(fun () -> Sys.remove file) in
+  check_quote_string "a\\\\";
+  check_quote_string "a\\\\b\"\\\"\\\\\"\"\\";
   ()
