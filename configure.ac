@@ -1,7 +1,7 @@
 AC_INIT([[stdcompat]], [m4_esyscmd([cat VERSION])],
   [[Thierry.Martinez@inria.fr]], [[stdcompat]],
   [[https://github.com/thierry.martinez/stdcompat/]])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([foreign])
 
 AC_DEFUN([AC_OCAMLFIND_PKG],
   [AC_MSG_CHECKING([for ocamlfind package $2])
