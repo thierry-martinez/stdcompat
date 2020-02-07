@@ -105,10 +105,10 @@ SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs .cmt
 .ml.cmx :
 	$(OCAMLOPT) -c $(OCAMLCFLAGS) $< -o $@
 
-stdcompat__stubs.o : stdcompat__stubs.c
+stdcompat__stubs.$OBJEXT : stdcompat__stubs.c
 	$(OCAMLC) -c $<
 
-libstdcompat__stubs.a : stdcompat__stubs.o
+libstdcompat__stubs.a : stdcompat__stubs.$OBJEXT
 	$(OCAMLMKLIB) -o stdcompat__stubs $<
 
 stdcompat.cma : $(MODULES_native:.ml=.cmo) libstdcompat__stubs.a
