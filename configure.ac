@@ -154,7 +154,7 @@ AM_CONDITIONAL(OCAML_SUPPORTS_BIN_ANNOT,
   [test `printf "$OCAMLVERSION\n4.00.0" | sort | head -n1` = 4.00.0])
 
 AM_CONDITIONAL(OCAML_SUPPORTS_ALERT,
-  [test `printf "$OCAMLVERSION\n4.07.0" | sort | head -n1` = 4.07.0])
+  [test `printf "$OCAMLVERSION\n4.08.0" | sort | head -n1` = 4.08.0])
 
 AC_SUBST([INCLUDE_DEPEND],[['
 ifneq ($(MAKECMDGOALS),clean)
