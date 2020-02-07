@@ -62,6 +62,11 @@ AC_SUBST([OCAMLVERSION],
   [[`$OCAMLBEST -v | sed -n 's/^.*version \(.*\)$/\1/p'`]])
 AC_MSG_RESULT([$OCAMLVERSION])
 
+AC_MSG_CHECKING([OCaml target OS type])
+AC_SUBST([target_os_type],
+  [[`$OCAMLBEST -config | sed -n 's/^os_type: \(.*\)$/\1/p'`]])
+AC_MSG_RESULT([$target_os_type])
+
 AC_ARG_ENABLE([magic],
             [AS_HELP_STRING([--enable-magic],
               [[use Obj.magic in redefinitions when possible (default)]]),
@@ -127,6 +132,13 @@ AC_WITH_OCAML_VERSION([4_07_0], [4.07.0])
 AC_WITH_OCAML_VERSION([4_07_1], [4.07.1])
 AC_WITH_OCAML_VERSION([4_08_0], [4.08.0])
 AC_WITH_OCAML_VERSION([4_09_0], [4.09.0])
+AC_WITH_OCAML_VERSION([4_10_0], [4.10.0])
+
+AS_IF([test "x$target_os_type" = "xWin32"],
+  [AC_WITH_BLOCK([WIN32])
+   AC_WITHOUT_BLOCK([UNIX_OR_CYGWIN])],
+  [AC_WITHOUT_BLOCK([WIN32])
+   AC_WITH_BLOCK([UNIX_OR_CYGWIN])])
 
 AM_CONDITIONAL(OCAML_SUPPORTS_BYTECODE, [test "x$OCAMLC" != "x"])
 
@@ -140,6 +152,9 @@ AM_CONDITIONAL(OCAML_SUPPORTS_NO_ALIAS_DEPS,
 
 AM_CONDITIONAL(OCAML_SUPPORTS_BIN_ANNOT,
   [test `printf "$OCAMLVERSION\n4.00.0" | sort | head -n1` = 4.00.0])
+
+AM_CONDITIONAL(OCAML_SUPPORTS_ALERT,
+  [test `printf "$OCAMLVERSION\n4.08.0" | sort | head -n1` = 4.08.0])
 
 AC_SUBST([INCLUDE_DEPEND],[['
 ifneq ($(MAKECMDGOALS),clean)

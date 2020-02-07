@@ -1,3 +1,13 @@
+* Version 12, 2010-02-08
+
+- Support for OCaml 4.10.0
+
+- Added Bytes.unsafe_blit_string, Filename.quote_command, List.concat_map,
+  List.find_map, Sys.Immediate64
+
+- Equality Lexing.lexbuf = Stdcompat.Lexing.lexbuf is available even for
+  OCaml <4.02.0 (before the introduction of bytes)
+
 * Version 11, 2019-09-30
 
 - caml_alloc_initialized_string is now available for OCaml 4.05.0

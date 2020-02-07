@@ -10,7 +10,7 @@
    stdcompat__stack stdcompat__hashtbl_ext stdcompat__hashtbl stdcompat__set
    stdcompat__map stdcompat__weak stdcompat__sys
    stdcompat__stream stdcompat__digest stdcompat__nativeint
-   stdcompat__int64 stdcompat__int32 stdcompat__filename
+   stdcompat__int stdcompat__int64 stdcompat__int32 stdcompat__filename
    stdcompat__array stdcompat__arrayLabels
    stdcompat__float stdcompat__queue stdcompat__ephemeron
    stdcompat__spacetime stdcompat__moreLabels stdcompat))
@@ -199,6 +199,7 @@
   stdcompat__filename.mli
   stdcompat__float.mli
   stdcompat__hashtbl.mli
+  stdcompat__int.mli
   stdcompat__int32.mli
   stdcompat__int64.mli
   stdcompat__lazy.mli
@@ -236,6 +237,7 @@
   stdcompat__filename.ml
   stdcompat__float.ml
   stdcompat__hashtbl.ml
+  stdcompat__int.ml
   stdcompat__int32.ml
   stdcompat__int64.ml
   stdcompat__lazy.ml
