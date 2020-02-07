@@ -88,6 +88,10 @@ if OCAML_SUPPORTS_NO_ALIAS_DEPS
 OCAMLFLAGS += -no-alias-deps
 endif
 
+if OCAML_SUPPORTS_ALERT
+OCAMLCFLAGS += -alert -deprecated
+endif
+
 SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs .cmt
 
 .DEFAULT_GOAL = all
