@@ -445,9 +445,9 @@ let () =
     let (file, channel) = Filename.open_temp_file "test_quote_command" ".ml" in
     Stdcompat.Fun.protect (fun () ->
       Stdcompat.Fun.protect (fun () ->
-        Printf.fprintf channel {|
-          assert (Sys.argv.(1) = "%s")
-        |} (String.escaped s))
+        Printf.fprintf channel "
+          assert (Sys.argv.(1) = \"%s\")
+        " (String.escaped s))
       ~finally:(fun () -> close_out channel);
       let file_exe = Filename.chop_suffix file ".ml" ^ ".exe" in
       assert (
