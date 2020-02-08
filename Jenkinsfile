@@ -67,7 +67,6 @@ pipeline {
                                 sh "rm -rf build"
                                 unstash 'bootstrap'
                                 sh "docker run --rm --volume \$PWD:/workspace stdcompat sh -c 'cd /workspace && unset BASH_ENV && opam config exec --switch $switch_name -- sh -c '\\''mkdir build && cd build && ../configure && make && make tests && ../configure --disable-magic && make && make tests'\\'"
-                                }
                             }
                         }
                     }
