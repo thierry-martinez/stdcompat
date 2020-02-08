@@ -52,55 +52,60 @@ pipeline {
             }
         }
         stage('Test') {
-            agent {
-                label 'linux'
-            }
-            steps {
-                script {
-                    def switches = sh (
-                        script: 'docker run --rm stdcompat opam switch -s',
-                        returnStdout: true
-                    ).split('\n')
-                    def branches = [:]
-                    for (i in switches) {
-                        def switch_name = i
-                        branches[switch_name] = {
-                            node('linux') {
-                                sh "rm -rf build"
-                                unstash 'bootstrap'
-                                sh "docker run --rm --volume \$PWD:/workspace stdcompat sh -c 'cd /workspace && unset BASH_ENV && opam config exec --switch $switch_name -- sh -c '\\''mkdir build && cd build && ../configure && make && make tests && ../configure --disable-magic && make && make tests'\\'"
+            agent none
+            parallel {
+                stage('Linux') {
+                    agent {
+                        label 'linux'
+                    }
+                    steps {
+                        script {
+                            def switches = sh (
+                                script: 'docker run --rm stdcompat opam switch -s',
+                                returnStdout: true
+                            ).split('\n')
+                            def branches = [:]
+                            for (i in switches) {
+                                def switch_name = i
+                                branches[switch_name] = {
+                                    node('linux') {
+                                        sh "rm -rf build"
+                                        unstash 'bootstrap'
+                                        sh "docker run --rm --volume \$PWD:/workspace stdcompat sh -c 'cd /workspace && unset BASH_ENV && opam config exec --switch $switch_name -- sh -c '\\''mkdir build && cd build && ../configure && make && make tests && ../configure --disable-magic && make && make tests'\\'"
+                                    }
+                                }
+                            }
+                            throttle(['category']) {
+                                parallel branches
                             }
                         }
-                    }
-                    throttle(['category']) {
-                        parallel branches
                     }
                 }
-            }
-        }
-        stage('Test windows') {
-            agent {
-                label 'windows'
-            }
-            steps {
-                script {
-                    def versions = ["4.05.0", "4.06.1", "4.07.1", "4.08.1", "4.09.0", "4.10.0+rc1"]
-                    def branches = [:]
-                    for (i in versions) {
-                        def version = i
-                        branches[version] = {
-                            node('windows') {
-                                checkout scm
-                                bat """
-call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
-set PATH=C:\\tools\\cygwin\\bin;%PATH%
-bash -c "eval \$(~/ocaml-4.10.0+rc1/tools/msvs-promote-path) && ci/cygwin-compile-ocaml.sh "$version" && export PATH="/cygdrive/c/ocaml/$version:$PATH" && make -f Makefile.bootstrap && ./configure && make && make tests"
-                                """
+                stage('Windows') {
+                    agent {
+                        label 'windows'
+                    }
+                    steps {
+                        script {
+                            def versions = ["4.05.0", "4.06.1", "4.07.1", "4.08.1", "4.09.0", "4.10.0+rc1"]
+                            def branches = [:]
+                            for (i in versions) {
+                                def version = i
+                                branches[version] = {
+                                    node('windows') {
+                                        checkout scm
+                                        bat """
+call "C:        \\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
+set PATH        =C:\\tools\\cygwin\\bin;%PATH%
+bash -c         "eval \$(~/ocaml-4.10.0+rc1/tools/msvs-promote-path) && ci/cygwin-compile-ocaml.sh "$version" && export PATH="/cygdrive/c/ocaml/$version:$PATH" && make -f Makefile.bootstrap && ./configure && make && make tests"
+                                        """
+                                    }
+                                }
+                            }
+                            throttle(['category']) {
+                                parallel branches
                             }
                         }
-                    }
-                    throttle(['category']) {
-                        parallel branches
                     }
                 }
             }
@@ -111,7 +116,7 @@ bash -c "eval \$(~/ocaml-4.10.0+rc1/tools/msvs-promote-path) && ci/cygwin-compil
             }
             steps {
                 unstash 'configure'
-                sh 'cd build && make dist'
+                sh 'docker run --rm --volume $PWD:/workspace stdcompat bash -c \'cd /workspace/build && make dist\''
                 archiveArtifacts artifacts: 'build/*.tar.gz', fingerprint: true
             }
         }
