@@ -20,12 +20,25 @@ pipeline {
                 label 'windows'
             }
             steps {
-                bat '''
+                script {
+                    def versions = ["4.09.0", "4.10.0+rc1"]
+                    def branches = [:]
+                    for (i in versions) {
+                        def version = i
+                        branches[version] = {
+                            node('windows') {
+                                bat """
 call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
-set PATH=C:\\ocaml\\4.10.0+rc1\\bin;C:\\tools\\cygwin\\bin;%PATH%
-echo %PATH%
-bash -c "eval $(~/ocaml-4.10.0+rc1/tools/msvs-promote-path) && make -f Makefile.bootstrap && ./configure && make && make tests"
-                    '''
+set PATH=C:\\tools\\cygwin\\bin;%PATH%
+bash -c "eval \$(~/ocaml-4.10.0+rc1/tools/msvs-promote-path) && ci/cygwin-compile-ocaml.sh "$version" && export PATH="/cygdrive/c/ocaml/$version:$PATH" && make -f Makefile.bootstrap && ./configure && make && make tests"
+                                """
+                            }
+                        }
+                    }
+                    throttle(['category']) {
+                        parallel branches
+                    }
+                }
             }
         }
         stage('Prepare') {
