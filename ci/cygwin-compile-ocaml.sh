@@ -21,14 +21,14 @@ if [ ! -d "/cygdrive/c/ocaml/$OCAMLVERSION/" ]; then
     if [ `printf "$OCAMLVERSION\n4.08.0" | sort | head -n1` = 4.08.0 ]; then
         ./configure --build=x86_64-unknown-cygwin --host=x86_64-pc-windows \
             --prefix="$PREFIX"
-    elif [ `printf "$OCAMLVERSION\n4.08.0" | sort | head -n1` = 4.06.0 ]; then
-        cp config/m-nt.h byterun/caml/m.h
-        cp config/s-nt.h byterun/caml/s.h
-        cp config/Makefile.msvc64 config/Makefile
-        sed -i -e "s|^PREFIX=.*\$|PREFIX=$PREFIX|" config/Makefile 
     else
-        cp config/m-nt.h config/m.h
-        cp config/s-nt.h config/s.h
+        if [ `printf "$OCAMLVERSION\n4.06.0" | sort | head -n1` = 4.06.0 ]; then
+            cp config/m-nt.h byterun/caml/m.h
+            cp config/s-nt.h byterun/caml/s.h
+        else
+            cp config/m-nt.h config/m.h
+            cp config/s-nt.h config/s.h
+        fi
         cp config/Makefile.msvc64 config/Makefile
         sed -i -e "s|^PREFIX=.*\$|PREFIX=$PREFIX|" config/Makefile
     fi
