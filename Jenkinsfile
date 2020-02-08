@@ -13,12 +13,20 @@ properties([
 
 pipeline {
     agent {
-/*
-        dockerfile {
-            label 'slave'
+        label 'windows'
+    }
+    stages {
+        stage('Prepare') {
+            steps {
+               bat 'echo foo'
+            }
         }
-*/
-        label 'slave'
+    }
+}
+
+pipeline {
+    agent {
+        label 'linux'
     }
 
     stages {
