@@ -20,9 +20,11 @@ pipeline {
                 label 'windows'
             }
             steps {
-                bat '"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"'
-                bat 'set PATH=C:\\ocaml\\4.10.0rc1\\bin;C:\\tools\\cygwin\\bin;%PATH%'
-                bat 'bash -c "make -f Makefile.bootstrap && ./configure && make && make tests"'
+                bat '''
+"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
+set PATH=C:\\ocaml\\4.10.0rc1\\bin;C:\\tools\\cygwin\\bin;%PATH%
+bash -c "make -f Makefile.bootstrap && ./configure && make && make tests"
+                    '''
             }
         }
         stage('Prepare') {
