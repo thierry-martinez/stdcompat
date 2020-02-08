@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x
+set -ex
 VERSION="$1"
 URL="http://caml.inria.fr/pub/distrib/ocaml-${VERSION:0:4}/ocaml-$VERSION.tar.gz"
 if [ ! -d "/cygdrive/c/ocaml/$VERSION/" ]; then
