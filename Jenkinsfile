@@ -12,22 +12,30 @@ properties([
 ])
 
 pipeline {
-    agent {
-      label 'linux'
-    }
+    agent none
 
     stages {
         stage('Prepare') {
+            agent {
+                label 'linux'
+            }
             steps {
                 sh 'docker build -t stdcompat .'
             }
         }
         stage('Build') {
+            agent {
+                label 'linux'
+            }
             steps {
                 sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && make -f Makefile.bootstrap && mkdir build && cd build && ../configure && make\''
             }
+            stash
         }
         stage('Test') {
+            agent {
+                label 'linux'
+            }
             steps {
                 script {
                     def pwd = sh (
@@ -42,6 +50,9 @@ pipeline {
                     for (i in switches) {
                         def switch_name = i
                         branches[switch_name] = {
+                            agent {
+                              label 'linux'
+                            }
                             node {
                                 sh "docker run --rm --volume $pwd:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests && ../../configure --disable-magic && make && make tests'\\'"
                             }
@@ -62,6 +73,9 @@ pipeline {
             }
         }
         stage('Deploy') {
+            agent {
+                label 'linux'
+            }
             steps {
                 sh 'cd build && make dist'
                 archiveArtifacts artifacts: 'build/*.tar.gz', fingerprint: true
