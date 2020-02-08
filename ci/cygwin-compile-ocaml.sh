@@ -32,8 +32,12 @@ if [ ! -d "/cygdrive/c/ocaml/$OCAMLVERSION/" ]; then
         cp config/Makefile.msvc64 config/Makefile
         sed -i -e "s|^PREFIX=.*\$|PREFIX=$PREFIX|" config/Makefile
     fi
-    make flexdll
-    make world.opt
-    make flexlink.opt
-    make install
+    if [ `printf "$OCAMLVERSION\n4.05.0" | sort | head -n1` = 4.05.0 ]; then
+        make flexdll
+        make world.opt
+        make flexlink.opt
+        make install
+    else
+        make -f Makefile.nt flexdll world bootstrap opt opt.opt install
+    fi
 fi
