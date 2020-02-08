@@ -15,26 +15,21 @@ pipeline {
     agent none
 
     stages {
+        agent {
+          label 'linux'
+        }
+
         stage('Prepare') {
-            agent {
-                label 'linux'
-            }
             steps {
                 sh 'docker build -t stdcompat .'
             }
         }
         stage('Build') {
-            agent {
-                label 'linux'
-            }
             steps {
                 sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && make -f Makefile.bootstrap && mkdir build && cd build && ../configure && make\''
             }
         }
         stage('Test') {
-            agent {
-                label 'linux'
-            }
             steps {
                 script {
                     def pwd = sh (
@@ -69,9 +64,6 @@ pipeline {
             }
         }
         stage('Deploy') {
-            agent {
-                label 'linux'
-            }
             steps {
                 sh 'cd build && make dist'
                 archiveArtifacts artifacts: 'build/*.tar.gz', fingerprint: true
