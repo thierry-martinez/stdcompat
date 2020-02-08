@@ -30,7 +30,7 @@ pipeline {
             steps {
                 sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && make -f Makefile.bootstrap && mkdir build && cd build && ../configure && make\''
             }
-            stash
+            stash name: 'build'
         }
         stage('Test') {
             agent {
@@ -54,6 +54,7 @@ pipeline {
                               label 'linux'
                             }
                             node {
+                                unstash 'build'
                                 sh "docker run --rm --volume $pwd:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests && ../../configure --disable-magic && make && make tests'\\'"
                             }
                         }
@@ -77,6 +78,7 @@ pipeline {
                 label 'linux'
             }
             steps {
+                unstash 'build'
                 sh 'cd build && make dist'
                 archiveArtifacts artifacts: 'build/*.tar.gz', fingerprint: true
             }
