@@ -39,10 +39,6 @@ pipeline {
             }
             steps {
                 script {
-                    def pwd = sh (
-                        script: 'echo $PWD',
-                        returnStdout: true
-                    ).trim()
                     def switches = sh (
                         script: 'docker run --rm stdcompat opam switch -s',
                         returnStdout: true
@@ -53,8 +49,7 @@ pipeline {
                         branches[switch_name] = {
                             node('linux') {
                                 unstash 'build'
-                                sh 'ls -ld build'
-                                sh "docker run --rm --volume $pwd:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests && ../../configure --disable-magic && make && make tests'\\'"
+                                sh "docker run --rm --volume $PWD:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests && ../../configure --disable-magic && make && make tests'\\'"
                             }
                         }
                     }
