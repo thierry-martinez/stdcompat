@@ -30,7 +30,16 @@ pipeline {
             steps {
                 sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && make -f Makefile.bootstrap\''
                 stash name: 'bootstrap'
-                sh 'ls -R'
+            }
+        }
+        stage('Configure') {
+            agent {
+                label 'linux'
+            }
+            steps {
+                unstash 'bootstrap'
+                sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && mkdir build && cd build && ../configure\''
+                stash name: 'configure'
             }
         }
         stage('Build') {
@@ -38,9 +47,8 @@ pipeline {
                 label 'linux'
             }
             steps {
-                unstash 'bootstrap'
-                sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && mkdir build && cd build && ../configure && make\''
-                sh 'ls -R'
+                unstash 'configure'
+                sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace/build && make\''
             }
         }
         stage('Test with magic') {
@@ -102,7 +110,9 @@ pipeline {
                 label 'windows'
             }
             steps {
-                bat 'echo foo'
+                bat '"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"'
+                bat 'set PATH=C:/ocaml/4.10.0rc1/bin;%PATH%'
+                bat 'C:\tools\cygwin\bin\bash -c "./configure && make && make tests"'
             }
         }
         stage('Deploy') {
@@ -110,7 +120,7 @@ pipeline {
                 label 'linux'
             }
             steps {
-                unstash 'build'
+                unstash 'configure'
                 sh 'cd build && make dist'
                 archiveArtifacts artifacts: 'build/*.tar.gz', fingerprint: true
             }
