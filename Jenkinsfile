@@ -51,7 +51,7 @@ pipeline {
                 sh 'docker run --rm --volume $PWD:/workspace stdcompat bash -c \'cd /workspace/build && make\''
             }
         }
-        stage('Test with magic') {
+        stage('Test') {
             agent {
                 label 'linux'
             }
@@ -68,34 +68,7 @@ pipeline {
                             node('linux') {
                                 sh "rm -rf build"
                                 unstash 'bootstrap'
-                                sh "docker run --rm --volume \$PWD:/workspace stdcompat bash -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build && cd build && ../../configure && make && make tests && ../configure && make && make tests'\\'"
-                            }
-                        }
-                    }
-                    throttle(['category']) {
-                        parallel branches
-                    }
-                }
-            }
-        }
-        stage('Test without magic') {
-            agent {
-                label 'linux'
-            }
-            steps {
-                script {
-                    def switches = sh (
-                        script: 'docker run --rm stdcompat opam switch -s',
-                        returnStdout: true
-                    ).split('\n')
-                    def branches = [:]
-                    for (i in switches) {
-                        def switch_name = i
-                        branches[switch_name] = {
-                            node('linux') {
-                                sh "rm -rf build"
-                                unstash 'bootstrap'
-                                sh "docker run --rm --volume \$PWD:/workspace stdcompat bash -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build && cd build && ../../configure && make && make tests && ../configure --disable-magic && make && make tests'\\'"
+                                sh "docker run --rm --volume \$PWD:/workspace stdcompat bash -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build && cd build && ../configure && make && make tests && ../configure && make && make tests'\\'"
                             }
                         }
                     }
