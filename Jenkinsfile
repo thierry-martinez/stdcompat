@@ -53,7 +53,7 @@ pipeline {
                         branches[switch_name] = {
                             node('linux') {
                                 unstash 'build'
-                                sh 'ls -R'
+                                sh 'ls -ld build'
                                 sh "docker run --rm --volume $pwd:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests && ../../configure --disable-magic && make && make tests'\\'"
                             }
                         }
