@@ -1,17 +1,31 @@
 #!/bin/bash
 set -ex
-VERSION="$1"
-URL="http://caml.inria.fr/pub/distrib/ocaml-${VERSION:0:4}/ocaml-$VERSION.tar.gz"
-if [ ! -d "/cygdrive/c/ocaml/$VERSION/" ]; then
-    wget "$URL"
-    tar --extract --file="ocaml-$VERSION.tar.gz"
-    cd "ocaml-$VERSION"
+OCAMLVERSION="$1"
+URL="http://caml.inria.fr/pub/distrib/ocaml-${OCAMLVERSION:0:4}/ocaml-$OCAMLVERSION.tar.gz"
+if [ ! -d "/cygdrive/c/ocaml/$OCAMLVERSION/" ]; then
+    PREFIX="C:/ocaml/$OCAMLVERSION"
+    SOURCEDIR="ocaml-$OCAMLVERSION"
+    if [ ! -d "$SOURCEDIR" ]; then
+      TARBALL= "ocaml-$OCAMLVERSION.tar.gz"
+      if [ ! -f "$TARBALL" ]; then
+        wget "$URL"
+      fi
+      tar --extract --file=$TARBALL
+    fi
+    cd "ocaml-$OCAMLVERSION"
     pushd flexdll
       wget https://github.com/alainfrisch/flexdll/archive/0.37.tar.gz
       tar --strip-components=1 --extract --file=0.37.tar.gz
       popd
-    ./configure --build=x86_64-unknown-cygwin --host=x86_64-pc-windows \
-      --prefix="C:/ocaml/$VERSION"
+    if [ `printf "$OCAMLVERSION\n4.08.0" | sort | head -n1` = 4.08.0 ]; then
+        ./configure --build=x86_64-unknown-cygwin --host=x86_64-pc-windows \
+            --prefix="$PREFIX"
+    else
+        cp config/m-nt.h byterun/caml/m.h
+        cp config/s-nt.h byterun/caml/s.h
+        cp config/Makefile.msvc64 config/Makefile
+        sed -i -e "s|^PREFIX=.*\$|PREFIX=$PREFIX|" config/Makefile 
+    fi
     make flexdll
     make world.opt
     make flexlink.opt

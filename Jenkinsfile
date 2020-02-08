@@ -84,7 +84,7 @@ pipeline {
             }
             steps {
                 script {
-                    def versions = ["4.08.1", "4.09.0", "4.10.0+rc1"]
+                    def versions = ["4.05.0", "4.06.1", "4.07.1", "4.08.1", "4.09.0", "4.10.0+rc1"]
                     def branches = [:]
                     for (i in versions) {
                         def version = i
