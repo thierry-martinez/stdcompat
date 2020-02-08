@@ -2,6 +2,8 @@
 
 - Support for OCaml 4.10.0
 
+- Support for Windows
+
 - Added Bytes.unsafe_blit_string, Filename.quote_command, List.concat_map,
   List.find_map, Sys.Immediate64
 
