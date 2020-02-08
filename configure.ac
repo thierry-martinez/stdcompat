@@ -11,6 +11,7 @@ AC_DEFUN([AC_OCAMLFIND_PKG],
      [AC_MSG_RESULT([no])
       AC_SUBST([$1], [])])])
 
+AC_CHECK_TOOL([OCAML], [ocaml], [])
 AC_CHECK_TOOL([OCAMLFIND], [ocamlfind], [])
 AS_IF([test "x$OCAMLFIND" = "x"],
   [AC_CHECK_TOOL([OCAMLC], [ocamlc.opt], [])
@@ -63,8 +64,11 @@ AC_SUBST([OCAMLVERSION],
 AC_MSG_RESULT([$OCAMLVERSION])
 
 AC_MSG_CHECKING([OCaml target OS type])
-AC_SUBST([target_os_type],
-  [[`$OCAMLBEST -config | sed -n 's/^os_type: \(.*\)\(\r\|$\)/\1/p'`]])
+AC_IF([test `printf "$OCAMLVERSION\n3.12.0" | sort | head -n1` = 3.12.0],
+  [AC_SUBST([target_os_type],
+    [[`$OCAMLBEST -config | sed -n 's/^os_type: \(.*\)\(\r\|$\)/\1/p'`]])],
+  [AC_SUBST([target_os_type],
+    [[`echo Sys.os_type;; | $OCAML | sed -n 's/^string = "\(.*\)"/\1/p'`
 AC_MSG_RESULT([$target_os_type])
 
 AC_ARG_ENABLE([magic],
