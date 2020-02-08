@@ -59,12 +59,12 @@ AC_C_BIGENDIAN(
 
 AC_MSG_CHECKING([OCaml version])
 AC_SUBST([OCAMLVERSION],
-  [[`$OCAMLBEST -v | sed -n 's/^.*version \(.*\)\r?$/\1/p'`]])
+  [[`$OCAMLBEST -v | sed -n 's/^.*version \(.*\)\(\r\|$\)/\1/p'`]])
 AC_MSG_RESULT([$OCAMLVERSION])
 
 AC_MSG_CHECKING([OCaml target OS type])
 AC_SUBST([target_os_type],
-  [[`$OCAMLBEST -config | sed -n 's/^os_type: \(.*\)\r?$/\1/p'`]])
+  [[`$OCAMLBEST -config | sed -n 's/^os_type: \(.*\)\(\r\|$\)/\1/p'`]])
 AC_MSG_RESULT([$target_os_type])
 
 AC_ARG_ENABLE([magic],
