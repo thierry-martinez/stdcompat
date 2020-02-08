@@ -15,6 +15,16 @@ pipeline {
     agent none
 
     stages {
+        stage('Test windows') {
+            agent {
+                label 'windows'
+            }
+            steps {
+                bat '"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"'
+                bat 'set PATH=C:/ocaml/4.10.0rc1/bin;%PATH%'
+                bat 'C:\\tools\\cygwin\\bin\\bash -c "./configure && make && make tests"'
+            }
+        }
         stage('Prepare') {
             agent {
                 label 'linux'
@@ -28,7 +38,7 @@ pipeline {
                 label 'linux'
             }
             steps {
-                sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && make -f Makefile.bootstrap\''
+                sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && make -f Makefile.bootstrap\''
                 stash name: 'bootstrap'
             }
         }
@@ -103,16 +113,6 @@ pipeline {
                         parallel branches
                     }
                 }
-            }
-        }
-        stage('Test windows') {
-            agent {
-                label 'windows'
-            }
-            steps {
-                bat '"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"'
-                bat 'set PATH=C:/ocaml/4.10.0rc1/bin;%PATH%'
-                bat 'C:\\tools\\cygwin\\bin\\bash -c "./configure && make && make tests"'
             }
         }
         stage('Deploy') {
