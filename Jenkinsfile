@@ -29,8 +29,8 @@ pipeline {
             }
             steps {
                 sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && make -f Makefile.bootstrap && mkdir build && cd build && ../configure && make\''
+                stash name: 'build'
             }
-            stash name: 'build'
         }
         stage('Test') {
             agent {
