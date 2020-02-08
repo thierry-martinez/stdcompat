@@ -52,7 +52,9 @@ pipeline {
             }
         }
         stage('Tests') {
-            agent none
+            agent {
+                label 'linux'
+            }
             steps {
                 script {
                     def switches = sh (
