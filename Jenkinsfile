@@ -27,6 +27,7 @@ pipeline {
                         def version = i
                         branches[version] = {
                             node('windows') {
+                                checkout scm
                                 bat """
 call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
 set PATH=C:\\tools\\cygwin\\bin;%PATH%
