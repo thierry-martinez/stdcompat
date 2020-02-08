@@ -46,18 +46,20 @@ pipeline {
                         script: 'docker run --rm stdcompat opam switch -s',
                         returnStdout: true
                     ).split('\n')
-                    def branches = [:]
+                    def branches = []
                     for (i in switches) {
                         def switch_name = i
-                        branches[switch_name] = {
-                            agent {
-                              label 'linux'
+                        branches.add({
+                            stage(switch_name) {
+                                agent {
+                                    label 'linux'
+                                }
+                                script {
+                                    unstash 'build'
+                                    sh "docker run --rm --volume $pwd:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests && ../../configure --disable-magic && make && make tests'\\'"
+                                }
                             }
-                            node {
-                                unstash 'build'
-                                sh "docker run --rm --volume $pwd:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build/$switch_name && cd build/$switch_name && ../../configure && make && make tests && ../../configure --disable-magic && make && make tests'\\'"
-                            }
-                        }
+                        })
                     }
                     throttle(['category']) {
                         parallel branches
