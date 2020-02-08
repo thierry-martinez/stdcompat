@@ -7,7 +7,9 @@ USER ci
 RUN wget -O ~/opam https://github.com/ocaml/opam/releases/download/2.0.1/opam-2.0.1-x86_64-linux
 RUN chmod +x ~/opam
 RUN sudo mv ~/opam /usr/local/bin/opam
-RUN opam init --disable-sandboxing --auto-setup
+RUN opam init --disable-sandboxing --auto-setup --dot-profile=/home/ci/.bash_env
+SHELL ["/bin/bash", "-c"]
+ENV BASH_ENV /home/ci/.bash_env
 RUN opam update && opam switch create 3.07
 RUN opam update && opam switch create 3.08.4
 RUN opam update && opam switch create 3.09.3
@@ -25,4 +27,4 @@ RUN opam update && opam switch create 4.07.0
 RUN opam update && opam switch create 4.07.1
 RUN opam update && opam switch create 4.08.1
 RUN opam update && opam switch create 4.09.0
-RUN opam update && opam switch create 4.10.0+beta2 --repositories=default,beta=git+https://github.com/ocaml/ocaml-beta-repository.git
+RUN opam update && opam switch create 4.10.0+rc1 --repositories=default,beta=git+https://github.com/ocaml/ocaml-beta-repository.git
