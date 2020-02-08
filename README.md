@@ -88,10 +88,8 @@ Microsoft Visual Studio port.
 
 The build system relies on `autoconf`, `automake` and `make`,
 therefore the easiest way to compile `stdcompat` is to use Cygwin
-for compiling, with the same environment as for compiling OCaml:
+for compiling:
 - `cl.exe` should be in `PATH`: for instance, with Microsoft
   Visual Studio 2017 Community, the `PATH` can be initialized with
   "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat";
-- `eval $(<ocaml-source-tree>/tools/msvs-promote-path)"`
-  should have been executed;
 - moreover, `ocaml.exe`, `ocamlc.exe`, etc., should be in `PATH`.

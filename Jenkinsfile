@@ -81,7 +81,7 @@ pipeline {
                                 bat """
 call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
 set PATH=C:\\tools\\cygwin\\bin;%PATH%
-bash -c "ci/cygwin-compile-ocaml.sh "$version" && export PATH="/cygdrive/c/ocaml/$version:$PATH" && make -f Makefile.bootstrap && ./configure && make && make tests"
+bash -c "ci/cygwin-compile-ocaml.sh \\"$version\\" && export PATH=\\"/cygdrive/c/ocaml/$version:$PATH\\" && make -f Makefile.bootstrap && ./configure && make && make tests"
                                 """
                             }
                         }
