@@ -6,7 +6,7 @@ if [ ! -d "/cygdrive/c/ocaml/$OCAMLVERSION/" ]; then
     PREFIX="C:/ocaml/$OCAMLVERSION"
     SOURCEDIR="ocaml-$OCAMLVERSION"
     if [ ! -d "$SOURCEDIR" ]; then
-      TARBALL= "ocaml-$OCAMLVERSION.tar.gz"
+      TARBALL="ocaml-$OCAMLVERSION.tar.gz"
       if [ ! -f "$TARBALL" ]; then
         wget "$URL"
       fi
