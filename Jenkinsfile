@@ -23,17 +23,27 @@ pipeline {
                 sh 'docker build -t stdcompat .'
             }
         }
+        stage('Bootstrap') {
+            agent {
+                label 'linux'
+            }
+            steps {
+                sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && make -f Makefile.bootstrap\''
+                stash name: 'bootstrap'
+                sh 'ls -R'
+            }
+        }
         stage('Build') {
             agent {
                 label 'linux'
             }
             steps {
-                sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && eval `opam config env` && make -f Makefile.bootstrap && mkdir build && cd build && ../configure && make\''
-                stash name: 'build'
+                unstash 'bootstrap'
+                sh 'docker run --rm --volume $PWD:/workspace stdcompat sh -c \'cd /workspace && mkdir build && cd build && ../configure && make\''
                 sh 'ls -R'
             }
         }
-        stage('Test') {
+        stage('Test with magic') {
             agent {
                 label 'linux'
             }
@@ -48,9 +58,36 @@ pipeline {
                         def switch_name = i
                         branches[switch_name] = {
                             node('linux') {
-                                sh "rm -rf build/$switch_name"
-                                unstash 'build'
-                                sh "docker run --rm --volume \$PWD:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir -p build/$switch_name && cd build/$switch_name && ../../configure && make && make tests && ../../configure --disable-magic && make && make tests'\\'"
+                                sh "rm -rf build"
+                                unstash 'bootstrap'
+                                sh "docker run --rm --volume \$PWD:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build && cd build && ../../configure && make && make tests && ../configure && make && make tests'\\'"
+                            }
+                        }
+                    }
+                    throttle(['category']) {
+                        parallel branches
+                    }
+                }
+            }
+        }
+        stage('Test without magic') {
+            agent {
+                label 'linux'
+            }
+            steps {
+                script {
+                    def switches = sh (
+                        script: 'docker run --rm stdcompat opam switch -s',
+                        returnStdout: true
+                    ).split('\n')
+                    def branches = [:]
+                    for (i in switches) {
+                        def switch_name = i
+                        branches[switch_name] = {
+                            node('linux') {
+                                sh "rm -rf build"
+                                unstash 'bootstrap'
+                                sh "docker run --rm --volume \$PWD:/workspace stdcompat sh -c 'cd /workspace && opam config exec --switch $switch_name -- sh -c '\\''mkdir build && cd build && ../../configure && make && make tests && ../configure --disable-magic && make && make tests'\\'"
                             }
                         }
                     }
