@@ -1,10 +1,10 @@
 .PHONY : all
 all : config.h.in aclocal.m4 Makefile.in configure
 
-config.h.in :
+config.h.in : configure.ac
 	autoheader
 
-aclocal.m4 :
+aclocal.m4 : configure.ac
 	aclocal
 
 Makefile.in : aclocal.m4 Makefile.am
