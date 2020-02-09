@@ -21,7 +21,7 @@ if [ ! -d "/cygdrive/c/ocaml/$OCAMLVERSION/" ]; then
             popd
     else
         eval $(~/ocaml-4.09.0/tools/msvs-promote-path)
-        export PATH="/cygdrive/c/ocaml/4.09.0/bin:$PATH"
+        export PATH="$HOME/ocaml-4.09.0/flexdll:$PATH"
         export INCLUDE="$INCLUDE;C:/Users/ci/ocaml-4.09.0/flexdll"
         export OCAMLBUILD_FIND=/usr/bin/find
     fi
