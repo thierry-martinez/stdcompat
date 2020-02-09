@@ -84,6 +84,7 @@ set PATH=C:\\tools\\cygwin\\bin;%PATH%
 bash -c "ci/cygwin-compile-ocaml.sh \\"$version\\""
 if not errorlevel 0 exit /b
 set PATH=C:\\ocaml\\$version\\bin;%PATH%
+set LIBPATH=C:\\ocaml\\$version\\lib\\flexdll;C:\\ocaml\\$version\\lib\\ocaml\\flexdll;%LIBPATH%
 bash -c "eval \$(~/ocaml-4.09.0/tools/msvs-promote-path) && make -f Makefile.bootstrap && ./configure && make && make tests"
                                 """
                             }
