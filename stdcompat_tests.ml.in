@@ -162,6 +162,12 @@ let () =
   assert (Stdcompat.Filename.extension "a.b/cd" = "");
   assert (Stdcompat.Filename.remove_extension "a.b/c.de" = "a.b/c");
   assert (Stdcompat.Filename.remove_extension "a.b/cd" = "a.b/cd");
+  @BEGIN_WITH_UNIX@
+  assert (Stdcompat.Filename.remove_extension "a.b\\cd" = "a");
+  @END_WITH_UNIX@
+  @BEGIN_WITHOUT_UNIX@
+  assert (Stdcompat.Filename.remove_extension "a.b\\cd" = "a.b\\cd");
+  @END_WITHOUT_UNIX@
   assert (
     let array = Stdcompat.Array.Floatarray.create 2 in
     Stdcompat.Array.Floatarray.set array 0 1.;
@@ -222,17 +228,17 @@ let () =
     Stdcompat.Filename.chop_suffix_opt ~suffix:".txt" "readme.TXT"
       = Some "readme");
   @END_WITH_WIN32@
-  @BEGIN_WITH_UNIX_OR_CYGWIN@
+  @BEGIN_WITHOUT_WIN32@
   assert (
     Stdcompat.Filename.chop_suffix_opt ~suffix:".txt" "readme.TXT"
       = None);
-  @END_WITH_UNIX_OR_CYGWIN@
+  @END_WITHOUT_WIN32@
   @BEGIN_WITH_WIN32@
   assert (Stdcompat.Filename.dir_sep = "\\");
   @END_WITH_WIN32@
-  @BEGIN_WITH_UNIX_OR_CYGWIN@
+  @BEGIN_WITHOUT_WIN32@
   assert (Stdcompat.Filename.dir_sep = "/");
-  @END_WITH_UNIX_OR_CYGWIN@
+  @END_WITHOUT_WIN32@
   assert (not (Stdcompat.Float.sign_bit 1.));
   assert (not (Stdcompat.Float.sign_bit 0.));
   assert (not (Stdcompat.Float.is_nan 42.));

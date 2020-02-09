@@ -140,10 +140,16 @@ AC_WITH_OCAML_VERSION([4_09_0], [4.09.0])
 AC_WITH_OCAML_VERSION([4_10_0], [4.10.0])
 
 AS_IF([test "x$target_os_type" = "xWin32"],
-  [AC_WITH_BLOCK([WIN32])
-   AC_WITHOUT_BLOCK([UNIX_OR_CYGWIN])],
-  [AC_WITHOUT_BLOCK([WIN32])
-   AC_WITH_BLOCK([UNIX_OR_CYGWIN])])
+  [AC_WITH_BLOCK([WIN32])],
+  [AC_WITHOUT_BLOCK([WIN32])])
+
+AS_IF([test "x$target_os_type" = "xCygwin"],
+  [AC_WITH_BLOCK([CYGWIN])],
+  [AC_WITHOUT_BLOCK([CYGWIN])])
+
+AS_IF([test "x$target_os_type" = "xUnix"],
+  [AC_WITH_BLOCK([UNIX])],
+  [AC_WITHOUT_BLOCK([UNIX])])
 
 AM_CONDITIONAL(OCAML_SUPPORTS_BYTECODE, [test "x$OCAMLC" != "x"])
 
