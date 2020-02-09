@@ -13,11 +13,18 @@ if [ ! -d "/cygdrive/c/ocaml/$OCAMLVERSION/" ]; then
       tar --extract --file=$TARBALL
     fi
     cd "ocaml-$OCAMLVERSION"
-    eval $(tools/msvs-promote-path)
-    pushd flexdll
-      wget https://github.com/alainfrisch/flexdll/archive/0.37.tar.gz
-      tar --strip-components=1 --extract --file=0.37.tar.gz
-      popd
+    if [ `printf "$OCAMLVERSION\n4.03.0" | sort | head -n1` = 4.03.0 ]; then
+        eval $(tools/msvs-promote-path)
+        pushd flexdll
+            wget https://github.com/alainfrisch/flexdll/archive/0.37.tar.gz
+            tar --strip-components=1 --extract --file=0.37.tar.gz
+            popd
+    else
+        eval $(~/ocaml-4.09.0/tools/msvs-promote-path)
+        export PATH="/cygdrive/c/ocaml/4.09.0/bin:$PATH"
+        export INCLUDE="$INCLUDE;C:/Users/ci/ocaml-4.09.0/flexdll"
+        export OCAMLBUILD_FIND=/usr/bin/find
+    fi
     if [ `printf "$OCAMLVERSION\n4.08.0" | sort | head -n1` = 4.08.0 ]; then
         ./configure --build=x86_64-unknown-cygwin --host=x86_64-pc-windows \
             --prefix="$PREFIX"
