@@ -44,7 +44,9 @@ if [ ! -d "/cygdrive/c/ocaml/$OCAMLVERSION/" ]; then
         make world.opt
         make flexlink.opt
         make install
-    else
+    elif [ `printf "$OCAMLVERSION\n4.03.0" | sort | head -n1` = 4.03.0 ]; then
         make -f Makefile.nt flexdll world bootstrap opt opt.opt install
+    else
+        make -f Makefile.nt world bootstrap opt opt.opt install
     fi
 fi
