@@ -17,3 +17,4 @@ description: "Compatibility module for OCaml standard library allowing programs 
 depends: [
   "ocaml" {>= "3.07" & < "4.11.0"}
 ]
+version: "13"
