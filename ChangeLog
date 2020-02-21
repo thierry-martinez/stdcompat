@@ -6,6 +6,8 @@
 
 - Fix: module Format was not exported
 
+- Fix: remove reference to suppressed module Sort
+
 * Version 12, 2010-02-08
 
 - Support for OCaml 4.10.0

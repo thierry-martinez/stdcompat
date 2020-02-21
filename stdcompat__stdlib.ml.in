@@ -100,8 +100,6 @@ module Seq = Stdcompat__seq
 
 module Set = Stdcompat__set
 
-module Sort = Sort
-
 module Spacetime = Stdcompat__spacetime
 
 module Stack = Stdcompat__stack
