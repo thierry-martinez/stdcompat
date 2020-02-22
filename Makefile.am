@@ -122,6 +122,9 @@ stdcompat.a : stdcompat.cmxa
 stdcompat.cmxs : $(MODULES_native:.ml=.cmx) libstdcompat__stubs.a
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -shared $(MODULES_native:.ml=.cmx) $(OCAMLLIBFLAGS) -o $@
 
+# Fake dependency to rebuild stdcompat__native.cmi on compiler change
+stdcompat__native.cmi : config.status
+
 stdcompat__native.cmo : stdcompat__native.ml_byte
 	$(OCAMLC) $(OCAMLCFLAGS) -c -impl stdcompat__native.ml_byte
 
