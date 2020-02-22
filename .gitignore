@@ -39,3 +39,4 @@ _build/
 /compile
 /install-sh
 /missing
+/stdcompat.h
