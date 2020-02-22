@@ -1,4 +1,4 @@
-* Next version
+* Version 13, 2020-02-22
 
 - Add: stdcompat.h, provides prototype for caml_alloc_initialized_string
   for OCaml <4.06.0 (already defined in a C library linked with
@@ -10,7 +10,7 @@
 
 - Fix: reference to the native plugin (.cmxs) in META
 
-* Version 12, 2010-02-08
+* Version 12, 2020-02-08
 
 - Support for OCaml 4.10.0
 
