@@ -161,6 +161,10 @@ AM_CONDITIONAL(OCAML_SUPPORTS_NATIVE, [test "x$OCAMLOPT" != "x"])
 AM_CONDITIONAL(OCAML_SUPPORTS_SHARED,
   [test `printf "$OCAMLVERSION\n3.11.1" | sort | head -n1` = 3.11.1])
 
+AS_IF([test "x$OCAML_SUPPORTS_SHARED_TRUE" = "x"],
+  [AC_SUBST([SHARED_LIBS], [["stdcompat.cmxs"]])],
+  [AC_SUBST([SHARED_LIBS], [[""]])])
+
 AM_CONDITIONAL(OCAML_SUPPORTS_NO_ALIAS_DEPS,
   [test `printf "$OCAMLVERSION\n4.02.0" | sort | head -n1` = 4.02.0])
 

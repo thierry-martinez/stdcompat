@@ -8,6 +8,8 @@
 
 - Fix: remove reference to suppressed module Sort
 
+- Fix: reference to the native plugin (.cmxs) in META
+
 * Version 12, 2010-02-08
 
 - Support for OCaml 4.10.0
