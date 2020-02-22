@@ -36,3 +36,6 @@ _build/
 /stdcompat__stubs.c
 /stdcompat__native.ml_native
 /stdcompat__native.ml_byte
+/compile
+/install-sh
+/missing
