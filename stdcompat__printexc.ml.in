@@ -200,3 +200,10 @@ let register_printer _ =
 
 let print = Printexc.print
 let catch = Printexc.catch
+
+@BEGIN_BEFORE_4_11_0@
+let default_uncaught_exception_handler exn raw_backtrace =
+  Printf.eprintf "Fatal error: exception %s\n" (to_string exn);
+  print_raw_backtrace stderr raw_backtrace;
+  flush stderr
+@END_BEFORE_4_11_0@

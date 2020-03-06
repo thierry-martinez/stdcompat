@@ -129,6 +129,13 @@ type formatter_tag_functions = Format.formatter_tag_functions =
   print_close_tag: tag -> unit }
 (** Alias for {!Format.formatter_tag_functions} *)
 
+val pp_update_geometry : formatter -> (geometry -> geometry) -> unit
+(** @since 4.11.0:
+    val pp_update_geometry : formatter -> (geometry -> geometry) -> unit *)
+
+val update_geometry : (geometry -> geometry) -> unit
+(** @since 4.11.0: val update_geometry : (geometry -> geometry) -> unit *)
+
 val pp_print_custom_break :
   formatter ->
     fits:(string * int * string) -> breaks:(string * int * string) -> unit

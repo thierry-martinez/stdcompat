@@ -71,6 +71,12 @@ type lex_tables = Lexing.lex_tables =
   lex_code: string }
 (** Alias for {!Lexing.lex_tables} *)
 
+val set_position : lexbuf -> position -> unit
+(** @since 4.11.0: val set_position : lexbuf -> position -> unit *)
+
+val set_filename : lexbuf -> string -> unit
+(** @since 4.11.0: val set_filename : lexbuf -> string -> unit *)
+
 val from_channel : ?with_positions:bool -> in_channel -> lexbuf
 (** @since 4.08.0:
     val from_channel : ?with_positions:bool -> in_channel -> lexbuf *)

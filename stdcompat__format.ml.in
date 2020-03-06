@@ -244,3 +244,11 @@ let kfprintf _ =
 let ksprintf _ =
   failwith "Not implemented."
 @END_BEFORE_3_08_0@
+
+@BEGIN_BEFORE_4_11_0@
+let update_geometry _ =
+  failwith "Not implemented."
+
+let pp_update_geometry _ =
+  failwith "Not implemented."
+@END_BEFORE_4_11_0@

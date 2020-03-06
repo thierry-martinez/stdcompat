@@ -41,6 +41,7 @@ val kbprintf :
 val kbprintf :
   (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
 @END_BEFORE_3_10_0@
+
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     val kbprintf :

@@ -25,6 +25,14 @@ end
 (** @since 4.06.0: module Floatarray = Array.Floatarray
  *)
 
+val for_all2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
+(** @since 4.11.0:
+    val for_all2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool *)
+
+val exists2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
+(** @since 4.11.0:
+    val exists2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool *)
+
 @BEGIN_FROM_4_07_0@
 val to_seq : 'a array -> 'a Seq.t
 @END_FROM_4_07_0@

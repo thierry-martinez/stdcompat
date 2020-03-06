@@ -5,7 +5,7 @@ set -e
 #    4.01.0 4.02.3 4.03.0 4.04.2 4.05.0 4.06.1 \
 #    4.07.0 4.08.0 \
 for ocaml_version in \
-   4.09.0; do
+   4.11.0+trunk; do
   target_dir=../interfaces/${ocaml_version:0:4}
 #  ocaml_version=ocaml-variants.4.10.0+beta2
 #  target_dir=../interfaces/4.10.0

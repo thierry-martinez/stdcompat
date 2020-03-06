@@ -19,6 +19,15 @@ type 'a t = 'a list
                      | (::) of 'a * 'a list 
  *)
 
+val fold_left_map :
+  ('a -> 'b -> ('a * 'c)) -> 'a -> 'b list -> ('a * 'c list)
+(** @since 4.11.0:
+    val fold_left_map :
+      ('a -> 'b -> ('a * 'c)) -> 'a -> 'b list -> ('a * 'c list) *)
+
+val filteri : (int -> 'a -> bool) -> 'a list -> 'a list
+(** @since 4.11.0: val filteri : (int -> 'a -> bool) -> 'a list -> 'a list *)
+
 val concat_map : ('a -> 'b list) -> 'a list -> 'b list
 (** @since 4.10.0: val concat_map : ('a -> 'b list) -> 'a list -> 'b list *)
 

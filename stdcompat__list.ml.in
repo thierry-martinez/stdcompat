@@ -133,3 +133,26 @@ let rec concat_rev_map_aux f l accu =
 let concat_map f l =
   rev (concat_rev_map_aux f l [])
 @END_BEFORE_4_10_0@
+
+@BEGIN_BEFORE_4_11_0@
+let rec filteri_rev_aux f l i accu =
+  match l with
+  | [] -> accu
+  | hd :: tl ->
+      let accu =
+        if f i hd then
+          hd :: accu
+        else
+          accu in
+      filteri_rev_aux f tl (succ i) accu
+
+let filteri f l =
+  rev (filteri_rev_aux f l 0 [])
+
+let fold_left_map f accu l =
+  let accu, rev =
+    fold_left (fun (accu, rev) item ->
+      let accu, x = f accu item in
+      (accu, x :: rev)) (accu, []) l in
+  accu, List.rev rev
+@END_BEFORE_4_11_0@

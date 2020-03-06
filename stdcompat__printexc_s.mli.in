@@ -82,6 +82,10 @@ type raw_backtrace_slot
 (** @since 4.02.0: type raw_backtrace_slot
  *)
 
+val default_uncaught_exception_handler : exn -> raw_backtrace -> unit
+(** @since 4.11.0:
+    val default_uncaught_exception_handler : exn -> raw_backtrace -> unit *)
+
 val to_string_default : exn -> string
 (** @since 4.09.0: val to_string_default : exn -> string *)
 
