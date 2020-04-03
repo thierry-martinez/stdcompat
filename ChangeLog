@@ -6,6 +6,7 @@
   - List.{filteri, fold_left_map}
   - Printexc.default_uncaught_exception_handler
   - Seq.{cons, append, unfold}
+  - {Set,Map}.filter_map
 
 * Version 13, 2020-02-22
 

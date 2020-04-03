@@ -1,3 +1,121 @@
+let test_array_for_all2 () =
+  let visited = ref [] in
+  let p i s =
+    visited := i :: !visited;
+    String.make 1 (char_of_int ((int_of_char 'a') + i)) = s in
+  assert (
+    Stdcompat.Array.for_all2 p [| 0; 1; 2; 3 |] [| "a"; "b"; "c"; "d" |]);
+  assert (List.rev !visited = [0; 1; 2; 3]);
+  visited := [];
+  let p i s =
+    visited := i :: !visited;
+    String.make 1 (char_of_int ((int_of_char 'a') + i)) = s && i <> 2 in
+  assert (not (
+    Stdcompat.Array.for_all2 p [| 0; 1; 2; 3 |] [| "a"; "b"; "c"; "d" |]));
+  assert (List.rev !visited = [0; 1; 2]);
+  visited := [];
+  assert (
+    try
+      ignore (
+        Stdcompat.Array.for_all2 p [| 0; 1; 2; 3 |] [| "a"; "b"; "c" |]);
+      false
+    with Invalid_argument _ -> true);
+  assert (List.rev !visited = [])
+
+let test_array_exists2 () =
+  let visited = ref [] in
+  let p i s =
+    visited := i :: !visited;
+    String.make 1 (char_of_int ((int_of_char 'a') + i)) <> s in
+  assert (not (
+    Stdcompat.Array.exists2 p [| 0; 1; 2; 3 |] [| "a"; "b"; "c"; "d" |]));
+  assert (List.rev !visited = [0; 1; 2; 3]);
+  visited := [];
+  let p i s =
+    visited := i :: !visited;
+    String.make 1 (char_of_int ((int_of_char 'a') + i)) <> s || i = 2 in
+  assert (
+    Stdcompat.Array.exists2 p [| 0; 1; 2; 3 |] [| "a"; "b"; "c"; "d" |]);
+  assert (List.rev !visited = [0; 1; 2]);
+  visited := [];
+  assert (
+    try
+      ignore (
+        Stdcompat.Array.exists2 p [| 0; 1; 2; 3 |] [| "a"; "b"; "c" |]);
+      false
+    with Invalid_argument _ -> true);
+  assert (List.rev !visited = [])
+
+let test_list_filteri () =
+  let visited = ref [] in
+  let p i s =
+    visited := i :: !visited;
+    assert (string_of_int i = s);
+    i mod 2 = 0 in
+  assert (
+    Stdcompat.List.filteri p (Stdcompat.List.init 6 string_of_int) =
+      ["0"; "2"; "4"]);
+  assert (List.rev !visited = [0; 1; 2; 3; 4; 5])
+
+let test_list_fold_left_map () =
+  let visited = ref [] in
+  let f accu s =
+    visited := s :: !visited;
+    accu ^ s, "a" ^ s in
+  assert (
+    Stdcompat.List.fold_left_map f "" (Stdcompat.List.init 6 string_of_int) =
+      ("012345", ["a0"; "a1"; "a2"; "a3"; "a4"; "a5"]));
+  assert (List.rev !visited = ["0"; "1"; "2"; "3"; "4"; "5"])
+
+let test_seq_cons () =
+  assert (
+    Stdcompat.List.of_seq (Stdcompat.Seq.cons 0 (Stdcompat.Seq.cons 1
+      (Stdcompat.List.to_seq [2; 3]))) = [0; 1; 2; 3])
+
+let test_seq_append () =
+  assert (
+    Stdcompat.List.of_seq (Stdcompat.Seq.append
+      (Stdcompat.List.to_seq [0; 1; 2])
+      (Stdcompat.List.to_seq [3; 4; 5])) = [0; 1; 2; 3; 4; 5])
+
+let test_seq_unfold () =
+  assert (
+    Stdcompat.List.of_seq (Stdcompat.Seq.unfold (fun i ->
+      if i < 5 then
+        Some (string_of_int i, i + 1)
+      else
+        None) 0) = ["0"; "1"; "2"; "3"; "4"])
+
+let test_set_filter_map () =
+  let module Set = Stdcompat.Set.Make (Stdcompat.Int) in
+  let visited = ref [] in
+  assert (
+    List.sort compare (Set.elements (Set.filter_map (fun i ->
+      visited := i :: !visited;
+      if i mod 2 = 0 then
+        Some (6 - i / 2)
+      else
+        None)
+      (Set.of_seq (Stdcompat.List.to_seq
+        (Stdcompat.List.init 6 Stdcompat.Fun.id))))) = [4; 5; 6]);
+  assert (List.rev !visited = [0; 1; 2; 3; 4; 5])
+
+let test_map_filter_map () =
+  let module Map = Stdcompat.Map.Make (Stdcompat.Int) in
+  let visited = ref [] in
+  assert (
+    List.sort compare (Map.bindings (Map.filter_map (fun k s ->
+      visited := k :: !visited;
+      assert (string_of_int k = s);
+      if k mod 2 = 0 then
+        Some ("a" ^ s)
+      else
+        None)
+      (Map.of_seq (Stdcompat.List.to_seq
+        (Stdcompat.List.init 6 (fun i -> i, string_of_int i)))))) =
+          [0, "a0"; 2, "a2"; 4, "a4"]);
+  assert (List.rev !visited = [0; 1; 2; 3; 4; 5])
+
 let () =
   assert (Stdcompat.hypot 3. 4. = 5.);
   assert (Stdcompat.copysign 1. 2. = 1.);
@@ -464,4 +582,13 @@ let () =
     ~finally:(fun () -> Sys.remove file) in
   check_quote_string "a\\\\";
   check_quote_string "a\\\\b\"\\\"\\\\\"\"\\";
+  test_array_for_all2 ();
+  test_array_exists2 ();
+  test_list_filteri ();
+  test_list_fold_left_map ();
+  test_seq_cons ();
+  test_seq_append ();
+  test_seq_unfold ();
+  test_set_filter_map ();
+  test_map_filter_map ();
   ()
