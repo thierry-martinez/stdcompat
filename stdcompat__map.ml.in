@@ -155,15 +155,6 @@ module Make (Ord : OrderedType) = struct
 
     let filter_map (f : key -> 'a -> 'b option) (m : 'a t) : 'b t =
       t_of_internal (filter_map f (internal_of_t m))
-  @END_WITH_MAGIC@
-
-  @BEGIN_WITHOUT_MAGIC@
-    let filter_map f map =
-      fold (fun x d map' ->
-        match p x d with
-        | Some d' -> add x d' map'
-        | None -> map') map empty
-  @END_WITHOUT_MAGIC@
 
   @BEGIN_BEFORE_4_07_0@
     type 'a enumeration = End | More of key * 'a * 'a internal * 'a enumeration
@@ -193,7 +184,17 @@ module Make (Ord : OrderedType) = struct
       in
       seq_of_enum_ (aux low (internal_of_t m) End)
   @END_BEFORE_4_07_0@
+  @END_WITH_MAGIC@
 
+  @BEGIN_WITHOUT_MAGIC@
+    let filter_map f map =
+      fold (fun x d map' ->
+        match f x d with
+        | Some d' -> add x d' map'
+        | None -> map') map empty
+  @END_WITHOUT_MAGIC@
+
+@BEGIN_WITH_MAGIC@
 @BEGIN_BEFORE_4_06_0@
   let simple_merge t1 t2 =
     match t1, t2 with
