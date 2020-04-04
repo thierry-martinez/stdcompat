@@ -7,17 +7,34 @@ AC_DEFUN([AC_OCAMLFIND_PKG],
   [AC_MSG_CHECKING([for ocamlfind package $2])
    AS_IF([$OCAMLFIND query $2 >/dev/null 2>&1],
      [AC_MSG_RESULT([yes])
-      AC_SUBST([$1], [$2])],
+      AC_MSG_CHECKING([if package $2 is usable])
+      echo "module M = $3" > configure_test.ml
+      AS_IF([$OCAMLFIND c -package $2 configure_test.ml -o /dev/null >/dev/null 2>&1],
+        [rm configure_test.ml
+         AC_MSG_RESULT([yes])
+         AC_SUBST([$1], [$2])],
+        [rm configure_test.ml
+         AC_MSG_RESULT([no])
+         AC_SUBST([$1], [])])],
      [AC_MSG_RESULT([no])
       AC_SUBST([$1], [])])])
 
 AC_CHECK_TOOL([OCAML], [ocaml], [])
+AC_CHECK_TOOL([OCAMLC], [ocamlc.opt], [])
+AS_IF([test "x$OCAMLC" = "x"],
+  [AC_CHECK_TOOL([OCAMLC], [ocamlc], [])])
+
+# ocamlc --version is not supported by OCaml <4.03
+# \($\|\r\) is not supported by Mac OS sed
+
+AC_MSG_CHECKING([OCaml version])
+AC_SUBST([OCAMLVERSION],
+  [[`$OCAMLC -v | sed -n 's/^.*version \(.*\)$/\1/p' | sed 's/\r//'`]])
+AC_MSG_RESULT([$OCAMLVERSION])
+
 AC_CHECK_TOOL([OCAMLFIND], [ocamlfind], [])
 AS_IF([test "x$OCAMLFIND" = "x"],
-  [AC_CHECK_TOOL([OCAMLC], [ocamlc.opt], [])
-   AS_IF([test "x$OCAMLC" = "x"],
-     [AC_CHECK_TOOL([OCAMLC], [ocamlc], [])])
-   AC_CHECK_TOOL([OCAMLOPT], [ocamlopt.opt], [])
+  [AC_CHECK_TOOL([OCAMLOPT], [ocamlopt.opt], [])
    AS_IF([test "x$OCAMLOPT" = "x"],
      [AC_CHECK_TOOL([OCAMLOPT], [ocamlopt], [])])
    AC_CHECK_TOOL([OCAMLDOC], [ocamldoc.opt], [])
@@ -37,9 +54,9 @@ AS_IF([test "x$OCAMLFIND" = "x"],
    AC_SUBST([OCAMLDOC], [["$OCAMLFIND ocamldoc"]])
    AC_SUBST([OCAMLDEP], [["$OCAMLFIND ocamldep"]])
    AC_SUBST([OCAMLMKLIB], [["$OCAMLFIND ocamlmklib"]])
-   AC_OCAMLFIND_PKG([RESULT_PKG], [result])
-   AC_OCAMLFIND_PKG([SEQ_PKG], [seq])
-   AC_OCAMLFIND_PKG([UCHAR_PKG], [uchar])])
+   AC_OCAMLFIND_PKG([RESULT_PKG], [result], [Result])
+   AC_OCAMLFIND_PKG([SEQ_PKG], [seq], [Seq])
+   AC_OCAMLFIND_PKG([UCHAR_PKG], [uchar], [Uchar])])
 
 AS_IF([test "x$OCAMLOPT" = "x"],
   [AS_IF([test "x$OCAMLC" = "x"],
@@ -57,14 +74,6 @@ AC_C_BIGENDIAN(
   [AC_SUBST([BIG_ENDIAN], [[true]])],
   [AC_SUBST([BIG_ENDIAN], [[false]])],
   [AC_MSG_ERROR([[Unknown endianness]])])
-
-# ocamlc --version is not supported by OCaml <4.03
-# \($\|\r\) is not supported by Mac OS sed
-
-AC_MSG_CHECKING([OCaml version])
-AC_SUBST([OCAMLVERSION],
-  [[`$OCAMLBEST -v | sed -n 's/^.*version \(.*\)$/\1/p' | sed 's/\r//'`]])
-AC_MSG_RESULT([$OCAMLVERSION])
 
 AC_MSG_CHECKING([OCaml target OS type])
 
