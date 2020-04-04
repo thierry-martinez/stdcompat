@@ -10,7 +10,7 @@ RUN sudo mv ~/opam /usr/local/bin/opam
 RUN opam init --disable-sandboxing --auto-setup --dot-profile=/home/ci/.bash_env
 SHELL ["/bin/bash", "-c"]
 ENV BASH_ENV /home/ci/.bash_env
-RUN opam update && opam switch create 3.07
+# RUN opam update && opam switch create 3.07
 RUN opam update && opam switch create 3.08.4
 RUN opam update && opam switch create 3.09.3
 RUN opam update && opam switch create 3.10.2
