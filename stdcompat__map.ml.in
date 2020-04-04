@@ -73,9 +73,46 @@ module Make (Ord : OrderedType) = struct
       | Empty -> 0
       | Node (_l, _v, _d, _r, h) -> h
 
+    @BEGIN_BEFORE_4_05_0@
+      let rec min_binding_aux l v d =
+        match l with
+        | Empty -> v, d
+        | Node (l', v', d', _r, _h) -> min_binding_aux l' v' d'
+
+      let min_binding_opt (map : 'a t) =
+        match internal_of_t map with
+        | Empty -> None
+        | Node (l, v, d, _r, _h) -> Some (min_binding_aux l v d)
+
+      let rec max_binding_aux v d r =
+        match r with
+        | Empty -> v, d
+        | Node (_, v', d', r', _h) -> max_binding_aux v' d' r'
+
+      let max_binding_opt (map : 'a t) =
+        match internal_of_t map with
+        | Empty -> None
+        | Node (_l, v, d, r, _h) -> Some (max_binding_aux v d r)
+    @END_BEFORE_4_05_0@
+
     @BEGIN_BEFORE_3_12_0@
       let singleton key value =
         t_of_internal (Node (Empty, key, value, Empty, 1))
+      let min_binding map =
+        match map with
+        | Empty -> raise Not_found
+        | Node (l, v, d, _r, _h) -> min_binding_aux l v d
+
+      let min_binding (map : 'a t) =
+        min_binding (internal_of_t map)
+
+      let max_binding map =
+        match map with
+        | Empty -> raise Not_found
+        | Node (_l, v, d, r, _h) -> max_binding_aux v d r
+
+      let max_binding (map : 'a t) =
+        max_binding (internal_of_t map)
     @END_BEFORE_3_12_0@
 
     let create l x d r =
@@ -252,26 +289,6 @@ module Make (Ord : OrderedType) = struct
 @END_BEFORE_4_06_0@
 
 @BEGIN_BEFORE_4_05_0@
-  let rec min_binding_aux l v d =
-    match l with
-    | Empty -> v, d
-    | Node (l', v', d', _r, _h) -> min_binding_aux l' v' d'
-
-  let min_binding_opt (map : 'a t) =
-    match internal_of_t map with
-    | Empty -> None
-    | Node (l, v, d, _r, _h) -> Some (min_binding_aux l v d)
-
-  let rec max_binding_aux v d r =
-    match r with
-    | Empty -> v, d
-    | Node (_, v', d', r', _h) -> max_binding_aux v' d' r'
-
-  let max_binding_opt (map : 'a t) =
-    match internal_of_t map with
-    | Empty -> None
-    | Node (_l, v, d, r, _h) -> Some (max_binding_aux v d r)
-
   let rec find_opt key (map : 'a internal) =
     match map with
     | Empty -> None
@@ -353,22 +370,6 @@ module Make (Ord : OrderedType) = struct
 @END_BEFORE_4_05_0@
 
 @BEGIN_BEFORE_3_12_0@
-  let min_binding map =
-    match map with
-    | Empty -> raise Not_found
-    | Node (l, v, d, _r, _h) -> min_binding_aux l v d
-
-  let min_binding (map : 'a t) =
-    min_binding (internal_of_t map)
-
-  let max_binding map =
-    match map with
-    | Empty -> raise Not_found
-    | Node (_l, v, d, r, _h) -> max_binding_aux v d r
-
-  let max_binding (map : 'a t) =
-    max_binding (internal_of_t map)
-
   let rec split x map =
     match map with
     | Empty ->
