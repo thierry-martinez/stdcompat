@@ -75,7 +75,7 @@ module Make (Ord : OrderedType) = struct
 
     @BEGIN_BEFORE_3_12_0@
       let singleton key value =
-        t_of_internal (None (Empty, key, value, Empty, 1))
+        t_of_internal (Node (Empty, key, value, Empty, 1))
     @END_BEFORE_3_12_0@
 
     let create l x d r =
