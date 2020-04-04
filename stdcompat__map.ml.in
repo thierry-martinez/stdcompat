@@ -409,8 +409,8 @@ module Make (Ord : OrderedType) = struct
           | Some d2 -> concat_or_join l v1 (f v1 d1 d2) r
         else
           let (l1, d1, r1) = split v2 (t_of_internal s1) in
-          let l = union f l1 (internal_of_t l2)
-          and r = union f r1 (internal_of_t r2) in
+          let l = union f (internal_of_t l1) l2
+          and r = union f (internal_of_t r1) r2 in
           match d1 with
           | None -> join l v2 d2 r
           | Some d1 -> concat_or_join l v2 (f v2 d1 d2) r
