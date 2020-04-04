@@ -8,6 +8,10 @@
   - Seq.{cons, append, unfold}
   - {Set,Map}.filter_map
 
+- More efficient implementation of Set functions
+
+- Support for version mismatch between ocamlc and ocamlfind packages
+
 * Version 13, 2020-02-22
 
 - Add: stdcompat.h, provides prototype for caml_alloc_initialized_string
