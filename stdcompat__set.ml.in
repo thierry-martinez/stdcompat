@@ -54,6 +54,10 @@ module Make = Set.Make
 module Make (Ord : OrderedType) = struct
   include Set.Make (Ord)
 
+@BEGIN_BEFORE_4_02_0@
+  let of_list l = List.fold_left (fun s item -> add item s) empty l
+@END_BEFORE_4_02_0@
+
   @BEGIN_WITH_MAGIC@
     type internal = Empty | Node of internal * elt * internal * int
 
@@ -454,10 +458,6 @@ module Make (Ord : OrderedType) = struct
     | Some x -> x
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_05_0@
-
-@BEGIN_BEFORE_4_02_0@
-  let of_list l = List.fold_left (fun s item -> add item s) empty l
-@END_BEFORE_4_02_0@
 
 @BEGIN_BEFORE_4_04_0@
 @BEGIN_WITH_MAGIC@
