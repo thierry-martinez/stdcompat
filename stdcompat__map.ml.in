@@ -73,6 +73,11 @@ module Make (Ord : OrderedType) = struct
       | Empty -> 0
       | Node (_l, _v, _d, _r, h) -> h
 
+    @BEGIN_BEFORE_3_12_0@
+      let singleton key value =
+        t_of_internal (None (Empty, key, value, Empty, 1))
+    @END_BEFORE_3_12_0@
+
     let create l x d r =
       Node (l, x, d, r, (max (height l) (height r)) + 1)
 
@@ -187,6 +192,11 @@ module Make (Ord : OrderedType) = struct
   @END_WITH_MAGIC@
 
   @BEGIN_WITHOUT_MAGIC@
+    @BEGIN_BEFORE_3_12_0@
+      let singleton key value =
+        add key value empty
+    @END_BEFORE_3_12_0@
+
     let filter_map f map =
       fold (fun x d map' ->
         match f x d with
@@ -782,9 +792,6 @@ module Make (Ord : OrderedType) = struct
 
   let cardinal map =
     fold (fun _ _ counter -> succ counter) map 0
-
-  let singleton key value =
-    add key value empty
 @END_BEFORE_3_12_0@
 end
 @END_BEFORE_4_11_0@
