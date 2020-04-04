@@ -125,10 +125,10 @@ stdcompat.cmxs : $(MODULES_native:.ml=.cmx) libstdcompat__stubs.a
 # Fake dependency to rebuild stdcompat__native.cmi on compiler change
 stdcompat__native.cmi : config.status
 
-stdcompat__native.cmo : stdcompat__native.ml_byte
+stdcompat__native.cmo : stdcompat__native.ml_byte stdcompat__native.cmi
 	$(OCAMLC) $(OCAMLCFLAGS) -c -impl stdcompat__native.ml_byte
 
-stdcompat__native.cmx : stdcompat__native.ml_native
+stdcompat__native.cmx : stdcompat__native.ml_native stdcompat__native.cmi
 	$(OCAMLOPT) $(OCAMLCFLAGS) -c -impl stdcompat__native.ml_native
 
 .PHONY : depend

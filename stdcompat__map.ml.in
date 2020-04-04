@@ -368,13 +368,6 @@ module Make (Ord : OrderedType) = struct
 
   let max_binding (map : 'a t) =
     max_binding (internal_of_t map)
-@END_BEFORE_3_12_0@
-
-@BEGIN_BEFORE_4_03_0@
-  let concat_or_join t1 v d t2 =
-    match d with
-    | Some d -> join t1 v d t2
-    | None -> concat t1 t2
 
   let rec split x map =
     match map with
@@ -391,19 +384,33 @@ module Make (Ord : OrderedType) = struct
           let lr, pres, rr = split x r in
           join l v d lr, pres, rr
 
+  let split x (map : 'a t) : ('a t * 'a option * 'a t) =
+    let (l : 'a internal), item, (r : 'a internal) =
+      split x (internal_of_t map) in
+    (t_of_internal l, item, t_of_internal r)
+@END_BEFORE_3_12_0@
+
+@BEGIN_BEFORE_4_03_0@
+  let concat_or_join t1 v d t2 =
+    match d with
+    | Some d -> join t1 v d t2
+    | None -> concat t1 t2
+
   let rec union f s1 s2 =
     match s1, s2 with
     | Empty, s | s, Empty -> s
     | Node (l1, v1, d1, r1, h1), Node (l2, v2, d2, r2, h2) ->
         if h1 >= h2 then
-          let (l2, d2, r2) = split v1 s2 in
-          let l = union f l1 l2 and r = union f r1 r2 in
+          let (l2, d2, r2) = split v1 (t_of_internal s2) in
+          let l = union f l1 (internal_of_t l2)
+          and r = union f r1 (internal_of_t r2) in
           match d2 with
           | None -> join l v1 d1 r
           | Some d2 -> concat_or_join l v1 (f v1 d1 d2) r
         else
-          let (l1, d1, r1) = split v2 s1 in
-          let l = union f l1 l2 and r = union f r1 r2 in
+          let (l1, d1, r1) = split v2 (t_of_internal s1) in
+          let l = union f l1 (internal_of_t l2)
+          and r = union f r1 (internal_of_t r2) in
           match d1 with
           | None -> join l v2 d2 r
           | Some d1 -> concat_or_join l v2 (f v2 d1 d2) r
@@ -420,11 +427,6 @@ module Make (Ord : OrderedType) = struct
 
   let bindings (map : 'a t) =
     bindings_aux [] (internal_of_t map)
-
-  let split x (map : 'a t) : ('a t * 'a option * 'a t) =
-    let (l : 'a internal), item, (r : 'a internal) =
-      split x (internal_of_t map) in
-    (t_of_internal l, item, t_of_internal r)
 
   let rec merge f s1 s2 =
     match s1, s2 with
