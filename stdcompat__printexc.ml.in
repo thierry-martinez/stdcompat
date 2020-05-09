@@ -170,8 +170,8 @@ let raw_backtrace_to_string = Printexc.raw_backtrace_to_string
 @BEGIN_BEFORE_4_01_0@
 let get_raw_backtrace _ = ()
 
-let print_raw_backtrace _ =
-  failwith "Unimplemented."
+let print_raw_backtrace _stderr _raw_backtrace =
+  ()
 
 let raw_backtrace_to_string _ =
   failwith "Unimplemented."
