@@ -55,16 +55,11 @@ let to_string_default e =
 module Slot = Printexc.Slot
 @END_FROM_4_11_0@
 @BEGIN_BEFORE_4_11_0@
-@BEGIN_FROM_4_04_0@
 module Slot = struct
+@BEGIN_FROM_4_04_0@
   include Printexc.Slot
-
-  let name _ =
-    None
-end
 @END_FROM_4_04_0@
 @BEGIN_BEFORE_4_04_0@
-module Slot = struct
   type t = backtrace_slot
 @BEGIN_FROM_4_02_0@
   let is_raise = Printexc.Slot.is_raise
@@ -84,8 +79,10 @@ module Slot = struct
 
   let is_inline _ =
     false
-end
 @END_BEFORE_4_04_0@
+  let name _ =
+    None
+end
 @END_BEFORE_4_11_0@
 
 @BEGIN_FROM_4_02_0@
