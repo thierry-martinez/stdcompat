@@ -8,12 +8,12 @@ type t = Stdcompat__init.bytes
 (** @since 4.02.0: type t = bytes
  *)
 
-@BEGIN_FROM_4_09_0@
+@BEGIN_FROM_4_03_0@
 external unsafe_blit_string :
-  string -> int -> bytes -> int -> int -> unit = "caml_blit_string"[@@noalloc
-                                                                    ]
-@END_FROM_4_09_0@
-@BEGIN_BEFORE_4_09_0@
+  string -> int -> Stdcompat__init.bytes -> int -> int -> unit =
+    "caml_blit_string" [@@noalloc]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
 @BEGIN_FROM_3_08_0@
 external unsafe_blit_string :
   string -> int -> Stdcompat__init.bytes -> int -> int -> unit =
@@ -24,8 +24,7 @@ external unsafe_blit_string :
   string -> int -> Stdcompat__init.bytes -> int -> int -> unit =
     "blit_string" "noalloc"
 @END_BEFORE_3_08_0@
-
-@END_BEFORE_4_09_0@
+@END_BEFORE_4_03_0@
 (** @since 4.09.0:
     external unsafe_blit_string :
       string -> int -> bytes -> int -> int -> unit = "caml_blit_string"
