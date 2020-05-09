@@ -4,9 +4,10 @@
   - Array.{for_all2, exists2}
   - Lexing.{set_position, set_filename}
   - List.{filteri, fold_left_map}
-  - Printexc.default_uncaught_exception_handler
+  - Printexc.{default_uncaught_exception_handler, Slot.name}
   - Seq.{cons, append, unfold}
   - {Set,Map}.filter_map
+  - Printf.{ibprintf, ikbprintf}
 
 - More efficient implementation of Set functions
 

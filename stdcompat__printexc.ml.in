@@ -51,8 +51,17 @@ let to_string_default e =
   to_string e
 @END_BEFORE_4_09_0@
 
-@BEGIN_FROM_4_04_0@
+@BEGIN_FROM_4_11_0@
 module Slot = Printexc.Slot
+@END_FROM_4_11_0@
+@BEGIN_BEFORE_4_11_0@
+@BEGIN_FROM_4_04_0@
+module Slot = struct
+  include Printexc.Slot
+
+  let name _ =
+    failwith "Unimplemented."
+end
 @END_FROM_4_04_0@
 @BEGIN_BEFORE_4_04_0@
 module Slot = struct
@@ -77,6 +86,7 @@ module Slot = struct
     failwith "Unimplemented."
 end
 @END_BEFORE_4_04_0@
+@END_BEFORE_4_11_0@
 
 @BEGIN_FROM_4_02_0@
 type raw_backtrace_slot = Printexc.raw_backtrace_slot
