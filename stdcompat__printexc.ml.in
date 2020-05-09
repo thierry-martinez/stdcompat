@@ -14,7 +14,7 @@ type t = exn
 type raw_backtrace = Printexc.raw_backtrace
 @END_FROM_4_01_0@
 @BEGIN_BEFORE_4_01_0@
-type raw_backtrace = ()
+type raw_backtrace = unit
 @END_BEFORE_4_01_0@
 
 @BEGIN_FROM_4_02_0@
