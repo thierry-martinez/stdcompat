@@ -30,4 +30,4 @@ RUN opam update && opam switch create 4.09.0
 RUN opam update && opam switch create 4.10.0
 RUN opam update && \
     opam repo add beta https://github.com/ocaml/ocaml-beta-repository.git && \
-    opam switch create 4.11.0+trunk --repositories=default,beta
+    opam switch create 4.11.0+alpha1 --repositories=default,beta
