@@ -1,4 +1,4 @@
-* Next version
+* Version 14, 2020-05-09
 
 - Support for OCaml 4.11.0 with
   - Array.{for_all2, exists2}
