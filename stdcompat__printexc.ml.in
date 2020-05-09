@@ -60,7 +60,7 @@ module Slot = struct
   include Printexc.Slot
 
   let name _ =
-    failwith "Unimplemented."
+    None
 end
 @END_FROM_4_04_0@
 @BEGIN_BEFORE_4_04_0@
@@ -73,17 +73,17 @@ module Slot = struct
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
   let is_raise _ =
-    failwith "Unimplemented."
+    false
 
   let location _ =
-    failwith "Unimplemented."
+    None
 
   let format _ _ =
-    failwith "Unimplemented."
+    None
 @END_BEFORE_4_02_0@
 
   let is_inline _ =
-    failwith "Unimplemented."
+    false
 end
 @END_BEFORE_4_04_0@
 @END_BEFORE_4_11_0@
