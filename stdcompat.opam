@@ -14,7 +14,7 @@ depopts: [ "result" "seq" "uchar" "ocamlfind" ]
 build: [
   [make "-f" "Makefile.bootstrap" "-j" jobs]
   ["./configure" "--prefix=%{prefix}%"]
-  [make all test {with-test}]
+  [make "all" "test" {with-test}]
 ]
 install: [make "install"]
 dev-repo: "git+https://github.com/thierry-martinez/stdcompat.git"
