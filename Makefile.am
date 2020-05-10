@@ -138,8 +138,8 @@ depend : .depend
 	cp stdcompat__native.ml_byte stdcompat__native.ml
 	$(OCAMLDEP) $^ >$@ || rm -f .depend
 
-.PHONY : tests
-tests : stdcompat_tests
+.PHONY : test
+test : stdcompat_tests
 	./stdcompat_tests
 
 stdcompat_tests: stdcompat.$(CMAX) stdcompat_tests.ml

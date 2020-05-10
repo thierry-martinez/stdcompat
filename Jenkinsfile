@@ -68,7 +68,7 @@ pipeline {
                             node('linux') {
                                 sh "rm -rf build"
                                 unstash 'bootstrap'
-                                sh "docker run --rm --volume \$PWD:/workspace stdcompat sh -c 'cd /workspace && unset BASH_ENV && opam config exec --switch $switch_name -- sh -c '\\''mkdir build && cd build && ../configure && make && make tests && ../configure --disable-magic && make && make tests'\\'"
+                                sh "docker run --rm --volume \$PWD:/workspace stdcompat sh -c 'cd /workspace && unset BASH_ENV && opam config exec --switch $switch_name -- sh -c '\\''mkdir build && cd build && ../configure && make && make test && ../configure --disable-magic && make && make test'\\'"
                             }
                         }
                     }
@@ -85,7 +85,7 @@ bash -c "ci/cygwin-compile-ocaml.sh \\"$version\\""
 if not errorlevel 0 exit /b
 set PATH=C:\\ocaml\\$version\\bin;%PATH%
 set FLEXDIR=C:\\ocaml\\$version\\lib
-bash -c "eval \$(~/ocaml-4.09.0/tools/msvs-promote-path) && make -f Makefile.bootstrap && ./configure && make && make tests"
+bash -c "eval \$(~/ocaml-4.09.0/tools/msvs-promote-path) && make -f Makefile.bootstrap && ./configure && make && make test"
                                 """
                             }
                         }
