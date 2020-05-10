@@ -15,6 +15,7 @@ build: [
   [make "-f" "Makefile.bootstrap" "-j" jobs]
   ["./configure" "--prefix=%{prefix}%"]
   [make]
+  [make test] {with-test}
 ]
 install: [make "install"]
 dev-repo: "git+https://github.com/thierry-martinez/stdcompat.git"
