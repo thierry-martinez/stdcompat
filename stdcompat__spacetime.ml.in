@@ -1,3 +1,4 @@
+@BEGIN_BEFORE_4_12_0@
 @BEGIN_FROM_4_04_0@
 include Spacetime
 
@@ -24,3 +25,4 @@ end
 
 let save_event_for_automatic_snapshots ~event_name = not_implemented ()
 @END_BEFORE_4_04_0@
+@END_BEFORE_4_12_0@

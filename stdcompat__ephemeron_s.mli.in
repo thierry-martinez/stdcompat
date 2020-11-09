@@ -3,7 +3,12 @@ module type S = sig
 module type S  =
   sig
     type key
+@BEGIN_FROM_4_12_0@
+    type !'a t
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
     type 'a t
+@END_BEFORE_4_12_0@
     val create : int -> 'a t
     val clear : 'a t -> unit
     val reset : 'a t -> unit
@@ -97,7 +102,12 @@ module type S  =
 module type SeededS  =
   sig
     type key
+@BEGIN_FROM_4_12_0@
+    type !'a t
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
     type 'a t
+@END_BEFORE_4_12_0@
     val create : ?random:bool -> int -> 'a t
     val clear : 'a t -> unit
     val reset : 'a t -> unit

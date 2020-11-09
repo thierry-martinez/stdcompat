@@ -1,1 +1,3 @@
+@BEGIN_BEFORE_4_12_0@
 include Stdcompat__spacetime_s.S
+@END_BEFORE_4_12_0@

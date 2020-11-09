@@ -14,6 +14,9 @@ type spec = Arg.spec =
   | Tuple of spec list 
   | Symbol of string list * (string -> unit) 
   | Rest of (string -> unit) 
+@BEGIN_FROM_4_12_0@
+  | Rest_all of (string list -> unit)
+@END_FROM_4_12_0@
   | Expand of (string -> string array) 
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
