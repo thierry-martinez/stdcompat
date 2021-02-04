@@ -1,6 +1,12 @@
 module type S = sig
 @BEGIN_FROM_4_08_0@
+@BEGIN_FROM_4_02_0@
 type t = exn = ..
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+type t = 
+exn
+@END_BEFORE_4_02_0@
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
@@ -21,6 +27,15 @@ type raw_backtrace = Printexc.raw_backtrace
 type raw_backtrace
 @END_BEFORE_4_01_0@
 (** @since 4.01.0: type raw_backtrace
+ *)
+
+@BEGIN_FROM_4_12_0@
+type raw_backtrace_entry = Printexc.raw_backtrace_entry
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
+type raw_backtrace_entry = private int
+@END_BEFORE_4_12_0@
+(** @since 4.12.0: type raw_backtrace_entry = Printexc.raw_backtrace_entry
  *)
 
 @BEGIN_FROM_4_02_0@
@@ -82,6 +97,16 @@ type raw_backtrace_slot
 @END_BEFORE_4_02_0@
 (** @since 4.02.0: type raw_backtrace_slot
  *)
+
+val raw_backtrace_entries : raw_backtrace -> raw_backtrace_entry array
+(** @since 4.12.0:
+    val raw_backtrace_entries : raw_backtrace -> raw_backtrace_entry array *)
+
+val backtrace_slots_of_raw_entry :
+  raw_backtrace_entry -> backtrace_slot array option
+(** @since 4.12.0:
+    val backtrace_slots_of_raw_entry :
+      raw_backtrace_entry -> backtrace_slot array option *)
 
 val default_uncaught_exception_handler : exn -> raw_backtrace -> unit
 (** @since 4.11.0:

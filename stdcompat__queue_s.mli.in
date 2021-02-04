@@ -1,6 +1,18 @@
 module type S = sig
+@BEGIN_FROM_4_12_0@
+@BEGIN_FROM_4_12_0@
+type !'a t = 'a Queue.t
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
+
 type 'a t = 'a Queue.t
-(** Alias for {!Queue.t} *)
+@END_BEFORE_4_12_0@
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
+type 'a t
+@END_BEFORE_4_12_0@
+(** @since 4.12.0: type !'a t
+ *)
 
 exception Empty 
 (** Alias for {!Queue.Empty} *)

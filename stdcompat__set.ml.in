@@ -43,20 +43,17 @@ module type S  =
     val of_list : elt list -> t
     val to_seq_from : elt -> t -> elt Stdcompat__seq.t
     val to_seq : t -> elt Stdcompat__seq.t
+    val to_rev_seq : t -> elt Stdcompat__seq.t
     val add_seq : elt Stdcompat__seq.t -> t -> t
     val of_seq : elt Stdcompat__seq.t -> t
   end
 
-@BEGIN_FROM_4_11_0@
+@BEGIN_FROM_4_12_0@
 module Make = Set.Make
-@END_FROM_4_11_0@
-@BEGIN_BEFORE_4_11_0@
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
 module Make (Ord : OrderedType) = struct
   include Set.Make (Ord)
-
-@BEGIN_BEFORE_4_02_0@
-  let of_list l = List.fold_left (fun s item -> add item s) empty l
-@END_BEFORE_4_02_0@
 
   @BEGIN_WITH_MAGIC@
     type internal = Empty | Node of internal * elt * internal * int
@@ -142,45 +139,77 @@ module Make (Ord : OrderedType) = struct
       | (_, _) ->
           try_join t1 (min_elt (t_of_internal t2))
             (remove_min_elt t2)
+  @END_WITH_MAGIC@
 
-    let rec filter_map f = function
-      | Empty -> Empty
-      | Node (l, v, r, _) as t ->
-         (* enforce left-to-right evaluation order *)
-         let l' = filter_map f l in
-         let v' = f v in
-         let r' = filter_map f r in
-         begin match v' with
-           | Some v' ->
-              if l == l' && v == v' && r == r' then t
-              else try_join l' v' r'
-           | None ->
-              try_concat l' r'
-         end
+  @BEGIN_BEFORE_4_12_0@
+    @BEGIN_WITH_MAGIC@
+      type enumeration = End | More of elt * internal * enumeration
 
-    let filter_map (f : elt -> elt option) (s : t) : t =
-      t_of_internal (filter_map f (internal_of_t s))
-@END_WITH_MAGIC@
-@BEGIN_WITHOUT_MAGIC@
-  type map_changed =
-    | Changed of t
-    | Unchanged of elt list
+      let rec snoc_enum s e =
+        match s with
+          Empty -> e
+        | Node (l, v, r, _h) -> snoc_enum r (More(v, l, e))
 
-  let filter_map f s =
-    match
-      fold (fun item accu ->
-        match accu, f item with
-        | Changed set, None -> Changed set
-        | Changed set, Some item' -> Changed (add item' set)
-        | Unchanged list, None -> Changed (of_list list)
-        | Unchanged list, Some item' ->
-           if item == item' then Unchanged (item :: list)
-           else Changed (add item' (of_list list)))
-      s (Unchanged [])
-    with
-    | Changed s -> s
-    | Unchanged _ -> s
-@END_WITHOUT_MAGIC@
+      let rec rev_seq_of_enum_ c () = match c with
+        | End -> Stdcompat__seq.Nil
+        | More (x, t, rest) ->
+            Stdcompat__seq.Cons (x, rev_seq_of_enum_ (snoc_enum t rest))
+
+      let to_rev_seq (s : t) =
+        let s : internal = Obj.magic s in
+        rev_seq_of_enum_ (snoc_enum s End)
+    @END_WITH_MAGIC@
+    @BEGIN_WITHOUT_MAGIC@
+      let to_seq s =
+        Stdcompat__list.to_seq (List.rev (elements s))
+    @END_WITHOUT_MAGIC@
+  @END_BEFORE_4_12_0@
+
+  @BEGIN_BEFORE_4_02_0@
+    let of_list l = List.fold_left (fun s item -> add item s) empty l
+  @END_BEFORE_4_02_0@
+
+  @BEGIN_BEFORE_4_11_0@
+    @BEGIN_WITH_MAGIC@
+      let rec filter_map f = function
+        | Empty -> Empty
+        | Node (l, v, r, _) as t ->
+           (* enforce left-to-right evaluation order *)
+           let l' = filter_map f l in
+           let v' = f v in
+           let r' = filter_map f r in
+           begin match v' with
+             | Some v' ->
+                if l == l' && v == v' && r == r' then t
+                else try_join l' v' r'
+             | None ->
+                try_concat l' r'
+           end
+
+      let filter_map (f : elt -> elt option) (s : t) : t =
+        t_of_internal (filter_map f (internal_of_t s))
+    @END_WITH_MAGIC@
+    @BEGIN_WITHOUT_MAGIC@
+      type map_changed =
+        | Changed of t
+        | Unchanged of elt list
+
+      let filter_map f s =
+        match
+          fold (fun item accu ->
+            match accu, f item with
+            | Changed set, None -> Changed set
+            | Changed set, Some item' -> Changed (add item' set)
+            | Unchanged list, None -> Changed (of_list list)
+            | Unchanged list, Some item' ->
+               if item == item' then Unchanged (item :: list)
+               else Changed (add item' (of_list list)))
+          s (Unchanged [])
+        with
+        | Changed s -> s
+        | Unchanged _ -> s
+    @END_WITHOUT_MAGIC@
+  @END_BEFORE_4_11_0@
 
 @BEGIN_BEFORE_4_08_0@
 @BEGIN_WITH_MAGIC@
@@ -228,8 +257,6 @@ module Make (Ord : OrderedType) = struct
   let of_seq i = add_seq i empty
 
 @BEGIN_WITH_MAGIC@
-  type enumeration = End | More of elt * internal * enumeration
-
   let rec cons_enum s e =
     match s with
       Empty -> e
@@ -504,4 +531,4 @@ module Make (Ord : OrderedType) = struct
      snd (fold add s (false, (empty, false, empty)))
 @END_BEFORE_3_08_0@
 end
-@END_BEFORE_4_11_0@
+@END_BEFORE_4_12_0@

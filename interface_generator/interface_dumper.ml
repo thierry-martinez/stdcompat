@@ -96,7 +96,7 @@ let refine_signature_item ~module_name
               pval_attributes = Ast_helper.Attr.mk
                 (Location.mkloc "ocaml.deprecated" !Ast_helper.default_loc)
                 (PStr [Ast_helper.Str.eval
-                   (Ast_helper.Exp.constant (Pconst_string (warning, None)))])
+                   (Ast_helper.Exp.constant (Ast_helper.Const.string warning))])
                 :: value_description.pval_attributes } in
             { signature_item with psig_desc = Psig_value value_description } in
       signature_item
@@ -180,7 +180,7 @@ let module_type_of_name ~command_line ~module_name =
           pmtd_attributes = [Ast_helper.Attr.mk
             { Location.txt = "ocaml.warning"; loc = Location.none }
             (Parsetree.PStr [Ast_helper.Str.eval (
-              Ast_helper.Exp.constant (Parsetree.Pconst_string ("-3", None)))])
+              Ast_helper.Exp.constant (Ast_helper.Const.string "-3"))])
       ];
           pmtd_loc = Location.none; }
       else

@@ -227,6 +227,26 @@ let pp_print_text formatter s =
     | _ -> pp_print_char formatter c) s
 @END_BEFORE_4_02_0@
 
+@BEGIN_BEFORE_4_12_0@
+let rec pp_print_seq_cont pp_sep pp_item formatter (seq : _ Stdcompat__seq.t) =
+  match seq () with
+  | Stdcompat__seq.Nil -> ()
+  | Stdcompat__seq.Cons (hd, tl) ->
+      begin match pp_sep with
+      | None -> ()
+      | Some pp_sep -> pp_sep formatter ()
+      end;
+      pp_item formatter hd;
+      pp_print_seq_cont pp_sep pp_item formatter seq
+
+let pp_print_seq ?pp_sep pp_item formatter (seq : _ Stdcompat__seq.t) =
+  match seq () with
+  | Stdcompat__seq.Nil -> ()
+  | Stdcompat__seq.Cons (hd, tl) ->
+      pp_item formatter hd;
+      pp_print_seq_cont pp_sep pp_item formatter seq
+@END_BEFORE_4_12_0@
+
 @BEGIN_BEFORE_3_12_0@
 let ikfprintf _ =
   failwith "Not implemented."

@@ -1,6 +1,21 @@
 @BEGIN_FROM_4_08_0@
 include Printexc
 @END_FROM_4_08_0@
+
+
+@BEGIN_BEFORE_4_12_0@
+type raw_backtrace_entry = private int
+
+let not_implemented () =
+  failwith "Stdcompat: not implemented."
+
+let backtrace_slots_of_raw_entry _ =
+  not_implemented ()
+
+let raw_backtrace_entries _ =
+  not_implemented ()
+@END_BEFORE_4_12_0@
+
 @BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_02_0@
 type t = exn = ..
@@ -106,7 +121,7 @@ let get_raw_backtrace_next_slot = Printexc.get_raw_backtrace_next_slot
 @END_FROM_4_04_0@
 @BEGIN_BEFORE_4_04_0@
 let get_raw_backtrace_next_slot _ =
-  failwith "Unimplemented."
+  not_implemented ()
 @END_BEFORE_4_04_0@
 
 @BEGIN_FROM_4_02_0@
@@ -126,25 +141,25 @@ let exn_slot_name = Printexc.exn_slot_name
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
 let set_uncaught_exception_handler _ =
-  failwith "Unimplemented."
+  not_implemented ()
 
 let backtrace_slots _ =
-  failwith "Unimplemented."
+  not_implemented ()
 
 let raw_backtrace_length _ =
-  failwith "Unimplemented."
+  not_implemented ()
 
 let get_raw_backtrace_slot _ =
-  failwith "Unimplemented."
+  not_implemented ()
 
 let convert_raw_backtrace_slot _ =
-  failwith "Unimplemented."
+  not_implemented ()
 
 let exn_slot_id _ =
-  failwith "Unimplemented."
+  not_implemented ()
 
 let exn_slot_name _ =
-  failwith "Unimplemented."
+  not_implemented ()
 @END_BEFORE_4_02_0@
 
 @BEGIN_FROM_4_10_0@
@@ -156,7 +171,7 @@ let get_callstack = Printexc.get_callstack
 @END_FROM_4_01_0@
 @BEGIN_BEFORE_4_01_0@
 let get_callstack _ =
-  failwith "Unimplemented."
+  not_implemented ()
 @END_BEFORE_4_01_0@
 @END_BEFORE_4_10_0@
 
@@ -174,7 +189,7 @@ let print_raw_backtrace _stderr _raw_backtrace =
   ()
 
 let raw_backtrace_to_string _ =
-  failwith "Unimplemented."
+  not_implemented ()
 @END_BEFORE_4_01_0@
 
 @BEGIN_FROM_3_11_0@
@@ -190,19 +205,19 @@ let register_printer = Printexc.register_printer
 @END_FROM_3_11_0@
 @BEGIN_BEFORE_3_11_0@
 let print_backtrace _ =
-  failwith "Unimplemented."
+  not_implemented ()
 
 let get_backtrace _ =
-  failwith "Unimplemented."
+  not_implemented ()
 
 let record_backtrace _ =
-  failwith "Unimplemented."
+  not_implemented ()
 
 let backtrace_status _ =
-  failwith "Unimplemented."
+  not_implemented ()
 
 let register_printer _ =
-  failwith "Unimplemented."
+  not_implemented ()
 @END_BEFORE_3_11_0@
 
 let print = Printexc.print

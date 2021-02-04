@@ -135,8 +135,6 @@ module type S = sig
 
   module Set : Stdcompat__set_s.S
 
-  module Spacetime : Stdcompat__spacetime_s.S
-
   module Stack : Stdcompat__stack_s.S
 
   module StdLabels : sig

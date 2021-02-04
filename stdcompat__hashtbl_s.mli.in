@@ -1,6 +1,18 @@
 module type S = sig
+@BEGIN_FROM_4_12_0@
+@BEGIN_FROM_4_12_0@
+type (!'a, !'b) t = ('a, 'b) Hashtbl.t
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
+
 type ('a, 'b) t = ('a, 'b) Hashtbl.t
-(** Alias for {!Hashtbl.t} *)
+@END_BEFORE_4_12_0@
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
+type ('a, 'b) t = ('a, 'b) Hashtbl.t
+@END_BEFORE_4_12_0@
+(** @since 4.12.0: type (!'a, !'b) t
+ *)
 
 @BEGIN_FROM_4_00_0@
 type statistics = Hashtbl.statistics =
@@ -31,11 +43,11 @@ module type HashedType  =
   sig type t val equal : t -> t -> bool val hash : t -> int end
 (** Alias for {!Hashtbl.HashedType} *)
 
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_12_0@
 module type S  =
   sig
     type key
-    type 'a t
+    type !'a t
     val create : int -> 'a t
     val clear : 'a t -> unit
     val reset : 'a t -> unit
@@ -59,8 +71,8 @@ module type S  =
     val replace_seq : 'a t -> (key * 'a) Seq.t -> unit
     val of_seq : (key * 'a) Seq.t -> 'a t
   end
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
 module type S  =
   sig
     type key
@@ -88,12 +100,12 @@ module type S  =
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
   end
-@END_BEFORE_4_07_0@
-(** @since 4.07.0:
+@END_BEFORE_4_12_0@
+(** @since 4.12.0:
     module type S  =
       sig
         type key
-        type 'a t
+        type !'a t
         val create : int -> 'a t
         val clear : 'a t -> unit
         val reset : 'a t -> unit
@@ -119,10 +131,10 @@ module type S  =
       end
  *)
 
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_12_0@
 module Make = Hashtbl.Make
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
 module Make :
 functor (H : HashedType) ->
   sig
@@ -151,8 +163,8 @@ functor (H : HashedType) ->
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
   end
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: module Make = Hashtbl.Make
+@END_BEFORE_4_12_0@
+(** @since 4.12.0: module Make = Hashtbl.Make
  *)
 
 @BEGIN_FROM_4_00_0@
@@ -168,11 +180,11 @@ module type SeededHashedType  =
       sig type t val equal : t -> t -> bool val hash : int -> t -> int end
  *)
 
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_12_0@
 module type SeededS  =
   sig
     type key
-    type 'a t
+    type !'a t
     val create : ?random:bool -> int -> 'a t
     val clear : 'a t -> unit
     val reset : 'a t -> unit
@@ -196,8 +208,8 @@ module type SeededS  =
     val replace_seq : 'a t -> (key * 'a) Seq.t -> unit
     val of_seq : (key * 'a) Seq.t -> 'a t
   end
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
 module type SeededS  =
   sig
     type key
@@ -225,12 +237,12 @@ module type SeededS  =
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
   end
-@END_BEFORE_4_07_0@
-(** @since 4.07.0:
+@END_BEFORE_4_12_0@
+(** @since 4.12.0:
     module type SeededS  =
       sig
         type key
-        type 'a t
+        type !'a t
         val create : ?random:bool -> int -> 'a t
         val clear : 'a t -> unit
         val reset : 'a t -> unit
@@ -256,10 +268,10 @@ module type SeededS  =
       end
  *)
 
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_12_0@
 module MakeSeeded = Hashtbl.MakeSeeded
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
 module MakeSeeded :
 functor (H : SeededHashedType) ->
   sig
@@ -288,9 +300,12 @@ functor (H : SeededHashedType) ->
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
   end
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: module MakeSeeded = Hashtbl.MakeSeeded
+@END_BEFORE_4_12_0@
+(** @since 4.12.0: module MakeSeeded = Hashtbl.MakeSeeded
  *)
+
+val rebuild : ?random:bool -> ('a, 'b) t -> ('a, 'b) t
+(** @since 4.12.0: val rebuild : ?random:bool -> ('a, 'b) t -> ('a, 'b) t *)
 
 @BEGIN_FROM_4_07_0@
 val to_seq : ('a, 'b) t -> ('a * 'b) Seq.t
