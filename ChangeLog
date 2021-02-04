@@ -1,4 +1,6 @@
-* Next version
+* Version 15
+
+- Support for OCaml 4.12.0
 
 - VERSION file was missing in distributed archive
 
