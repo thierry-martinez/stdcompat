@@ -160,7 +160,7 @@ module Make (Ord : OrderedType) = struct
         rev_seq_of_enum_ (snoc_enum s End)
     @END_WITH_MAGIC@
     @BEGIN_WITHOUT_MAGIC@
-      let to_seq s =
+      let to_rev_seq s =
         Stdcompat__list.to_seq (List.rev (elements s))
     @END_WITHOUT_MAGIC@
   @END_BEFORE_4_12_0@
