@@ -110,7 +110,7 @@ val of_seq : elt Stdcompat__seq.t -> t end
  *)
 
 @BEGIN_FROM_4_12_0@
-module Make : Set.Make
+module Make = Set.Make
 @END_FROM_4_12_0@
 @BEGIN_BEFORE_4_12_0@
 module Make :

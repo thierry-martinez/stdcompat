@@ -154,7 +154,7 @@ val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics end
  *)
 
 @BEGIN_FROM_4_07_0@
-module K1 : Ephemeron.K1
+module K1 = Ephemeron.K1
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module K1 :
@@ -212,7 +212,7 @@ val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics end end
  *)
 
 @BEGIN_FROM_4_07_0@
-module K2 : Ephemeron.K2
+module K2 = Ephemeron.K2
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module K2 :
@@ -282,7 +282,7 @@ val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics end end
  *)
 
 @BEGIN_FROM_4_07_0@
-module Kn : Ephemeron.Kn
+module Kn = Ephemeron.Kn
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module Kn :
@@ -341,7 +341,7 @@ val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics end end
  *)
 
 @BEGIN_FROM_4_07_0@
-module GenHashTable : Ephemeron.GenHashTable
+module GenHashTable = Ephemeron.GenHashTable
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module GenHashTable :

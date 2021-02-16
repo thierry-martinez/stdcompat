@@ -9,7 +9,7 @@ type 'a t = 'a array
  *)
 
 @BEGIN_FROM_4_06_0@
-module Floatarray : Array.Floatarray
+module Floatarray = Array.Floatarray
 @END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
 module Floatarray :

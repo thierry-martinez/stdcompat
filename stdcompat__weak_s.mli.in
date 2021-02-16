@@ -50,7 +50,7 @@ val stats : t -> (int * int * int * int * int * int) end
  *)
 
 @BEGIN_FROM_4_05_0@
-module Make : Weak.Make
+module Make = Weak.Make
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 module Make :

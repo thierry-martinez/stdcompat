@@ -110,7 +110,7 @@ val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end
  *)
 
 @BEGIN_FROM_4_07_0@
-module Make : Hashtbl.Make
+module Make = Hashtbl.Make
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module Make :
@@ -220,7 +220,7 @@ val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end
  *)
 
 @BEGIN_FROM_4_07_0@
-module MakeSeeded : Hashtbl.MakeSeeded
+module MakeSeeded = Hashtbl.MakeSeeded
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module MakeSeeded :

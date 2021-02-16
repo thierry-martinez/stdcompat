@@ -73,7 +73,7 @@ type location =
  *)
 
 @BEGIN_FROM_4_11_0@
-module Slot : Printexc.Slot
+module Slot = Printexc.Slot
 @END_FROM_4_11_0@
 @BEGIN_BEFORE_4_11_0@
 module Slot :

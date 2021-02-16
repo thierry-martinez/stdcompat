@@ -34,7 +34,7 @@ type t = float
  *)
 
 @BEGIN_FROM_4_08_0@
-module Array : Float.Array
+module Array = Float.Array
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_06_0@
@@ -107,7 +107,7 @@ end
  *)
 
 @BEGIN_FROM_4_08_0@
-module ArrayLabels : Float.ArrayLabels
+module ArrayLabels = Float.ArrayLabels
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_06_0@

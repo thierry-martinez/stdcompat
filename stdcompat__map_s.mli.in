@@ -136,7 +136,7 @@ val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end
  *)
 
 @BEGIN_FROM_4_12_0@
-module Make : Map.Make
+module Make = Map.Make
 @END_FROM_4_12_0@
 @BEGIN_BEFORE_4_12_0@
 module Make :

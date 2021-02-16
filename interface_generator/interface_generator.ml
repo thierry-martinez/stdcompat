@@ -1324,7 +1324,7 @@ type %s
 @@END_BEFORE_4_00_0@@"
         Pprintast.signature [item]
         Pprintast.signature [Ast_helper.Sig.type_ recursive (List.map remove_gadt decls)]
-  | Psig_module module_declaration ->
+  | Psig_module module_declaration when match module_declaration.pmd_type.pmty_desc with Pmty_alias _ -> false | _ -> true ->
       Format.fprintf formatter "@[module %s :@ @[%a@]@]"
         (Option.get module_declaration.pmd_name.txt)
         (format_default_module_type ~module_name) module_declaration.pmd_type
@@ -1339,7 +1339,7 @@ type %s
 and format_default_module_type ~module_name formatter
       (module_type : Parsetree.module_type) =
   match module_type.pmty_desc with
-  | Pmty_ident ident | Pmty_alias ident ->
+  | Pmty_ident ident ->
       Format.fprintf formatter "%s" (string_of_longident ident.txt)
   | Pmty_signature signature ->
       Format.fprintf formatter "@[sig@ %a@ end@]"

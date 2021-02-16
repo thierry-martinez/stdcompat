@@ -27,7 +27,7 @@ exception Break
 (** Alias for {!Sys.Break} *)
 
 @BEGIN_FROM_4_10_0@
-module Immediate64 : Sys.Immediate64
+module Immediate64 = Sys.Immediate64
 @END_FROM_4_10_0@
 @BEGIN_BEFORE_4_10_0@
 module Immediate64 :
