@@ -43,7 +43,8 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__fun_s.ml stdcompat__stdlib_s.ml stdcompat__printf_s.ml \
 	stdcompat__printexc_s.ml stdcompat__format_s.ml \
 	stdcompat__pervasives.ml stdcompat__arg.ml stdcompat__lazy.ml \
-	stdcompat__char.ml stdcompat__uchar.ml stdcompat__filename.ml \
+	stdcompat__char.ml stdcompat__uchar.ml \
+	stdcompat__option.ml stdcompat__filename.ml \
         stdcompat__sys.ml stdcompat__buffer.ml \
 	stdcompat__string.ml stdcompat__stringLabels.ml stdcompat__bytes.ml \
 	stdcompat__bytesLabels.ml stdcompat__list.ml stdcompat__listLabels.ml \
@@ -52,7 +53,6 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__map.ml stdcompat__weak.ml \
 	stdcompat__stream.ml stdcompat__digest.ml stdcompat__nativeint.ml \
 	stdcompat__int.ml stdcompat__int64.ml stdcompat__int32.ml \
-	stdcompat__option.ml \
 	stdcompat__array.ml stdcompat__arrayLabels.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
 	stdcompat__moreLabels.ml stdcompat__lexing.ml \
