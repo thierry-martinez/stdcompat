@@ -1324,6 +1324,48 @@ type %s
 @@END_BEFORE_4_00_0@@"
         Pprintast.signature [item]
         Pprintast.signature [Ast_helper.Sig.type_ recursive (List.map remove_gadt decls)]
+  | Psig_type (recursive, decls) when
+      List.exists (fun (decl : Parsetree.type_declaration) -> decl.ptype_private = Private) decls ->
+      Format.fprintf formatter "\
+@@BEGIN_FROM_3_11_0@@
+%a
+@@END_FROM_3_11_0@@
+@@BEGIN_BEFORE_3_11_0@@
+%a
+@@END_BEFORE_3_11_0@@"
+        Pprintast.signature [item]
+        Pprintast.signature [Ast_helper.Sig.type_ recursive
+          (List.map  (fun (decl : Parsetree.type_declaration) -> { decl with ptype_private = Public }) decls)]
+  | Psig_value { pval_name = { txt = "ifprintf"; _ }; _ } when module_name = Lident "Printf" ->
+      Format.fprintf formatter "\
+@@BEGIN_FROM_4_03_0@@
+val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a
+(** @@since 4.03.0: val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a *)
+@@END_FROM_4_03_0@@
+@@BEGIN_BEFORE_4_03_0@@
+@@BEGIN_FROM_3_10_0@@
+val ifprintf : 'b -> ('a, 'b, unit) format -> 'a
+@@END_FROM_3_10_0@@
+@@BEGIN_BEFORE_3_10_0@@
+val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a
+@@END_BEFORE_3_10_0@@
+@@END_BEFORE_4_03_0@@"
+  | Psig_value { pval_name = { txt = "ikfprintf"; _ }; _ } when module_name = Lident "Printf" ->
+      Format.fprintf formatter "\
+@@BEGIN_FROM_4_03_0@@
+val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a
+(** @@since 4.03.0: val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a *)
+@@END_FROM_4_03_0@@
+@@BEGIN_BEFORE_4_03_0@@
+@@BEGIN_FROM_4_01_0@@
+val ikfprintf :
+    (out_channel -> 'a) ->
+      out_channel -> ('b, out_channel, unit, 'a) format4 -> 'b
+@@END_FROM_4_01_0@@
+@@BEGIN_BEFORE_4_01_0@@
+val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a
+@@END_BEFORE_4_01_0@@
+@@END_BEFORE_4_03_0@@"
   | Psig_module module_declaration when match module_declaration.pmd_type.pmty_desc with Pmty_alias _ -> false | _ -> true ->
       Format.fprintf formatter "@[module %s :@ @[%a@]@]"
         (Option.get module_declaration.pmd_name.txt)

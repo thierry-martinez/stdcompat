@@ -33,7 +33,13 @@ type raw_backtrace
 type raw_backtrace_entry = Printexc.raw_backtrace_entry
 @END_FROM_4_12_0@
 @BEGIN_BEFORE_4_12_0@
+@BEGIN_FROM_3_11_0@
 type raw_backtrace_entry = private int
+@END_FROM_3_11_0@
+@BEGIN_BEFORE_3_11_0@
+
+type raw_backtrace_entry = int
+@END_BEFORE_3_11_0@
 @END_BEFORE_4_12_0@
 (** @since 4.12.0: type raw_backtrace_entry = Printexc.raw_backtrace_entry
  *)
