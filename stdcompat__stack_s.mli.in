@@ -1,18 +1,12 @@
 module type S = sig
 @BEGIN_FROM_4_12_0@
-@BEGIN_FROM_4_12_0@
 type !'a t = 'a Stack.t
 @END_FROM_4_12_0@
 @BEGIN_BEFORE_4_12_0@
 
 type 'a t = 'a Stack.t
 @END_BEFORE_4_12_0@
-@END_FROM_4_12_0@
-@BEGIN_BEFORE_4_12_0@
-type 'a t
-@END_BEFORE_4_12_0@
-(** @since 4.12.0: type !'a t
- *)
+(** Alias for {!Stack.t} *)
 
 exception Empty 
 (** Alias for {!Stack.Empty} *)

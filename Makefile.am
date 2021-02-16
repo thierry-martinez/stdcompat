@@ -7,7 +7,7 @@ EXTRA_DIST=stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
 	stdcompat__pervasives.mli stdcompat__arg.mli stdcompat__lazy.mli \
 	stdcompat__char.mli stdcompat__uchar.mli stdcompat__sys.mli stdcompat__buffer.mli \
 	stdcompat__string.mli stdcompat__stringLabels.mli stdcompat__bytes.mli \
-	stdcompat__bytesLabels.mli stdcompat__either.mli stdcompat__list.mli
+	stdcompat__bytesLabels.mli stdcompat__list.mli
 	stdcompat__listLabels.mli \
 	stdcompat__stack.mli \
 	stdcompat__hashtbl.mli stdcompat__set.mli \
@@ -27,7 +27,8 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__pervasives_s.ml stdcompat__arg_s.ml stdcompat__lazy_s.ml \
 	stdcompat__char_s.ml stdcompat__uchar_s.ml stdcompat__buffer_s.ml \
 	stdcompat__string_s.ml stdcompat__stringLabels_s.ml stdcompat__bytes_s.ml \
-	stdcompat__bytesLabels_s.ml stdcompat__either_s.ml stdcompat__list_s.ml \
+	stdcompat__bytesLabels_s.ml stdcompat__either_s.ml stdcompat__either.mli
+	stdcompat__list_s.ml \
         stdcompat__listLabels_s.ml \
 	stdcompat__stack_s.ml \
 	stdcompat__hashtbl_s.ml stdcompat__set_s.ml \

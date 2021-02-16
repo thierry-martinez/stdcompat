@@ -9,18 +9,16 @@ type 'a t = 'a array
  *)
 
 @BEGIN_FROM_4_06_0@
-module Floatarray = Array.Floatarray
+module Floatarray : Array.Floatarray end
 @END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
 module Floatarray :
-sig
-  val create : int -> Stdcompat__init.floatarray
-  val length : Stdcompat__init.floatarray -> int
-  val get : Stdcompat__init.floatarray -> int -> float
-  val set : Stdcompat__init.floatarray -> int -> float -> unit
-  val unsafe_get : Stdcompat__init.floatarray -> int -> float
-  val unsafe_set : Stdcompat__init.floatarray -> int -> float -> unit
-end
+sig val create : int -> Stdcompat__init.floatarray
+val length : Stdcompat__init.floatarray -> int
+val get : Stdcompat__init.floatarray -> int -> float
+val set : Stdcompat__init.floatarray -> int -> float -> unit
+val unsafe_get : Stdcompat__init.floatarray -> int -> float
+val unsafe_set : Stdcompat__init.floatarray -> int -> float -> unit end end
 @END_BEFORE_4_06_0@
 (** @since 4.06.0: module Floatarray = Array.Floatarray
  *)

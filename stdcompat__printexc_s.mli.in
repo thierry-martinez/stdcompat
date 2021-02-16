@@ -73,18 +73,13 @@ type location =
  *)
 
 @BEGIN_FROM_4_11_0@
-module Slot = Printexc.Slot
+module Slot : Printexc.Slot end
 @END_FROM_4_11_0@
 @BEGIN_BEFORE_4_11_0@
 module Slot :
-sig
-  type t = backtrace_slot
-  val is_raise : t -> bool
-  val is_inline : t -> bool
-  val location : t -> location option
-  val name : t -> string option
-  val format : int -> t -> string option
-end
+sig type t = backtrace_slot val is_raise : t -> bool
+val is_inline : t -> bool val location : t -> location option
+val name : t -> string option val format : int -> t -> string option end end
 @END_BEFORE_4_11_0@
 (** @since 4.11.0: module Slot = Printexc.Slot
  *)

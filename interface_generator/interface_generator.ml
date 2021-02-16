@@ -147,8 +147,8 @@ let no_self_manifest (d : Parsetree.type_declaration) =
 
 let is_type_param_isomorphic kind (ty, (v, i)) (ty', (v', i')) =
   is_core_type_isomorphic kind ty ty' &&
-  v = v' &&
-  i = i'
+  v = v' (*&&
+  i = i'*)
 
 let is_type_params_isomorphic kind params params' =
   List.equal (is_type_param_isomorphic kind) params params'
@@ -1212,7 +1212,26 @@ let format_with_without block sub formatter item_with item_without =
   format_with block sub formatter item_with;
   format_without block sub formatter item_without
 
-let format_default_item ~module_name formatter
+let attributed_decl (decl : Parsetree.type_declaration) =
+  decl.ptype_attributes <> []
+
+let gadt_decl (decl : Parsetree.type_declaration) =
+  match decl.ptype_kind with
+  | Ptype_variant constructors ->
+      List.exists (fun (constructor : Parsetree.constructor_declaration) ->
+        constructor.pcd_res <> None) constructors
+  | _ -> false
+
+let remove_gadt (decl : Parsetree.type_declaration) =
+  match decl.ptype_kind with
+  | Ptype_variant constructors ->
+      let constructors =
+        List.map (fun (constructor : Parsetree.constructor_declaration) ->
+          { constructor with pcd_res = None }) constructors in
+      { decl with ptype_kind = Ptype_variant constructors }
+  | _ -> decl
+
+let rec format_default_item ~module_name formatter
     (item : Parsetree.signature_item) =
   match item.psig_desc with
   | Psig_type (rec_flag, [{ ptype_name = { txt = "result" }} as type_decl]) ->
@@ -1282,8 +1301,56 @@ type %s
         Pprintast.signature [item]
         Pprintast.signature [Ast_helper.Sig.type_ recursive
           (List.map (fun (decl : Parsetree.type_declaration) -> { decl with ptype_params = remove_injectivity decl.ptype_params }) decls)]
+  | Psig_type (recursive, decls) when
+      List.exists attributed_decl decls ->
+      Format.fprintf formatter "\
+@@BEGIN_FROM_4_02_0@@
+%a
+@@END_FROM_4_02_0@@
+@@BEGIN_BEFORE_4_02_0@@
+%a
+@@END_BEFORE_4_02_0@@"
+        Pprintast.signature [item]
+        Pprintast.signature [Ast_helper.Sig.type_ recursive
+          (List.map (fun (decl : Parsetree.type_declaration) -> { decl with ptype_attributes = [] }) decls)]
+  | Psig_type (recursive, decls) when
+      List.exists gadt_decl decls ->
+      Format.fprintf formatter "\
+@@BEGIN_FROM_4_00_0@@
+%a
+@@END_FROM_4_00_0@@
+@@BEGIN_BEFORE_4_00_0@@
+%a
+@@END_BEFORE_4_00_0@@"
+        Pprintast.signature [item]
+        Pprintast.signature [Ast_helper.Sig.type_ recursive (List.map remove_gadt decls)]
+  | Psig_module module_declaration ->
+      Format.fprintf formatter "@[module %s :@ @[%a@] end@]"
+        (Option.get module_declaration.pmd_name.txt)
+        (format_default_module_type ~module_name) module_declaration.pmd_type
+  | Psig_modtype module_type_declaration ->
+      Format.fprintf formatter "@[module type %s =@ @[%a@] end@]"
+        module_type_declaration.pmtd_name.txt
+        (format_default_module_type ~module_name)
+        (Option.get module_type_declaration.pmtd_type)
   | _ ->
       Format.fprintf formatter "%a" Pprintast.signature [item]
+
+and format_default_module_type ~module_name formatter
+      (module_type : Parsetree.module_type) =
+  match module_type.pmty_desc with
+  | Pmty_ident ident | Pmty_alias ident ->
+      Format.fprintf formatter "%s" (string_of_longident ident.txt)
+  | Pmty_signature signature ->
+      Format.fprintf formatter "@[sig@ %a@ end@]"
+        (Format.pp_print_list ~pp_sep:Format.pp_print_space
+           (format_default_item ~module_name)) signature
+  | Pmty_functor (Named (var, arg), body) ->
+      Format.fprintf formatter "@[functor (%s : %a) ->@ %a@]"
+        (Option.get var.txt) (format_default_module_type ~module_name) arg
+        (format_default_module_type ~module_name) body
+  | _ ->
+      failwith "Not implemented"
 
 let item_name module_name (item : Parsetree.signature_item) =
   let name =

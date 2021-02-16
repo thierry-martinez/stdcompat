@@ -1,58 +1,32 @@
 module type S = sig
 @BEGIN_FROM_4_12_0@
-@BEGIN_FROM_4_12_0@
 type !'a t = 'a Weak.t
 @END_FROM_4_12_0@
 @BEGIN_BEFORE_4_12_0@
 
 type 'a t = 'a Weak.t
 @END_BEFORE_4_12_0@
-@END_FROM_4_12_0@
-@BEGIN_BEFORE_4_12_0@
-type 'a t = 'a Weak.t
-@END_BEFORE_4_12_0@
-(** @since 4.12.0: type !'a t
- *)
+(** Alias for {!Weak.t} *)
 
 @BEGIN_FROM_4_05_0@
-module type S  =
-  sig
-    type data
-    type t
-    val create : int -> t
-    val clear : t -> unit
-    val merge : t -> data -> data
-    val add : t -> data -> unit
-    val remove : t -> data -> unit
-    val find : t -> data -> data
-    val find_opt : t -> data -> data option
-    val find_all : t -> data -> data list
-    val mem : t -> data -> bool
-    val iter : (data -> unit) -> t -> unit
-    val fold : (data -> 'a -> 'a) -> t -> 'a -> 'a
-    val count : t -> int
-    val stats : t -> (int * int * int * int * int * int)
-  end
+module type S =
+sig type data type t val create : int -> t val clear : t -> unit
+val merge : t -> data -> data val add : t -> data -> unit
+val remove : t -> data -> unit val find : t -> data -> data
+val find_opt : t -> data -> data option val find_all : t -> data -> data list
+val mem : t -> data -> bool val iter : (data -> unit) -> t -> unit
+val fold : (data -> 'a -> 'a) -> t -> 'a -> 'a val count : t -> int
+val stats : t -> (int * int * int * int * int * int) end end
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
-module type S  =
-  sig
-    type data
-    type t
-    val create : int -> t
-    val clear : t -> unit
-    val merge : t -> data -> data
-    val add : t -> data -> unit
-    val remove : t -> data -> unit
-    val find : t -> data -> data
-    val find_opt : t -> data -> data option
-    val find_all : t -> data -> data list
-    val mem : t -> data -> bool
-    val iter : (data -> unit) -> t -> unit
-    val fold : (data -> 'a -> 'a) -> t -> 'a -> 'a
-    val count : t -> int
-    val stats : t -> (int * int * int * int * int * int)
-  end
+module type S =
+sig type data type t val create : int -> t val clear : t -> unit
+val merge : t -> data -> data val add : t -> data -> unit
+val remove : t -> data -> unit val find : t -> data -> data
+val find_opt : t -> data -> data option val find_all : t -> data -> data list
+val mem : t -> data -> bool val iter : (data -> unit) -> t -> unit
+val fold : (data -> 'a -> 'a) -> t -> 'a -> 'a val count : t -> int
+val stats : t -> (int * int * int * int * int * int) end end
 @END_BEFORE_4_05_0@
 (** @since 4.05.0:
     module type S  =
@@ -76,28 +50,19 @@ module type S  =
  *)
 
 @BEGIN_FROM_4_05_0@
-module Make = Weak.Make
+module Make : Weak.Make end
 @END_FROM_4_05_0@
 @BEGIN_BEFORE_4_05_0@
 module Make :
 functor (H : Hashtbl.HashedType) ->
-  sig
-    type data = H.t
-    type t = Weak.Make(H).t
-    val create : int -> t
-    val clear : t -> unit
-    val merge : t -> data -> data
-    val add : t -> data -> unit
-    val remove : t -> data -> unit
-    val find : t -> data -> data
-    val find_opt : t -> data -> data option
-    val find_all : t -> data -> data list
-    val mem : t -> data -> bool
-    val iter : (data -> unit) -> t -> unit
-    val fold : (data -> 'a -> 'a) -> t -> 'a -> 'a
-    val count : t -> int
-    val stats : t -> (int * int * int * int * int * int)
-  end
+sig type data = H.t type t = Weak.Make(H).t val create : int -> t
+val clear : t -> unit val merge : t -> data -> data
+val add : t -> data -> unit val remove : t -> data -> unit
+val find : t -> data -> data val find_opt : t -> data -> data option
+val find_all : t -> data -> data list val mem : t -> data -> bool
+val iter : (data -> unit) -> t -> unit
+val fold : (data -> 'a -> 'a) -> t -> 'a -> 'a val count : t -> int
+val stats : t -> (int * int * int * int * int * int) end end
 @END_BEFORE_4_05_0@
 (** @since 4.05.0: module Make = Weak.Make
  *)
