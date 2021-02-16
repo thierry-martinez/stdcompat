@@ -33,7 +33,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__list_s.ml \
         stdcompat__listLabels_s.ml \
 	stdcompat__stack_s.ml \
-	stdcompat__hashtbl_s.ml stdcompat__set_s.ml \
+	stdcompat__hashtbl_ext.ml stdcompat__hashtbl_s.ml stdcompat__set_s.ml \
 	stdcompat__map_s.ml stdcompat__weak_s.ml stdcompat__sys_s.ml \
 	stdcompat__stream_s.ml stdcompat__digest_s.ml stdcompat__nativeint_s.ml \
 	stdcompat__int_s.ml \
@@ -50,7 +50,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
         stdcompat__sys.ml stdcompat__buffer.ml \
 	stdcompat__string.ml stdcompat__stringLabels.ml stdcompat__bytes.ml \
 	stdcompat__bytesLabels.ml stdcompat__list.ml stdcompat__listLabels.ml \
-	stdcompat__stack.ml stdcompat__hashtbl_ext.ml \
+	stdcompat__stack.ml \
 	stdcompat__hashtbl.ml stdcompat__set.ml \
 	stdcompat__map.ml stdcompat__weak.ml \
 	stdcompat__stream.ml stdcompat__digest.ml stdcompat__nativeint.ml \
