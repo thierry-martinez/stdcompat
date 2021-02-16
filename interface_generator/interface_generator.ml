@@ -1325,11 +1325,11 @@ type %s
         Pprintast.signature [item]
         Pprintast.signature [Ast_helper.Sig.type_ recursive (List.map remove_gadt decls)]
   | Psig_module module_declaration ->
-      Format.fprintf formatter "@[module %s :@ @[%a@] end@]"
+      Format.fprintf formatter "@[module %s :@ @[%a@]@]"
         (Option.get module_declaration.pmd_name.txt)
         (format_default_module_type ~module_name) module_declaration.pmd_type
   | Psig_modtype module_type_declaration ->
-      Format.fprintf formatter "@[module type %s =@ @[%a@] end@]"
+      Format.fprintf formatter "@[module type %s =@ @[%a@]@]"
         module_type_declaration.pmtd_name.txt
         (format_default_module_type ~module_name)
         (Option.get module_type_declaration.pmtd_type)

@@ -34,7 +34,7 @@ type t = float
  *)
 
 @BEGIN_FROM_4_08_0@
-module Array : Float.Array end
+module Array : Float.Array
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_06_0@
@@ -68,7 +68,7 @@ val map_from_array : ('a -> float) -> 'a array -> t
 external unsafe_get : floatarray -> int -> float = "%floatarray_unsafe_get"
 external unsafe_set :
   floatarray -> int -> float -> unit = "%floatarray_unsafe_set"
-end end
+end
 @END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
 module Array :
@@ -99,7 +99,7 @@ val of_seq : float Stdcompat__seq.t -> t
 val map_to_array : (float -> 'a) -> t -> 'a array
 val map_from_array : ('a -> float) -> 'a array -> t
 val unsafe_get : t -> int -> float val unsafe_set : t -> int -> float -> unit
-end end
+end
 @END_BEFORE_4_06_0@
 
 @END_BEFORE_4_08_0@
@@ -107,7 +107,7 @@ end end
  *)
 
 @BEGIN_FROM_4_08_0@
-module ArrayLabels : Float.ArrayLabels end
+module ArrayLabels : Float.ArrayLabels
 @END_FROM_4_08_0@
 @BEGIN_BEFORE_4_08_0@
 @BEGIN_FROM_4_06_0@
@@ -142,7 +142,7 @@ val map_from_array : f:('a -> float) -> 'a array -> t
 external unsafe_get : floatarray -> int -> float = "%floatarray_unsafe_get"
 external unsafe_set :
   floatarray -> int -> float -> unit = "%floatarray_unsafe_set"
-end end
+end
 @END_FROM_4_06_0@
 @BEGIN_BEFORE_4_06_0@
 module ArrayLabels :
@@ -174,7 +174,7 @@ val of_seq : float Stdcompat__seq.t -> t
 val map_to_array : f:(float -> 'a) -> t -> 'a array
 val map_from_array : f:('a -> float) -> 'a array -> t
 val unsafe_get : t -> int -> float val unsafe_set : t -> int -> float -> unit
-end end
+end
 @END_BEFORE_4_06_0@
 
 @END_BEFORE_4_08_0@

@@ -34,7 +34,7 @@ type statistics = Stdcompat__hashtbl_ext.statistics =
  *)
 
 module type HashedType =
-sig type t val equal : t -> t -> bool val hash : t -> int end end
+sig type t val equal : t -> t -> bool val hash : t -> int end
 (** Alias for {!Hashtbl.HashedType} *)
 
 @BEGIN_FROM_4_07_0@
@@ -59,7 +59,7 @@ val to_seq : 'a t -> (key * 'a) Seq.t val to_seq_keys : 'a t -> key Seq.t
 val to_seq_values : 'a t -> 'a Seq.t
 val add_seq : 'a t -> (key * 'a) Seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Seq.t -> unit
-val of_seq : (key * 'a) Seq.t -> 'a t end end
+val of_seq : (key * 'a) Seq.t -> 'a t end
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module type S =
@@ -77,7 +77,7 @@ val to_seq_keys : 'a t -> key Stdcompat__seq.t
 val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
-val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end end
+val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0:
     module type S  =
@@ -110,7 +110,7 @@ val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end end
  *)
 
 @BEGIN_FROM_4_07_0@
-module Make : Hashtbl.Make end
+module Make : Hashtbl.Make
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module Make :
@@ -129,18 +129,18 @@ val to_seq_keys : 'a t -> key Stdcompat__seq.t
 val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
-val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end end
+val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module Make = Hashtbl.Make
  *)
 
 @BEGIN_FROM_4_00_0@
 module type SeededHashedType =
-sig type t val equal : t -> t -> bool val hash : int -> t -> int end end
+sig type t val equal : t -> t -> bool val hash : int -> t -> int end
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
 module type SeededHashedType =
-sig type t val equal : t -> t -> bool val hash : int -> t -> int end end
+sig type t val equal : t -> t -> bool val hash : int -> t -> int end
 @END_BEFORE_4_00_0@
 (** @since 4.00.0:
     module type SeededHashedType  =
@@ -169,7 +169,7 @@ val to_seq : 'a t -> (key * 'a) Seq.t val to_seq_keys : 'a t -> key Seq.t
 val to_seq_values : 'a t -> 'a Seq.t
 val add_seq : 'a t -> (key * 'a) Seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Seq.t -> unit
-val of_seq : (key * 'a) Seq.t -> 'a t end end
+val of_seq : (key * 'a) Seq.t -> 'a t end
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module type SeededS =
@@ -187,7 +187,7 @@ val to_seq_keys : 'a t -> key Stdcompat__seq.t
 val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
-val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end end
+val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0:
     module type SeededS  =
@@ -220,7 +220,7 @@ val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end end
  *)
 
 @BEGIN_FROM_4_07_0@
-module MakeSeeded : Hashtbl.MakeSeeded end
+module MakeSeeded : Hashtbl.MakeSeeded
 @END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module MakeSeeded :
@@ -240,7 +240,7 @@ val to_seq_keys : 'a t -> key Stdcompat__seq.t
 val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
-val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end end
+val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module MakeSeeded = Hashtbl.MakeSeeded
  *)
