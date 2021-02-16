@@ -20,14 +20,16 @@ EXTRA_DIST= stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
 	stdcompat__moreLabels.mli stdcompat__lexing.mli \
 	stdcompat__option.mli stdcompat__printexc.mli stdcompat__result.mli stdcompat__bool.mli \
 	stdcompat__fun.mli stdcompat__format.mli stdcompat__printf.mli stdcompat__stdlib.mli \
-	stdcompat__seq.mli stdcompat__printexc.mli Makefile.bootstrap VERSION
+	stdcompat__seq.mli stdcompat__printexc.mli \
+        stdcompat__either.mli Makefile.bootstrap VERSION
 
 MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__seq.ml stdcompat__tools.ml \
 	stdcompat__pervasives_s.ml stdcompat__arg_s.ml stdcompat__lazy_s.ml \
-	stdcompat__char_s.ml stdcompat__uchar_s.ml stdcompat__buffer_s.ml \
+	stdcompat__char_s.ml stdcompat__uchar_s.ml stdcompat__uchar.ml \
+        stdcompat__buffer_s.ml \
 	stdcompat__string_s.ml stdcompat__stringLabels_s.ml stdcompat__bytes_s.ml \
-	stdcompat__bytesLabels_s.ml stdcompat__either_s.ml \
+	stdcompat__bytesLabels_s.ml stdcompat__either_s.ml stdcompat__either.ml \
 	stdcompat__list_s.ml \
         stdcompat__listLabels_s.ml \
 	stdcompat__stack_s.ml \
@@ -43,7 +45,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__fun_s.ml stdcompat__stdlib_s.ml stdcompat__printf_s.ml \
 	stdcompat__printexc_s.ml stdcompat__format_s.ml \
 	stdcompat__pervasives.ml stdcompat__arg.ml stdcompat__lazy.ml \
-	stdcompat__char.ml stdcompat__uchar.ml \
+	stdcompat__char.ml \
 	stdcompat__option.ml stdcompat__filename.ml \
         stdcompat__sys.ml stdcompat__buffer.ml \
 	stdcompat__string.ml stdcompat__stringLabels.ml stdcompat__bytes.ml \
