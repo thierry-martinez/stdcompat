@@ -266,6 +266,11 @@ module Make (Ord : OrderedType) = struct
         | None -> map') map empty
     @END_BEFORE_4_11_0@
 
+    @BEGIN_BEFORE_3_12_0@
+      let bindings map =
+        List.rev (fold (fun v d accu -> (v, d) :: accu) map [])
+    @END_BEFORE_3_12_0@
+
     @BEGIN_BEFORE_4_12_0@
       let to_rev_seq m =
         Stdcompat__list.to_seq (List.rev (bindings m))
@@ -581,11 +586,6 @@ module Make (Ord : OrderedType) = struct
 @END_BEFORE_3_08_0@
 @END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
-@BEGIN_BEFORE_3_12_0@
-  let bindings map =
-    List.rev (fold (fun v d accu -> (v, d) :: accu) map [])
-@END_BEFORE_3_12_0@
-
 @BEGIN_BEFORE_4_07_0@
   let to_seq m =
     Stdcompat__list.to_seq (bindings m)
