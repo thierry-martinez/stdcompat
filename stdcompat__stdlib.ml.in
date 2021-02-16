@@ -1,7 +1,7 @@
-@BEGIN_FROM_4_11_0@
+@BEGIN_FROM_4_12_0@
 include Stdlib
-@END_FROM_4_11_0@
-@BEGIN_BEFORE_4_11_0@
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
 module Pervasives = Stdcompat__pervasives
 
 include Pervasives
@@ -37,6 +37,8 @@ module Char = Stdcompat__char
 module Complex = Complex
 
 module Digest = Stdcompat__digest
+
+module Either = Stdcompat__either
 
 module Ephemeron = Stdcompat__ephemeron
 
@@ -123,4 +125,4 @@ module Sys = Stdcompat__sys
 module Uchar = Stdcompat__uchar
 
 module Weak = Stdcompat__weak
-@END_BEFORE_4_11_0@
+@END_BEFORE_4_12_0@

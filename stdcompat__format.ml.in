@@ -237,14 +237,14 @@ let rec pp_print_seq_cont pp_sep pp_item formatter (seq : _ Stdcompat__seq.t) =
       | Some pp_sep -> pp_sep formatter ()
       end;
       pp_item formatter hd;
-      pp_print_seq_cont pp_sep pp_item formatter seq
+      pp_print_seq_cont pp_sep pp_item formatter tl
 
 let pp_print_seq ?pp_sep pp_item formatter (seq : _ Stdcompat__seq.t) =
   match seq () with
   | Stdcompat__seq.Nil -> ()
   | Stdcompat__seq.Cons (hd, tl) ->
       pp_item formatter hd;
-      pp_print_seq_cont pp_sep pp_item formatter seq
+      pp_print_seq_cont pp_sep pp_item formatter tl
 @END_BEFORE_4_12_0@
 
 @BEGIN_BEFORE_3_12_0@

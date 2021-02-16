@@ -24,8 +24,8 @@ let rec partition_map_aux left right f list =
   | [] -> rev left, rev right
   | hd :: tl ->
       match f hd with
-      | Stdcompat__either.Left v -> partition_map_aux (v :: left) right f list
-      | Stdcompat__either.Right v -> partition_map_aux left (v :: right) f list
+      | Stdcompat__either.Left v -> partition_map_aux (v :: left) right f tl
+      | Stdcompat__either.Right v -> partition_map_aux left (v :: right) f tl
 
 let partition_map f list =
   partition_map_aux [] [] f list
