@@ -2,7 +2,7 @@
 include Either
 @END_FROM_4_12_0@
 @BEGIN_BEFORE_4_12_0@
-type ('a, 'b) t =
+type ('a, 'b) t = ('a, 'b) Stdcompat__init.either =
   | Left of 'a
   | Right of 'b
 

@@ -1255,6 +1255,16 @@ let rec format_default_item ~module_name formatter
       let result_item = { item with psig_desc } in
       format_with_without "UCHAR_PKG"
         Pprintast.signature formatter [result_item] [item]
+  | Psig_type (rec_flag, [{ ptype_name = { txt = "t" }} as type_decl])
+      when module_name = Longident.Lident "Either" ->
+      let ptyp_desc = Parsetree.Ptyp_constr (
+        { txt = Ldot (Lident "Stdcompat__init", "either"); loc = Location.none },
+        List.map fst type_decl.ptype_params) in
+      let manifest = type_of_desc ptyp_desc in
+      let type_decl = { type_decl with ptype_manifest = Some manifest } in
+      let psig_desc = Parsetree.Psig_type (rec_flag, [type_decl]) in
+      let result_item = { item with psig_desc } in
+      Pprintast.signature formatter [result_item]
   | Psig_type (_, _)
       when module_name = Longident.Lident "List" || module_name = Longident.Lident "ListLabels" ->
       Format.fprintf formatter "\

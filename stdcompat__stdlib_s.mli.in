@@ -50,7 +50,6 @@ module type S = sig
   module Digest : Stdcompat__digest_s.S
 
   module Either : Stdcompat__either_s.S
-  with type ('a, 'b) t = ('a, 'b) Stdcompat__either.t
 
   module Ephemeron : Stdcompat__ephemeron_s.S
 
