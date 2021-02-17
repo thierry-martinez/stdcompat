@@ -190,7 +190,7 @@ let test_hashtbl_rebuild () =
   let module M = Stdcompat.Set.Make (Stdcompat.Int) in
   assert (
     M.equal
-      (M.of_seq (Seq.map fst (Stdcompat.Hashtbl.to_seq h')))
+      (M.of_seq (Stdcompat.Seq.map fst (Stdcompat.Hashtbl.to_seq h')))
       (M.add 1 (M.add 2
          (M.add 3 M.empty))))
 
