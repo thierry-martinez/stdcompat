@@ -118,7 +118,7 @@ let test_map_filter_map () =
 
 let test_mkdir_rmdir () =
   Stdcompat.Sys.mkdir "new_directory" 600;
-  assert (Sys.is_directory "new_directory");
+  assert (Stdcompat.Sys.is_directory "new_directory");
   begin try
     Stdcompat.Sys.mkdir "new_directory" 600;
     assert false;
@@ -204,19 +204,19 @@ let test_format_pp_print_seq () =
 
 let test_either () =
   assert (Stdcompat.Either.compare
-    ~left:Int.compare ~right:Int.compare
+    ~left:Stdcompat.Int.compare ~right:Stdcompat.Int.compare
     (Stdcompat.Either.Left 1) (Stdcompat.Either.Left 1) = 0);
   assert (Stdcompat.Either.compare
-    ~left:Int.compare ~right:Int.compare
+    ~left:Stdcompat.Int.compare ~right:Stdcompat.Int.compare
     (Stdcompat.Either.Left 1) (Stdcompat.Either.Left 2) < 0);
   assert (Stdcompat.Either.compare
-    ~left:Int.compare ~right:Int.compare
+    ~left:Stdcompat.Int.compare ~right:Stdcompat.Int.compare
     (Stdcompat.Either.Left 1) (Stdcompat.Either.Right 2) < 0);
   assert (Stdcompat.Either.compare
-    ~left:Int.compare ~right:Int.compare
+    ~left:Stdcompat.Int.compare ~right:Stdcompat.Int.compare
     (Stdcompat.Either.Right 1) (Stdcompat.Either.Left 2) > 0);
   assert (Stdcompat.Either.compare
-    ~left:Int.compare ~right:Int.compare
+    ~left:Stdcompat.Int.compare ~right:Stdcompat.Int.compare
     (Stdcompat.Either.Right 1) (Stdcompat.Either.Right 2) < 0)
 
 let () =
