@@ -12,6 +12,8 @@ module Array = Stdcompat__array
 
 module ArrayLabels = Stdcompat__arrayLabels
 
+module Atomic = Stdcompat__atomic
+
 (* Bigarray is not exported before 4.02.0 to allow programs not
    to be compiled with this module, this may change in the future.
    From 4.02.0 and before 4.07.0, Bigarray is effectively

@@ -21,7 +21,7 @@ EXTRA_DIST= stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
 	stdcompat__option.mli stdcompat__printexc.mli stdcompat__result.mli stdcompat__bool.mli \
 	stdcompat__fun.mli stdcompat__format.mli stdcompat__printf.mli stdcompat__stdlib.mli \
 	stdcompat__seq.mli stdcompat__printexc.mli \
-        stdcompat__either.mli Makefile.bootstrap VERSION
+        stdcompat__either.mli stdcompat__atomic.mli Makefile.bootstrap VERSION
 
 MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__seq.ml stdcompat__tools.ml \
@@ -60,8 +60,9 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
 	stdcompat__moreLabels.ml stdcompat__lexing.ml \
 	stdcompat__printexc.ml stdcompat__result.ml stdcompat__bool.ml \
-	stdcompat__fun.ml stdcompat__format.ml stdcompat__printf.ml stdcompat__stdlib.ml \
-	stdcompat.ml
+	stdcompat__fun.ml stdcompat__format.ml stdcompat__printf.ml \
+	stdcompat__atomic.ml \
+	stdcompat__stdlib.ml stdcompat.ml
 
 MODULES_native = stdcompat__native.ml $(MODULES)
 

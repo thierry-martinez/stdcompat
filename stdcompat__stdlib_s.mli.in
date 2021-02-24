@@ -15,6 +15,8 @@ module type S = sig
 
   module ArrayLabels : Stdcompat__arrayLabels_s.S
 
+  module Atomic : Stdcompat__atomic_s.S
+
 (* Bigarray is not exported before 4.02.0 to allow programs not
    to be compiled with this module, this may change in the future.
    From 4.02.0 and before 4.07.0, Bigarray is effectively

@@ -1,3 +1,7 @@
+* Next version
+
+- Add module Atomic
+
 * Version 15, 2021-02-17
 
 - Support for OCaml 4.12.0 with
