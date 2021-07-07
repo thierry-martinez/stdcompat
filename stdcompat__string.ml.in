@@ -24,16 +24,8 @@ let rindex_from_opt s i c =
 
 @BEGIN_BEFORE_4_04_0@
 let split_on_char c s =
-  let previous_index = ref (length s) in
-  let accu = ref [] in
-  for i = length s - 1 downto 0 do
-    if unsafe_get s i = c then
-      begin
-        accu := sub s (i + 1) (!previous_index - i - 1) :: !accu;
-        previous_index := i
-      end
-  done;
-  sub s 0 !previous_index :: !accu
+  List.map Bytes.unsafe_to_string
+    (Stdcompat__bytes.split_on_char c (Bytes.unsafe_of_string s))
 @END_BEFORE_4_04_0@
 
 @BEGIN_BEFORE_4_03_0@
@@ -95,3 +87,75 @@ let trim s =
   else
     sub s off_start (off_end - off_start + 1)
 @END_BEFORE_4_00_0@
+
+@BEGIN_BEFORE_4_13_0@
+let empty = ""
+
+let of_bytes = Bytes.to_string
+
+let to_bytes = Bytes.of_string
+
+let cat = ( ^ )
+
+let starts_with ~prefix s =
+  Stdcompat__bytes.starts_with ~prefix:(Bytes.unsafe_of_string prefix)
+    (Bytes.unsafe_of_string s)
+
+let ends_with ~suffix s =
+  Stdcompat__bytes.ends_with ~suffix:(Bytes.unsafe_of_string suffix)
+    (Bytes.unsafe_of_string s)
+
+let fold_left f init s =
+  Stdcompat__bytes.fold_left f init (Bytes.unsafe_of_string s)
+
+let fold_right f s init =
+  Stdcompat__bytes.fold_right f (Bytes.unsafe_of_string s) init
+
+let for_all f s =
+  Stdcompat__bytes.for_all f (Bytes.unsafe_of_string s)
+
+let exists f s =
+  Stdcompat__bytes.exists f (Bytes.unsafe_of_string s)
+
+let get_uint8 s i =
+  Stdcompat__bytes.get_uint8 (Bytes.unsafe_of_string s) i
+
+let get_int8 s i =
+  Stdcompat__bytes.get_int8 (Bytes.unsafe_of_string s) i
+
+let get_uint16_ne s i =
+  Stdcompat__bytes.get_uint16_ne (Bytes.unsafe_of_string s) i
+
+let get_uint16_be s i =
+  Stdcompat__bytes.get_uint16_be (Bytes.unsafe_of_string s) i
+
+let get_uint16_le s i =
+  Stdcompat__bytes.get_uint16_le (Bytes.unsafe_of_string s) i
+
+let get_int16_ne s i =
+  Stdcompat__bytes.get_int16_ne (Bytes.unsafe_of_string s) i
+
+let get_int16_be s i =
+  Stdcompat__bytes.get_int16_be (Bytes.unsafe_of_string s) i
+
+let get_int16_le s i =
+  Stdcompat__bytes.get_int16_le (Bytes.unsafe_of_string s) i
+
+let get_int32_ne s i =
+  Stdcompat__bytes.get_int32_ne (Bytes.unsafe_of_string s) i
+
+let get_int32_be s i =
+  Stdcompat__bytes.get_int32_be (Bytes.unsafe_of_string s) i
+
+let get_int32_le s i =
+  Stdcompat__bytes.get_int32_le (Bytes.unsafe_of_string s) i
+
+let get_int64_ne s i =
+  Stdcompat__bytes.get_int64_ne (Bytes.unsafe_of_string s) i
+
+let get_int64_be s i =
+  Stdcompat__bytes.get_int64_be (Bytes.unsafe_of_string s) i
+
+let get_int64_le s i =
+  Stdcompat__bytes.get_int64_le (Bytes.unsafe_of_string s) i
+@END_BEFORE_4_13_0@

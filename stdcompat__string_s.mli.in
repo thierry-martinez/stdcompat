@@ -2,6 +2,90 @@ module type S = sig
 type t = string
 (** Alias for {!String.t} *)
 
+val empty : string
+(** @since 4.13.0: val empty : string *)
+
+@BEGIN_FROM_4_13_0@
+val of_bytes : bytes -> string
+@END_FROM_4_13_0@
+@BEGIN_BEFORE_4_13_0@
+val of_bytes : Stdcompat__init.bytes -> string
+@END_BEFORE_4_13_0@
+(** @since 4.13.0: val of_bytes : bytes -> string
+ *)
+
+@BEGIN_FROM_4_13_0@
+val to_bytes : string -> bytes
+@END_FROM_4_13_0@
+@BEGIN_BEFORE_4_13_0@
+val to_bytes : string -> Stdcompat__init.bytes
+@END_BEFORE_4_13_0@
+(** @since 4.13.0: val to_bytes : string -> bytes
+ *)
+
+val cat : string -> string -> string
+(** @since 4.13.0: val cat : string -> string -> string *)
+
+val starts_with : prefix:string -> string -> bool
+(** @since 4.13.0: val starts_with : prefix:string -> string -> bool *)
+
+val ends_with : suffix:string -> string -> bool
+(** @since 4.13.0: val ends_with : suffix:string -> string -> bool *)
+
+val fold_left : ('a -> char -> 'a) -> 'a -> string -> 'a
+(** @since 4.13.0: val fold_left : ('a -> char -> 'a) -> 'a -> string -> 'a *)
+
+val fold_right : (char -> 'a -> 'a) -> string -> 'a -> 'a
+(** @since 4.13.0: val fold_right : (char -> 'a -> 'a) -> string -> 'a -> 'a *)
+
+val for_all : (char -> bool) -> string -> bool
+(** @since 4.13.0: val for_all : (char -> bool) -> string -> bool *)
+
+val exists : (char -> bool) -> string -> bool
+(** @since 4.13.0: val exists : (char -> bool) -> string -> bool *)
+
+val get_uint8 : string -> int -> int
+(** @since 4.13.0: val get_uint8 : string -> int -> int *)
+
+val get_int8 : string -> int -> int
+(** @since 4.13.0: val get_int8 : string -> int -> int *)
+
+val get_uint16_ne : string -> int -> int
+(** @since 4.13.0: val get_uint16_ne : string -> int -> int *)
+
+val get_uint16_be : string -> int -> int
+(** @since 4.13.0: val get_uint16_be : string -> int -> int *)
+
+val get_uint16_le : string -> int -> int
+(** @since 4.13.0: val get_uint16_le : string -> int -> int *)
+
+val get_int16_ne : string -> int -> int
+(** @since 4.13.0: val get_int16_ne : string -> int -> int *)
+
+val get_int16_be : string -> int -> int
+(** @since 4.13.0: val get_int16_be : string -> int -> int *)
+
+val get_int16_le : string -> int -> int
+(** @since 4.13.0: val get_int16_le : string -> int -> int *)
+
+val get_int32_ne : string -> int -> int32
+(** @since 4.13.0: val get_int32_ne : string -> int -> int32 *)
+
+val get_int32_be : string -> int -> int32
+(** @since 4.13.0: val get_int32_be : string -> int -> int32 *)
+
+val get_int32_le : string -> int -> int32
+(** @since 4.13.0: val get_int32_le : string -> int -> int32 *)
+
+val get_int64_ne : string -> int -> int64
+(** @since 4.13.0: val get_int64_ne : string -> int -> int64 *)
+
+val get_int64_be : string -> int -> int64
+(** @since 4.13.0: val get_int64_be : string -> int -> int64 *)
+
+val get_int64_le : string -> int -> int64
+(** @since 4.13.0: val get_int64_le : string -> int -> int64 *)
+
 @BEGIN_FROM_4_07_0@
 val to_seq : t -> char Seq.t
 @END_FROM_4_07_0@

@@ -44,13 +44,13 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__moreLabels_s.ml stdcompat__lexing_s.ml \
 	stdcompat__option_s.ml stdcompat__result_s.ml stdcompat__bool_s.ml \
 	stdcompat__fun_s.ml stdcompat__stdlib_s.ml stdcompat__printf_s.ml \
-	stdcompat__printexc_s.ml stdcompat__format_s.ml \
+	stdcompat__printexc_s.ml stdcompat__format_s.ml stdcompat__atomic_s.ml \
 	stdcompat__pervasives.ml stdcompat__arg.ml stdcompat__lazy.ml \
 	stdcompat__char.ml \
 	stdcompat__option.ml stdcompat__filename.ml \
-        stdcompat__sys.ml stdcompat__buffer.ml \
-	stdcompat__string.ml stdcompat__stringLabels.ml stdcompat__bytes.ml \
-	stdcompat__bytesLabels.ml stdcompat__listLabels.ml \
+        stdcompat__sys.ml stdcompat__buffer.ml stdcompat__bytes.ml \
+	stdcompat__bytesLabels.ml \
+	stdcompat__string.ml stdcompat__stringLabels.ml stdcompat__listLabels.ml \
 	stdcompat__stack.ml \
 	stdcompat__hashtbl.ml stdcompat__set.ml \
 	stdcompat__map.ml stdcompat__weak.ml \
@@ -83,7 +83,7 @@ endif
 
 PACKAGES = $(RESULT_PKG) $(SEQ_PKG) $(UCHAR_PKG)
 OCAMLFLAGS = $(PACKAGES:%=-package %)
-OCAMLCFLAGS = $(OCAMLFLAGS) -I @srcdir@
+OCAMLCFLAGS = $(OCAMLFLAGS) -nolabels -I @srcdir@
 OCAMLLDFLAGS = $(OCAMLFLAGS)
 OCAMLLIBFLAGS = -cclib "-L. -lstdcompat__stubs"
 

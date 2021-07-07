@@ -2,7 +2,7 @@ include Sys
 
 @BEGIN_BEFORE_4_12_0@
 let wrap_command cmd args =
-  match command (Stdcompat__filename.quote_command cmd args ~stderr:"/dev/null")
+  match command (Stdcompat__filename.quote_command cmd ~stderr:"/dev/null" args)
   with
   | 0 -> ()
   | error_code ->

@@ -161,7 +161,11 @@ let module_type_of_name ~command_line ~module_name =
           if Interface_tools.Version.compare version
               { major = 4; minor = 7; patch = 0 } >= 0
               && module_name <> "Pervasives" && module_name <> "Stdlib" then
-            Printf.sprintf "Stdlib__%s" (String.uncapitalize_ascii module_name)
+            if Interface_tools.Version.compare version
+              { major = 4; minor = 13; patch = 0 } >= 0 then
+              Printf.sprintf "Stdlib__%s" module_name
+            else
+              Printf.sprintf "Stdlib__%s" (String.uncapitalize_ascii module_name)
           else
             module_name in
       let module_expr : Parsetree.module_expr = {

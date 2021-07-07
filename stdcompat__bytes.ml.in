@@ -279,3 +279,74 @@ external unsafe_blit_string :
     "blit_string" "noalloc"
 @END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
+
+@BEGIN_BEFORE_4_13_0@
+let rec fold_left_rec f init bytes i =
+  if i >= length bytes then
+    init
+  else
+    fold_left_rec f (f init (unsafe_get bytes i)) bytes (succ i)
+
+let fold_left f init bytes =
+  fold_left_rec f init bytes 0
+
+let rec fold_right_rec f bytes init i =
+  if i = 0 then
+    init
+  else
+    let j = pred i in
+    fold_right_rec f bytes (f (unsafe_get bytes j) init) j
+
+let fold_right f bytes init =
+  fold_right_rec f bytes init (length bytes)
+
+let rec for_all_rec f bytes i =
+  if i >= length bytes then
+    true
+  else if f (unsafe_get bytes i) then
+    for_all_rec f bytes (succ i)
+  else
+    false
+
+let for_all f bytes =
+  for_all_rec f bytes 0
+
+let rec exists_rec f bytes i =
+  if i >= length bytes then
+    false
+  else if f (unsafe_get bytes i) then
+    true
+  else
+    exists_rec f bytes (succ i)
+
+let exists f bytes =
+  exists_rec f bytes 0
+
+let rec unsafe_sub_equal bytes0 off0 bytes1 off1 length =
+  if length = 0 then
+    true
+  else if unsafe_get bytes0 off0 = unsafe_get bytes1 off1 then
+    unsafe_sub_equal bytes0 (succ off0) bytes1 (succ off1) (pred length)
+  else
+    false
+
+let starts_with ~prefix bytes =
+  length prefix <= length bytes &&
+  unsafe_sub_equal bytes 0 prefix 0 (length prefix)
+
+let ends_with ~suffix bytes =
+  length suffix <= length bytes &&
+  unsafe_sub_equal bytes (length bytes - length suffix) suffix 0 (length suffix)
+
+let split_on_char c s =
+  let previous_index = ref (length s) in
+  let accu = ref [] in
+  for i = length s - 1 downto 0 do
+    if unsafe_get s i = c then
+      begin
+        accu := sub s (i + 1) (!previous_index - i - 1) :: !accu;
+        previous_index := i
+      end
+  done;
+  sub s 0 !previous_index :: !accu
+@END_BEFORE_4_13_0@

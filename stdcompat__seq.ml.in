@@ -78,3 +78,12 @@ let rec unfold f state () =
   | Some (value, state) ->
       Cons (value, unfold f state)
 @END_BEFORE_4_11_0@
+@BEGIN_BEFORE_4_13_0@
+let concat_map = flat_map
+
+let rec concat seq () =
+  match seq () with
+  | Nil -> Nil
+  | Cons (hd, tl) ->
+      append hd (concat tl) ()
+@END_BEFORE_4_13_0@

@@ -1021,10 +1021,14 @@ let version_signature_item ~reference_version ~module_name ~signatures
       Some (signatures |>
         List.map (fun (version, (s : Signature.t)) ->
           let real, type_decl =
+            let block' = String.Map.find_opt first_type_name s.types in
             match
+              if first_type_name = "lexbuf" then
+                block'
+              else
               Interface_tools.Option.filter
                 (Type_declaration_block.is_isomorphic Ignore_attributes block)
-                (String.Map.find_opt first_type_name s.types)
+                block'
             with
             | None ->
                 false,

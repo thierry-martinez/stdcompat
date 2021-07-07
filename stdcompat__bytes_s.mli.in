@@ -8,6 +8,71 @@ type t = Stdcompat__init.bytes
 (** @since 4.02.0: type t = bytes
  *)
 
+@BEGIN_FROM_4_13_0@
+val fold_left : ('a -> char -> 'a) -> 'a -> bytes -> 'a
+@END_FROM_4_13_0@
+@BEGIN_BEFORE_4_13_0@
+val fold_left : ('a -> char -> 'a) -> 'a -> Stdcompat__init.bytes -> 'a
+@END_BEFORE_4_13_0@
+(** @since 4.13.0: val fold_left : ('a -> char -> 'a) -> 'a -> bytes -> 'a
+ *)
+
+@BEGIN_FROM_4_13_0@
+val fold_right : (char -> 'a -> 'a) -> bytes -> 'a -> 'a
+@END_FROM_4_13_0@
+@BEGIN_BEFORE_4_13_0@
+val fold_right : (char -> 'a -> 'a) -> Stdcompat__init.bytes -> 'a -> 'a
+@END_BEFORE_4_13_0@
+(** @since 4.13.0: val fold_right : (char -> 'a -> 'a) -> bytes -> 'a -> 'a
+ *)
+
+@BEGIN_FROM_4_13_0@
+val for_all : (char -> bool) -> bytes -> bool
+@END_FROM_4_13_0@
+@BEGIN_BEFORE_4_13_0@
+val for_all : (char -> bool) -> Stdcompat__init.bytes -> bool
+@END_BEFORE_4_13_0@
+(** @since 4.13.0: val for_all : (char -> bool) -> bytes -> bool
+ *)
+
+@BEGIN_FROM_4_13_0@
+val exists : (char -> bool) -> bytes -> bool
+@END_FROM_4_13_0@
+@BEGIN_BEFORE_4_13_0@
+val exists : (char -> bool) -> Stdcompat__init.bytes -> bool
+@END_BEFORE_4_13_0@
+(** @since 4.13.0: val exists : (char -> bool) -> bytes -> bool
+ *)
+
+@BEGIN_FROM_4_13_0@
+val starts_with : prefix:bytes -> bytes -> bool
+@END_FROM_4_13_0@
+@BEGIN_BEFORE_4_13_0@
+val starts_with :
+  prefix:Stdcompat__init.bytes -> Stdcompat__init.bytes -> bool
+@END_BEFORE_4_13_0@
+(** @since 4.13.0: val starts_with : prefix:bytes -> bytes -> bool
+ *)
+
+@BEGIN_FROM_4_13_0@
+val ends_with : suffix:bytes -> bytes -> bool
+@END_FROM_4_13_0@
+@BEGIN_BEFORE_4_13_0@
+val ends_with : suffix:Stdcompat__init.bytes -> Stdcompat__init.bytes -> bool
+@END_BEFORE_4_13_0@
+(** @since 4.13.0: val ends_with : suffix:bytes -> bytes -> bool
+ *)
+
+@BEGIN_FROM_4_13_0@
+val split_on_char : char -> bytes -> bytes list
+@END_FROM_4_13_0@
+@BEGIN_BEFORE_4_13_0@
+val split_on_char :
+  char -> Stdcompat__init.bytes -> Stdcompat__init.bytes list
+@END_BEFORE_4_13_0@
+(** @since 4.13.0: val split_on_char : char -> bytes -> bytes list
+ *)
+
 @BEGIN_FROM_4_09_0@
 external unsafe_blit_string :
   string -> int -> bytes -> int -> int -> unit = "caml_blit_string"[@@noalloc

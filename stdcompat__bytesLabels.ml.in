@@ -1,6 +1,24 @@
 @BEGIN_FROM_4_02_0@
 include BytesLabels
 
+@BEGIN_FROM_4_03_0@
+external unsafe_blit_string :
+  src:string -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int ->
+  unit = "caml_blit_string"[@@noalloc]
+@END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+@BEGIN_FROM_3_08_0@
+external unsafe_blit_string:
+  src:string -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int ->
+  unit = "caml_blit_string" "noalloc"
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external unsafe_blit_string :
+  src:string -> src_pos:int -> dst:bytes -> dst_pos:int -> len:int ->
+  unit = "blit_string" "noalloc"
+@END_BEFORE_3_08_0@
+@END_BEFORE_4_03_0@
+
 @BEGIN_BEFORE_4_07_0@
 let of_seq g =
   Stdcompat__buffer.to_bytes (Stdcompat__buffer.of_seq g)
@@ -117,3 +135,19 @@ let set_int64_be = Stdcompat__bytes.set_int64_be
 
 let set_int64_ne = Stdcompat__bytes.set_int64_ne
 @END_BEFORE_4_08_0@
+
+@BEGIN_BEFORE_4_13_0@
+let fold_left ~f ~init bytes = Stdcompat__bytes.fold_left f init bytes
+
+let fold_right ~f bytes ~init = Stdcompat__bytes.fold_right f bytes init
+
+let for_all ~f bytes = Stdcompat__bytes.for_all f bytes
+
+let exists ~f bytes = Stdcompat__bytes.exists f bytes
+
+let starts_with ~prefix bytes = Stdcompat__bytes.starts_with prefix bytes
+
+let ends_with ~suffix bytes = Stdcompat__bytes.ends_with suffix bytes
+
+let split_on_char ~sep bytes = Stdcompat__bytes.split_on_char sep bytes
+@END_BEFORE_4_13_0@

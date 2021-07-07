@@ -1,6 +1,22 @@
 * Next version
 
+- Support for OCaml 4.13.0 with
+  - Seq.{concat, concat_map}
+  - {Int{32, 64}, Nativeint}.{min, max}
+  - Array.{fold_left_map, find_opt, find_map, split, combine}
+  - Bytes.{fold_left, fold_right, for_all, exists, starts_with, ends_with,
+      split_on_char}
+  - String.{fold_left, fold_right, for_all, exists, starts_with, ends_with,
+      get_{u,}int8, get_{{u,}int16,int32,int64}{_ne,_be,_le}}
+  - Format.{pp_print_either, pp_print_bytes, print_bytes}
+
 - Add module Atomic
+
+- Fix {Array,Bytes,List,More,String}Labels modules
+
+- Fix: equality between Stdcompat.Lexing.lexbuf and Lexing.lexbuf types
+  even for OCaml <4.02 (the equality was not preserved since the type of
+  lex_buffer was syntactically different, string instead of bytes)
 
 * Version 15, 2021-02-17
 

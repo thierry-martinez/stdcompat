@@ -23,6 +23,24 @@ val unsafe_set : Stdcompat__init.floatarray -> int -> float -> unit end
 (** @since 4.06.0: module Floatarray = Array.Floatarray
  *)
 
+val fold_left_map :
+  ('a -> 'b -> ('a * 'c)) -> 'a -> 'b array -> ('a * 'c array)
+(** @since 4.13.0:
+    val fold_left_map :
+      ('a -> 'b -> ('a * 'c)) -> 'a -> 'b array -> ('a * 'c array) *)
+
+val find_opt : ('a -> bool) -> 'a array -> 'a option
+(** @since 4.13.0: val find_opt : ('a -> bool) -> 'a array -> 'a option *)
+
+val find_map : ('a -> 'b option) -> 'a array -> 'b option
+(** @since 4.13.0: val find_map : ('a -> 'b option) -> 'a array -> 'b option *)
+
+val split : ('a * 'b) array -> ('a array * 'b array)
+(** @since 4.13.0: val split : ('a * 'b) array -> ('a array * 'b array) *)
+
+val combine : 'a array -> 'b array -> ('a * 'b) array
+(** @since 4.13.0: val combine : 'a array -> 'b array -> ('a * 'b) array *)
+
 val for_all2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool
 (** @since 4.11.0:
     val for_all2 : ('a -> 'b -> bool) -> 'a array -> 'b array -> bool *)

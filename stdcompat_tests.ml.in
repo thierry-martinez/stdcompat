@@ -219,6 +219,108 @@ let test_either () =
     ~left:Stdcompat.Int.compare ~right:Stdcompat.Int.compare
     (Stdcompat.Either.Right 1) (Stdcompat.Either.Right 2) < 0)
 
+let test_seq_concat () =
+  assert (Stdcompat.List.of_seq
+    (Stdcompat.Seq.concat (Stdcompat.Seq.map Stdcompat.List.to_seq
+      (Stdcompat.List.to_seq [[1; 2]; []; [3]; [4; 5]]))) =
+    [1; 2; 3; 4; 5]);
+  assert (Stdcompat.List.of_seq
+    (Stdcompat.Seq.concat_map Stdcompat.List.to_seq
+      (Stdcompat.List.to_seq [[1; 2]; []; [3]; [4; 5]])) =
+    [1; 2; 3; 4; 5])
+
+let test_int32_min_max () =
+  assert (Stdcompat.Int32.min 1l 2l = 1l);
+  assert (Stdcompat.Int32.max 1l 2l = 2l)
+
+let test_int32_unsigned_compare () =
+  assert (Stdcompat.Int32.unsigned_compare 1l 2l < 0);
+  assert (Stdcompat.Int32.unsigned_compare (-1l) 2l > 0)
+
+let test_array_fold_left_map () =
+  let f counter item =
+    succ counter, item + counter in
+  assert (Stdcompat.Array.fold_left_map f 0 [| 1; 2; 3; 4; 5 |] =
+    (5, [| 1; 3; 5; 7; 9 |]))
+
+let test_array_find_opt () =
+  assert (Stdcompat.Array.find_opt
+    (fun i -> i mod 2 = 0) [| 1; 3; 4; 5 |] = Some 4);
+  assert (Stdcompat.Array.find_opt
+    (fun i -> i mod 2 = 0) [| 1; 3; 5 |] = None)
+
+let test_array_find_map () =
+  let f i =
+    if i mod 2 = 0 then Some (i / 2) else None in
+  assert (Stdcompat.Array.find_map f [| 1; 3; 4; 5 |] = Some 2);
+  assert (Stdcompat.Array.find_map f [| 1; 3; 5 |] = None)
+
+let test_array_split () =
+  assert (Stdcompat.Array.split [| |] = ([| |], [| |]));
+  assert (Stdcompat.Array.split [| (1, 2); (3, 4) |]
+    = ([| 1; 3 |], [| 2; 4 |]))
+
+let test_array_combine () =
+  assert (Stdcompat.Array.combine [| |] [| |] = [| |]);
+  assert (Stdcompat.Array.combine [| 1; 3 |] [| 2; 4 |]
+    = [| (1, 2); (3, 4) |])
+
+let test_string_fold_left () =
+  let f i c =
+    assert (int_of_char c - int_of_char '0' = i);
+    succ i in
+  assert (Stdcompat.String.fold_left f 0 "0123" = 4);
+  assert (Stdcompat.String.fold_left f 0 "" = 0)
+
+let test_string_fold_right () =
+  let f c i =
+    assert (int_of_char c - int_of_char '0' = pred i);
+    pred i in
+  assert (Stdcompat.String.fold_right f "0123" 4 = 0);
+  assert (Stdcompat.String.fold_right f "" 0 = 0)
+
+let test_string_for_all () =
+  let f c =
+    match c with
+    | '0' .. '9' -> true
+    | _ -> false in
+  assert (Stdcompat.String.for_all f "0123" = true);
+  assert (Stdcompat.String.for_all f "012a3" = false);
+  assert (Stdcompat.String.for_all f "" = true)
+
+let test_string_exists () =
+  let f c =
+    match c with
+    | 'a' .. 'z' -> true
+    | _ -> false in
+  assert (Stdcompat.String.exists f "0123" = false);
+  assert (Stdcompat.String.exists f "012a3" = true);
+  assert (Stdcompat.String.exists f "" = false)
+
+let test_string_starts_with () =
+  assert (Stdcompat.String.starts_with ~prefix:"a" "abc" = true);
+  assert (Stdcompat.String.starts_with ~prefix:"a" "bc" = false);
+  assert (Stdcompat.String.starts_with ~prefix:"a" "a" = true);
+  assert (Stdcompat.String.starts_with ~prefix:"a" "" = false);
+  assert (Stdcompat.String.starts_with ~prefix:"ab" "abc" = true);
+  assert (Stdcompat.String.starts_with ~prefix:"ab" "ab" = true);
+  assert (Stdcompat.String.starts_with ~prefix:"ab" "bc" = false);
+  assert (Stdcompat.String.starts_with ~prefix:"ab" "ac" = false);
+  assert (Stdcompat.String.starts_with ~prefix:"ab" "a" = false);
+  assert (Stdcompat.String.starts_with ~prefix:"ab" "" = false)
+
+let test_string_ends_with () =
+  assert (Stdcompat.String.ends_with ~suffix:"a" "cba" = true);
+  assert (Stdcompat.String.ends_with ~suffix:"a" "cb" = false);
+  assert (Stdcompat.String.ends_with ~suffix:"a" "a" = true);
+  assert (Stdcompat.String.ends_with ~suffix:"a" "" = false);
+  assert (Stdcompat.String.ends_with ~suffix:"ab" "cab" = true);
+  assert (Stdcompat.String.ends_with ~suffix:"ab" "ab" = true);
+  assert (Stdcompat.String.ends_with ~suffix:"ab" "bc" = false);
+  assert (Stdcompat.String.ends_with ~suffix:"ab" "cb" = false);
+  assert (Stdcompat.String.ends_with ~suffix:"ab" "b" = false);
+  assert (Stdcompat.String.ends_with ~suffix:"ab" "" = false)
+
 let () =
   assert (Stdcompat.hypot 3. 4. = 5.);
   assert (Stdcompat.copysign 1. 2. = 1.);
@@ -703,4 +805,18 @@ let () =
   test_hashtbl_rebuild ();
   test_format_pp_print_seq ();
   test_either ();
+  test_seq_concat ();
+  test_int32_min_max ();
+  test_int32_unsigned_compare ();
+  test_array_fold_left_map ();
+  test_array_find_opt ();
+  test_array_find_map ();
+  test_array_split ();
+  test_array_combine ();
+  test_string_fold_left ();
+  test_string_fold_right ();
+  test_string_for_all ();
+  test_string_exists ();
+  test_string_starts_with ();
+  test_string_ends_with ();
   ()

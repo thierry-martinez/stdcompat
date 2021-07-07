@@ -18,6 +18,12 @@ and 'a node = 'a Stdcompat__init.seq_node =
       | Cons of 'a * 'a t 
  *)
 
+val concat : 'a t t -> 'a t
+(** @since 4.13.0: val concat : 'a t t -> 'a t *)
+
+val concat_map : ('a -> 'b t) -> 'a t -> 'b t
+(** @since 4.13.0: val concat_map : ('a -> 'b t) -> 'a t -> 'b t *)
+
 val cons : 'a -> 'a t -> 'a t
 (** @since 4.11.0: val cons : 'a -> 'a t -> 'a t *)
 
