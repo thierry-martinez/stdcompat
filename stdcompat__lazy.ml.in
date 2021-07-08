@@ -3,7 +3,7 @@ include Lazy
 @BEGIN_BEFORE_4_00_0@
 let from_fun = lazy_from_fun
 
-let from_val v = lazy_from_val
+let from_val = lazy_from_val
 
 let is_val = lazy_is_val
 @END_BEFORE_4_00_0@

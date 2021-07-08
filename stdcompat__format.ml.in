@@ -280,7 +280,7 @@ let pp_print_either ~left ~right fmt e =
   | Stdcompat__either.Right r -> right fmt r
 
 let pp_print_bytes fmt bytes =
-  pp_print_string fmt (Bytes.unsafe_to_string bytes)
+  pp_print_string fmt (Stdcompat__bytes.unsafe_to_string bytes)
 
 let print_bytes bytes =
   pp_print_bytes std_formatter bytes
