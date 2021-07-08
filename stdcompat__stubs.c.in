@@ -2,9 +2,10 @@
 #include "stdcompat.h"
 
 @C_BEGIN_BEFORE_4_12_0@
-#include <caml/memory.h>
 #define CAML_INTERNALS
+#include <caml/memory.h>
 #include <caml/sys.h>
+#include <caml/osdeps.h>
 
 #ifdef _WIN32
 #include <direct.h> /* for _wchdir and _wgetcwd */
