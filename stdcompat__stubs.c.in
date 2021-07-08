@@ -24,7 +24,7 @@ CAMLprim value caml_sys_mkdir(value path, value perm)
   p = caml_stat_strdup_to_os(String_val(path));
   /*caml_enter_blocking_section();*/
   #ifdef _WIN32
-    ret = _wmkdir(path);
+    ret = _wmkdir(p);
   #else
     ret = mkdir(p, Int_val(perm));
   #endif
