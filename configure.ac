@@ -95,8 +95,8 @@ AC_ARG_ENABLE([magic],
 AC_DEFUN([AC_DISABLE_BLOCK],
   [AC_SUBST([BEGIN_$1], [['(*']])
    AC_SUBST([END_$1], [['*)']])
-   AC_SUBST([C_BEGIN_$1], [['/*']])
-   AC_SUBST([C_END_$1], [['*/']])])
+   AC_SUBST([C_BEGIN_$1], [['#if 0']])
+   AC_SUBST([C_END_$1], [['#endif']])])
 
 AC_DEFUN([AC_ENABLE_BLOCK],
   [AC_SUBST([BEGIN_$1], [])

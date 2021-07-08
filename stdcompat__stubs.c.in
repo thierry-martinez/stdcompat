@@ -5,11 +5,15 @@
 #include <caml/major_gc.h>
 #define CAML_INTERNALS
 #include <caml/memory.h>
+@C_BEGIN_FROM_4_04_0@
 #include <caml/sys.h>
 #include <caml/osdeps.h>
-
+@C_END_FROM_4_04_0@
+@C_BEGIN_BEFORE_4_04_0@
+CAMLextern void caml_sys_error (value);
+@C_END_BEFORE_4_04_0@
 #ifdef _WIN32
-#include <direct.h> /* for _wchdir and _wgetcwd */
+#include <direct.h>
 #else
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -19,18 +23,25 @@
 CAMLprim value caml_sys_mkdir(value path, value perm)
 {
   CAMLparam2(path, perm);
-  char_os * p;
   int ret;
-  /*caml_sys_check_path(path);*/
-  p = caml_stat_strdup_to_os(String_val(path));
-  /*caml_enter_blocking_section();*/
+@C_BEGIN_FROM_4_06_0@
+  char_os * p = caml_stat_strdup_to_os(String_val(path));
   #ifdef _WIN32
     ret = _wmkdir(p);
   #else
     ret = mkdir(p, Int_val(perm));
   #endif
-  /*caml_leave_blocking_section();*/
   caml_stat_free(p);
+@C_END_FROM_4_06_0@
+@C_BEGIN_BEFORE_4_06_0@
+  char * p;
+  p = String_val(path);
+  #ifdef _WIN32
+    ret = _mkdir(p);
+  #else
+    ret = mkdir(p, Int_val(perm));
+  #endif
+@C_END_BEFORE_4_06_0@
   if (ret == -1) caml_sys_error(path);
   CAMLreturn(Val_unit);
 }
@@ -38,18 +49,25 @@ CAMLprim value caml_sys_mkdir(value path, value perm)
 CAMLprim value caml_sys_rmdir(value path)
 {
   CAMLparam1(path);
-  char_os * p;
   int ret;
-  /*caml_sys_check_path(path);*/
-  p = caml_stat_strdup_to_os(String_val(path));
-  /*caml_enter_blocking_section();*/
+@C_BEGIN_FROM_4_06_0@
+  char_os * p = caml_stat_strdup_to_os(String_val(path));
   #ifdef _WIN32
     ret = _wrmdir(p);
   #else
     ret = rmdir(p);
   #endif
-  /*caml_leave_blocking_section();*/
   caml_stat_free(p);
+@C_END_FROM_4_06_0@
+@C_BEGIN_BEFORE_4_06_0@
+  char * p;
+  p = String_val(path);
+  #ifdef _WIN32
+    ret = _rmdir(p);
+  #else
+    ret = rmdir(p);
+  #endif
+@C_END_BEFORE_4_06_0@
   if (ret == -1) caml_sys_error(path);
   CAMLreturn(Val_unit);
 }
