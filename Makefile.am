@@ -48,9 +48,10 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__pervasives.ml stdcompat__arg.ml stdcompat__lazy.ml \
 	stdcompat__char.ml \
 	stdcompat__option.ml \
-	stdcompat__buffer.ml stdcompat__bytes.ml stdcompat__bytesLabels.ml \
+	stdcompat__buffer.ml stdcompat__sys.ml \
+	stdcompat__bytes.ml stdcompat__bytesLabels.ml \
 	stdcompat__string.ml stdcompat__stringLabels.ml \
-	stdcompat__filename.ml stdcompat__sys.ml \
+	stdcompat__filename.ml \
         stdcompat__listLabels.ml \
 	stdcompat__stack.ml \
 	stdcompat__hashtbl.ml stdcompat__set.ml \
@@ -101,6 +102,8 @@ if OCAML_SUPPORTS_ALERT
 OCAMLCFLAGS += -alert -deprecated
 endif
 
+STDCOMPAT_TESTS_EXE = stdcompat_tests$(EXEEXT)
+
 SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs .cmt
 
 .DEFAULT_GOAL = all
@@ -148,14 +151,14 @@ depend : .depend
 	$(OCAMLDEP) $^ >$@ || rm -f .depend
 
 .PHONY : test
-test : stdcompat_tests
-	./stdcompat_tests
+test : $(STDCOMPAT_TESTS_EXE)
+	./$(STDCOMPAT_TESTS_EXE)
 
-stdcompat_tests: stdcompat.$(CMAX) stdcompat_tests.ml
+$(STDCOMPAT_TESTS_EXE): stdcompat.$(CMAX) stdcompat_tests.ml
 	$(OCAMLBEST) stdcompat.$(CMAX) stdcompat_tests.ml -o $@
 
 @INCLUDE_DEPEND@
 
 CLEANFILES = *.cmi *.cmo *.cmx *.cmt *.cmti *.o *.a stdcompat.cma \
 	stdcompat.cmxa stdcompat__native.ml \
-	stdcompat.cmxs stdcompat_tests $(bin_SCRIPTS) .depend
+	stdcompat.cmxs $(STDCOMPAT_TESTS_EXE) $(bin_SCRIPTS) .depend

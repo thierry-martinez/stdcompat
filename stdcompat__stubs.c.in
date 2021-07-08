@@ -1,6 +1,58 @@
 #include <string.h>
 #include "stdcompat.h"
 
+@C_BEGIN_BEFORE_4_12_0@
+#include <caml/memory.h>
+#define CAML_INTERNALS
+#include <caml/sys.h>
+
+#ifdef _WIN32
+#include <direct.h> /* for _wchdir and _wgetcwd */
+#else
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#endif
+
+CAMLprim value caml_sys_mkdir(value path, value perm)
+{
+  CAMLparam2(path, perm);
+  char_os * p;
+  int ret;
+  /*caml_sys_check_path(path);*/
+  p = caml_stat_strdup_to_os(String_val(path));
+  /*caml_enter_blocking_section();*/
+  #ifdef _WIN32
+    ret = _wmkdir(path);
+  #else
+    ret = mkdir(p, Int_val(perm));
+  #endif
+  /*caml_leave_blocking_section();*/
+  caml_stat_free(p);
+  if (ret == -1) caml_sys_error(path);
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value caml_sys_rmdir(value path)
+{
+  CAMLparam1(path);
+  char_os * p;
+  int ret;
+  /*caml_sys_check_path(path);*/
+  p = caml_stat_strdup_to_os(String_val(path));
+  /*caml_enter_blocking_section();*/
+  #ifdef _WIN32
+    ret = _wrmdir(p);
+  #else
+    ret = rmdir(p);
+  #endif
+  /*caml_leave_blocking_section();*/
+  caml_stat_free(p);
+  if (ret == -1) caml_sys_error(path);
+  CAMLreturn(Val_unit);
+}
+@C_END_BEFORE_4_12_0@
+
 @C_BEGIN_BEFORE_4_06_0@
 value
 caml_alloc_initialized_string(mlsize_t len, const char *p)
