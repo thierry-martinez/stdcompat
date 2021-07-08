@@ -2,6 +2,7 @@
 #include "stdcompat.h"
 
 @C_BEGIN_BEFORE_4_12_0@
+#include <caml/major_gc.h>
 #define CAML_INTERNALS
 #include <caml/memory.h>
 #include <caml/sys.h>
