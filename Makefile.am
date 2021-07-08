@@ -47,10 +47,11 @@ MODULES = stdcompat__init.ml stdcompat__root.ml stdcompat__seq_s.ml \
 	stdcompat__printexc_s.ml stdcompat__format_s.ml stdcompat__atomic_s.ml \
 	stdcompat__pervasives.ml stdcompat__arg.ml stdcompat__lazy.ml \
 	stdcompat__char.ml \
-	stdcompat__option.ml stdcompat__filename.ml \
-        stdcompat__sys.ml stdcompat__buffer.ml stdcompat__bytes.ml \
-	stdcompat__bytesLabels.ml \
-	stdcompat__string.ml stdcompat__stringLabels.ml stdcompat__listLabels.ml \
+	stdcompat__option.ml \
+	stdcompat__buffer.ml stdcompat__bytes.ml stdcompat__bytesLabels.ml \
+	stdcompat__string.ml stdcompat__stringLabels.ml \
+	stdcompat__filename.ml stdcompat__sys.ml \
+        stdcompat__listLabels.ml \
 	stdcompat__stack.ml \
 	stdcompat__hashtbl.ml stdcompat__set.ml \
 	stdcompat__map.ml stdcompat__weak.ml \
