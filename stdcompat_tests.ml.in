@@ -117,10 +117,10 @@ let test_map_filter_map () =
   assert (List.rev !visited = [0; 1; 2; 3; 4; 5])
 
 let test_mkdir_rmdir () =
-  Stdcompat.Sys.mkdir "new_directory" 600;
+  Stdcompat.Sys.mkdir "new_directory" 0o600;
   assert (Stdcompat.Sys.is_directory "new_directory");
   begin try
-    Stdcompat.Sys.mkdir "new_directory" 600;
+    Stdcompat.Sys.mkdir "new_directory" 0o600;
     assert false;
   with Sys_error _ ->
     assert true;
