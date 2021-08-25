@@ -1033,11 +1033,20 @@ module type S = sig
   @since 3.07.0: external float_of_string : string -> float = "float_of_string"
    *)
   
+  @BEGIN_WITH_FLAMBDA2@
+  external fst : ('a * 'b) -> 'a = "%field0_immut"
+  (** Alias for {!Pervasives.fst} *)
+  
+  external snd : ('a * 'b) -> 'b = "%field1_immut"
+  (** Alias for {!Pervasives.snd} *)
+  @END_WITH_FLAMBDA2@
+  @BEGIN_WITHOUT_FLAMBDA2@
   external fst : ('a * 'b) -> 'a = "%field0"
   (** Alias for {!Pervasives.fst} *)
   
   external snd : ('a * 'b) -> 'b = "%field1"
   (** Alias for {!Pervasives.snd} *)
+  @END_WITHOUT_FLAMBDA2@
   
   val (@) : 'a list -> 'a list -> 'a list
   (** Alias for {!Pervasives.@} *)
