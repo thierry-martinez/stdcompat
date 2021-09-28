@@ -124,7 +124,8 @@ libstdcompat__stubs.a : stdcompat__stubs.$(OBJEXT)
 	$(OCAMLMKLIB) -o stdcompat__stubs $<
 
 stdcompat.cma : $(MODULES_native:.ml=.cmo) libstdcompat__stubs.a
-	$(OCAMLC) $(OCAMLLDFLAGS) -a $(MODULES_native:.ml=.cmo) $(OCAMLLIBFLAGS) -o $@
+	$(OCAMLC) $(OCAMLLDFLAGS) -a $(MODULES_native:.ml=.cmo) \
+	  $(OCAMLLIBFLAGS) -dllib -lstdcompat__stubs -o $@
 
 stdcompat.cmxa : $(MODULES_native:.ml=.cmx) libstdcompat__stubs.a
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -a $(MODULES_native:.ml=.cmx) $(OCAMLLIBFLAGS) -o $@
@@ -162,3 +163,7 @@ $(STDCOMPAT_TESTS_EXE): stdcompat.$(CMAX) stdcompat_tests.ml
 CLEANFILES = *.cmi *.cmo *.cmx *.cmt *.cmti *.o *.a stdcompat.cma \
 	stdcompat.cmxa stdcompat__native.ml \
 	stdcompat.cmxs $(STDCOMPAT_TESTS_EXE) $(bin_SCRIPTS) .depend
+
+install-exec-hook :
+	$(INSTALL_PROGRAM) dllstdcompat__stubs.so $(libdir)/stublibs
+	echo stdcompat >$(libdir)/stublibs/dllstdcompat__stubs.so.owner

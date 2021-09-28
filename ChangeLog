@@ -1,6 +1,8 @@
-* Version 17, next release
+* Version 17, 2021-09-28
 
 - Fix: missing prototype for caml_alloc_initialized_string in stdcompat.h
+
+- Fix: linking with stdcompat__stubs in bytecode
 
 * Version 16, 2021-07-09
 
