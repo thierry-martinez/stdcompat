@@ -165,5 +165,6 @@ CLEANFILES = *.cmi *.cmo *.cmx *.cmt *.cmti *.o *.a stdcompat.cma \
 	stdcompat.cmxs $(STDCOMPAT_TESTS_EXE) $(bin_SCRIPTS) .depend
 
 install-exec-hook :
+	$(MKDIR_P) $(DESTDIR)$(libdir)/stublibs
 	$(INSTALL_PROGRAM) dllstdcompat__stubs.so $(DESTDIR)$(libdir)/stublibs
 	echo stdcompat >$(DESTDIR)$(libdir)/stublibs/dllstdcompat__stubs.so.owner
