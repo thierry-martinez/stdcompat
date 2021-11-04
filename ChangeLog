@@ -1,3 +1,8 @@
+* Next version
+
+- Add dependency for generating .cmt files
+  (reported by Sabyrzhan Tasbolatov)
+
 * Version 17, 2021-09-28
 
 - Fix: missing prototype for caml_alloc_initialized_string in stdcompat.h
