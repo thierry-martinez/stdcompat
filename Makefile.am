@@ -117,6 +117,8 @@ SUFFIXES = .ml .mli .cmi .cmo .cmx .cmxa .cmxs .cmt
 .ml.cmx :
 	$(OCAMLOPT) -c $(OCAMLCFLAGS) $< -o $@
 
+.cmx.cmt : ;
+
 stdcompat__stubs.$(OBJEXT) : stdcompat__stubs.c
 	$(OCAMLC) -c $<
 
