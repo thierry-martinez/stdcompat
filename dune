@@ -26,6 +26,11 @@
  (action (run cp %{source} %{targets})))
 
 (rule
+ (targets stdcompat__init.ml.in)
+ (deps (:source stdcompat__init.mli.in))
+ (action (run cp %{source} %{targets})))
+
+(rule
  (target configure)
  (deps
   META.in
