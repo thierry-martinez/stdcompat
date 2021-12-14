@@ -13,7 +13,7 @@
    stdcompat__int stdcompat__int64 stdcompat__int32 stdcompat__filename
    stdcompat__array stdcompat__arrayLabels
    stdcompat__float stdcompat__queue stdcompat__ephemeron
-   stdcompat__spacetime stdcompat__moreLabels stdcompat))
+   stdcompat__moreLabels stdcompat))
 
 (executable
  (name stdcompat_tests)
@@ -139,9 +139,6 @@
   stdcompat__set.ml.in
   stdcompat__set.mli.in
   stdcompat__set_s.mli.in
-  stdcompat__spacetime.ml.in
-  stdcompat__spacetime.mli.in
-  stdcompat__spacetime_s.mli.in
   stdcompat__stack.ml.in
   stdcompat__stack.mli.in
   stdcompat__stack_s.mli.in
@@ -212,7 +209,6 @@
   stdcompat__queue.mli
   stdcompat__seq.mli
   stdcompat__set.mli
-  stdcompat__spacetime.mli
   stdcompat__stack.mli
   stdcompat__stream.mli
   stdcompat__string.mli
@@ -249,7 +245,6 @@
   stdcompat__queue.ml
   stdcompat__seq.ml
   stdcompat__set.ml
-  stdcompat__spacetime.ml
   stdcompat__stack.ml
   stdcompat__stream.ml
   stdcompat__string.ml
