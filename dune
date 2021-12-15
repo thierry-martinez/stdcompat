@@ -35,6 +35,7 @@
  (deps
   META.in
   Makefile.am
+  VERSION
   stdcompat.ml.in
   stdcompat.mli.in
   stdcompat__arg.ml.in
