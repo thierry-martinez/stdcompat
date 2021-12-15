@@ -36,6 +36,7 @@
   META.in
   Makefile.am
   VERSION
+  stdcompat.h.in
   stdcompat.ml.in
   stdcompat.mli.in
   stdcompat__arg.ml.in
@@ -47,6 +48,9 @@
   stdcompat__arrayLabels.mli.in
   stdcompat__arrayLabels_s.mli.in
   stdcompat__array_s.mli.in
+  stdcompat__atomic.ml.in
+  stdcompat__atomic.mli.in
+  stdcompat__atomic_s.mli.in
   stdcompat__bool.ml.in
   stdcompat__bool.mli.in
   stdcompat__bool_s.mli.in
@@ -65,6 +69,9 @@
   stdcompat__digest.ml.in
   stdcompat__digest.mli.in
   stdcompat__digest_s.mli.in
+  stdcompat__either.ml.in
+  stdcompat__either.mli.in
+  stdcompat__either_s.mli.in
   stdcompat__ephemeron.ml.in
   stdcompat__ephemeron.mli.in
   stdcompat__ephemeron_s.mli.in
