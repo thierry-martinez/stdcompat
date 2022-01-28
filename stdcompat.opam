@@ -18,4 +18,4 @@ build: [
 ]
 install: [make "install"]
 dev-repo: "git+https://github.com/thierry-martinez/stdcompat.git"
-version: "16"
+version: "18"

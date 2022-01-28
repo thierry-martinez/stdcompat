@@ -500,7 +500,8 @@ let qualify_type_decl ~module_name (type_decl : Parsetree.type_declaration) =
                 && ident <> "format6" && ident <> "format4" && ident <> "bytes"
                 && ident <> "float" && ident <> "result" && ident <> "option"
                  && ident <> "list" && ident <> "bool" && ident <> "array"
-            && ident <> "exn" && ident <> "int" ->
+            && ident <> "exn" && ident <> "int" && ident <> "unit"
+            && ident <> "in_channel" && ident <> "out_channel" ->
               let txt = Longident.Ldot (module_name, ident) in
               let ptyp_desc =
                 Parsetree.Ptyp_constr ({ Location.txt; loc }, args) in
@@ -571,10 +572,10 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
           ({ loc; txt = Ldot (Lident "Stdcompat__stdlib", t) },
            args) in
       { core_type with ptyp_desc }
-  | Ptyp_constr ({ loc; txt = Ldot (Lident "Uchar", "t") }, []) ->
+  | Ptyp_constr ({ loc; txt = Ldot (Lident "Uchar", t) }, []) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__uchar", "t") }, []) in
+          ({ loc; txt = Ldot (Lident "Stdcompat__uchar", t) }, []) in
       { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Ldot (Lident "Hashtbl", "statistics") }, []) ->
       let ptyp_desc =
@@ -1235,6 +1236,13 @@ let remove_gadt (decl : Parsetree.type_declaration) =
       { decl with ptype_kind = Ptype_variant constructors }
   | _ -> decl
 
+(*
+let make_rebind ~module_name (constructor : Parsetree.extension_constructor) =
+  { constructor with pext_kind =
+    Pext_rebind { loc = Location.none;
+      txt = Longident.Ldot (module_name, constructor.pext_name.txt)}}
+*)
+
 let rec format_default_item ~module_name formatter
     (item : Parsetree.signature_item) =
   match item.psig_desc with
@@ -1389,6 +1397,21 @@ val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a
         module_type_declaration.pmtd_name.txt
         (format_default_module_type ~module_name)
         (Option.get module_type_declaration.pmtd_type)
+(*
+  | Psig_typext type_extension ->
+      let type_extension = { type_extension with
+        ptyext_constructors =
+          List.map (make_rebind ~module_name)
+            type_extension.ptyext_constructors } in
+      Format.fprintf formatter "%a" Pprintast.signature
+        [{ item with psig_desc = Psig_typext type_extension }]
+  | Psig_exception type_exception ->
+      let type_exception = { type_exception with
+        ptyexn_constructor = make_rebind ~module_name
+            type_exception.ptyexn_constructor } in
+      Format.fprintf formatter "%a" Pprintast.signature
+        [{ item with psig_desc = Psig_exception type_exception }]
+*)
   | _ ->
       Format.fprintf formatter "%a" Pprintast.signature [item]
 

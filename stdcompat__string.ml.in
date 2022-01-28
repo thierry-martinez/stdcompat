@@ -64,7 +64,8 @@ let to_bytes = Stdcompat__bytes.of_string
 let cat = ( ^ )
 
 let starts_with ~prefix s =
-  Stdcompat__bytes.starts_with ~prefix:(Stdcompat__bytes.unsafe_of_string prefix)
+  Stdcompat__bytes.starts_with
+    ~prefix:(Stdcompat__bytes.unsafe_of_string prefix)
     (Stdcompat__bytes.unsafe_of_string s)
 
 let ends_with ~suffix s =
@@ -125,3 +126,23 @@ let get_int64_be s i =
 let get_int64_le s i =
   Stdcompat__bytes.get_int64_le (Stdcompat__bytes.unsafe_of_string s) i
 @END_BEFORE_4_13_0@
+
+@BEGIN_BEFORE_4_14_0@
+let get_utf_8_uchar s i =
+  Stdcompat__bytes.get_utf_8_uchar (Stdcompat__bytes.unsafe_of_string s) i
+
+let is_valid_utf_8 s =
+  Stdcompat__bytes.is_valid_utf_8 (Stdcompat__bytes.unsafe_of_string s)
+
+let get_utf_16be_uchar s i =
+  Stdcompat__bytes.get_utf_16be_uchar (Stdcompat__bytes.unsafe_of_string s) i
+
+let is_valid_utf_16be s =
+  Stdcompat__bytes.is_valid_utf_16be (Stdcompat__bytes.unsafe_of_string s)
+
+let get_utf_16le_uchar s i =
+  Stdcompat__bytes.get_utf_16le_uchar (Stdcompat__bytes.unsafe_of_string s) i
+
+let is_valid_utf_16le s =
+  Stdcompat__bytes.is_valid_utf_16le (Stdcompat__bytes.unsafe_of_string s)
+@END_BEFORE_4_14_0@

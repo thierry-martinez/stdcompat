@@ -8,6 +8,69 @@ type t = Stdcompat__init.bytes
 (** @since 4.02.0: type t = bytes
  *)
 
+@BEGIN_FROM_4_14_0@
+val get_utf_8_uchar : t -> int -> Uchar.utf_decode
+@END_FROM_4_14_0@
+@BEGIN_BEFORE_4_14_0@
+val get_utf_8_uchar : t -> int -> Stdcompat__uchar.utf_decode
+@END_BEFORE_4_14_0@
+(** @since 4.14.0: val get_utf_8_uchar : t -> int -> Uchar.utf_decode
+ *)
+
+@BEGIN_FROM_4_14_0@
+val set_utf_8_uchar : t -> int -> Uchar.t -> int
+@END_FROM_4_14_0@
+@BEGIN_BEFORE_4_14_0@
+val set_utf_8_uchar : t -> int -> Stdcompat__uchar.t -> int
+@END_BEFORE_4_14_0@
+(** @since 4.14.0: val set_utf_8_uchar : t -> int -> Uchar.t -> int
+ *)
+
+val is_valid_utf_8 : t -> bool
+(** @since 4.14.0: val is_valid_utf_8 : t -> bool *)
+
+@BEGIN_FROM_4_14_0@
+val get_utf_16be_uchar : t -> int -> Uchar.utf_decode
+@END_FROM_4_14_0@
+@BEGIN_BEFORE_4_14_0@
+val get_utf_16be_uchar : t -> int -> Stdcompat__uchar.utf_decode
+@END_BEFORE_4_14_0@
+(** @since 4.14.0: val get_utf_16be_uchar : t -> int -> Uchar.utf_decode
+ *)
+
+@BEGIN_FROM_4_14_0@
+val set_utf_16be_uchar : t -> int -> Uchar.t -> int
+@END_FROM_4_14_0@
+@BEGIN_BEFORE_4_14_0@
+val set_utf_16be_uchar : t -> int -> Stdcompat__uchar.t -> int
+@END_BEFORE_4_14_0@
+(** @since 4.14.0: val set_utf_16be_uchar : t -> int -> Uchar.t -> int
+ *)
+
+val is_valid_utf_16be : t -> bool
+(** @since 4.14.0: val is_valid_utf_16be : t -> bool *)
+
+@BEGIN_FROM_4_14_0@
+val get_utf_16le_uchar : t -> int -> Uchar.utf_decode
+@END_FROM_4_14_0@
+@BEGIN_BEFORE_4_14_0@
+val get_utf_16le_uchar : t -> int -> Stdcompat__uchar.utf_decode
+@END_BEFORE_4_14_0@
+(** @since 4.14.0: val get_utf_16le_uchar : t -> int -> Uchar.utf_decode
+ *)
+
+@BEGIN_FROM_4_14_0@
+val set_utf_16le_uchar : t -> int -> Uchar.t -> int
+@END_FROM_4_14_0@
+@BEGIN_BEFORE_4_14_0@
+val set_utf_16le_uchar : t -> int -> Stdcompat__uchar.t -> int
+@END_BEFORE_4_14_0@
+(** @since 4.14.0: val set_utf_16le_uchar : t -> int -> Uchar.t -> int
+ *)
+
+val is_valid_utf_16le : t -> bool
+(** @since 4.14.0: val is_valid_utf_16le : t -> bool *)
+
 @BEGIN_FROM_4_13_0@
 val fold_left : f:('a -> char -> 'a) -> init:'a -> bytes -> 'a
 @END_FROM_4_13_0@

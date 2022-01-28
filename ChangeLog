@@ -1,5 +1,18 @@
 * Next version
 
+- Support for OCaml 4.14 with
+  - Lot of new functions in Seq
+  - Uchar.utf_decode and co
+  - In_channel and Out_channel modules
+  - Sys.{development_version, ocaml_release}
+
+- Add Stdlib.{acosh,asinh,atanh} missing from 4.13 and
+  Stdlib.__FUNCTION__ missing from 4.12
+
+- Add module Unit missing from 4.08
+
+- Add module Random, with new functions introduced from 4.13
+
 - Add dependency for generating .cmt files
   (reported by Sabyrzhan Tasbolatov)
 

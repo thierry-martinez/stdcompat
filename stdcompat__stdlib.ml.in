@@ -1,10 +1,41 @@
-@BEGIN_FROM_4_13_0@
+@BEGIN_FROM_4_14_0@
 include Stdlib
-@END_FROM_4_13_0@
-@BEGIN_BEFORE_4_13_0@
+@END_FROM_4_14_0@
+@BEGIN_BEFORE_4_14_0@
 module Pervasives = Stdcompat__pervasives
 
 include Pervasives
+
+let acosh x =
+  log (x +. sqrt (x *. x -. 1.0))
+
+let asinh x =
+  log (x +. sqrt (x *. x +. 1.0))
+
+let atanh x =
+  0.5 *. log ((1.0 +. x) /. (1.0 -. x))
+
+exception Exit = Exit
+
+exception Match_failure = Match_failure
+exception Assert_failure = Assert_failure
+exception Invalid_argument = Invalid_argument
+exception Failure = Failure
+exception Not_found = Not_found
+exception Out_of_memory = Out_of_memory
+exception Stack_overflow = Stack_overflow
+exception Sys_error = Sys_error
+exception End_of_file = End_of_file
+exception Division_by_zero = Division_by_zero
+exception Sys_blocked_io = Sys_blocked_io
+exception Undefined_recursive_module = Undefined_recursive_module
+
+@BEGIN_FROM_4_12_0@
+external __FUNCTION__ : string = "%loc_FUNCTION"
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
+let __FUNCTION__ = "<unknown>"
+@END_BEFORE_4_12_0@
 
 module Arg = Stdcompat__arg
 
@@ -58,6 +89,8 @@ module Genlex = Genlex
 
 module Hashtbl = Stdcompat__hashtbl
 
+module In_channel = Stdcompat__in_channel
+
 module Int = Stdcompat__int
 
 module Int32 = Stdcompat__int32
@@ -86,6 +119,8 @@ module Oo = Oo
 
 module Option = Stdcompat__option
 
+module Out_channel = Stdcompat__out_channel
+
 module Parsing = Parsing
 
 module Printexc = Stdcompat__printexc
@@ -94,7 +129,7 @@ module Printf = Stdcompat__printf
 
 module Queue = Stdcompat__queue
 
-module Random = Random
+module Random = Stdcompat__random
 
 module Result = Stdcompat__result
 
@@ -126,5 +161,7 @@ module Sys = Stdcompat__sys
 
 module Uchar = Stdcompat__uchar
 
+module Unit = Stdcompat__unit
+
 module Weak = Stdcompat__weak
-@END_BEFORE_4_13_0@
+@END_BEFORE_4_14_0@

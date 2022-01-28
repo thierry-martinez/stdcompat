@@ -32,6 +32,30 @@ AC_SUBST([OCAMLVERSION],
   [[`$OCAMLC -v | sed -n 's/^.*version \(.*\)$/\1/p' | sed 's/\r//'`]])
 AC_MSG_RESULT([$OCAMLVERSION])
 
+AC_SUBST([OCAML_VERSION_MAJOR], [[`echo $OCAMLVERSION | cut -c 1`]])
+
+AC_SUBST([OCAML_VERSION_MINOR], [[`echo $OCAMLVERSION | cut -c 3-4`]])
+
+AC_SUBST([OCAML_VERSION_PATCHLEVEL], [[`echo $OCAMLVERSION | cut -c 6`]])
+
+AC_SUBST([OCAML_RELEASE_EXTRA_PREFIX_CHAR], [[`echo $OCAMLVERSION | cut -c 7`]])
+
+AS_IF([test "x$OCAML_RELEASE_EXTRA_PREFIX_CHAR" = "x"],
+  [AC_SUBST([OCAML_RELEASE_EXTRA], [[None]])],
+  [AS_IF([test "$OCAML_RELEASE_EXTRA_PREFIX_CHAR" = "+"],
+    [AC_SUBST([OCAML_RELEASE_EXTRA_PREFIX], [[Plus]])],
+    [AC_SUBST([OCAML_RELEASE_EXTRA_PREFIX], [[Tilde]])])
+   AC_SUBST([OCAML_RELEASE_EXTRA],
+     [["Some ($OCAML_RELEASE_EXTRA_PREFIX, \"`echo $OCAMLVERSION | cut -c 8-`\")"]])])
+
+AS_IF([test "$OCAML_RELEASE_EXTRA_PREFIX_CHAR" = "~"],
+  [AC_SUBST([OCAML_DEVELOPMENT_VERSION], [[true]])],
+  [AS_IF([test "$OCAML_RELEASE_EXTRA_PREFIX_CHAR" = "+"],
+    [AS_IF([echo $OCAMLVERSION | grep trunk],
+      [AC_SUBST([OCAML_DEVELOPMENT_VERSION], [[true]])],
+      [AC_SUBST([OCAML_DEVELOPMENT_VERSION], [[false]])])],
+    [AC_SUBST([OCAML_DEVELOPMENT_VERSION], [[false]])])])
+
 AC_CHECK_TOOL([OCAMLFIND], [ocamlfind], [])
 AS_IF([test "x$OCAMLFIND" = "x"],
   [AC_CHECK_TOOL([OCAMLOPT], [ocamlopt.opt], [])
@@ -153,6 +177,7 @@ AC_WITH_OCAML_VERSION([4_10_0], [4.10.0])
 AC_WITH_OCAML_VERSION([4_11_0], [4.11.0])
 AC_WITH_OCAML_VERSION([4_12_0], [4.12.0])
 AC_WITH_OCAML_VERSION([4_13_0], [4.13.0])
+AC_WITH_OCAML_VERSION([4_14_0], [4.14.0])
 
 AS_IF([test "x$target_os_type" = "xWin32"],
   [AC_WITH_BLOCK([WIN32])],
@@ -226,6 +251,7 @@ AC_CONFIG_FILES([stdcompat__float_s.mli])
 AC_CONFIG_FILES([stdcompat__format_s.mli])
 AC_CONFIG_FILES([stdcompat__fun_s.mli])
 AC_CONFIG_FILES([stdcompat__hashtbl_s.mli])
+AC_CONFIG_FILES([stdcompat__in_channel_s.mli])
 AC_CONFIG_FILES([stdcompat__int_s.mli])
 AC_CONFIG_FILES([stdcompat__int32_s.mli])
 AC_CONFIG_FILES([stdcompat__int64_s.mli])
@@ -237,9 +263,11 @@ AC_CONFIG_FILES([stdcompat__map_s.mli])
 AC_CONFIG_FILES([stdcompat__moreLabels_s.mli])
 AC_CONFIG_FILES([stdcompat__nativeint_s.mli])
 AC_CONFIG_FILES([stdcompat__option_s.mli])
+AC_CONFIG_FILES([stdcompat__out_channel_s.mli])
 AC_CONFIG_FILES([stdcompat__printexc_s.mli])
 AC_CONFIG_FILES([stdcompat__printf_s.mli])
 AC_CONFIG_FILES([stdcompat__queue_s.mli])
+AC_CONFIG_FILES([stdcompat__random_s.mli])
 AC_CONFIG_FILES([stdcompat__result_s.mli])
 AC_CONFIG_FILES([stdcompat__seq_s.mli])
 AC_CONFIG_FILES([stdcompat__set_s.mli])
@@ -250,6 +278,7 @@ AC_CONFIG_FILES([stdcompat__stringLabels_s.mli])
 AC_CONFIG_FILES([stdcompat__sys_s.mli])
 AC_CONFIG_FILES([stdcompat__uchar_s.mli])
 AC_CONFIG_FILES([stdcompat__weak_s.mli])
+AC_CONFIG_FILES([stdcompat__unit_s.mli])
 AC_CONFIG_FILES([stdcompat__stdlib_s.mli])
 AC_CONFIG_FILES([stdcompat__pervasives_s.ml:stdcompat__pervasives_s.mli.in])
 AC_CONFIG_FILES([stdcompat__arg_s.ml:stdcompat__arg_s.mli.in])
@@ -283,6 +312,7 @@ AC_CONFIG_FILES([stdcompat__option_s.ml:stdcompat__option_s.mli.in])
 AC_CONFIG_FILES([stdcompat__printexc_s.ml:stdcompat__printexc_s.mli.in])
 AC_CONFIG_FILES([stdcompat__printf_s.ml:stdcompat__printf_s.mli.in])
 AC_CONFIG_FILES([stdcompat__queue_s.ml:stdcompat__queue_s.mli.in])
+AC_CONFIG_FILES([stdcompat__random_s.ml:stdcompat__random_s.mli.in])
 AC_CONFIG_FILES([stdcompat__result_s.ml:stdcompat__result_s.mli.in])
 AC_CONFIG_FILES([stdcompat__seq_s.ml:stdcompat__seq_s.mli.in])
 AC_CONFIG_FILES([stdcompat__set_s.ml:stdcompat__set_s.mli.in])
@@ -294,6 +324,9 @@ AC_CONFIG_FILES([stdcompat__stringLabels_s.ml:stdcompat__stringLabels_s.mli.in])
 AC_CONFIG_FILES([stdcompat__sys_s.ml:stdcompat__sys_s.mli.in])
 AC_CONFIG_FILES([stdcompat__uchar_s.ml:stdcompat__uchar_s.mli.in])
 AC_CONFIG_FILES([stdcompat__weak_s.ml:stdcompat__weak_s.mli.in])
+AC_CONFIG_FILES([stdcompat__in_channel_s.ml:stdcompat__in_channel_s.mli.in])
+AC_CONFIG_FILES([stdcompat__out_channel_s.ml:stdcompat__out_channel_s.mli.in])
+AC_CONFIG_FILES([stdcompat__unit_s.ml:stdcompat__unit_s.mli.in])
 AC_CONFIG_FILES([stdcompat__pervasives.ml])
 AC_CONFIG_FILES([stdcompat__arg.ml])
 AC_CONFIG_FILES([stdcompat__array.ml])
@@ -326,6 +359,7 @@ AC_CONFIG_FILES([stdcompat__option.ml])
 AC_CONFIG_FILES([stdcompat__printexc.ml])
 AC_CONFIG_FILES([stdcompat__printf.ml])
 AC_CONFIG_FILES([stdcompat__queue.ml])
+AC_CONFIG_FILES([stdcompat__random.ml])
 AC_CONFIG_FILES([stdcompat__result.ml])
 AC_CONFIG_FILES([stdcompat__seq.ml])
 AC_CONFIG_FILES([stdcompat__set.ml])
@@ -337,6 +371,9 @@ AC_CONFIG_FILES([stdcompat__stringLabels.ml])
 AC_CONFIG_FILES([stdcompat__sys.ml])
 AC_CONFIG_FILES([stdcompat__uchar.ml])
 AC_CONFIG_FILES([stdcompat__weak.ml])
+AC_CONFIG_FILES([stdcompat__in_channel.ml])
+AC_CONFIG_FILES([stdcompat__out_channel.ml])
+AC_CONFIG_FILES([stdcompat__unit.ml])
 AC_CONFIG_FILES([stdcompat__pervasives.mli])
 AC_CONFIG_FILES([stdcompat__arg.mli])
 AC_CONFIG_FILES([stdcompat__array.mli])
@@ -369,6 +406,7 @@ AC_CONFIG_FILES([stdcompat__option.mli])
 AC_CONFIG_FILES([stdcompat__printexc.mli])
 AC_CONFIG_FILES([stdcompat__printf.mli])
 AC_CONFIG_FILES([stdcompat__queue.mli])
+AC_CONFIG_FILES([stdcompat__random.mli])
 AC_CONFIG_FILES([stdcompat__result.mli])
 AC_CONFIG_FILES([stdcompat__seq.mli])
 AC_CONFIG_FILES([stdcompat__set.mli])
@@ -380,6 +418,9 @@ AC_CONFIG_FILES([stdcompat__stringLabels.mli])
 AC_CONFIG_FILES([stdcompat__sys.mli])
 AC_CONFIG_FILES([stdcompat__uchar.mli])
 AC_CONFIG_FILES([stdcompat__weak.mli])
+AC_CONFIG_FILES([stdcompat__in_channel.mli])
+AC_CONFIG_FILES([stdcompat__out_channel.mli])
+AC_CONFIG_FILES([stdcompat__unit.mli])
 AC_CONFIG_FILES([stdcompat.mli])
 AC_CONFIG_FILES([stdcompat.ml])
 

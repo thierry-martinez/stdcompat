@@ -1,13 +1,45 @@
 module type S = sig
-@BEGIN_FROM_4_13_0@
+@BEGIN_FROM_4_14_0@
   include module type of struct
     include Stdlib
   end
-@END_FROM_4_13_0@
-@BEGIN_BEFORE_4_13_0@
+@END_FROM_4_14_0@
+@BEGIN_BEFORE_4_14_0@
   module Pervasives : Stdcompat__pervasives_s.S
 
   include Stdcompat__pervasives_s.S
+
+  val acosh : float -> float
+
+  val asinh : float -> float
+
+  val atanh : float -> float
+
+  exception Exit
+
+  exception Match_failure of (string * int * int)
+
+  exception Assert_failure of (string * int * int)
+
+  exception Invalid_argument of string
+
+  exception Failure of string
+
+  exception Not_found
+
+  exception Out_of_memory
+
+  exception Stack_overflow
+
+  exception Sys_error of string
+
+  exception End_of_file
+
+  exception Division_by_zero
+
+  exception Sys_blocked_io
+
+  exception Undefined_recursive_module of (string * int * int)
 
   module Arg : Stdcompat__arg_s.S
 
@@ -77,6 +109,10 @@ module type S = sig
 
   module Hashtbl : Stdcompat__hashtbl_s.S
 
+  module In_channel : Stdcompat__in_channel_s.S
+
+  module Out_channel : Stdcompat__out_channel_s.S
+
   module Int : Stdcompat__int_s.S
 
   module Int32 : Stdcompat__int32_s.S
@@ -121,11 +157,7 @@ module type S = sig
 
   module Queue : Stdcompat__queue_s.S
 
-  @BEGIN_FROM_3_12_0@
-  module Random : module type of (struct
-    include Random
-  end)
-  @END_FROM_3_12_0@
+  module Random : Stdcompat__random_s.S
 
   module Result : Stdcompat__result_s.S
 
@@ -162,5 +194,5 @@ module type S = sig
   module Uchar : Stdcompat__uchar_s.S
 
   module Weak : Stdcompat__weak_s.S
-@END_BEFORE_4_13_0@
+@END_BEFORE_4_14_0@
 end
