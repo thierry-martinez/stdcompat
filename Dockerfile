@@ -31,6 +31,7 @@ RUN opam update && opam switch create 4.10.2
 RUN opam update && opam switch create 4.11.2
 RUN opam update && opam switch create 4.12.1
 RUN opam update && opam switch create 4.13.0
+RUN sudo apt update && sudo apt-get --yes upgrade
 RUN opam update && \
     opam switch create 4.14.0~alpha1 \
     --repositories=default,beta=git+https://github.com/ocaml/ocaml-beta-repository.git
