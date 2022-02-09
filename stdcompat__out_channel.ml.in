@@ -63,7 +63,7 @@ let output_bytes = Stdcompat__pervasives.output_bytes
 
 let output = output
 
-let output_substring = output_substring
+let output_substring = Stdcompat__pervasives.output_substring
 
 let set_binary_mode = set_binary_mode_out
 
