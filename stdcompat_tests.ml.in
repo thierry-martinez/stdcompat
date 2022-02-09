@@ -702,7 +702,7 @@ let test_seq_product () =
         (Stdcompat.Seq.init 3 Stdcompat.Fun.id) (Stdcompat.Seq.init 3 Stdcompat.Fun.id))) =
     (Stdcompat.List.init 9 (fun i -> (i / 3, i mod 3))));
   assert (
-    List.length (List.sort_uniq compare
+    List.length (Stdcompat.List.sort_uniq compare
     (Stdcompat.List.of_seq (Stdcompat.Seq.take 8
       (Stdcompat.Seq.product
         (Stdcompat.Seq.ints 0) (Stdcompat.Seq.ints 0))))) = 8)
@@ -715,7 +715,7 @@ let test_seq_map_product () =
         (Stdcompat.Seq.init 3 Stdcompat.Fun.id) (Stdcompat.Seq.init 3 Stdcompat.Fun.id))) =
     (Stdcompat.List.init 9 (fun i -> (i / 3, i mod 3))));
   assert (
-    List.length (List.sort_uniq compare
+    List.length (Stdcompat.List.sort_uniq compare
     (Stdcompat.List.of_seq (Stdcompat.Seq.take 8
       (Stdcompat.Seq.map_product pair
         (Stdcompat.Seq.ints 0) (Stdcompat.Seq.ints 0))))) = 8)
