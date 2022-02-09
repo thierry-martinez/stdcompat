@@ -1,7 +1,7 @@
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_4_14_0@
 include Ephemeron
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_4_14_0@
+@BEGIN_BEFORE_4_14_0@
 module type S  =
   sig
     type key
@@ -61,9 +61,7 @@ module type SeededS  =
     val clean : 'a t -> unit
     val stats_alive : 'a t -> Stdcompat__hashtbl.statistics
   end
-@END_BEFORE_4_07_0@
 
-@BEGIN_BEFORE_4_14_0@
 let not_implemented () =
   failwith "Stdcompat.Ephemeron is not implemented yet. Please fill an issue: https://github.com/thierry-martinez/stdcompat/issues ."
 
@@ -179,6 +177,9 @@ module Kn  = struct
 end
 @END_BEFORE_4_14_0@
 
+@BEGIN_FROM_4_07_0@
+module GenHashTable = Ephemeron.GenHashTable
+@END_FROM_4_07_0@
 @BEGIN_BEFORE_4_07_0@
 module GenHashTable  = struct
   type equal =
