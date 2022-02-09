@@ -13,7 +13,12 @@
 
 - Add module Random, with new functions introduced from 4.13
 
-- Filename.chop_suffix fails given a wrong suffix
+- Filename.chop_suffix checks that suffixes match and fails otherwise
+  (behavior introduced in 4.14)
+
+- Buffer.add_channel adds data read from the channel even if End_of_file has
+  been reached
+  (behavior introduced in 4.03)
 
 - Add dependency for generating .cmt files
   (reported by Sabyrzhan Tasbolatov)

@@ -85,7 +85,7 @@ let set_binary_mode = set_binary_mode_in
 let rec add_channel_to_the_end ~chunk_size buffer channel =
   if
     try
-      Buffer.add_channel buffer channel chunk_size;
+      Stdcompat__buffer.add_channel buffer channel chunk_size;
       true
     with End_of_file ->
       false
