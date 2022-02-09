@@ -59,7 +59,7 @@ let output_byte = output_byte
 
 let output_string = output_string
 
-let output_bytes = output_bytes
+let output_bytes = Stdcompat__pervasives.output_bytes
 
 let output = output
 
