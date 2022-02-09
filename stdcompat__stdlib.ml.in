@@ -15,21 +15,6 @@ let asinh x =
 let atanh x =
   0.5 *. log ((1.0 +. x) /. (1.0 -. x))
 
-exception Exit = Exit
-
-exception Match_failure = Match_failure
-exception Assert_failure = Assert_failure
-exception Invalid_argument = Invalid_argument
-exception Failure = Failure
-exception Not_found = Not_found
-exception Out_of_memory = Out_of_memory
-exception Stack_overflow = Stack_overflow
-exception Sys_error = Sys_error
-exception End_of_file = End_of_file
-exception Division_by_zero = Division_by_zero
-exception Sys_blocked_io = Sys_blocked_io
-exception Undefined_recursive_module = Undefined_recursive_module
-
 @BEGIN_FROM_4_12_0@
 external __FUNCTION__ : string = "%loc_FUNCTION"
 @END_FROM_4_12_0@

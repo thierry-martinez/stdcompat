@@ -15,32 +15,6 @@ module type S = sig
 
   val atanh : float -> float
 
-  exception Exit
-
-  exception Match_failure of (string * int * int)
-
-  exception Assert_failure of (string * int * int)
-
-  exception Invalid_argument of string
-
-  exception Failure of string
-
-  exception Not_found
-
-  exception Out_of_memory
-
-  exception Stack_overflow
-
-  exception Sys_error of string
-
-  exception End_of_file
-
-  exception Division_by_zero
-
-  exception Sys_blocked_io
-
-  exception Undefined_recursive_module of (string * int * int)
-
   module Arg : Stdcompat__arg_s.S
 
   module Array : Stdcompat__array_s.S
