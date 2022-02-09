@@ -556,7 +556,7 @@ let test_seq_group () =
   let s =
     Stdcompat.Seq.group (fun _i _j -> true)
     (Stdcompat.Seq.ints 0) in
-  assert (Stdcompat.List.of_seq (Stdcompat.Seq.take 3 (fst (Option.get
+  assert (Stdcompat.List.of_seq (Stdcompat.Seq.take 3 (fst (Stdcompat.Option.get
     (Stdcompat.Seq.uncons s)))) = [0; 1; 2])
 
 let test_seq_memoize () =
@@ -595,7 +595,7 @@ let test_seq_transpose () =
       Stdcompat.Seq.init n (fun j ->
         Stdcompat.Seq.init m (fun i ->
           i * n + j)) in
-    assert (Stdcompat.Seq.equal (Stdcompat.Seq.equal Int.equal)
+    assert (Stdcompat.Seq.equal (Stdcompat.Seq.equal Stdcompat.Int.equal)
       (Stdcompat.Seq.transpose s) t) in
   test_format 3 3;
   test_format 3 4;
@@ -604,7 +604,7 @@ let test_seq_transpose () =
     Stdcompat.Seq.iterate (fun i ->
       Stdcompat.Seq.map (( * ) 2) i) (Stdcompat.Seq.ints 0) in
   let t = Stdcompat.Seq.transpose s in
-  assert (Stdcompat.Seq.equal (Stdcompat.Seq.equal Int.equal)
+  assert (Stdcompat.Seq.equal (Stdcompat.Seq.equal Stdcompat.Int.equal)
     (Stdcompat.Seq.map (Stdcompat.Seq.take 3) (Stdcompat.Seq.take 3 t))
     (Stdcompat.Seq.init 3 (fun i ->
         Stdcompat.Seq.init 3 (fun j ->
@@ -678,7 +678,7 @@ let test_seq_interleave () =
 let test_seq_sorted_merge () =
   assert (
     Stdcompat.List.of_seq (Stdcompat.Seq.sorted_merge
-      (fun (i, _) (j, _) -> Int.compare i j)
+      (fun (i, _) (j, _) -> Stdcompat.Int.compare i j)
       (Stdcompat.Seq.once
         (Stdcompat.List.to_seq [1, false; 4, false; 6, false; 7, false]))
       (Stdcompat.Seq.once
@@ -687,7 +687,7 @@ let test_seq_sorted_merge () =
       7, false]);
   assert (
     Stdcompat.List.of_seq (Stdcompat.Seq.take 8 (
-     Stdcompat.Seq.sorted_merge Int.compare
+     Stdcompat.Seq.sorted_merge Stdcompat.Int.compare
        (Stdcompat.Seq.once
          (Stdcompat.Seq.map (fun i -> assert (i < 4); i * 3)
            (Stdcompat.Seq.ints 0)))
@@ -737,7 +737,11 @@ let test_seq_unzip () =
 let test_seq_partition_map () =
   let s, s' =
     Stdcompat.Seq.partition_map
-      (fun i -> if i mod 3 = 0 then Left i else Right i)
+      (fun i ->
+        if i mod 3 = 0 then
+          Stdcompat.Either.Left i
+        else
+          Stdcompat.Either.Right i)
       (Stdcompat.Seq.take 6 (Stdcompat.Seq.ints 0)) in
   assert (Stdcompat.List.of_seq s = [0; 3]);
   assert (Stdcompat.List.of_seq s' = [1; 2; 4; 5]);
@@ -745,7 +749,10 @@ let test_seq_partition_map () =
     Stdcompat.Seq.partition_map
       (fun i ->
         assert (i <= 15);
-        if i mod 3 = 0 then Left i else Right i)
+        if i mod 3 = 0 then
+          Stdcompat.Either.Left i
+        else
+          Stdcompat.Either.Right i)
       (Stdcompat.Seq.ints 0) in
   assert (Stdcompat.List.of_seq (Stdcompat.Seq.take 6 s) =
     [0; 3; 6; 9; 12; 15]);
