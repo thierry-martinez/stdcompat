@@ -1,10 +1,10 @@
 let run_interpreter ?(buffer_size = 4096)
     ~command_line ~module_name commander =
   let channels = Unix.open_process_full command_line (Unix.environment ()) in
-  Interface_tools.try_close
-    ~close:(fun () ->
+  Fun.protect
+    ~finally:(fun () ->
       assert (channels |> Unix.close_process_full = Unix.WEXITED 0))
-    @@ fun () ->
+    (fun () ->
       let in_channel, out_channel, err_channel = channels in
       let buffer = Buffer.create buffer_size in
       let rec wait_for_prompt () =
@@ -34,12 +34,12 @@ let run_interpreter ?(buffer_size = 4096)
             not (Interface_tools.Buffer.has_suffix buffer "#   "));
         if Buffer.length buffer > 4 then
           Buffer.truncate buffer (Buffer.length buffer - 4);
-        Buffer.contents buffer)
+        Buffer.contents buffer))
 
 let module_type_of_string ~module_name s =
   match
     let lexbuf = s |> Lexing.from_string in
-    Interface_tools.Lexing.set_filename lexbuf module_name;
+    Lexing.set_filename lexbuf module_name;
     match Parse.interface lexbuf with
     | [{ psig_desc =
          Psig_module

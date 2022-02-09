@@ -246,12 +246,12 @@ end
 
 let lex_file filename parser =
   let in_channel = filename |> open_in in
-  Interface_tools.try_close
-    ~close:(fun () -> in_channel |> close_in)
-    @@ fun () ->
+  Fun.protect
+    ~finally:(fun () -> in_channel |> close_in)
+    (fun () ->
       let buf = in_channel |> Lexing.from_channel in
-      Interface_tools.Lexing.set_filename buf filename;
-      buf |> parser
+      Lexing.set_filename buf filename;
+      buf |> parser)
 
 module type Type = sig
   type t
@@ -306,8 +306,8 @@ let module_type_of_name version module_name =
     Format.eprintf "Looking for submodule %s@." hd;
     if signature = [] then
       prerr_endline "Empty signature!";
-    let module_type =
-      signature |> Interface_tools.List.find_map @@
+    let module_type = Option.get (
+      signature |> List.find_map (
       fun (signature_item : Parsetree.signature_item) ->
         match signature_item.psig_desc with
         | Psig_module module_declaration
@@ -319,7 +319,7 @@ let module_type_of_name version module_name =
         | _ ->
             Format.eprintf "%a@."
               Pprintast.signature [signature_item];
-            None in
+            None)) in
     match tl with
     | [] -> module_type
     | hd :: tl ->
@@ -976,7 +976,7 @@ let find_prim_opt version pval_name prim =
       Ldot (Lident "Array", "Floatarray") :: modules
     else
       modules in
-  modules |> Interface_tools.List.find_map_opt @@
+  modules |> List.find_map @@
   fun module_name ->
     let externals = get_externals module_name version in
     match StringHashtbl.find_opt externals prim with
@@ -1217,6 +1217,10 @@ let format_with_without block sub formatter item_with item_without =
   format_with block sub formatter item_with;
   format_without block sub formatter item_without
 
+let format_from_before ver formatter sub_from item_from sub_before item_before =
+  format_from ver sub_from formatter item_from;
+  format_before ver sub_before formatter item_before
+
 let attributed_decl (decl : Parsetree.type_declaration) =
   decl.ptype_attributes <> []
 
@@ -1243,6 +1247,55 @@ let make_rebind ~module_name (constructor : Parsetree.extension_constructor) =
       txt = Longident.Ldot (module_name, constructor.pext_name.txt)}}
 *)
 
+let has_injective_param (decl : Parsetree.type_declaration) =
+  List.exists (fun (_, (_, i)) -> i = Asttypes.Injective) decl.ptype_params
+
+let remove_injective_param (decl : Parsetree.type_declaration) =
+  { decl with ptype_params = remove_injectivity decl.ptype_params }
+
+let remove_attributes (decl : Parsetree.type_declaration) =
+  { decl with ptype_attributes = [] }
+
+let is_private (decl : Parsetree.type_declaration) =
+  decl.ptype_private = Private
+
+let make_public (decl : Parsetree.type_declaration) =
+  { decl with ptype_private = Public }
+
+let rec format_sig_type formatter
+      ((recursive : Asttypes.rec_flag),
+        (decls : Parsetree.type_declaration list)) =
+  if List.exists has_injective_param decls then
+    begin
+      let decls' = List.map remove_injective_param decls in
+      format_from_before (Interface_tools.Version.mk 4 12 0) formatter
+        Pprintast.signature [Ast_helper.Sig.type_ recursive decls]
+        format_sig_type (recursive, decls')
+    end
+  else if List.exists attributed_decl decls then
+    begin
+      let decls' = List.map remove_attributes decls in
+      format_from_before (Interface_tools.Version.mk 4 02 0) formatter
+        Pprintast.signature [Ast_helper.Sig.type_ recursive decls]
+        format_sig_type (recursive, decls')
+    end
+  else if List.exists gadt_decl decls then
+    begin
+      let decls' = List.map remove_gadt decls in
+      format_from_before (Interface_tools.Version.mk 4 00 0) formatter
+        Pprintast.signature [Ast_helper.Sig.type_ recursive decls]
+        format_sig_type (recursive, decls')
+    end
+  else if List.exists is_private decls then
+    begin
+      let decls' = List.map make_public decls in
+      format_from_before (Interface_tools.Version.mk 3 11 0) formatter
+        Pprintast.signature [Ast_helper.Sig.type_ recursive decls]
+        format_sig_type (recursive, decls')
+    end
+  else
+    Pprintast.signature formatter [Ast_helper.Sig.type_ recursive decls]
+
 let rec format_default_item ~module_name formatter
     (item : Parsetree.signature_item) =
   match item.psig_desc with
@@ -1251,22 +1304,18 @@ let rec format_default_item ~module_name formatter
         { txt = Ldot (Lident "Result", "result"); loc = Location.none },
         [type_of_desc (Ptyp_var "a"); type_of_desc (Ptyp_var "b")]) in
       let manifest = type_of_desc ptyp_desc in
-      let type_decl = { type_decl with ptype_manifest = Some manifest } in
-      let psig_desc = Parsetree.Psig_type (rec_flag, [type_decl]) in
-      let result_item = { item with psig_desc } in
-      format_with_without "RESULT_PKG"
-        Pprintast.signature formatter [result_item] [item]
+      let type_decl' = { type_decl with ptype_manifest = Some manifest } in
+      format_with_without "UCHAR_PKG" format_sig_type formatter
+        (rec_flag, [type_decl']) (rec_flag, [type_decl])
   | Psig_type (rec_flag, [{ ptype_name = { txt = "t" }} as type_decl])
       when module_name = Longident.Lident "Uchar" ->
       let ptyp_desc = Parsetree.Ptyp_constr (
         { txt = Ldot (Lident "Uchar", "t"); loc = Location.none },
         []) in
       let manifest = type_of_desc ptyp_desc in
-      let type_decl = { type_decl with ptype_manifest = Some manifest } in
-      let psig_desc = Parsetree.Psig_type (rec_flag, [type_decl]) in
-      let result_item = { item with psig_desc } in
-      format_with_without "UCHAR_PKG"
-        Pprintast.signature formatter [result_item] [item]
+      let type_decl' = { type_decl with ptype_manifest = Some manifest } in
+      format_with_without "UCHAR_PKG" format_sig_type formatter
+        (rec_flag, [type_decl']) (rec_flag, [type_decl])
   | Psig_type (rec_flag, [{ ptype_name = { txt = "t" }} as type_decl])
       when module_name = Longident.Lident "Either" ->
       let ptyp_desc = Parsetree.Ptyp_constr (
@@ -1311,53 +1360,8 @@ type %s = ..
 @@BEGIN_BEFORE_4_02_0@@
 type %s
 @@END_BEFORE_4_02_0@@" txt txt
-  | Psig_type (recursive, decls) when
-      List.exists (fun (decl : Parsetree.type_declaration) -> List.exists (fun (_, (_, i)) -> i = Asttypes.Injective) decl.ptype_params) decls ->
-      Format.fprintf formatter "\
-@@BEGIN_FROM_4_12_0@@
-%a
-@@END_FROM_4_12_0@@
-@@BEGIN_BEFORE_4_12_0@@
-%a
-@@END_BEFORE_4_12_0@@"
-        Pprintast.signature [item]
-        Pprintast.signature [Ast_helper.Sig.type_ recursive
-          (List.map (fun (decl : Parsetree.type_declaration) -> { decl with ptype_params = remove_injectivity decl.ptype_params }) decls)]
-  | Psig_type (recursive, decls) when
-      List.exists attributed_decl decls ->
-      Format.fprintf formatter "\
-@@BEGIN_FROM_4_02_0@@
-%a
-@@END_FROM_4_02_0@@
-@@BEGIN_BEFORE_4_02_0@@
-%a
-@@END_BEFORE_4_02_0@@"
-        Pprintast.signature [item]
-        Pprintast.signature [Ast_helper.Sig.type_ recursive
-          (List.map (fun (decl : Parsetree.type_declaration) -> { decl with ptype_attributes = [] }) decls)]
-  | Psig_type (recursive, decls) when
-      List.exists gadt_decl decls ->
-      Format.fprintf formatter "\
-@@BEGIN_FROM_4_00_0@@
-%a
-@@END_FROM_4_00_0@@
-@@BEGIN_BEFORE_4_00_0@@
-%a
-@@END_BEFORE_4_00_0@@"
-        Pprintast.signature [item]
-        Pprintast.signature [Ast_helper.Sig.type_ recursive (List.map remove_gadt decls)]
-  | Psig_type (recursive, decls) when
-      List.exists (fun (decl : Parsetree.type_declaration) -> decl.ptype_private = Private) decls ->
-      Format.fprintf formatter "\
-@@BEGIN_FROM_3_11_0@@
-%a
-@@END_FROM_3_11_0@@
-@@BEGIN_BEFORE_3_11_0@@
-%a
-@@END_BEFORE_3_11_0@@"
-        Pprintast.signature [item]
-        Pprintast.signature [Ast_helper.Sig.type_ recursive
-          (List.map  (fun (decl : Parsetree.type_declaration) -> { decl with ptype_private = Public }) decls)]
+  | Psig_type (recursive, decls) ->
+      format_sig_type formatter (recursive, decls)
   | Psig_value { pval_name = { txt = "ifprintf"; _ }; _ } when module_name = Lident "Printf" ->
       Format.fprintf formatter "\
 @@BEGIN_FROM_4_03_0@@

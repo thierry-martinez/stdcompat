@@ -1,10 +1,22 @@
 module type S = sig
 @BEGIN_FROM_4_14_0@
 @BEGIN_WITH_UCHAR_PKG@
+@BEGIN_FROM_4_02_0@
 type t = Uchar.t[@@immediate ]
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+type t = Uchar.t
+@END_BEFORE_4_02_0@
+
 @END_WITH_UCHAR_PKG@
 @BEGIN_WITHOUT_UCHAR_PKG@
+@BEGIN_FROM_4_02_0@
 type t = Uchar.t[@@immediate ]
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+type t = Uchar.t
+@END_BEFORE_4_02_0@
+
 @END_WITHOUT_UCHAR_PKG@
 
 @END_FROM_4_14_0@
@@ -20,10 +32,22 @@ type t = Uchar.t
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
 @BEGIN_WITH_UCHAR_PKG@
+@BEGIN_FROM_4_02_0@
 type t = Uchar.t[@@immediate ]
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+type t = Uchar.t
+@END_BEFORE_4_02_0@
+
 @END_WITH_UCHAR_PKG@
 @BEGIN_WITHOUT_UCHAR_PKG@
+@BEGIN_FROM_4_02_0@
 type t[@@immediate ]
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+type t
+@END_BEFORE_4_02_0@
+
 @END_WITHOUT_UCHAR_PKG@
 
 @END_BEFORE_4_03_0@
@@ -38,18 +62,18 @@ type t[@@immediate ]
 type utf_decode = Uchar.utf_decode[@@immediate ]
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
-
 type utf_decode = Uchar.utf_decode
 @END_BEFORE_4_02_0@
+
 @END_FROM_4_14_0@
 @BEGIN_BEFORE_4_14_0@
 @BEGIN_FROM_4_02_0@
 type utf_decode[@@immediate ]
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
-
 type utf_decode
 @END_BEFORE_4_02_0@
+
 @END_BEFORE_4_14_0@
 (** @since 4.14.0: type utf_decode[@@immediate ]
  *)

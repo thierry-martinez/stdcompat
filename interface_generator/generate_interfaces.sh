@@ -7,8 +7,7 @@ set -e
 #    Option Parsing Printexc Printf Queue Random Result Scanf Seq Set \
 #    Stack StdLabels Stream String StringLabels Sys Uchar Weak In_channel Out_channel \
 #    Unit
-for module in \
-      In_channel Out_channel ; do
+for module in Uchar ; do
     echo $module
     target=../stdcompat__${module,}_s.mli.in
     echo $target
