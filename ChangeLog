@@ -1,4 +1,4 @@
-* Next version
+* Version 18, 2022-02-09
 
 - Support for OCaml 4.14 with
   - Lot of new functions in Seq
@@ -12,6 +12,8 @@
 - Add module Unit missing from 4.08
 
 - Add module Random, with new functions introduced from 4.13
+
+- Filename.chop_suffix fails given a wrong suffix
 
 - Add dependency for generating .cmt files
   (reported by Sabyrzhan Tasbolatov)
