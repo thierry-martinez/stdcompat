@@ -83,9 +83,14 @@ let really_input_string ic len =
 let set_binary_mode = set_binary_mode_in
 
 let rec add_channel_to_the_end ~chunk_size buffer channel =
-  match Buffer.add_channel buffer channel chunk_size with
-  | () -> add_channel_to_the_end ~chunk_size buffer channel
-  | exception End_of_file -> ()
+  if
+    try
+      Buffer.add_channel buffer channel chunk_size;
+      true
+    with End_of_file ->
+      false
+  then
+    add_channel_to_the_end ~chunk_size buffer channel
 
 let input_all channel =
   let buffer_size = in_channel_length channel - pos_in channel in
