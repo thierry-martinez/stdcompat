@@ -76,7 +76,7 @@ let really_input ic buf pos len =
 
 let really_input_string ic len =
   try
-    Some (really_input_string ic len)
+    Some (Stdcompat__pervasives.really_input_string ic len)
   with End_of_file ->
     None
 
