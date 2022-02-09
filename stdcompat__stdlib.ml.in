@@ -1,5 +1,12 @@
 @BEGIN_FROM_4_14_0@
 include Stdlib
+
+module Seq = struct
+  include Seq
+
+  (* Temporary reimplemented here for compatibility with alpha releases. *)
+  let fold_lefti = Stdcompat__seq.fold_lefti
+end
 @END_FROM_4_14_0@
 @BEGIN_BEFORE_4_14_0@
 module Pervasives = Stdcompat__pervasives

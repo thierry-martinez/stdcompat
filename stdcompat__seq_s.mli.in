@@ -33,9 +33,9 @@ val length : 'a t -> int
 val iteri : (int -> 'a -> unit) -> 'a t -> unit
 (** @since 4.14.0: val iteri : (int -> 'a -> unit) -> 'a t -> unit *)
 
-val fold_lefti : (int -> 'b -> 'a -> 'b) -> 'b -> 'a t -> 'b
+val fold_lefti : ('b -> int -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** @since 4.14.0:
-    val fold_lefti : (int -> 'b -> 'a -> 'b) -> 'b -> 'a t -> 'b *)
+    val fold_lefti : ('b -> int -> 'a -> 'b) -> 'b -> 'a t -> 'b *)
 
 val for_all : ('a -> bool) -> 'a t -> bool
 (** @since 4.14.0: val for_all : ('a -> bool) -> 'a t -> bool *)

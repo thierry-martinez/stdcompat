@@ -87,6 +87,17 @@ let rec concat seq () =
   | Cons (hd, tl) ->
       append hd (concat tl) ()
 @END_BEFORE_4_13_0@
+@BEGIN_FROM_4_14_0@
+(* Temporary reimplemented here for compatibility with alpha releases. *)
+let fold_lefti f acc seq =
+  let rec aux f acc i seq = match seq () with
+    | Nil -> acc
+    | Cons (x, next) ->
+        let acc = f acc i x in
+        aux f acc (succ i) next
+  in
+  aux f acc 0 seq
+@END_FROM_4_14_0@
 @BEGIN_BEFORE_4_14_0@
 let is_empty seq =
   match seq () with
@@ -116,13 +127,13 @@ let iteri f seq =
   aux 0 seq
 
 let fold_lefti f acc seq =
-  let rec aux f i acc seq = match seq () with
+  let rec aux f acc i seq = match seq () with
     | Nil -> acc
     | Cons (x, next) ->
-        let acc = f i acc x in
-        aux f (succ i) acc next
+        let acc = f acc i x in
+        aux f acc (succ i) next
   in
-  aux f 0 acc seq
+  aux f acc 0 seq
 
 let rec for_all p seq =
   match seq () with
