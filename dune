@@ -3,6 +3,9 @@
  (public_name stdcompat)
  (flags (:standard -nolabels))
  (install_c_headers stdcompat)
+ (foreign_stubs
+  (language c)
+  (names stdcompat__stubs))
  (modules
    stdcompat__arg
    stdcompat__arg_s
