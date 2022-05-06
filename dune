@@ -114,14 +114,10 @@
  (libraries stdcompat))
 
 (rule
- (target stdcompat__native.ml)
- (deps stdcompat__native.ml_native)
- (action (copy %{deps} %{target})))
+ (copy stdcompat__native.ml_native stdcompat__native.ml))
 
 (rule
- (target stdcompat__init.ml.in)
- (deps stdcompat__init.mli.in)
- (action (copy %{deps} %{target})))
+ (copy stdcompat__init.mli.in stdcompat__init.ml.in))
 
 (rule
  (target configure)
