@@ -1,3 +1,11 @@
+* Next version
+
+- Updated port to `dune`
+  (Marek Kubica, https://github.com/thierry-martinez/stdcompat/pull/16)
+
+- Add support for `flambda2`
+  (Guillaume Bury, https://github.com/thierry-martinez/stdcompat/pull/14)
+
 * Version 18, 2022-02-09
 
 - Support for OCaml 4.14 with
