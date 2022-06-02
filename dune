@@ -120,7 +120,8 @@
  (copy stdcompat__init.mli.in stdcompat__init.ml.in))
 
 (rule
- (target configure)
+ (targets configure
+          install-sh)
  (deps
   Makefile.am
   VERSION
@@ -335,6 +336,7 @@
   stdcompat__weak_s.ml
   stdcompat__weak_s.mli)
   (deps (:configure configure)
+  install-sh
   META.in
   stdcompat.h.in
   stdcompat.ml.in
