@@ -1,5 +1,3 @@
-ACLOCAL_AMFLAGS = -I m4
-
 mypkgdir=$(pkglibdir)
 
 EXTRA_DIST= stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
