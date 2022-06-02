@@ -219,7 +219,7 @@ let rec compare o a b =
       | 0 -> compare o a_tl b_tl
       | result -> result
 
-let rec init n f =
+let init n f =
   let rec aux i () =
     if i < n then
       Cons (f i, aux (succ i))
