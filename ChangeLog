@@ -1,7 +1,8 @@
 * Next version
 
 - Updated port to `dune`
-  (Marek Kubica, https://github.com/thierry-martinez/stdcompat/pull/16)
+  (Marek Kubica, https://github.com/thierry-martinez/stdcompat/pull/16,
+   https://github.com/thierry-martinez/stdcompat/pull/19)
 
 - Add support for `flambda2`
   (Guillaume Bury, https://github.com/thierry-martinez/stdcompat/pull/14)
