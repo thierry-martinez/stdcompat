@@ -1341,7 +1341,7 @@ let () =
   assert (Stdcompat.Bytes.get_int64_be b 0 = 0x2030405060708090L);
   let check_invalid_arg f =
     try
-      f ();
+      let _ = f () in
       false
     with Invalid_argument _ ->
       true in
