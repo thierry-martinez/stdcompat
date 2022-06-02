@@ -108,6 +108,14 @@ AS_IF([test `printf "$OCAMLVERSION\n3.12.0" | sort | head -n1` = 3.12.0],
     [[`echo 'Sys.os_type;;' | $OCAML | sed -n 's/^\# - : string = "\(.*\)"$/\1/p'`]])])
 AC_MSG_RESULT([$target_os_type])
 
+AC_MSG_CHECKING([for flambda2])
+
+AC_SUBST([OCAML_FLAMBDA2],
+    [`$OCAMLBEST -config | sed -n 's/^flambda2: \(.*\)$/\1/p' | sed 's/\r//'`])
+AS_IF([test "x$OCAML_FLAMBDA2" = "x"], AC_SUBST([OCAML_FLAMBDA2], [[false]]))
+
+AC_MSG_RESULT([$OCAML_FLAMBDA2])
+
 AC_ARG_ENABLE([magic],
             [AS_HELP_STRING([--enable-magic],
               [[use Obj.magic in redefinitions when possible (default)]]),
@@ -190,6 +198,10 @@ AS_IF([test "x$target_os_type" = "xCygwin"],
 AS_IF([test "x$target_os_type" = "xUnix"],
   [AC_WITH_BLOCK([UNIX])],
   [AC_WITHOUT_BLOCK([UNIX])])
+
+AS_IF([test "x$OCAML_FLAMBDA2" = "xtrue"],
+  [AC_WITH_BLOCK([FLAMBDA2])],
+  [AC_WITHOUT_BLOCK([FLAMBDA2])])
 
 AM_CONDITIONAL(OCAML_SUPPORTS_BYTECODE, [test "x$OCAMLC" != "x"])
 
