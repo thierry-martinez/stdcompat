@@ -9,11 +9,11 @@ AC_DEFUN([AC_OCAMLFIND_PKG],
      [AC_MSG_RESULT([yes])
       AC_MSG_CHECKING([if package $2 is usable])
       echo "module M = $3" > configure_test.ml
-      AS_IF([$OCAMLFIND c -package $2 configure_test.ml -o /dev/null >/dev/null 2>&1],
-        [rm configure_test.ml
+      AS_IF([$OCAMLFIND c -package $2  configure_test.ml -o configure_test.out >/dev/null 2>&1],
+        [rm -f configure_test.ml configure_test.cmo configure_test.cmi configure_test.out
          AC_MSG_RESULT([yes])
          AC_SUBST([$1], [$2])],
-        [rm configure_test.ml
+        [rm -f configure_test.ml configure_test.cmo configure_test.cmi configure_test.out
          AC_MSG_RESULT([no])
          AC_SUBST([$1], [])])],
      [AC_MSG_RESULT([no])

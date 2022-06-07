@@ -7,6 +7,10 @@
 - Add support for `flambda2`
   (Guillaume Bury, https://github.com/thierry-martinez/stdcompat/pull/14)
 
+- Prevent replacing `/dev/null/ by a regular file when `./configure` is
+  run as root
+  (reported by Marc Chevalier, https://github.com/ocaml/ocaml/issues/11302)
+
 * Version 18, 2022-02-09
 
 - Support for OCaml 4.14 with
