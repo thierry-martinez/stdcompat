@@ -20,7 +20,7 @@ pipeline {
                 label 'linux'
             }
             steps {
-                sh 'docker build -t stdcompat .'
+                sh 'docker build -t stdcompat . --build-arg UID=$UID'
             }
         }
         stage('Bootstrap') {
