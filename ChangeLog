@@ -1,5 +1,7 @@
 * Next version
 
+- Restore compatibility with OCaml 3.07
+
 - Updated port to `dune`
   (Marek Kubica, https://github.com/thierry-martinez/stdcompat/pull/16,
    https://github.com/thierry-martinez/stdcompat/pull/19)

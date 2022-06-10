@@ -12,7 +12,13 @@
 #include <caml/osdeps.h>
 @C_END_FROM_4_04_0@
 @C_BEGIN_BEFORE_4_04_0@
+@C_BEGIN_BEFORE_3_08_0@
+CAMLextern void sys_error (value);
+#define caml_sys_error sys_error
+@C_END_BEFORE_3_08_0@
+@C_BEGIN_FROM_3_08_0@
 CAMLextern void caml_sys_error (value);
+@C_END_FROM_3_08_0@
 @C_END_BEFORE_4_04_0@
 #ifdef _WIN32
 #include <direct.h>
@@ -21,6 +27,10 @@ CAMLextern void caml_sys_error (value);
 #include <sys/types.h>
 #include <unistd.h>
 #endif
+
+@C_BEGIN_BEFORE_3_08_0@
+#define caml_alloc_string alloc_string
+@C_END_BEFORE_3_08_0@
 
 CAMLprim value caml_sys_mkdir(value path, value perm)
 {
