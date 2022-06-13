@@ -111,7 +111,7 @@ module K2 = struct
 
       let equal (x1, x2) (y1, y2) = H1.equal x1 y1 && H2.equal x2 y2
 
-      let seeded_hash seed (x, y) = Hashtbl.seeded_hash seed (H1.seeded_hash seed x, H2.seeded_hash seed y)
+      let seeded_hash seed (x, y) = Stdcompat__hashtbl.seeded_hash seed (H1.seeded_hash seed x, H2.seeded_hash seed y)
     end)
     let clean _ = not_implemented ()
     let stats_alive _ = not_implemented ()
@@ -158,7 +158,7 @@ module Kn = struct
         Array.length x = Array.length y && check 0
 
       let seeded_hash seed x =
-        Hashtbl.seeded_hash seed (Array.map (H.seeded_hash seed) x)
+        Stdcompat__hashtbl.seeded_hash seed (Array.map (H.seeded_hash seed) x)
     end)
     let clean _ = not_implemented ()
     let stats_alive _ = not_implemented ()

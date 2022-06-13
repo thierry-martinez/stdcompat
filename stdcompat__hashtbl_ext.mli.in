@@ -17,7 +17,7 @@ module type SeededHashedType  =
   module ToOCamlSeededHashedType (M : SeededHashedType) :
     Hashtbl.HashedType with type t = M.t
 
-  module MakeSeeded (M : SeededHashedType) : Hashtbl.SeededS
+  module MakeSeeded (M : SeededHashedType) : Hashtbl.S
     with type 'a t = 'a Hashtbl.Make (ToOCamlSeededHashedType (M)).t
     and type key = M.t
 @END_BEFORE_4_00_0@
