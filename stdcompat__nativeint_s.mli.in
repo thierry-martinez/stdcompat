@@ -169,16 +169,4 @@ val to_string : nativeint -> string
 val compare : t -> t -> int
 (** Alias for {!Nativeint.compare} *)
 
-@BEGIN_FROM_3_08_0@
-external format : string -> nativeint -> string = "caml_nativeint_format"
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external format : string -> nativeint -> string = "nativeint_format"
-@END_BEFORE_3_08_0@
-(** @since 3.08.0:
-    external format : string -> nativeint -> string = "caml_nativeint_format"
-@since 3.07.0:
-external format : string -> nativeint -> string = "nativeint_format"
- *)
-
 end

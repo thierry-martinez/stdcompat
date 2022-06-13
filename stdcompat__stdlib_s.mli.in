@@ -82,12 +82,6 @@ module type S = sig
   end)
   @END_FROM_3_12_0@
 
-  @BEGIN_FROM_3_12_0@
-  module Genlex : module type of (struct
-    include Genlex
-  end)
-  @END_FROM_3_12_0@
-
   module Hashtbl : Stdcompat__hashtbl_s.S
 
   module In_channel : Stdcompat__in_channel_s.S
@@ -163,8 +157,6 @@ module type S = sig
 
     module String : Stdcompat__stringLabels_s.S
   end
-
-  module Stream : Stdcompat__stream_s.S
 
   module String : Stdcompat__string_s.S
 

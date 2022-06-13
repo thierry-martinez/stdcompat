@@ -73,7 +73,7 @@ val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end
 module type SeededHashedType =
-sig type t val equal : t -> t -> bool val hash : int -> t -> int end
+sig type t val equal : t -> t -> bool val seeded_hash : int -> t -> int end
 module type SeededS =
 sig type key type 'a t val create : ?random:bool -> int -> 'a t
 val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
@@ -94,7 +94,7 @@ val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end
 module MakeSeeded :
 functor (H : SeededHashedType) ->
-sig type key = H.t type 'a t = 'a Stdcompat__hashtbl_ext.MakeSeeded(H).t
+sig type key = H.t type 'a t
 val create : ?random:bool -> int -> 'a t val clear : 'a t -> unit
 val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key:key -> data:'a -> unit val remove : 'a t -> key -> unit

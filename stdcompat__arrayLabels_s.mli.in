@@ -95,25 +95,6 @@ val create_float : int -> float array
     external create_float : int -> float array = "caml_make_float_vect"
  *)
 
-@BEGIN_FROM_4_08_0@
-val make_float : int -> float array
-@END_FROM_4_08_0@
-@BEGIN_BEFORE_4_08_0@
-@BEGIN_FROM_4_03_0@
-val make_float : int -> float array[@@ocaml.deprecated
-                                     "Use Array.create_float instead."]
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-val make_float : int -> float array
-@END_BEFORE_4_03_0@
-
-@END_BEFORE_4_08_0@
-(** @since 4.08.0: val make_float : int -> float array
-@since 4.03.0:
-val make_float : int -> float array[@@ocaml.deprecated
-                                     "Use Array.create_float instead."]
- *)
-
 val for_all : f:('a -> bool) -> 'a array -> bool
 (** @since 4.03.0: val for_all : f:('a -> bool) -> 'a array -> bool *)
 
@@ -145,60 +126,11 @@ external make : int -> 'a -> 'a array = "make_vect"
 @since 3.07.0: external make : int -> 'a -> 'a array = "make_vect"
  *)
 
-@BEGIN_FROM_4_08_0@
-external create : int -> 'a -> 'a array = "caml_make_vect"
-@END_FROM_4_08_0@
-@BEGIN_BEFORE_4_08_0@
-@BEGIN_FROM_4_02_0@
-external create : int -> 'a -> 'a array = "caml_make_vect"[@@ocaml.deprecated
-                                                            "Use Array.make instead."]
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-@BEGIN_FROM_3_08_0@
-external create : int -> 'a -> 'a array = "caml_make_vect"
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external create : int -> 'a -> 'a array = "make_vect"
-@END_BEFORE_3_08_0@
-
-@END_BEFORE_4_02_0@
-
-@END_BEFORE_4_08_0@
-(** @since 4.08.0: external create : int -> 'a -> 'a array = "caml_make_vect"
-@since 4.02.0:
-external create : int -> 'a -> 'a array = "caml_make_vect"[@@ocaml.deprecated
-                                                            "Use Array.make instead."]
-@since 3.08.0: external create : int -> 'a -> 'a array = "caml_make_vect"
-@since 3.07.0: external create : int -> 'a -> 'a array = "make_vect"
- *)
-
 val init : int -> f:(int -> 'a) -> 'a array
 (** Alias for {!ArrayLabels.init} *)
 
 val make_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
 (** Alias for {!ArrayLabels.make_matrix} *)
-
-@BEGIN_FROM_4_08_0@
-val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
-@END_FROM_4_08_0@
-@BEGIN_BEFORE_4_08_0@
-@BEGIN_FROM_4_02_0@
-val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array[@@ocaml.deprecated
-                                                                  "Use Array.make_matrix instead."]
-@END_FROM_4_02_0@
-@BEGIN_BEFORE_4_02_0@
-val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
-@END_BEFORE_4_02_0@
-
-@END_BEFORE_4_08_0@
-(** @since 4.08.0:
-    val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
-@since 4.02.0:
-val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array[@@ocaml.deprecated
-                                                                  "Use Array.make_matrix instead."]
-@since 3.07.0:
-val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
- *)
 
 val append : 'a array -> 'a array -> 'a array
 (** Alias for {!ArrayLabels.append} *)

@@ -1,19 +1,35 @@
 module type SeededHashedType  =
-  sig type t val equal : t -> t -> bool val hash : int -> t -> int end
+  sig type t val equal : t -> t -> bool val seeded_hash : int -> t -> int end
 
+@BEGIN_FROM_4_00_0@
+@BEGIN_BEFORE_5_0_0@
+  module AdaptSeeded (H : SeededHashedType) : Hashtbl.SeededHashedType = struct
+    type t = H.t
+
+    let equal = H.equal
+
+    let hash = H.seeded_hash
+  end
+@END_BEFORE_5_0_0@
+@END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
 module UnseedHashedType (H : SeededHashedType) = struct
   type t = H.t
 
   let equal = H.equal
 
-  let hash = H.hash 0
+  let hash = H.seeded_hash 0
 end
 @END_BEFORE_4_00_0@
 
 module MakeSeeded (H : SeededHashedType) = struct
 @BEGIN_FROM_4_00_0@
+@BEGIN_FROM_5_0_0@
   type 'a t = 'a Hashtbl.MakeSeeded(H).t
+@END_FROM_5_0_0@
+@BEGIN_BEFORE_5_0_0@
+  type 'a t = 'a Hashtbl.MakeSeeded(AdaptSeeded(H)).t
+@END_BEFORE_5_0_0@
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
   type 'a t = 'a Hashtbl.Make(UnseedHashedType(H)).t

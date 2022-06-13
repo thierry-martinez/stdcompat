@@ -55,8 +55,14 @@ module Version = struct
       match String.rindex version_line ' ' with
       | space_index -> space_index + 1
       | exception Not_found -> 0 in
-    { major = String.sub version_line index 1 |> int_of_string;
-      minor = String.sub version_line (index + 2) 2 |> int_of_string;
+    let version =
+      String.sub version_line index (String.length version_line - index) in
+    let major, minor =
+      match String.split_on_char '.' version with
+      | [major; minor; _patch] -> major, minor
+      | _ -> assert false in
+    { major = int_of_string major;
+      minor = int_of_string minor;
       patch = 0; }
 
 (*

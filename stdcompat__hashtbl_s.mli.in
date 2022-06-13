@@ -134,18 +134,8 @@ val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end
 (** @since 4.07.0: module Make = Hashtbl.Make
  *)
 
-@BEGIN_FROM_4_00_0@
 module type SeededHashedType =
-sig type t val equal : t -> t -> bool val hash : int -> t -> int end
-@END_FROM_4_00_0@
-@BEGIN_BEFORE_4_00_0@
-module type SeededHashedType =
-sig type t val equal : t -> t -> bool val hash : int -> t -> int end
-@END_BEFORE_4_00_0@
-(** @since 4.00.0:
-    module type SeededHashedType  =
-      sig type t val equal : t -> t -> bool val hash : int -> t -> int end
- *)
+sig type t val equal : t -> t -> bool val seeded_hash : int -> t -> int end
 
 @BEGIN_FROM_4_07_0@
 module type SeededS =
@@ -225,7 +215,7 @@ module MakeSeeded = Hashtbl.MakeSeeded
 @BEGIN_BEFORE_4_07_0@
 module MakeSeeded :
 functor (H : SeededHashedType) ->
-sig type key = H.t type 'a t = 'a Stdcompat__hashtbl_ext.MakeSeeded(H).t
+sig type key = H.t type 'a t
 val create : ?random:bool -> int -> 'a t val clear : 'a t -> unit
 val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit

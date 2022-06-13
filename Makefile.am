@@ -10,7 +10,7 @@ EXTRA_DIST= stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
 	stdcompat__stack.mli \
 	stdcompat__hashtbl.mli stdcompat__set.mli \
 	stdcompat__map.mli stdcompat__weak.mli \
-	stdcompat__stream.mli stdcompat__digest.mli stdcompat__nativeint.mli \
+	stdcompat__digest.mli stdcompat__nativeint.mli \
 	stdcompat__int.mli \
 	stdcompat__int64.mli stdcompat__int32.mli stdcompat__filename.mli \
 	stdcompat__array.mli stdcompat__arrayLabels.mli \
@@ -40,7 +40,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 	stdcompat__list.ml \
 	stdcompat__hashtbl_ext.ml stdcompat__hashtbl_s.ml stdcompat__set_s.ml \
 	stdcompat__map_s.ml stdcompat__weak_s.ml stdcompat__sys_s.ml \
-	stdcompat__stream_s.ml stdcompat__digest_s.ml stdcompat__nativeint_s.ml \
+	stdcompat__digest_s.ml stdcompat__nativeint_s.ml \
 	stdcompat__int_s.ml \
 	stdcompat__int64_s.ml stdcompat__int32_s.ml stdcompat__filename_s.ml \
 	stdcompat__array_s.ml stdcompat__arrayLabels_s.ml \
@@ -67,7 +67,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 	stdcompat__stack.ml stdcompat__set.ml \
 	stdcompat__map.ml stdcompat__weak.ml \
 	stdcompat__random.ml \
-	stdcompat__stream.ml stdcompat__digest.ml stdcompat__nativeint.ml \
+	stdcompat__digest.ml stdcompat__nativeint.ml \
 	stdcompat__int.ml stdcompat__int64.ml stdcompat__int32.ml \
 	stdcompat__array.ml stdcompat__arrayLabels.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \

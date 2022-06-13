@@ -1,3 +1,9 @@
+let testing s f =
+  Printf.printf "Testing %s..." s;
+  flush stdout;
+  f ();
+  print_endline " OK"
+
 let test_array_for_all2 () =
   let visited = ref [] in
   let p i s =
@@ -90,14 +96,17 @@ let test_set_filter_map () =
   let module Set = Stdcompat.Set.Make (Stdcompat.Int) in
   let visited = ref [] in
   assert (
-    List.sort compare (Set.elements (Set.filter_map (fun i ->
+    let original_set =
+      Set.of_seq (Stdcompat.List.to_seq
+        (Stdcompat.List.init 6 Stdcompat.Fun.id)) in
+    let new_set = Set.filter_map (fun i ->
       visited := i :: !visited;
       if i mod 2 = 0 then
         Some (6 - i / 2)
       else
-        None)
-      (Set.of_seq (Stdcompat.List.to_seq
-        (Stdcompat.List.init 6 Stdcompat.Fun.id))))) = [4; 5; 6]);
+        None) original_set in
+    let elements = Set.elements new_set in
+    List.sort compare elements = [4; 5; 6]);
   assert (List.rev !visited = [0; 1; 2; 3; 4; 5])
 
 let test_map_filter_map () =
@@ -959,11 +968,13 @@ let test_channels () =
   Sys.remove "testfile"
 
 let () =
-  assert (Stdcompat.hypot 3. 4. = 5.);
-  assert (Stdcompat.copysign 1. 2. = 1.);
-  assert (Stdcompat.copysign 1. (-. 2.) = -. 1.);
-  assert (Stdcompat.copysign (-. 1.) 2. = 1.);
-  assert (Stdcompat.copysign (-. 1.) (-. 2.) = -. 1.);
+  testing "hypot" (fun () ->
+    assert (Stdcompat.hypot 3. 4. = 5.);
+    assert (Stdcompat.copysign 1. 2. = 1.);
+    assert (Stdcompat.copysign 1. (-. 2.) = -. 1.);
+    assert (Stdcompat.copysign (-. 1.) 2. = 1.);
+    assert (Stdcompat.copysign (-. 1.) (-. 2.) = -. 1.);
+  );
   assert (
     try
       ignore (Stdcompat.raise_notrace Exit);
@@ -1428,23 +1439,26 @@ let () =
   assert (
     Stdcompat.List.find_map (Stdcompat.List.assoc_opt 1)
       [[2, 3; 4, 1]; [5, 2;2, 7]] = None);
-  let check_quote_string s =
-    let (file, channel) = Filename.open_temp_file "test_quote_command" ".ml" in
-    Stdcompat.Fun.protect (fun () ->
+  testing "Filename.quote_command" (fun () ->
+    let check_quote_string s =
+      let (file, channel) =
+        Filename.open_temp_file "test_quote_command" ".ml" in
       Stdcompat.Fun.protect (fun () ->
-        Printf.fprintf channel "
-          assert (Sys.argv.(1) = \"%s\")
-        " (String.escaped s))
-      ~finally:(fun () -> close_out channel);
-      let file_exe = Filename.chop_suffix file ".ml" ^ ".exe" in
-      assert (
-        Sys.command (Stdcompat.Filename.quote_command "ocamlopt.opt"
-          [file; "-o"; file_exe]) == 0);
-      assert (
-        Sys.command (Stdcompat.Filename.quote_command file_exe [s]) == 0))
-    ~finally:(fun () -> Sys.remove file) in
-  check_quote_string "a\\\\";
-  check_quote_string "a\\\\b\"\\\"\\\\\"\"\\";
+        Stdcompat.Fun.protect (fun () ->
+          Printf.fprintf channel "
+            assert (Sys.argv.(1) = \"%s\")
+          " (String.escaped s))
+        ~finally:(fun () -> close_out channel);
+        let file_exe = Filename.chop_suffix file ".ml" ^ ".exe" in
+        assert (
+          Sys.command (Stdcompat.Filename.quote_command "ocamlopt.opt"
+            [file; "-o"; file_exe]) == 0);
+        assert (
+          Sys.command (Stdcompat.Filename.quote_command file_exe [s]) == 0))
+      ~finally:(fun () -> Sys.remove file) in
+    check_quote_string "a\\\\";
+    check_quote_string "a\\\\b\"\\\"\\\\\"\"\\";
+  );
   test_array_for_all2 ();
   test_array_exists2 ();
   test_list_filteri ();
@@ -1452,12 +1466,12 @@ let () =
   test_seq_cons ();
   test_seq_append ();
   test_seq_unfold ();
-  test_seq_4_14 ();
-  test_set_filter_map ();
-  test_map_filter_map ();
-  test_mkdir_rmdir ();
-  test_set_to_seq_to_rev_seq ();
-  test_map_to_seq_to_rev_seq ();
+  testing "Seq (new functions introduced in OCaml 4.14)" test_seq_4_14;
+  testing "Set.filter_map" test_set_filter_map;
+  testing "Map.filter_map" test_map_filter_map;
+  testing "Sys.mkdir/Sys.rmdir" test_mkdir_rmdir;
+  testing "Set.to_seq/to_rev_seq" test_set_to_seq_to_rev_seq;
+  testing "Map.to_seq/to_rev_seq" test_map_to_seq_to_rev_seq;
   test_list_partition_map ();
   test_list_compare ();
   test_list_equal ();

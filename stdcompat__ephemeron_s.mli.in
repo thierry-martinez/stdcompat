@@ -13,12 +13,8 @@ val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit
 val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
 val find_all : 'a t -> key -> 'a list val replace : 'a t -> key -> 'a -> unit
-val mem : 'a t -> key -> bool val iter : (key -> 'a -> unit) -> 'a t -> unit
-val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+val mem : 'a t -> key -> bool
 val length : 'a t -> int val stats : 'a t -> Hashtbl.statistics
-val to_seq : 'a t -> (key * 'a) Seq.t val to_seq_keys : 'a t -> key Seq.t
-val to_seq_values : 'a t -> 'a Seq.t
 val add_seq : 'a t -> (key * 'a) Seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Seq.t -> unit
 val of_seq : (key * 'a) Seq.t -> 'a t val clean : 'a t -> unit
@@ -90,12 +86,8 @@ val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit
 val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
 val find_all : 'a t -> key -> 'a list val replace : 'a t -> key -> 'a -> unit
-val mem : 'a t -> key -> bool val iter : (key -> 'a -> unit) -> 'a t -> unit
-val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+val mem : 'a t -> key -> bool
 val length : 'a t -> int val stats : 'a t -> Hashtbl.statistics
-val to_seq : 'a t -> (key * 'a) Seq.t val to_seq_keys : 'a t -> key Seq.t
-val to_seq_values : 'a t -> 'a Seq.t
 val add_seq : 'a t -> (key * 'a) Seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Seq.t -> unit
 val of_seq : (key * 'a) Seq.t -> 'a t val clean : 'a t -> unit
@@ -323,7 +315,7 @@ val clear : ('k, 'd) t -> unit end end
 @END_BEFORE_4_14_0@
 (** @since 4.14.0: module Kn = Ephemeron.Kn
  *)
-
+(*
 @BEGIN_FROM_4_07_0@
 module GenHashTable = Ephemeron.GenHashTable
 @END_FROM_4_07_0@
@@ -361,5 +353,5 @@ val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics end end
 @END_BEFORE_4_07_0@
 (** @since 4.07.0: module GenHashTable = Ephemeron.GenHashTable
  *)
-
+*)
 end
