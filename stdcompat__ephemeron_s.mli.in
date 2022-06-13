@@ -27,14 +27,9 @@ val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit
 val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
 val find_all : 'a t -> key -> 'a list val replace : 'a t -> key -> 'a -> unit
-val mem : 'a t -> key -> bool val iter : (key -> 'a -> unit) -> 'a t -> unit
-val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+val mem : 'a t -> key -> bool
 val length : 'a t -> int
 val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
-val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-val to_seq_keys : 'a t -> key Stdcompat__seq.t
-val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t val clean : 'a t -> unit
@@ -100,14 +95,9 @@ val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit
 val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
 val find_all : 'a t -> key -> 'a list val replace : 'a t -> key -> 'a -> unit
-val mem : 'a t -> key -> bool val iter : (key -> 'a -> unit) -> 'a t -> unit
-val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+val mem : 'a t -> key -> bool
 val length : 'a t -> int
 val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
-val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-val to_seq_keys : 'a t -> key Stdcompat__seq.t
-val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t val clean : 'a t -> unit
@@ -145,10 +135,10 @@ val stats_alive : 'a t -> Stdcompat__hashtbl_ext.statistics end
       end
  *)
 
-@BEGIN_FROM_4_14_0@
+@BEGIN_FROM_5_0_0@
 module K1 = Ephemeron.K1
-@END_FROM_4_14_0@
-@BEGIN_BEFORE_4_14_0@
+@END_FROM_5_0_0@
+@BEGIN_BEFORE_5_0_0@
 module K1 :
 sig type ('k, 'd) t
 val make : 'k -> 'd -> ('k, 'd) t val query : ('k, 'd) t -> 'k -> 'd option
@@ -159,14 +149,9 @@ val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit
 val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
 val find_all : 'a t -> key -> 'a list val replace : 'a t -> key -> 'a -> unit
-val mem : 'a t -> key -> bool val iter : (key -> 'a -> unit) -> 'a t -> unit
-val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+val mem : 'a t -> key -> bool
 val length : 'a t -> int
 val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
-val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-val to_seq_keys : 'a t -> key Stdcompat__seq.t
-val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t val clean : 'a t -> unit
@@ -178,14 +163,9 @@ val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit
 val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
 val find_all : 'a t -> key -> 'a list val replace : 'a t -> key -> 'a -> unit
-val mem : 'a t -> key -> bool val iter : (key -> 'a -> unit) -> 'a t -> unit
-val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+val mem : 'a t -> key -> bool
 val length : 'a t -> int
 val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
-val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-val to_seq_keys : 'a t -> key Stdcompat__seq.t
-val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t val clean : 'a t -> unit
@@ -196,14 +176,14 @@ val add : ('k, 'd) t -> 'k -> 'd -> unit
 val remove : ('k, 'd) t -> 'k -> unit
 val find : ('k, 'd) t -> 'k -> 'd option val length : ('k, 'd) t -> int
 val clear : ('k, 'd) t -> unit end end
-@END_BEFORE_4_14_0@
-(** @since 4.14.0: module K1 = Ephemeron.K1
+@END_BEFORE_5_0_0@
+(** @since 5.0.0: module K1 = Ephemeron.K1
  *)
 
-@BEGIN_FROM_4_14_0@
+@BEGIN_FROM_5_0_0@
 module K2 = Ephemeron.K2
-@END_FROM_4_14_0@
-@BEGIN_BEFORE_4_14_0@
+@END_FROM_5_0_0@
+@BEGIN_BEFORE_5_0_0@
 module K2 :
 sig type ('k1, 'k2, 'd) t
 val make : 'k1 -> 'k2 -> 'd -> ('k1, 'k2, 'd) t
@@ -216,14 +196,9 @@ val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit
 val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
 val find_all : 'a t -> key -> 'a list val replace : 'a t -> key -> 'a -> unit
-val mem : 'a t -> key -> bool val iter : (key -> 'a -> unit) -> 'a t -> unit
-val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+val mem : 'a t -> key -> bool
 val length : 'a t -> int
 val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
-val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-val to_seq_keys : 'a t -> key Stdcompat__seq.t
-val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t val clean : 'a t -> unit
@@ -237,14 +212,9 @@ val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit
 val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
 val find_all : 'a t -> key -> 'a list val replace : 'a t -> key -> 'a -> unit
-val mem : 'a t -> key -> bool val iter : (key -> 'a -> unit) -> 'a t -> unit
-val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+val mem : 'a t -> key -> bool
 val length : 'a t -> int
 val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
-val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-val to_seq_keys : 'a t -> key Stdcompat__seq.t
-val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t val clean : 'a t -> unit
@@ -256,14 +226,14 @@ val remove : ('k1, 'k2, 'd) t -> 'k1 -> 'k2 -> unit
 val find : ('k1, 'k2, 'd) t -> 'k1 -> 'k2 -> 'd option
 val length : ('k1, 'k2, 'd) t -> int val clear : ('k1, 'k2, 'd) t -> unit end
 end
-@END_BEFORE_4_14_0@
-(** @since 4.14.0: module K2 = Ephemeron.K2
+@END_BEFORE_5_0_0@
+(** @since 5.0.0: module K2 = Ephemeron.K2
  *)
 
-@BEGIN_FROM_4_14_0@
+@BEGIN_FROM_5_0_0@
 module Kn = Ephemeron.Kn
-@END_FROM_4_14_0@
-@BEGIN_BEFORE_4_14_0@
+@END_FROM_5_0_0@
+@BEGIN_BEFORE_5_0_0@
 module Kn :
 sig type ('k, 'd) t
 val make : 'k array -> 'd -> ('k, 'd) t
@@ -275,14 +245,9 @@ val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit
 val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
 val find_all : 'a t -> key -> 'a list val replace : 'a t -> key -> 'a -> unit
-val mem : 'a t -> key -> bool val iter : (key -> 'a -> unit) -> 'a t -> unit
-val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+val mem : 'a t -> key -> bool
 val length : 'a t -> int
 val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
-val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-val to_seq_keys : 'a t -> key Stdcompat__seq.t
-val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t val clean : 'a t -> unit
@@ -294,14 +259,9 @@ val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key -> 'a -> unit val remove : 'a t -> key -> unit
 val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
 val find_all : 'a t -> key -> 'a list val replace : 'a t -> key -> 'a -> unit
-val mem : 'a t -> key -> bool val iter : (key -> 'a -> unit) -> 'a t -> unit
-val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+val mem : 'a t -> key -> bool
 val length : 'a t -> int
 val stats : 'a t -> Stdcompat__hashtbl_ext.statistics
-val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-val to_seq_keys : 'a t -> key Stdcompat__seq.t
-val to_seq_values : 'a t -> 'a Stdcompat__seq.t
 val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t val clean : 'a t -> unit
@@ -312,8 +272,8 @@ val add : ('k, 'd) t -> 'k array -> 'd -> unit
 val remove : ('k, 'd) t -> 'k array -> unit
 val find : ('k, 'd) t -> 'k array -> 'd option val length : ('k, 'd) t -> int
 val clear : ('k, 'd) t -> unit end end
-@END_BEFORE_4_14_0@
-(** @since 4.14.0: module Kn = Ephemeron.Kn
+@END_BEFORE_5_0_0@
+(** @since 5.0.0: module Kn = Ephemeron.Kn
  *)
 (*
 @BEGIN_FROM_4_07_0@

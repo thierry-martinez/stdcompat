@@ -1,7 +1,7 @@
-@BEGIN_FROM_4_14_0@
+@BEGIN_FROM_5_0_0@
 include Ephemeron
-@END_FROM_4_14_0@
-@BEGIN_BEFORE_4_14_0@
+@END_FROM_5_0_0@
+@BEGIN_BEFORE_5_0_0@
 module type S  =
   sig
     type key
@@ -22,14 +22,8 @@ module type S  =
     val find_all : 'a t -> key -> 'a list
     val replace : 'a t -> key -> 'a -> unit
     val mem : 'a t -> key -> bool
-    val iter : (key -> 'a -> unit) -> 'a t -> unit
-    val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-    val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     val length : 'a t -> int
     val stats : 'a t -> Stdcompat__hashtbl.statistics
-    val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-    val to_seq_keys : 'a t -> key Stdcompat__seq.t
-    val to_seq_values : 'a t -> 'a Stdcompat__seq.t
     val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
@@ -57,14 +51,8 @@ module type SeededS  =
     val find_all : 'a t -> key -> 'a list
     val replace : 'a t -> key -> 'a -> unit
     val mem : 'a t -> key -> bool
-    val iter : (key -> 'a -> unit) -> 'a t -> unit
-    val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-    val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     val length : 'a t -> int
     val stats : 'a t -> Stdcompat__hashtbl.statistics
-    val to_seq : 'a t -> (key * 'a) Stdcompat__seq.t
-    val to_seq_keys : 'a t -> key Stdcompat__seq.t
-    val to_seq_values : 'a t -> 'a Stdcompat__seq.t
     val add_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
     val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
@@ -140,7 +128,7 @@ module K2 = struct
   end
 end
 
-module Kn  = struct
+module Kn = struct
   type ('k, 'd) t
   let make _ = not_implemented ()
   let query _ = not_implemented ()
@@ -186,4 +174,4 @@ module Kn  = struct
     let clear _ = not_implemented ()
   end
 end
-@END_BEFORE_4_14_0@
+@END_BEFORE_5_0_0@
