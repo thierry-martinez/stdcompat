@@ -91,8 +91,6 @@
    stdcompat__stack_s
    stdcompat__stdlib
    stdcompat__stdlib_s
-   stdcompat__stream
-   stdcompat__stream_s
    stdcompat__string
    stdcompat__stringLabels
    stdcompat__stringLabels_s
@@ -304,10 +302,6 @@
   stdcompat__stdlib.mli
   stdcompat__stdlib_s.ml
   stdcompat__stdlib_s.mli
-  stdcompat__stream.ml
-  stdcompat__stream.mli
-  stdcompat__stream_s.ml
-  stdcompat__stream_s.mli
   stdcompat__string.ml
   stdcompat__string.mli
   stdcompat__stringLabels.ml
@@ -469,9 +463,6 @@
   stdcompat__stdlib.ml.in
   stdcompat__stdlib.mli.in
   stdcompat__stdlib_s.mli.in
-  stdcompat__stream.ml.in
-  stdcompat__stream.mli.in
-  stdcompat__stream_s.mli.in
   stdcompat__string.ml.in
   stdcompat__string.mli.in
   stdcompat__stringLabels.ml.in
