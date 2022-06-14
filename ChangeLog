@@ -2,7 +2,8 @@
 
 - Compatibility with OCaml 5.0
 
-- Restore compatibility with OCaml 3.07
+- Restore compatibility with OCaml 3.07, and fix order execution for
+  Set and Map.{iter, fold, filter_map} on OCaml 3.07
 
 - Updated port to `dune`
   (Marek Kubica, https://github.com/thierry-martinez/stdcompat/pull/16,

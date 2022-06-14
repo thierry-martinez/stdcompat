@@ -1,8 +1,14 @@
+let failed = ref false
+
 let testing s f =
   Printf.printf "Testing %s..." s;
   flush stdout;
-  f ();
-  print_endline " OK"
+  try
+    f ();
+    print_endline " OK"
+  with exc ->
+    print_endline (Printexc.to_string exc);
+    failed := true
 
 let test_array_for_all2 () =
   let visited = ref [] in
@@ -967,7 +973,7 @@ let test_channels () =
     Stdcompat.In_channel.input_all = "world");
   Sys.remove "testfile"
 
-let () =
+let tests () =
   testing "hypot" (fun () ->
     assert (Stdcompat.hypot 3. 4. = 5.);
     assert (Stdcompat.copysign 1. 2. = 1.);
@@ -980,11 +986,13 @@ let () =
       ignore (Stdcompat.raise_notrace Exit);
       false
     with Exit -> true);
-  assert (Stdcompat.bool_of_string_opt "true" = Some true);
-  assert (Stdcompat.bool_of_string_opt "false" = Some false);
-  assert (Stdcompat.bool_of_string_opt "foo" = None);
-  assert (Stdcompat.int_of_string_opt "42" = Some 42);
-  assert (Stdcompat.int_of_string_opt "foo" = None);
+  testing "bool_of_string_opt" (fun () ->
+      assert (Stdcompat.bool_of_string_opt "true" = Some true);
+      assert (Stdcompat.bool_of_string_opt "false" = Some false);
+      assert (Stdcompat.bool_of_string_opt "foo" = None));
+  testing "int_of_string_opt" (fun () ->
+      assert (Stdcompat.int_of_string_opt "42" = Some 42);
+      assert (Stdcompat.int_of_string_opt "foo" = None));
   assert (Stdcompat.float_of_string_opt "42." = Some 42.);
   assert (Stdcompat.float_of_string_opt "foo" = None);
   assert (Lazy.force (Stdcompat.Lazy.from_fun (fun () -> 42)) = 42);
@@ -1107,7 +1115,7 @@ let () =
   assert (Stdcompat.List.compare_lengths [1; 2; 3] [2; 3] > 0);
   assert (Stdcompat.List.compare_length_with [1] 2 < 0);
   assert (Stdcompat.List.compare_length_with [1; 2] 2 = 0);
-  assert (Stdcompat.List.compare_length_with [1; 2; 3] 2 > 0);;
+  assert (Stdcompat.List.compare_length_with [1; 2; 3] 2 > 0);
   assert (Stdcompat.List.nth_opt [1; 2; 3] 2 = Some 3);
   assert (Stdcompat.List.nth_opt [1; 2; 3] 3 = None);
   assert (
@@ -1494,3 +1502,8 @@ let () =
   test_string_ends_with ();
   test_channels ();
   ()
+
+let () =
+  tests ();
+  if !failed then
+    exit 1
