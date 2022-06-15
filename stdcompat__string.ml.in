@@ -146,3 +146,9 @@ let get_utf_16le_uchar s i =
 let is_valid_utf_16le s =
   Stdcompat__bytes.is_valid_utf_16le (Stdcompat__bytes.unsafe_of_string s)
 @END_BEFORE_4_14_0@
+
+@BEGIN_BEFORE_5_0_0@
+let seeded_hash = Stdcompat__hashtbl.seeded_hash
+
+let hash = Hashtbl.hash
+@END_BEFORE_5_0_0@

@@ -1,6 +1,8 @@
-* Next version
+* Version 19, 2022-06-15
 
 - Compatibility with OCaml 5.0
+
+- Add String.{hash, seeded_hash}
 
 - Restore compatibility with OCaml 3.07, and fix order execution for
   Set and Map.{iter, fold, filter_map} on OCaml 3.07

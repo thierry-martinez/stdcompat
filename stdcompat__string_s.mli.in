@@ -285,4 +285,10 @@ val rindex : string -> char -> int
 external unsafe_get : string -> int -> char = "%string_unsafe_get"
 (** Alias for {!String.unsafe_get} *)
 
+val seeded_hash : int -> string -> int
+(** @since 5.0.0 *)
+
+val hash : string -> int
+(** @since 5.0.0 *)
+
 end
