@@ -181,7 +181,8 @@ module Make (Ord : OrderedType) = struct
       let iter (f : elt -> unit) (s : t) : unit =
         iter f (internal_of_t s)
 
-      let rec fold f s a = function
+      let rec fold f s a =
+        match s with
         | Empty -> a
         | Node (l, v, r, _) as t ->
             let a = fold f l a in
