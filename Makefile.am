@@ -82,7 +82,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 MODULES_native = stdcompat__native.ml $(MODULES)
 
 mypkg_SCRIPTS = META $(MODULES_native) $(MODULES_native:.ml=.cmi) \
-	libstdcompat__stubs.a stdcompat.h
+	libstdcompat__stubs.a stdcompat.h dune-project dune
 
 if OCAML_SUPPORTS_BYTECODE
 mypkg_SCRIPTS += stdcompat.cma
