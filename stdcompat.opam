@@ -18,4 +18,4 @@ build: [
   ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
 dev-repo: "git+https://github.com/thierry-martinez/stdcompat.git"
-version: "18"
+version: "19"
