@@ -23,7 +23,8 @@ EXTRA_DIST= stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
 	stdcompat__seq.mli stdcompat__printexc.mli \
         stdcompat__either.mli stdcompat__atomic.mli \
 	stdcompat__unit.mli \
-	stdcompat__in_channel.mli stdcompat__out_channel.mli Makefile.bootstrap VERSION
+	stdcompat__in_channel.mli stdcompat__out_channel.mli Makefile.bootstrap VERSION \
+	dune-project dune
 
 MODULES = stdcompat__init.ml stdcompat__root.ml \
 	stdcompat__either_s.ml stdcompat__either.ml \
@@ -82,7 +83,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 MODULES_native = stdcompat__native.ml $(MODULES)
 
 mypkg_SCRIPTS = META $(MODULES_native) $(MODULES_native:.ml=.cmi) \
-	libstdcompat__stubs.a stdcompat.h dune-project dune
+	libstdcompat__stubs.a stdcompat.h
 
 if OCAML_SUPPORTS_BYTECODE
 mypkg_SCRIPTS += stdcompat.cma
