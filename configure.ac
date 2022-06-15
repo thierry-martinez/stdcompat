@@ -114,9 +114,11 @@ AC_MSG_RESULT([$target_os_type])
 
 AC_MSG_CHECKING([for flambda2])
 
-AC_SUBST([OCAML_FLAMBDA2],
+AS_IF([test "$OCAML_VERSION_MAJOR" -ge 4],
+  [AC_SUBST([OCAML_FLAMBDA2],
     [`$OCAMLBEST -config | sed -n 's/^flambda2: \(.*\)$/\1/p' | sed 's/\r//'`])
-AS_IF([test "x$OCAML_FLAMBDA2" = "x"], AC_SUBST([OCAML_FLAMBDA2], [[false]]))
+    AS_IF([test "x$OCAML_FLAMBDA2" = "x"], AC_SUBST([OCAML_FLAMBDA2], [[false]]))],
+  [AC_SUBST([OCAML_FLAMBDA2], [[false]])])
 
 AC_MSG_RESULT([$OCAML_FLAMBDA2])
 
