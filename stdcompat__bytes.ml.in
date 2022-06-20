@@ -322,6 +322,7 @@ let set_int64_ne b i v =
 @END_BEFORE_4_08_0@
 
 @BEGIN_FROM_4_08_0@
+@BEGIN_BEFORE_4_14_0@
 external unsafe_get_uint8 : bytes -> int -> int = "%bytes_unsafe_get"
 external unsafe_get_uint16_ne : bytes -> int -> int = "%caml_bytes_get16u"
 external get_uint8 : bytes -> int -> int = "%bytes_safe_get"
@@ -362,6 +363,7 @@ let unsafe_set_uint16_be b i x =
     unsafe_set_uint16_ne b i x
   else
     unsafe_set_uint16_ne b i (swap16 x)
+@END_BEFORE_4_14_0@
 @END_FROM_4_08_0@
 
 @BEGIN_BEFORE_4_09_0@
