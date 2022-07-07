@@ -118,8 +118,10 @@
  (copy stdcompat__init.mli.in stdcompat__init.ml.in))
 
 (rule
- (targets configure
-          install-sh)
+ (targets
+   configure
+   install-sh)
+ (mode promote)
  (deps
   Makefile.am
   VERSION
