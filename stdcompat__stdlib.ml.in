@@ -1,7 +1,7 @@
-@BEGIN_FROM_4_14_0@
+@BEGIN_FROM_5_0_0@
 include Stdlib
-@END_FROM_4_14_0@
-@BEGIN_BEFORE_4_14_0@
+@END_FROM_5_0_0@
+@BEGIN_BEFORE_5_0_0@
 module Pervasives = Stdcompat__pervasives
 
 include Pervasives
@@ -147,4 +147,4 @@ module Uchar = Stdcompat__uchar
 module Unit = Stdcompat__unit
 
 module Weak = Stdcompat__weak
-@END_BEFORE_4_14_0@
+@END_BEFORE_5_0_0@
