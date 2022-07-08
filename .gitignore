@@ -30,7 +30,6 @@ _build/
 /config.sub
 /config.h
 *.so
-/config.h.in
 /stdcompat__stubs.c
 /stdcompat__native.ml_native
 /stdcompat__native.ml_byte

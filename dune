@@ -336,6 +336,7 @@
   install-sh
   META.in
   Makefile.in
+  config.h.in
   stdcompat.h.in
   stdcompat.ml.in
   stdcompat.mli.in
