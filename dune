@@ -335,6 +335,7 @@
   (deps (:configure configure)
   install-sh
   META.in
+  Makefile.in
   stdcompat.h.in
   stdcompat.ml.in
   stdcompat.mli.in
