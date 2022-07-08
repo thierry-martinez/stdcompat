@@ -7,7 +7,6 @@ _build/
 *.cmti
 *.cmx[as]
 /Makefile
-/Makefile.in
 /aclocal.m4
 /autom4te.cache
 /doc/
