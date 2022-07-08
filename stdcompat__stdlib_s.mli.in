@@ -159,6 +159,8 @@ module type S = sig
 
   module Uchar : Stdcompat__uchar_s.S
 
+  module Unit : Stdcompat__unit_s.S
+
   module Weak : Stdcompat__weak_s.S
 @END_BEFORE_5_0_0@
 end

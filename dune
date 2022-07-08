@@ -6,6 +6,7 @@
  (foreign_stubs
   (language c)
   (names stdcompat__stubs))
+ (wrapped false)
  (modules
    stdcompat__arg
    stdcompat__arg_s
