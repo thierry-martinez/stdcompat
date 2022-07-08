@@ -6,7 +6,6 @@
  (foreign_stubs
   (language c)
   (names stdcompat__stubs))
- (wrapped false)
  (modules
    stdcompat__arg
    stdcompat__arg_s
@@ -121,7 +120,8 @@
 (rule
  (targets
    configure
-   install-sh)
+   install-sh
+   Makefile.in)
  (mode promote)
  (deps
   Makefile.am
