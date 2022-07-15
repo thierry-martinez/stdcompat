@@ -1,6 +1,7 @@
 (library
  (name stdcompat)
  (public_name stdcompat)
+ (wrapped false)
  (flags (:standard -nolabels -w -3))
  (install_c_headers stdcompat)
  (foreign_stubs
