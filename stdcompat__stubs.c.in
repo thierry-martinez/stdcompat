@@ -1,6 +1,22 @@
 #include <string.h>
 #include "stdcompat.h"
 
+@C_BEGIN_FROM_5_0_0@
+void stdcompat_dummy_symbol()
+{
+  /* If the library is empty, then the following error message appears on macOS:
+     ld: archive has no table of contents file './libtest_prog_stubs.a' for
+     architecture arm64
+
+     One solution is to execute `ranlib libtest_prog_stubs.a` after `ocamlmklib`
+     and before `ocamlopt` use the library, but I don't know how to make dune
+     execute the command.
+
+     Another solution is to export a dummy symbol!
+  */
+}
+@C_END_FROM_5_0_0@
+
 @C_BEGIN_BEFORE_4_12_0@
 @C_BEGIN_FROM_4_04_0@
 #include <caml/major_gc.h>
