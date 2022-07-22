@@ -121,7 +121,6 @@
 (rule
  (targets
    configure
-   install-sh
    Makefile.in)
  (mode promote)
  (deps
