@@ -9,23 +9,23 @@ jobs:
           - ubuntu-latest
         builder:
           - dune
-#          - make
-#          - make-no-magic
+          - make
+          - make-no-magic
         ocaml-compiler:
-#          - 4.00.x
-#          - 4.01.x
-#          - 4.02.x
-#          - 4.03.x
-#          - 4.04.x
-#          - 4.05.x
-#          - 4.06.x
-#          - 4.07.x
-#          - 4.08.x
-#          - 4.09.x
-#          - 4.10.x
-#          - 4.11.x
-#          - 4.12.x
-#          - 4.13.x
+          - 4.00.x
+          - 4.01.x
+          - 4.02.x
+          - 4.03.x
+          - 4.04.x
+          - 4.05.x
+          - 4.06.x
+          - 4.07.x
+          - 4.08.x
+          - 4.09.x
+          - 4.10.x
+          - 4.11.x
+          - 4.12.x
+          - 4.13.x
           - 4.14.x
         exclude:
           - builder: dune
@@ -40,10 +40,9 @@ jobs:
         uses: ocaml/setup-ocaml@v2
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
-      - name: Build
-        uses: ./.github/workflows/build
-        with:
-          builder: ${{ matrix.builder }}
+      - name: Make stdcompat
+        shell: bash
+        run: opam exec -- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
 
   build-macos-and-windows:
     strategy:
@@ -51,13 +50,13 @@ jobs:
       matrix:
         os:
           - macos-latest
-#          - windows-latest
+          - windows-latest
         builder:
           - dune
-#          - make
-#          - make-no-magic
+          - make
+          - make-no-magic
         ocaml-compiler:
-#          - 4.02.x
+          - 4.02.x
           - 4.14.x
     runs-on: ${{ matrix.os }}
     steps:
@@ -67,7 +66,6 @@ jobs:
         uses: ocaml/setup-ocaml@v2
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
-      - name: Build
-        uses: ./.github/workflows/build
-        with:
-          builder: ${{ matrix.builder }}
+      - name: Make stdcompat
+        shell: bash
+        run: opam exec -- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
