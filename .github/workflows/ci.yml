@@ -1,7 +1,7 @@
 name: ci
 on: [push]
 jobs:
-  build:
+  build-ubuntu:
     strategy:
       fail-fast: false
       matrix:
@@ -32,6 +32,16 @@ jobs:
             ocaml-compiler: 4.00.x
           - builder: dune
             ocaml-compiler: 4.01.x
+    steps:
+      - uses: ./.github/workflows/build
+        with:
+          os: ${{ matrix.os }}
+          builder: ${{ matrix.builder }}
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+
+  build-macos-and-windows:
+    strategy:
+      fail-fast: false
       matrix:
         os:
           - macos-latest
@@ -43,13 +53,9 @@ jobs:
         ocaml-compiler:
           - 4.02.x
           - 4.14.x
-    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup OCaml
-        uses: ocaml/setup-ocaml@v2
+      - uses: ./.github/workflows/build
         with:
+          os: ${{ matrix.os }}
+          builder: ${{ matrix.builder }}
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
-      - name: Make stdcompat
-        run: opam exec -- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
