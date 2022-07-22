@@ -34,9 +34,10 @@ jobs:
             ocaml-compiler: 4.01.x
     runs-on: ubuntu-latest
     steps:
-      - run: pwd
-      - run: du
-      - uses: ./.github/workflows/build
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build
+        uses: ./.github/workflows/build
         with:
           os: ${{ matrix.os }}
           builder: ${{ matrix.builder }}
@@ -58,7 +59,10 @@ jobs:
           - 4.14.x
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/build
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build
+        uses: ./.github/workflows/build
         with:
           os: ${{ matrix.os }}
           builder: ${{ matrix.builder }}
