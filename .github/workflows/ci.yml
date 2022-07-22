@@ -34,4 +34,4 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       - name: Make stdcompat
-        run: opam exec -- ${{ matrix.builder }}
+        run: opam exec -- sh -c "${{ matrix.builder }}"
