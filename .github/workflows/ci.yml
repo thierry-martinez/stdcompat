@@ -66,9 +66,9 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       - name: Make stdcompat
         run: |
-          opam exec-- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
+          opam exec -- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
 
-  build-ubuntu-older-ocaml:
+  build-ubuntu-old-ocamls:
     strategy:
       fail-fast: false
       matrix:
@@ -85,6 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/thierry-martinez/stdcompat-old-ocamls
+      options: --user 1000
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.packages_actions_read }}
