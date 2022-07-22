@@ -2,10 +2,10 @@
 
 - Compatibility with OCaml 5.0
 
-- Add String.{hash, seeded_hash}
+- Add `String.{hash, seeded_hash}`
 
 - Restore compatibility with OCaml 3.07, and fix order execution for
-  Set and Map.{iter, fold, filter_map} on OCaml 3.07
+  `Set` and `Map.{iter, fold, filter_map}` on OCaml 3.07
 
 - Updated port to `dune`
   (Marek Kubica, https://github.com/thierry-martinez/stdcompat/pull/16,
@@ -16,7 +16,7 @@
 - Add support for `flambda2`
   (Guillaume Bury, https://github.com/thierry-martinez/stdcompat/pull/14)
 
-- Prevent replacing `/dev/null/ by a regular file when `./configure` is
+- Prevent replacing `/dev/null/` by a regular file when `./configure` is
   run as root
   (reported by Marc Chevalier, https://github.com/ocaml/ocaml/issues/11302)
 
