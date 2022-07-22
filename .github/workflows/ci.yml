@@ -2,15 +2,18 @@ name: ci
 on: [push]
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - ubuntu-latest
         builder:
-          - opam install --yes dune && dune build && dune runtest
-          - ./configure && make && make test
-          - ./configure --disable-magic && make && make test
+          - dune
+          - make
+          - make-no-magic
         ocaml-compiler:
+          - 4.00.x
+          - 4.01.x
           - 4.02.x
           - 4.03.x
           - 4.04.x
@@ -24,6 +27,21 @@ jobs:
           - 4.12.x
           - 4.13.x
           - 4.14.x
+        exclude:
+          - builder: dune
+            ocaml-compiler: 4.00.x
+          - builder: dune
+            ocaml-compiler: 4.01.x
+        include:
+          - os: macos-latest
+            ocaml-compiler: 4.14.x
+          - os: windows-latest
+            ocaml-compiler: 4.14.x
+          - os: macos-latest
+            ocaml-compiler: 4.02.x
+          - os: windows-latest
+            ocaml-compiler: 4.02.x
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -32,4 +50,4 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       - name: Make stdcompat
-        run: opam exec -- sh -c "${{ matrix.builder }}"
+        run: opam exec -- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
