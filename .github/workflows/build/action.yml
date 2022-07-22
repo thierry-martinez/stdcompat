@@ -1,15 +1,13 @@
-on:
-  workflow_call:
-    inputs:
-      os:
-        required: true
-        type: string
-      builder:
-        required: true
-        type: string
-      ocaml-compiler:
-        required: true
-        type: string
+inputs:
+  os:
+    required: true
+    type: string
+  builder:
+    required: true
+    type: string
+  ocaml-compiler:
+    required: true
+    type: string
 jobs:
   build:
     runs-on: ${{ inputs.os }}
