@@ -33,15 +33,11 @@ jobs:
           - builder: dune
             ocaml-compiler: 4.01.x
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build
-        uses: ./.github/workflows/build.yml
-        with:
-          os: ${{ matrix.os }}
-          builder: ${{ matrix.builder }}
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+    uses: ./.github/workflows/build.yml
+    with:
+      os: ${{ matrix.os }}
+      builder: ${{ matrix.builder }}
+      ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
   build-macos-and-windows:
     strategy:
@@ -58,12 +54,8 @@ jobs:
 #          - 4.02.x
           - 4.14.x
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build
-        uses: ./.github/workflows/build.yml
-        with:
-          os: ${{ matrix.os }}
-          builder: ${{ matrix.builder }}
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+    uses: ./.github/workflows/build.yml
+    with:
+      os: ${{ matrix.os }}
+      builder: ${{ matrix.builder }}
+      ocaml-compiler: ${{ matrix.ocaml-compiler }}
