@@ -32,6 +32,7 @@ jobs:
             ocaml-compiler: 4.00.x
           - builder: dune
             ocaml-compiler: 4.01.x
+    runs-on: ubuntu-latest
     steps:
       - uses: ./.github/workflows/build
         with:
