@@ -12,11 +12,11 @@ on:
         type: string
 jobs:
   build:
-    runs-on: ${{ inputs.os }}
+    runs-on: ${{ github.event.inputs.os }}
     steps:
       - name: Setup OCaml
         uses: ocaml/setup-ocaml@v2
         with:
-          ocaml-compiler: ${{ inputs.ocaml-compiler }}
+          ocaml-compiler: ${{ github.event.inputs.ocaml-compiler }}
       - name: Make stdcompat
-        run: opam exec -- sh -exc ".github/scripts/build-${{ inputs.builder }}.sh"
+        run: opam exec -- sh -exc ".github/scripts/build-${{ github.event.inputs.builder }}.sh"
