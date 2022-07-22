@@ -11,8 +11,6 @@ jobs:
           - ./configure && make && make test
           - ./configure --disable-magic && make && make test
         ocaml-compiler:
-          - 4.00.x
-          - 4.01.x
           - 4.02.x
           - 4.03.x
           - 4.04.x

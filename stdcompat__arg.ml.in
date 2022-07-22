@@ -95,11 +95,11 @@ let usage_string l msg =
 @END_BEFORE_3_12_0@
 
 @BEGIN_FROM_3_08_0@
-let align ?limit l =
+let align ?limit:_ l =
   expand_list (Arg.align (no_expand_list l))
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
-let align ?limit l =
+let align ?limit:_ _l =
   not_implemented ()
 @END_BEFORE_3_08_0@
 
@@ -168,7 +168,7 @@ let write_arg =
 let write_arg0 =
   write_aux '\x00'
 
-let parse_argv_dynamic ?current _ =
+let parse_argv_dynamic ?current:_ _ =
   not_implemented ()
 
 let parse_dynamic _ =
