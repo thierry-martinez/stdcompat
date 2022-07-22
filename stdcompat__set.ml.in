@@ -57,9 +57,9 @@ module Make (Ord : OrderedType) = struct
 
   @BEGIN_WITH_MAGIC@
     type internal = Empty | Node of internal * elt * internal * int
-      @BEGIN_FROM_4_00_0@
+      @BEGIN_FROM_4_02_0@
       [@@ocaml.warning "-37"]
-      @END_FROM_4_00_0@
+      @END_FROM_4_02_0@
 
     @BEGIN_BEFORE_4_11_0@
     external t_of_internal : internal -> t = "%identity"
