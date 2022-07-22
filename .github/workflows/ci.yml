@@ -43,9 +43,7 @@ jobs:
       - name: Build
         uses: ./.github/workflows/build
         with:
-          os: ${{ matrix.os }}
           builder: ${{ matrix.builder }}
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
   build-macos-and-windows:
     strategy:
@@ -72,6 +70,4 @@ jobs:
       - name: Build
         uses: ./.github/workflows/build
         with:
-          os: ${{ matrix.os }}
           builder: ${{ matrix.builder }}
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}

@@ -4,9 +4,6 @@ inputs:
   builder:
     required: true
     type: string
-  ocaml-compiler:
-    required: true
-    type: string
 jobs:
   using: "composite"
   build:
