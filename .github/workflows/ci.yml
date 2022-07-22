@@ -37,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build
-        uses: ./.github/workflows/build
+        uses: ./.github/workflows/build.yml
         with:
           os: ${{ matrix.os }}
           builder: ${{ matrix.builder }}
@@ -62,7 +62,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build
-        uses: ./.github/workflows/build
+        uses: ./.github/workflows/build.yml
         with:
           os: ${{ matrix.os }}
           builder: ${{ matrix.builder }}
