@@ -7,16 +7,10 @@ jobs:
       fail-fast: false
       matrix:
         builder:
-          - dune build && dune runtest
+          - opam install --yes dune && dune build && dune runtest
           - ./configure && make && make test
           - ./configure --disable-magic && make && make test
         ocaml-compiler:
-          - 3.07
-          - 3.08.x
-          - 3.09.x
-          - 3.10.x
-          - 3.11.x
-          - 3.12.x
           - 4.00.x
           - 4.01.x
           - 4.02.x
@@ -32,7 +26,6 @@ jobs:
           - 4.12.x
           - 4.13.x
           - 4.14.x
-          - 5.0.x
     steps:
       - name: Checkout
         uses: actions/checkout@v3
