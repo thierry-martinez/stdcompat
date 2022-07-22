@@ -5,8 +5,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
         builder:
           - dune
           - make
@@ -32,7 +30,7 @@ jobs:
             ocaml-compiler: 4.00.x
           - builder: dune
             ocaml-compiler: 4.01.x
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -41,8 +39,8 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       - name: Make stdcompat
-        shell: bash
-        run: opam exec -- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
+        run: |
+          opam exec -- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
 
   build-macos-and-windows:
     strategy:
@@ -67,5 +65,33 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       - name: Make stdcompat
-        shell: bash
-        run: opam exec -- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
+        run: |
+          opam exec-- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
+
+  build-ubuntu-older-ocaml:
+    strategy:
+      fail-fast: false
+      matrix:
+        builder:
+          - make
+          - make-no-magic
+        ocaml-compiler:
+          - 3.07
+          - 3.08.4
+          - 3.09.3
+          - 3.10.2
+          - 3.11.2
+          - 3.12.1
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/thierry-martinez/stdcompat-old-ocamls
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.packages_actions_read }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Make stdcompat
+        run: |
+          opam exec --switch ${{ matrix.ocaml-compiler }} -- \
+            sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
