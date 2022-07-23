@@ -221,20 +221,13 @@ external unsafe_blit :
     "caml_blit_string" "noalloc"
 @END_FROM_4_02_0@
 @BEGIN_BEFORE_4_02_0@
-@BEGIN_FROM_3_08_0@
+
 external unsafe_blit :
   src:string ->
     src_pos:int ->
       dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit =
     "caml_blit_string" "noalloc"
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external unsafe_blit :
-  src:string ->
-    src_pos:int ->
-      dst:Stdcompat__init.bytes -> dst_pos:int -> len:int -> unit =
-    "blit_string" "noalloc"
-@END_BEFORE_3_08_0@
+
 
 @END_BEFORE_4_02_0@
 
