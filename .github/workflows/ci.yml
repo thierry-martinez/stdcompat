@@ -93,4 +93,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Make stdcompat
         run: |
-          su ci -c "opam exec --switch ${{ matrix.ocaml-compiler }} -- sh -exc \".github/scripts/build-${{ matrix.builder }}.sh\""
+          chown -R ci * && \
+          su ci -c "opam exec --switch ${{ matrix.ocaml-compiler }} -- \
+            sh -exc \".github/scripts/build-${{ matrix.builder }}.sh\""
