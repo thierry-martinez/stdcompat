@@ -94,5 +94,6 @@ jobs:
       - name: Make stdcompat
         run: |
           chown -R ci $PWD && \
-          su ci -c "opam exec --switch ${{ matrix.ocaml-compiler }} -- \
+          su ci -c "opam switch ${{ matrix.ocaml-compiler }} && \
+            eval $(opam env) && \
             sh -exc \".github/scripts/build-${{ matrix.builder }}.sh\""
