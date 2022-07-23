@@ -538,12 +538,7 @@ module type S = sig
   [@@noalloc ]
   @END_FROM_4_03_0@
   @BEGIN_BEFORE_4_03_0@
-  @BEGIN_FROM_3_08_0@
   external sqrt : float -> float = "caml_sqrt_float" "sqrt" "float"
-  @END_FROM_3_08_0@
-  @BEGIN_BEFORE_3_08_0@
-  external sqrt : float -> float = "sqrt_float" "sqrt" "float"
-  @END_BEFORE_3_08_0@
   
   @END_BEFORE_4_03_0@
   (** @since 4.03.0:
