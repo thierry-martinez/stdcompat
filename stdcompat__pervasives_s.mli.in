@@ -554,7 +554,12 @@ module type S = sig
                                                                       ]
   @END_FROM_4_03_0@
   @BEGIN_BEFORE_4_03_0@
+  @BEGIN_FROM_3_08_0@
   external exp : float -> float = "caml_exp_float" "exp" "float"
+  @END_FROM_3_08_0@
+  @BEGIN_BEFORE_3_08_0@
+  external exp : float -> float = "exp_float" "exp" "float"
+  @END_BEFORE_3_08_0@
   
   @END_BEFORE_4_03_0@
   (** @since 4.03.0:
