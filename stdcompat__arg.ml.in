@@ -168,7 +168,7 @@ let write_arg =
 let write_arg0 =
   write_aux '\x00'
 
-let parse_argv_dynamic ?current:_ _ =
+let parse_argv_dynamic ?current:_current _ =
   not_implemented ()
 
 let parse_dynamic _ =
