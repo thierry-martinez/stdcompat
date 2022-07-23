@@ -35,12 +35,9 @@ val string : string -> t
 val substring : string -> int -> int -> t
 (** Alias for {!Digest.substring} *)
 
-@BEGIN_FROM_3_08_0@
+
 external channel : in_channel -> int -> t = "caml_md5_chan"
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external channel : in_channel -> int -> t = "md5_chan"
-@END_BEFORE_3_08_0@
+
 (** @since 3.08.0:
     external channel : in_channel -> int -> t = "caml_md5_chan"
 @since 3.07.0: external channel : in_channel -> int -> t = "md5_chan"
