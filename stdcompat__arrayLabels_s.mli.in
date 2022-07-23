@@ -116,9 +116,12 @@ external get : 'a array -> int -> 'a = "%array_safe_get"
 external set : 'a array -> int -> 'a -> unit = "%array_safe_set"
 (** Alias for {!ArrayLabels.set} *)
 
-
+@BEGIN_FROM_3_08_0@
 external make : int -> 'a -> 'a array = "caml_make_vect"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external make : int -> 'a -> 'a array = "make_vect"
+@END_BEFORE_3_08_0@
 (** @since 3.08.0: external make : int -> 'a -> 'a array = "caml_make_vect"
 @since 3.07.0: external make : int -> 'a -> 'a array = "make_vect"
  *)
