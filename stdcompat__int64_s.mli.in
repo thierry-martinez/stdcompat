@@ -101,12 +101,9 @@ external of_float :
 [@@unboxed ][@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-@BEGIN_FROM_3_08_0@
+
 external of_float : float -> int64 = "caml_int64_of_float"
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external of_float : float -> int64 = "int64_of_float"
-@END_BEFORE_3_08_0@
+
 
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
@@ -123,12 +120,9 @@ external to_float :
 [@@unboxed ][@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-@BEGIN_FROM_3_08_0@
+
 external to_float : int64 -> float = "caml_int64_to_float"
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external to_float : int64 -> float = "int64_to_float"
-@END_BEFORE_3_08_0@
+
 
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
@@ -151,12 +145,9 @@ external of_nativeint : nativeint -> int64 = "%int64_of_nativeint"
 external to_nativeint : int64 -> nativeint = "%int64_to_nativeint"
 (** Alias for {!Int64.to_nativeint} *)
 
-@BEGIN_FROM_3_08_0@
+
 external of_string : string -> int64 = "caml_int64_of_string"
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external of_string : string -> int64 = "int64_of_string"
-@END_BEFORE_3_08_0@
+
 (** @since 3.08.0:
     external of_string : string -> int64 = "caml_int64_of_string"
 @since 3.07.0: external of_string : string -> int64 = "int64_of_string"
@@ -171,12 +162,9 @@ external bits_of_float :
     "caml_int64_bits_of_float_unboxed"[@@unboxed ][@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-@BEGIN_FROM_3_08_0@
+
 external bits_of_float : float -> int64 = "caml_int64_bits_of_float"
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external bits_of_float : float -> int64 = "int64_bits_of_float"
-@END_BEFORE_3_08_0@
+
 
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
@@ -195,12 +183,9 @@ external float_of_bits :
     "caml_int64_float_of_bits_unboxed"[@@unboxed ][@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-@BEGIN_FROM_3_08_0@
+
 external float_of_bits : int64 -> float = "caml_int64_float_of_bits"
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external float_of_bits : int64 -> float = "int64_float_of_bits"
-@END_BEFORE_3_08_0@
+
 
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
