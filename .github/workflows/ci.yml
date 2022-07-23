@@ -103,6 +103,7 @@ jobs:
       fail-fast: false
       matrix:
         builder:
+          - dune
           - make
           - make-no-magic
     runs-on: ubuntu-latest
