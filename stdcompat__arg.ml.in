@@ -95,7 +95,7 @@ let usage_string l msg =
 @END_BEFORE_3_12_0@
 
 @BEGIN_FROM_3_08_0@
-let align ?limit:_ l =
+let align ?limit:_limit l =
   expand_list (Arg.align (no_expand_list l))
 @END_FROM_3_08_0@
 @BEGIN_BEFORE_3_08_0@
