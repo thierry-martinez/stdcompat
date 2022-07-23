@@ -94,6 +94,29 @@ jobs:
       - name: Make stdcompat
         run: |
           chown -R ci $PWD && \
-          su ci -c "sh -exc \".github/scripts/build-old-ocaml.sh \
+          su ci -c "sh -exc \".github/scripts/build-in-docker.sh \
             \\\"${{ matrix.ocaml-compiler }}\\\" \
+            \\\"${{ matrix.builder }}\\\"\""
+
+  build-ubuntu-ocaml-5-beta:
+    strategy:
+      fail-fast: false
+      matrix:
+        builder:
+          - make
+          - make-no-magic
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/thierry-martinez/stdcompat-ocaml-5-beta
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.packages_actions_read }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Make stdcompat
+        run: |
+          chown -R ci $PWD && \
+          su ci -c "sh -exc \".github/scripts/build-in-docker.sh \
+            5.0.0~alpha1 \
             \\\"${{ matrix.builder }}\\\"\""
