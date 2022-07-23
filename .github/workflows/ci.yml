@@ -77,11 +77,11 @@ jobs:
           - make-no-magic
         ocaml-compiler:
           - 3.07
-          - 3.08.4
-          - 3.09.3
-          - 3.10.2
-          - 3.11.2
-          - 3.12.1
+#          - 3.08.4
+#          - 3.09.3
+#          - 3.10.2
+#          - 3.11.2
+#          - 3.12.1
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/thierry-martinez/stdcompat-old-ocamls
@@ -94,6 +94,6 @@ jobs:
       - name: Make stdcompat
         run: |
           chown -R ci $PWD && \
-          su ci -c "opam switch ${{ matrix.ocaml-compiler }} && \
+          su ci -c "id && opam switch ${{ matrix.ocaml-compiler }} && \
             eval $(opam env) && \
             sh -exc \".github/scripts/build-${{ matrix.builder }}.sh\""
