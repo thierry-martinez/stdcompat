@@ -325,9 +325,12 @@ external rem : float -> float -> float = "caml_fmod_float" "fmod"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external rem : float -> float -> float = "caml_fmod_float" "fmod" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external rem : float -> float -> float = "fmod_float" "fmod" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 external abs : float -> float = "%absfloat"
@@ -336,9 +339,12 @@ external of_int : int -> float = "%floatofint"
 
 external to_int : float -> int = "%intoffloat"
 
-
+@BEGIN_FROM_3_08_0@
 external of_string : string -> float = "caml_float_of_string"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external of_string : string -> float = "float_of_string"
+@END_BEFORE_3_08_0@
 
 @BEGIN_FROM_4_03_0@
 external classify_float :
@@ -346,9 +352,12 @@ external classify_float :
     "caml_classify_float_unboxed"[@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external classify_float : float -> fpclass = "caml_classify_float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external classify_float : float -> fpclass = "classify_float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -356,9 +365,12 @@ external pow : float -> float -> float = "caml_power_float" "pow"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external pow : float -> float -> float = "caml_power_float" "pow" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external pow : float -> float -> float = "power_float" "pow" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -366,9 +378,12 @@ external sqrt : float -> float = "caml_sqrt_float" "sqrt"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external sqrt : float -> float = "caml_sqrt_float" "sqrt" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external sqrt : float -> float = "sqrt_float" "sqrt" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -376,9 +391,12 @@ external exp : float -> float = "caml_exp_float" "exp"[@@unboxed ][@@noalloc
                                                                     ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external exp : float -> float = "caml_exp_float" "exp" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external exp : float -> float = "exp_float" "exp" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -386,9 +404,12 @@ external log : float -> float = "caml_log_float" "log"[@@unboxed ][@@noalloc
                                                                     ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external log : float -> float = "caml_log_float" "log" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external log : float -> float = "log_float" "log" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -396,9 +417,12 @@ external log10 : float -> float = "caml_log10_float" "log10"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external log10 : float -> float = "caml_log10_float" "log10" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external log10 : float -> float = "log10_float" "log10" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -406,9 +430,12 @@ external cos : float -> float = "caml_cos_float" "cos"[@@unboxed ][@@noalloc
                                                                     ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external cos : float -> float = "caml_cos_float" "cos" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external cos : float -> float = "cos_float" "cos" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -416,9 +443,12 @@ external sin : float -> float = "caml_sin_float" "sin"[@@unboxed ][@@noalloc
                                                                     ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external sin : float -> float = "caml_sin_float" "sin" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external sin : float -> float = "sin_float" "sin" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -426,9 +456,12 @@ external tan : float -> float = "caml_tan_float" "tan"[@@unboxed ][@@noalloc
                                                                     ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external tan : float -> float = "caml_tan_float" "tan" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external tan : float -> float = "tan_float" "tan" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -436,9 +469,12 @@ external acos : float -> float = "caml_acos_float" "acos"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external acos : float -> float = "caml_acos_float" "acos" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external acos : float -> float = "acos_float" "acos" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -446,9 +482,12 @@ external asin : float -> float = "caml_asin_float" "asin"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external asin : float -> float = "caml_asin_float" "asin" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external asin : float -> float = "asin_float" "asin" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -456,9 +495,12 @@ external atan : float -> float = "caml_atan_float" "atan"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external atan : float -> float = "caml_atan_float" "atan" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external atan : float -> float = "atan_float" "atan" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -466,9 +508,12 @@ external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
 [@@unboxed ][@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external atan2 : float -> float -> float = "caml_atan2_float" "atan2" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external atan2 : float -> float -> float = "atan2_float" "atan2" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -476,9 +521,12 @@ external cosh : float -> float = "caml_cosh_float" "cosh"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external cosh : float -> float = "caml_cosh_float" "cosh" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external cosh : float -> float = "cosh_float" "cosh" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -486,9 +534,12 @@ external sinh : float -> float = "caml_sinh_float" "sinh"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external sinh : float -> float = "caml_sinh_float" "sinh" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external sinh : float -> float = "sinh_float" "sinh" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -496,9 +547,12 @@ external tanh : float -> float = "caml_tanh_float" "tanh"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external tanh : float -> float = "caml_tanh_float" "tanh" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external tanh : float -> float = "tanh_float" "tanh" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -506,9 +560,12 @@ external ceil : float -> float = "caml_ceil_float" "ceil"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external ceil : float -> float = "caml_ceil_float" "ceil" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external ceil : float -> float = "ceil_float" "ceil" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
 @BEGIN_FROM_4_03_0@
@@ -516,14 +573,20 @@ external floor : float -> float = "caml_floor_float" "floor"[@@unboxed ]
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external floor : float -> float = "caml_floor_float" "floor" "float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external floor : float -> float = "floor_float" "floor" "float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
-
+@BEGIN_FROM_3_08_0@
 external frexp : float -> (float * int) = "caml_frexp_float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external frexp : float -> (float * int) = "frexp_float"
+@END_BEFORE_3_08_0@
 
 @BEGIN_FROM_4_03_0@
 external ldexp :
@@ -531,14 +594,20 @@ external ldexp :
     "caml_ldexp_float" "caml_ldexp_float_unboxed"[@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external ldexp : float -> int -> float = "caml_ldexp_float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external ldexp : float -> int -> float = "ldexp_float"
+@END_BEFORE_3_08_0@
 @END_BEFORE_4_03_0@
 
-
+@BEGIN_FROM_3_08_0@
 external modf : float -> (float * float) = "caml_modf_float"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external modf : float -> (float * float) = "modf_float"
+@END_BEFORE_3_08_0@
 
 @END_BEFORE_4_07_0@
 

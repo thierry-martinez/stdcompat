@@ -139,10 +139,14 @@ let reset = clear
 
 let randomize () = ()
 
-
+@BEGIN_FROM_3_08_0@
 external hash_param :
   int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external hash_param :
+  int -> int -> 'a -> int = "hash_univ_param" "noalloc"
+@END_BEFORE_3_08_0@
 
 let seeded_hash seed x = Hashtbl.hash (seed, x)
 

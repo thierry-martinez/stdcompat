@@ -358,10 +358,13 @@ val hash : 'a -> int
 val hash_param : int -> int -> 'a -> int
 @END_FROM_4_00_0@
 @BEGIN_BEFORE_4_00_0@
-
+@BEGIN_FROM_3_08_0@
 external hash_param :
   int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external hash_param : int -> int -> 'a -> int = "hash_univ_param" "noalloc"
+@END_BEFORE_3_08_0@
 
 @END_BEFORE_4_00_0@
 (** @since 4.00.0: val hash_param : int -> int -> 'a -> int
