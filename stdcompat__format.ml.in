@@ -18,9 +18,6 @@ type formatter_out_functions =
   out_spaces: int -> unit ;
   out_indent: int -> unit }
 
-let formatter_of_out_functions functions =
-  failwith "Not implemented."
-
 @BEGIN_FROM_4_01_0@
 let downgrade_formatter_out_functions functions =
   let { out_string; out_flush; out_newline; out_spaces; out_indent = _ } =
@@ -146,9 +143,6 @@ let pp_safe_set_geometry _ ~max_indent:_ ~margin:_ =
   failwith "Not implemented."
 
 let check_geometry _ =
-  failwith "Not implemented."
-
-let pp_safe_set_geometry _ =
   failwith "Not implemented."
 
 let pp_print_custom_break _ =

@@ -13,6 +13,10 @@ let peek_opt q =
 @BEGIN_BEFORE_4_07_0@
 @BEGIN_WITH_MAGIC@
 @BEGIN_FROM_4_03_0@
+@BEGIN_FROM_4_00_0@
+[@@@ocaml.warning "-37"]
+@END_FROM_4_00_0@
+
 type 'a cell =
   | Nil
   | Cons of { content: 'a; mutable next: 'a cell }

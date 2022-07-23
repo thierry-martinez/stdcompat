@@ -126,7 +126,7 @@ let rec init_aux i len f accu =
   else
     init_aux (succ i) len f (f i :: accu)
 
-let rec init len f =
+let init len f =
   if len < 0 then
     invalid_arg "List.init"
   else if len = 0 then
