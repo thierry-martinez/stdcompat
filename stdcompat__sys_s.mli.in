@@ -244,37 +244,54 @@ val argv : string array
 val executable_name : string
 (** Alias for {!Sys.executable_name} *)
 
+@BEGIN_FROM_3_08_0@
 external file_exists : string -> bool = "caml_sys_file_exists"
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external file_exists : string -> bool = "sys_file_exists"
+@END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external file_exists : string -> bool = "caml_sys_file_exists"
 @since 3.07.0: external file_exists : string -> bool = "sys_file_exists"
  *)
 
-
+@BEGIN_FROM_3_08_0@
 external remove : string -> unit = "caml_sys_remove"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external remove : string -> unit = "sys_remove"
+@END_BEFORE_3_08_0@
 (** @since 3.08.0: external remove : string -> unit = "caml_sys_remove"
 @since 3.07.0: external remove : string -> unit = "sys_remove"
  *)
 
-
+@BEGIN_FROM_3_08_0@
 external rename : string -> string -> unit = "caml_sys_rename"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external rename : string -> string -> unit = "sys_rename"
+@END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external rename : string -> string -> unit = "caml_sys_rename"
 @since 3.07.0: external rename : string -> string -> unit = "sys_rename"
  *)
 
-
+@BEGIN_FROM_3_08_0@
 external getenv : string -> string = "caml_sys_getenv"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external getenv : string -> string = "sys_getenv"
+@END_BEFORE_3_08_0@
 (** @since 3.08.0: external getenv : string -> string = "caml_sys_getenv"
 @since 3.07.0: external getenv : string -> string = "sys_getenv"
  *)
 
-
+@BEGIN_FROM_3_08_0@
 external command : string -> int = "caml_sys_system_command"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external command : string -> int = "sys_system_command"
+@END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external command : string -> int = "caml_sys_system_command"
 @since 3.07.0: external command : string -> int = "sys_system_command"
@@ -286,9 +303,12 @@ external time :
 [@@noalloc ]
 @END_FROM_4_03_0@
 @BEGIN_BEFORE_4_03_0@
-
+@BEGIN_FROM_3_08_0@
 external time : unit -> float = "caml_sys_time"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external time : unit -> float = "sys_time"
+@END_BEFORE_3_08_0@
 
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
@@ -299,23 +319,32 @@ external time : unit -> float = "caml_sys_time"
 @since 3.07.0: external time : unit -> float = "sys_time"
  *)
 
-
+@BEGIN_FROM_3_08_0@
 external chdir : string -> unit = "caml_sys_chdir"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external chdir : string -> unit = "sys_chdir"
+@END_BEFORE_3_08_0@
 (** @since 3.08.0: external chdir : string -> unit = "caml_sys_chdir"
 @since 3.07.0: external chdir : string -> unit = "sys_chdir"
  *)
 
-
+@BEGIN_FROM_3_08_0@
 external getcwd : unit -> string = "caml_sys_getcwd"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external getcwd : unit -> string = "sys_getcwd"
+@END_BEFORE_3_08_0@
 (** @since 3.08.0: external getcwd : unit -> string = "caml_sys_getcwd"
 @since 3.07.0: external getcwd : unit -> string = "sys_getcwd"
  *)
 
-
+@BEGIN_FROM_3_08_0@
 external readdir : string -> string array = "caml_sys_read_directory"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external readdir : string -> string array = "sys_read_directory"
+@END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external readdir : string -> string array = "caml_sys_read_directory"
 @since 3.07.0:
@@ -337,10 +366,14 @@ val max_string_length : int
 val max_array_length : int
 (** Alias for {!Sys.max_array_length} *)
 
-
+@BEGIN_FROM_3_08_0@
 external signal :
   int -> signal_behavior -> signal_behavior = "caml_install_signal_handler"
-
+@END_FROM_3_08_0@
+@BEGIN_BEFORE_3_08_0@
+external signal :
+  int -> signal_behavior -> signal_behavior = "install_signal_handler"
+@END_BEFORE_3_08_0@
 (** @since 3.08.0:
     external signal :
       int -> signal_behavior -> signal_behavior =
