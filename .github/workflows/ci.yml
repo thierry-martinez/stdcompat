@@ -40,7 +40,7 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       - name: Make stdcompat
         run: |
-          opam exec -- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
+          opam exec -- sh -xc ".github/scripts/build-${{ matrix.builder }}.sh"
 
   build-macos-and-windows:
     strategy:
@@ -56,6 +56,10 @@ jobs:
         ocaml-compiler:
           - 4.02.x
           - 4.14.x
+          - ocaml-variants.4.14.0+mingw64c
+        exclude:
+          - os: macos-latest
+            ocaml-compiler: ocaml-variants.4.14.0+mingw64c
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -66,7 +70,7 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       - name: Make stdcompat
         run: |
-          opam exec -- sh -exc ".github/scripts/build-${{ matrix.builder }}.sh"
+          opam exec -- sh -xc ".github/scripts/build-${{ matrix.builder }}.sh"
 
   build-ubuntu-old-ocamls:
     strategy:
@@ -94,7 +98,7 @@ jobs:
       - name: Make stdcompat
         run: |
           chown -R ci $PWD && \
-          su ci -c "sh -exc \".github/scripts/build-in-docker.sh \
+          su ci -c "sh -xc \".github/scripts/build-in-docker.sh \
             \\\"${{ matrix.ocaml-compiler }}\\\" \
             \\\"${{ matrix.builder }}\\\"\""
 
@@ -118,6 +122,6 @@ jobs:
       - name: Make stdcompat
         run: |
           chown -R ci $PWD && \
-          su ci -c "sh -exc \".github/scripts/build-in-docker.sh \
+          su ci -c "sh -xc \".github/scripts/build-in-docker.sh \
             5.0.0~alpha1 \
             \\\"${{ matrix.builder }}\\\"\""
