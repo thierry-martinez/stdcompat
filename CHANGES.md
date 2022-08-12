@@ -2,6 +2,12 @@
 
 - Fix `Illegal seek` exception in `In_channel.input_all`
 
+- #23, #24: Fix dune compilation error on Windows MinGW port
+  (reported by Kay-Uwe Kirstein)
+
+- Upstream `opam-repository-mingw` patch for DLL extensions
+  (suggested by Kay-Uwe Kirstein)
+
 * Version 19, 2022-07-08
 
 - Compatibility with OCaml 5.0
