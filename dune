@@ -490,4 +490,4 @@
   stdcompat__weak.mli.in
   stdcompat__weak_s.mli.in
   stdcompat_tests.ml.in)
-  (action (run %{configure})))
+  (action (run sh %{configure})))
