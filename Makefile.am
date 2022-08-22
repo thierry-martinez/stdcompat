@@ -80,6 +80,10 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 	stdcompat__unit.ml \
 	stdcompat__stdlib.ml stdcompat.ml
 
+# From https://github.com/fdopen/opam-repository-mingw/commit/3b4c52e17cfae96cfbf5120b60b8c2bbf5aad252
+# We prefer DLLEXT to conform with EXEEXT and OBJEXT
+DLLEXT := $(shell ocamlc -config | awk -F '[\t\r ]+' '/^ext_dll:/ {print $$2}')
+
 MODULES_native = stdcompat__native.ml $(MODULES)
 
 mypkg_SCRIPTS = META $(MODULES_native) $(MODULES_native:.ml=.cmi) \
@@ -141,7 +145,7 @@ stdcompat__stubs.$(OBJEXT) : stdcompat__stubs.c
 libstdcompat__stubs.a : stdcompat__stubs.$(OBJEXT)
 	$(OCAMLMKLIB) -o stdcompat__stubs $<
 
-dllstdcompat__stubs.so : libstdcompat__stubs.a
+dllstdcompat__stubs$(DLLEXT) : libstdcompat__stubs.a
 
 stdcompat.cma : $(MODULES_native:.ml=.cmo) libstdcompat__stubs.a
 	$(OCAMLC) $(OCAMLLDFLAGS) -a $(MODULES_native:.ml=.cmo) \
@@ -181,10 +185,10 @@ $(STDCOMPAT_TESTS_EXE): stdcompat.$(CMAX) stdcompat_tests.ml
 @INCLUDE_DEPEND@
 
 CLEANFILES = *.cmi *.cmo *.cmx *.cmt *.cmti *.o *.a stdcompat.cma \
-	stdcompat.cmxa stdcompat__native.ml dllstdcompat__stubs.so \
+	stdcompat.cmxa stdcompat__native.ml dllstdcompat__stubs$(DLLEXT) \
 	stdcompat.cmxs $(STDCOMPAT_TESTS_EXE) $(bin_SCRIPTS) .depend
 
 install-exec-hook :
 	$(MKDIR_P) $(DESTDIR)$(libdir)/stublibs
-	$(INSTALL_PROGRAM) dllstdcompat__stubs.so $(DESTDIR)$(libdir)/stublibs
-	echo stdcompat >$(DESTDIR)$(libdir)/stublibs/dllstdcompat__stubs.so.owner
+	$(INSTALL_PROGRAM) dllstdcompat__stubs$(DLLEXT) $(DESTDIR)$(libdir)/stublibs
+	echo stdcompat >$(DESTDIR)$(libdir)/stublibs/dllstdcompat__stubs$(DLLEXT).owner
