@@ -10,8 +10,6 @@ jobs:
           - make
           - make-no-magic
         ocaml-compiler:
-          - 4.00.x
-          - 4.01.x
           - 4.02.x
           - 4.03.x
           - 4.04.x
@@ -25,11 +23,6 @@ jobs:
           - 4.12.x
           - 4.13.x
           - 4.14.x
-        exclude:
-          - builder: dune
-            ocaml-compiler: 4.00.x
-          - builder: dune
-            ocaml-compiler: 4.01.x
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -86,6 +79,8 @@ jobs:
           - 3.10.2
           - 3.11.2
           - 3.12.1
+          - 4.00.1
+          - 4.01.0
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/thierry-martinez/stdcompat-old-ocamls
