@@ -1,4 +1,4 @@
-* Development version
+# Development version
 
 - Fix `Illegal seek` exception in `In_channel.input_all`
 
@@ -8,7 +8,7 @@
 - Upstream `opam-repository-mingw` patch for DLL extensions
   (suggested by Kay-Uwe Kirstein)
 
-* Version 19, 2022-07-08
+# Version 19, 2022-07-08
 
 - Compatibility with OCaml 5.0
 
@@ -30,7 +30,7 @@
   run as root
   (reported by Marc Chevalier, https://github.com/ocaml/ocaml/issues/11302)
 
-* Version 18, 2022-02-09
+# Version 18, 2022-02-09
 
 - Support for OCaml 4.14 with
   - Lot of new functions in Seq
@@ -55,13 +55,13 @@
 - Add dependency for generating .cmt files
   (reported by Sabyrzhan Tasbolatov)
 
-* Version 17, 2021-09-28
+# Version 17, 2021-09-28
 
 - Fix: missing prototype for caml_alloc_initialized_string in stdcompat.h
 
 - Fix: linking with stdcompat__stubs in bytecode
 
-* Version 16, 2021-07-09
+# Version 16, 2021-07-09
 
 - Support for OCaml 4.13.0 with
   - Seq.{concat, concat_map}
@@ -81,7 +81,7 @@
   even for OCaml <4.02 (the equality was not preserved since the type of
   lex_buffer was syntactically different, string instead of bytes)
 
-* Version 15, 2021-02-17
+# Version 15, 2021-02-17
 
 - Support for OCaml 4.12.0 with
   - Sys.{mkdir, rmdir}
@@ -93,7 +93,7 @@
 
 - VERSION file was missing in distributed archive
 
-* Version 14, 2020-05-10
+# Version 14, 2020-05-10
 
 - Support for OCaml 4.11.0 with
   - Array.{for_all2, exists2}
@@ -108,7 +108,7 @@
 
 - Support for version mismatch between ocamlc and ocamlfind packages
 
-* Version 13, 2020-02-22
+# Version 13, 2020-02-22
 
 - Add: stdcompat.h, provides prototype for caml_alloc_initialized_string
   for OCaml <4.06.0 (already defined in a C library linked with
@@ -120,7 +120,7 @@
 
 - Fix: reference to the native plugin (.cmxs) in META
 
-* Version 12, 2020-02-08
+# Version 12, 2020-02-08
 
 - Support for OCaml 4.10.0
 
@@ -132,13 +132,13 @@
 - Equality Lexing.lexbuf = Stdcompat.Lexing.lexbuf is available even for
   OCaml <4.02.0 (before the introduction of bytes)
 
-* Version 11, 2019-09-30
+# Version 11, 2019-09-30
 
 - caml_alloc_initialized_string is now available for OCaml 4.05.0
 
 - Add Printexc.to_string_default and Printexc.use_printers
 
-* Version 10, 2019-06-26
+# Version 10, 2019-06-26
 
 - New C stub with definition of caml_alloc_initialized_string for OCaml <4.05.0
 
@@ -146,7 +146,7 @@
 
 - Generate -bin-annot .cmt files for OCaml >=4.00.0
 
-* Version 9, 2019-03-12
+# Version 9, 2019-03-12
 
 - [compatibility break] Pervasives.protect has been moved to Fun.protect
   since its introduction in OCaml trunk
@@ -163,7 +163,7 @@
 
 - Fix: equality between aliases of Seq.t
 
-* Version 8, 2018-12-10
+# Version 8, 2018-12-10
 
 - Fix: module Fun was not exported
 
@@ -173,14 +173,14 @@
 
 - Fix: Stdlib.result redefined before 4.03 (instead of 4.06)
 
-* Version 7, 2018-11-28
+# Version 7, 2018-11-28
 
 - OCaml 4.08.0 additions: Bool, Fun, Array.t, List.t, Bytes and Buffer
   operations on u?int(8|16|32|64), operations on Float, Filename.chop_suffix_opt
 
 - Modules Format and Printf added to the set of redefined modules
 
-* Version 6, 2018-09-10
+# Version 6, 2018-09-10
 
 - Support for OCaml 4.08.0
 
@@ -215,7 +215,7 @@
     - https://caml.inria.fr/mantis/view.php?id=7820
     - https://github.com/ocaml/ocaml/pull/1897
 
-* Version 5, 2018-07-11
+# Version 5, 2018-07-11
 - Interfaces are auto-generated.
 
 - stdcompat is now free from any required dependency. There are still
@@ -241,10 +241,10 @@
 
 - Compatibility with uchar package
 
-* Version 4, 2018-05-30
+# Version 4, 2018-05-30
 - Fix link problems with hypot, copy_sign, ldexp and classify_float
 
-* Version 3, 2018-04-25
+# Version 3, 2018-04-25
 - Missing List.of_seq/List.to_seq
 - Remove spurious Float.seeded_hash_param
   (suggested by Hezekiah M. Carty:
@@ -259,7 +259,7 @@
   "make USE_MAGIC=false"
 - jbuild script (Hezekiah M. Carty)
 
-* Version 2, 2018-04-19
+# Version 2, 2018-04-19
 - Redefinitions for Pervasives are now in Stdcompat.Pervasives (they were
   previously defined at the root of Stdcompat), and the module
   Stdcompat.Pervasives is included in Stdcompat, so that opening Stdcompat
@@ -267,5 +267,5 @@
 - Float module (OCaml 4.07.0)
 - Seq module and of_seq/to_seq/...
 
-* Version 1, 2017-11-14
+# Version 1, 2017-11-14
 - Initial release

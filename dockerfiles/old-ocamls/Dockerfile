@@ -17,4 +17,6 @@ RUN opam update && opam switch create 3.09.3
 RUN opam update && opam switch create 3.10.2
 RUN opam update && opam switch create 3.11.2
 RUN opam update && opam switch create 3.12.1
+RUN opam update && opam switch create 4.00.1
+RUN opam update && opam switch create 4.01.0
 USER root
