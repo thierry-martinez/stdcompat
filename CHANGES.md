@@ -5,6 +5,9 @@
 - #23, #24, #25: Fix `dune` build on Windows.
   (reported by Kay-Uwe Kirstein)
 
+- Fix `Makefile`-based build system on Windows.
+  (reported by Noteeeeeee, https://github.com/thierry-martinez/pyml/issues/88 )
+
 - Upstream `opam-repository-mingw` patch for DLL extensions
   (suggested by Kay-Uwe Kirstein)
 
@@ -21,14 +24,14 @@
   (Marek Kubica, https://github.com/thierry-martinez/stdcompat/pull/16,
    https://github.com/thierry-martinez/stdcompat/pull/19
    with contribution from Kate,
-   https://github.com/thierry-martinez/stdcompat/pull/21)
+   https://github.com/thierry-martinez/stdcompat/pull/21 )
 
 - Add support for `flambda2`
-  (Guillaume Bury, https://github.com/thierry-martinez/stdcompat/pull/14)
+  (Guillaume Bury, https://github.com/thierry-martinez/stdcompat/pull/14 )
 
 - Prevent replacing `/dev/null/` by a regular file when `./configure` is
   run as root
-  (reported by Marc Chevalier, https://github.com/ocaml/ocaml/issues/11302)
+  (reported by Marc Chevalier, https://github.com/ocaml/ocaml/issues/11302 )
 
 # Version 18, 2022-02-09
 

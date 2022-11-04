@@ -84,10 +84,13 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 # We prefer DLLEXT to conform with EXEEXT and OBJEXT
 DLLEXT := $(shell ocamlc -config | awk -F '[\t\r ]+' '/^ext_dll:/ {print $$2}')
 
+# Fix install on Windows (https://github.com/thierry-martinez/pyml/issues/88)
+LIBEXT := $(shell ocamlc -config | awk -F '[\t\r ]+' '/^ext_lib:/ {print $$2}')
+
 MODULES_native = stdcompat__native.ml $(MODULES)
 
 mypkg_SCRIPTS = META $(MODULES_native) $(MODULES_native:.ml=.cmi) \
-	libstdcompat__stubs.a stdcompat.h
+	libstdcompat__stubs$(LIBEXT) stdcompat.h
 
 if OCAML_SUPPORTS_BYTECODE
 mypkg_SCRIPTS += stdcompat.cma
@@ -95,7 +98,7 @@ BEST_SUFFIX := .cmo
 endif
 
 if OCAML_SUPPORTS_NATIVE
-mypkg_SCRIPTS += stdcompat.cmxa stdcompat.a $(MODULES_native:.ml=.cmx)
+mypkg_SCRIPTS += stdcompat.cmxa stdcompat$(LIBEXT) $(MODULES_native:.ml=.cmx)
 BEST_SUFFIX := .cmx
 endif
 
@@ -142,21 +145,21 @@ $(BEST_SUFFIX).cmt : ;
 stdcompat__stubs.$(OBJEXT) : stdcompat__stubs.c
 	$(OCAMLC) -c $<
 
-libstdcompat__stubs.a : stdcompat__stubs.$(OBJEXT)
+libstdcompat__stubs$(LIBEXT) : stdcompat__stubs.$(OBJEXT)
 	$(OCAMLMKLIB) -o stdcompat__stubs $<
 
-dllstdcompat__stubs$(DLLEXT) : libstdcompat__stubs.a
+dllstdcompat__stubs$(DLLEXT) : libstdcompat__stubs$(LIBEXT)
 
-stdcompat.cma : $(MODULES_native:.ml=.cmo) libstdcompat__stubs.a
+stdcompat.cma : $(MODULES_native:.ml=.cmo) libstdcompat__stubs$(LIBEXT)
 	$(OCAMLC) $(OCAMLLDFLAGS) -a $(MODULES_native:.ml=.cmo) \
 	  $(OCAMLLIBFLAGS) -dllib -lstdcompat__stubs -o $@
 
-stdcompat.cmxa : $(MODULES_native:.ml=.cmx) libstdcompat__stubs.a
+stdcompat.cmxa : $(MODULES_native:.ml=.cmx) libstdcompat__stubs$(LIBEXT)
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -a $(MODULES_native:.ml=.cmx) $(OCAMLLIBFLAGS) -o $@
 
-stdcompat.a : stdcompat.cmxa
+stdcompat$(LIBEXT) : stdcompat.cmxa
 
-stdcompat.cmxs : $(MODULES_native:.ml=.cmx) libstdcompat__stubs.a
+stdcompat.cmxs : $(MODULES_native:.ml=.cmx) libstdcompat__stubs$(LIBEXT)
 	$(OCAMLOPT) $(OCAMLLDFLAGS) -shared $(MODULES_native:.ml=.cmx) $(OCAMLLIBFLAGS) -o $@
 
 # Fake dependency to rebuild stdcompat__native.cmi on compiler change
@@ -184,7 +187,7 @@ $(STDCOMPAT_TESTS_EXE): stdcompat.$(CMAX) stdcompat_tests.ml
 
 @INCLUDE_DEPEND@
 
-CLEANFILES = *.cmi *.cmo *.cmx *.cmt *.cmti *.o *.a stdcompat.cma \
+CLEANFILES = *.cmi *.cmo *.cmx *.cmt *.cmti *.$(OBJEXT) *$(LIBEXT) stdcompat.cma \
 	stdcompat.cmxa stdcompat__native.ml dllstdcompat__stubs$(DLLEXT) \
 	stdcompat.cmxs $(STDCOMPAT_TESTS_EXE) $(bin_SCRIPTS) .depend
 
