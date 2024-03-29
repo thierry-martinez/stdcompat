@@ -697,6 +697,22 @@ C_END_WITH_WIN32
 C_BEGIN_WITH_WIN32
 END_WITH_WIN32
 BEGIN_WITH_WIN32
+C_END_BEFORE_5_2_0
+C_BEGIN_BEFORE_5_2_0
+END_BEFORE_5_2_0
+BEGIN_BEFORE_5_2_0
+C_END_FROM_5_2_0
+C_BEGIN_FROM_5_2_0
+END_FROM_5_2_0
+BEGIN_FROM_5_2_0
+C_END_BEFORE_5_1_0
+C_BEGIN_BEFORE_5_1_0
+END_BEFORE_5_1_0
+BEGIN_BEFORE_5_1_0
+C_END_FROM_5_1_0
+C_BEGIN_FROM_5_1_0
+END_FROM_5_1_0
+BEGIN_FROM_5_1_0
 C_END_BEFORE_5_0_0
 C_BEGIN_BEFORE_5_0_0
 END_BEFORE_5_0_0
@@ -3633,7 +3649,7 @@ OCAML_VERSION_MAJOR=`echo $OCAMLVERSION | cut -d '.' -f 1`
 OCAML_VERSION_MINOR=`echo $OCAMLVERSION | cut -d '.' -f 2`
 
 
-OCAML_VERSION_PATCH_AND_EXTRA=`echo $OCAMLVERSION | cut -d '.' -f 3`
+OCAML_VERSION_PATCH_AND_EXTRA=`echo $OCAMLVERSION | cut -d '.' -f 3 | cut -d '+' -f 1 | cut -d '~' -f 1`
 
 
 if test "x$OCAML_VERSION_PATCH_AND_EXTRA" = "x"
@@ -7062,6 +7078,62 @@ else $as_nop
    C_BEGIN_FROM_5_0_0='#if 0'
 
    C_END_FROM_5_0_0='#endif'
+
+
+
+
+
+fi
+if test `printf "$OCAMLVERSION\n5.1.0" | sort | head -n1` = 5.1.0
+then :
+
+
+
+
+     BEGIN_BEFORE_5_1_0='(*'
+
+   END_BEFORE_5_1_0='*)'
+
+   C_BEGIN_BEFORE_5_1_0='#if 0'
+
+   C_END_BEFORE_5_1_0='#endif'
+
+else $as_nop
+  BEGIN_FROM_5_1_0='(*'
+
+   END_FROM_5_1_0='*)'
+
+   C_BEGIN_FROM_5_1_0='#if 0'
+
+   C_END_FROM_5_1_0='#endif'
+
+
+
+
+
+fi
+if test `printf "$OCAMLVERSION\n5.2.0" | sort | head -n1` = 5.2.0
+then :
+
+
+
+
+     BEGIN_BEFORE_5_2_0='(*'
+
+   END_BEFORE_5_2_0='*)'
+
+   C_BEGIN_BEFORE_5_2_0='#if 0'
+
+   C_END_BEFORE_5_2_0='#endif'
+
+else $as_nop
+  BEGIN_FROM_5_2_0='(*'
+
+   END_FROM_5_2_0='*)'
+
+   C_BEGIN_FROM_5_2_0='#if 0'
+
+   C_END_FROM_5_2_0='#endif'
 
 
 
