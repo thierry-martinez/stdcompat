@@ -37,7 +37,7 @@ AC_SUBST([OCAML_VERSION_MAJOR], [[`echo $OCAMLVERSION | cut -d '.' -f 1`]])
 
 AC_SUBST([OCAML_VERSION_MINOR], [[`echo $OCAMLVERSION | cut -d '.' -f 2`]])
 
-AC_SUBST([OCAML_VERSION_PATCH_AND_EXTRA], [[`echo $OCAMLVERSION | cut -d '.' -f 3`]])
+AC_SUBST([OCAML_VERSION_PATCH_AND_EXTRA], [[`echo $OCAMLVERSION | cut -d '.' -f 3 | cut -d '+' -f 1 | cut -d '~' -f 1`]])
 
 AS_IF([test "x$OCAML_VERSION_PATCH_AND_EXTRA" = "x"],
   [AC_SUBST([OCAML_VERSION_PATCHLEVEL], [[0]])
@@ -194,6 +194,8 @@ AC_WITH_OCAML_VERSION([4_12_0], [4.12.0])
 AC_WITH_OCAML_VERSION([4_13_0], [4.13.0])
 AC_WITH_OCAML_VERSION([4_14_0], [4.14.0])
 AC_WITH_OCAML_VERSION([5_0_0], [5.0.0])
+AC_WITH_OCAML_VERSION([5_1_0], [5.1.0])
+AC_WITH_OCAML_VERSION([5_2_0], [5.2.0])
 
 AS_IF([test "x$target_os_type" = "xWin32"],
   [AC_WITH_BLOCK([WIN32])],
