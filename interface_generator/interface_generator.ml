@@ -490,7 +490,7 @@ let qualify_type_decl ~module_name (type_decl : Parsetree.type_declaration) =
         Option.map @@ fun (ty : Parsetree.core_type) ->
           match ty.ptyp_desc with
           | Ptyp_constr ({ txt = Lident "fpclass"; loc }, []) ->
-              let txt = Longident.Ldot (Lident "Pervasives", "fpclass") in
+              let txt = Longident.Ldot (Lident "Stdlib", "fpclass") in
               let ptyp_desc =
                 Parsetree.Ptyp_constr ({ Location.txt; loc }, []) in
               { ty with ptyp_desc }
@@ -966,7 +966,7 @@ and is_signature_item_isomorphic kind
           Psig_typext type_extension' ->
             true
   | _ ->
-      failwith "is_signature_item_isomorphic"
+     false
 
 let find_prim_opt version pval_name prim =
   let modules : Longident.t list = [Lident "Pervasives"] in
@@ -1567,13 +1567,7 @@ let format_versioned_signature ~module_name ~version_high ~version_low
         List.iter format_doc_version versions in
       Format.fprintf formatter "(** @[<v>%a@] *)@.@." format_doc versions
 
-let main argv =
-  let arg_list = Array.to_list Sys.argv in
-  let module_name, versions =
-    match arg_list with
-    | _ :: module_name :: versions ->
-        module_name, versions
-    | [] | [_] -> failwith "No argument given" in
+let generate channel module_name versions =
   let module_name = Longident.Lident module_name in
   let signatures =
     versions |> List.map @@ fun version ->
@@ -1593,7 +1587,8 @@ let main argv =
         ~module_name ~signatures in
   let version_high, _ = List.hd signatures in
   let version_low, _ = List.last signatures in
-  print_endline "module type S = sig";
+  let formatter = Format.formatter_of_out_channel channel in
+  Format.fprintf formatter "module type S = sig@.";
   versioned_signature |>
     List.map gather_similar_versions |>
     List.sort compare_versioned_signature |>
@@ -1601,8 +1596,8 @@ let main argv =
       format_versioned_signature ~module_name
       ~version_high ~version_low
       ~reference_version
-      Format.std_formatter;
-  print_endline "end"
+      formatter;
+  Format.fprintf formatter "end@."
 (*
   let mli_filenames = argv |> Array.to_list |> List.tl in
   let signatures = mli_filenames |> List.map read_interface in
@@ -1613,6 +1608,25 @@ let main argv =
         main_signature, other_signatures in
   main_signature |> List.iter @@ format_signature_item Format.std_formatter
 *)
+
+let do_module versions module_name =
+  print_endline module_name;
+  let target = Printf.sprintf "../stdcompat__%s_s.mli.in" (String.lowercase_ascii module_name) in
+  print_endline target;
+  Out_channel.with_open_text target (fun channel ->
+    generate channel module_name versions)
+
+let main _argv =
+  let modules =
+    ["Atomic";
+    "Arg"; "Array"; "ArrayLabels"; "Bool"; "Buffer"; "Bytes"; "BytesLabels"; "Callback"; "Char";
+    "Complex"; "Digest"; "Domain"; "Either"; "Ephemeron"; "Filename"; "Float"; "Format"; "Fun"; "Gc"; "Hashtbl"; "Int32"; 
+    "Int64"; "Lazy"; "Lexing"; "List"; "ListLabels"; "Map"; "Marshal"; "MoreLabels"; "Nativeint"; "Obj"; "Oo";
+    "Option"; "Parsing"; "Printexc"; "Printf"; "Queue"; "Random"; "Result"; "Scanf"; "Seq"; "Set";
+    "Stack"; "StdLabels"; "String"; "StringLabels"; "Sys"; "Uchar"; "Weak"; "In_channel"; "Out_channel";
+    "Unit"] in
+  let versions = ["5.2"; "5.1"; "5.0"; "4.14"; "4.13"; "4.12"; "4.11"; "4.10"; "4.09"; "4.08"; "4.07"; "4.06"; "4.05"; "4.04"; "4.03"; "4.02"; "4.01"; "4.00"; "3.12"; "3.11"; "3.10"; "3.09"; "3.08"; "3.07"] in
+  List.iter (do_module versions) modules
 
 let () =
   if not !Sys.interactive then

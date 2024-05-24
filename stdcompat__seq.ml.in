@@ -467,3 +467,28 @@ let to_dispenser seq =
 let rec ints i () =
   Cons (i, ints (succ i))
 @END_BEFORE_4_14_0@
+
+@BEGIN_BEFORE_5_1_0@
+let rec find_index_from index p seq =
+  match seq () with
+  | Nil -> None
+  | Cons (hd, tl) ->
+    if p hd then
+      Some index
+    else
+      find_index_from (succ index) p tl
+
+let find_index p seq =
+  find_index_from 0 p seq
+
+let rec find_mapi_from index f seq =
+  match seq () with
+  | Nil -> None
+  | Cons (hd, tl) ->
+    match f index hd with
+    | None -> find_mapi_from (succ index) f tl
+    | some -> some
+
+let find_mapi f seq =
+  find_mapi_from 0 f seq
+@END_BEFORE_5_1_0@

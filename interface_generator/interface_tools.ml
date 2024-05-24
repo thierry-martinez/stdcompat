@@ -60,6 +60,7 @@ module Version = struct
     let major, minor =
       match String.split_on_char '.' version with
       | [major; minor; _patch] -> major, minor
+      | [major; minor] -> major, minor
       | _ -> assert false in
     { major = int_of_string major;
       minor = int_of_string minor;
@@ -78,10 +79,15 @@ module Version = struct
 *)
 
   let to_string ?(sep = ".") ?(include_patch = true) { major; minor; patch } =
+    let major_minor =
+      if major >= 5 then
+        Printf.sprintf "%d%s%d" major sep minor
+      else
+        Printf.sprintf "%d%s%.2d" major sep minor in
     if include_patch then
-      Printf.sprintf "%d%s%.2d%s%d" major sep minor sep patch
+      Printf.sprintf "%s%s%d" major_minor sep patch
     else
-      Printf.sprintf "%d%s%.2d" major sep minor
+      major_minor
 end
 
 let signature_of_in_channel ?filename in_channel =

@@ -1,6 +1,13 @@
 @BEGIN_FROM_4_14_0@
 include Out_channel
 @END_FROM_4_14_0@
+@BEGIN_BEFORE_5_2_0@
+let output_bigarray channel src pos len =
+  failwith "output_bigarray"
+
+let is_binary_mode _channel =
+  failwith "is_binary_mode"
+@END_BEFORE_5_2_0@
 @BEGIN_BEFORE_4_14_0@
 type t = out_channel
 
@@ -72,3 +79,8 @@ let set_buffered _ _ =
 
 let is_buffered _ = true
 @END_BEFORE_4_14_0@
+
+@BEGIN_BEFORE_5_1_0@
+let isatty ic =
+  failwith "not implemented"
+@END_BEFORE_5_1_0@

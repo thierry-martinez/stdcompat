@@ -18,7 +18,7 @@ EXTRA_DIST= stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
 	stdcompat__moreLabels.mli stdcompat__lexing.mli \
 	stdcompat__option.mli stdcompat__printexc.mli \
 	stdcompat__random.mli \
-	stdcompat__result.mli stdcompat__bool.mli \
+	stdcompat__result.mli stdcompat__bool.mli stdcompat__domain.mli \
 	stdcompat__fun.mli stdcompat__format.mli stdcompat__printf.mli stdcompat__stdlib.mli \
 	stdcompat__seq.mli stdcompat__printexc.mli \
         stdcompat__either.mli stdcompat__atomic.mli \
@@ -51,7 +51,8 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 	stdcompat__moreLabels_s.ml stdcompat__lexing_s.ml \
 	stdcompat__pervasives.ml \
 	stdcompat__option_s.ml stdcompat__result_s.ml stdcompat__bool_s.ml \
-	stdcompat__fun_s.ml stdcompat__printf_s.ml \
+	stdcompat__fun_s.ml stdcompat__printf_s.ml stdcompat__domain_s.ml \
+	stdcompat__domain.ml \
 	stdcompat__printexc_s.ml stdcompat__format_s.ml stdcompat__atomic_s.ml \
 	stdcompat__in_channel_s.ml stdcompat__out_channel_s.ml \
 	stdcompat__random_s.ml \

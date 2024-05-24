@@ -1,9 +1,15 @@
-@BEGIN_FROM_4_08_0@
+@BEGIN_FROM_5_2_0@
  include Float
-@END_FROM_4_08_0@
-@BEGIN_BEFORE_4_08_0@
+@END_FROM_5_2_0@
+@BEGIN_BEFORE_5_2_0@
 
 module Array = struct
+  @BEGIN_FROM_4_08_0@
+  include Float.Array
+  @END_FROM_4_08_0@
+
+  @BEGIN_BEFORE_4_08_0@
+
   type t = Stdcompat__init.floatarray
 
   include Stdcompat__array.Floatarray
@@ -215,12 +221,158 @@ module Array = struct
 
   let map_from_array f a =
     init (Array.length a) (fun i -> f (Array.unsafe_get a i))
+
+@END_BEFORE_4_08_0@
+
+  @BEGIN_BEFORE_5_1_0@
+  let map_inplace f array =
+    for i = 0 to length array - 1 do
+      unsafe_set array i (f (unsafe_get array i))
+    done
+
+  let mapi_inplace f array =
+    for i = 0 to length array - 1 do
+      unsafe_set array i (f i (unsafe_get array i))
+    done
+
+  let rec find_opt_from index f array =
+    if index < length array then
+      let v = unsafe_get array index in
+      if f v then
+        Some v
+      else
+        find_opt_from (succ index) f array
+    else
+      None
+
+  let find_opt f array =
+    find_opt_from 0 f array
+
+  let rec find_index_from index p array =
+    if index < length array then
+      if p (unsafe_get array index) then
+        Some index
+      else
+        find_index_from (succ index) p array
+    else
+      None
+
+  let find_index p array =
+    find_index_from 0 p array
+
+  let rec find_map_from index f array =
+    if index < length array then
+      match f (unsafe_get array index) with
+      | None -> find_map_from (succ index) f array
+      | some -> some
+    else
+      None
+
+  let find_map f array =
+    find_map_from 0 f array
+
+  let rec find_mapi_from index f array =
+    if index < length array then
+      match f index (unsafe_get array index) with
+      | None -> find_mapi_from (succ index) f array
+      | some -> some
+    else
+      None
+
+  let find_mapi f array =
+    find_mapi_from 0 f array
+  @END_BEFORE_5_1_0@
+
+  let make_matrix m n x =
+    Array.init m (fun _ -> make n x)
+
+  let init_matrix m n f =
+    Array.init m (fun i -> init n (fun j -> f i j))
+  
+  let shuffle ~rand array =
+    for i = length array - 1 downto 0 do
+      let j = rand (i + 1) in
+      let tmp = unsafe_get array i in
+      unsafe_set array i (get array j);
+      unsafe_set array j tmp
+    done
+end
+
+module ArrayLabels = struct
+  @BEGIN_FROM_4_08_0@
+  include Float.ArrayLabels
+  @END_FROM_4_08_0@
+  @BEGIN_BEFORE_4_08_0@
+  include Float.Array
+
+  let init i ~f = init i f
+
+  let sub a ~pos ~len = sub a pos len
+
+  let fill a ~pos ~len v = fill a pos len v
+
+  let blit ~src ~src_pos ~dst ~dst_pos ~len = blit src src_pos dst dst_pos len
+
+  let iter ~f a = iter f a
+
+  let iteri ~f a = iteri f a
+
+  let map ~f a = map f a
+
+  let mapi ~f a = mapi f a
+
+  let fold_left ~f ~init a = fold_left f init a
+
+  let fold_right ~f a ~init = fold_right f a init
+
+  let iter2 ~f a = iter2 f a
+
+  let map2 ~f a = map2 f a
+
+  let for_all ~f a = for_all f a
+
+  let exists ~f a = exists f a
+
+  let mem v ~set = mem v set
+
+  let mem_ieee v ~set = mem_ieee v set
+
+  let sort ~cmp a = sort cmp a
+
+  let stable_sort ~cmp a = stable_sort cmp a
+
+  let fast_sort ~cmp a = fast_sort cmp a
+
+  let map_to_array ~f a = map_to_array f a
+
+  let map_from_array ~f a = map_from_array f a
+  @END_BEFORE_4_08_0@
+
+  @BEGIN_BEFORE_5_1_0@
+  let map_inplace ~f a = Array.map_inplace f a
+
+  let mapi_inplace ~f a = Array.mapi_inplace f a
+
+  let find_opt ~f a = Array.find_opt f a
+
+  let find_index ~f a = Array.find_index f a
+
+  let find_map ~f a = Array.find_map f a
+
+  let find_mapi ~f a = Array.find_mapi f a
+  @END_BEFORE_5_1_0@
+
+  let make_matrix ~dimx ~dimy v = Array.make_matrix dimx dimy v
+
+  let init_matrix ~dimx ~dimy ~f = Array.init_matrix dimx dimy f
+
+  let shuffle ~rand a = Array.shuffle rand a
 end
 
 @BEGIN_FROM_4_07_0@
- include (Float : module type of Float with module Array := Array)
+ include (Float : module type of Float with module Array := Array and module ArrayLabels := ArrayLabels)
 @END_FROM_4_07_0@
-@END_BEFORE_4_08_0@
+@END_BEFORE_5_2_0@
 @BEGIN_BEFORE_4_07_0@
 type fpclass = Pervasives.fpclass =
   | FP_normal 
@@ -766,51 +918,6 @@ let one = 1.
 
 let zero = 0.
 
-module ArrayLabels = struct
-  include Array
-
-  let init i ~f = init i f
-
-  let sub a ~pos ~len = sub a pos len
-
-  let fill a ~pos ~len v = fill a pos len v
-
-  let blit ~src ~src_pos ~dst ~dst_pos ~len = blit src src_pos dst dst_pos len
-
-  let iter ~f a = iter f a
-
-  let iteri ~f a = iteri f a
-
-  let map ~f a = map f a
-
-  let mapi ~f a = mapi f a
-
-  let fold_left ~f ~init a = fold_left f init a
-
-  let fold_right ~f a ~init = fold_right f a init
-
-  let iter2 ~f a = iter2 f a
-
-  let map2 ~f a = map2 f a
-
-  let for_all ~f a = for_all f a
-
-  let exists ~f a = exists f a
-
-  let mem v ~set = mem v set
-
-  let mem_ieee v ~set = mem_ieee v set
-
-  let sort ~cmp a = sort cmp a
-
-  let stable_sort ~cmp a = stable_sort cmp a
-
-  let fast_sort ~cmp a = fast_sort cmp a
-
-  let map_to_array ~f a = map_to_array f a
-
-  let map_from_array ~f a = map_from_array f a
-end
 @END_BEFORE_4_08_0@
 
 @BEGIN_BEFORE_4_13_0@
@@ -854,3 +961,11 @@ let erf x =
 let erfc x =
   1. -. erf x
 @END_BEFORE_4_13_0@
+
+@BEGIN_BEFORE_5_1_0@
+let signaling_nan = nan
+
+let quiet_nan = nan
+
+let seeded_hash = Stdcompat__hashtbl.seeded_hash
+@END_BEFORE_5_1_0@

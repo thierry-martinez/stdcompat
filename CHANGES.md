@@ -1,4 +1,6 @@
-# Development version
+# Version 20
+
+- Compatibility with OCaml 5.1 and 5.2
 
 - Fix `Illegal seek` exception in `In_channel.input_all`
 

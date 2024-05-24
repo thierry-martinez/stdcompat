@@ -186,3 +186,31 @@ let fold_left_map f accu l =
       (accu, x :: rev)) (accu, []) l in
   accu, List.rev rev
 @END_BEFORE_4_11_0@
+
+@BEGIN_BEFORE_5_1_0@
+let is_empty l =
+  l = []
+
+let rec find_index_from index p l =
+  match l with
+  | [] -> None
+  | hd :: tl ->
+    if p hd then
+      Some index
+    else
+      find_index_from (succ index) p tl
+
+let find_index p l =
+  find_index_from 0 p l
+
+let rec find_mapi_from index f l =
+  match l with
+  | [] -> None
+  | hd :: tl ->
+    match f index hd with
+    | None -> find_mapi_from (succ index) f tl
+    | some -> some
+
+let find_mapi f l =
+  find_mapi_from 0 f l
+@END_BEFORE_5_1_0@

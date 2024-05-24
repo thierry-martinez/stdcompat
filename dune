@@ -28,6 +28,8 @@
    stdcompat__char_s
    stdcompat__digest
    stdcompat__digest_s
+   stdcompat__domain
+   stdcompat__domain_s
    stdcompat__either
    stdcompat__either_s
    stdcompat__ephemeron
@@ -179,6 +181,10 @@
   stdcompat__digest.mli
   stdcompat__digest_s.ml
   stdcompat__digest_s.mli
+  stdcompat__domain.ml
+  stdcompat__domain.mli
+  stdcompat__domain_s.ml
+  stdcompat__domain_s.mli
   stdcompat__either.ml
   stdcompat__either.mli
   stdcompat__either_s.ml
@@ -370,6 +376,9 @@
   stdcompat__digest.ml.in
   stdcompat__digest.mli.in
   stdcompat__digest_s.mli.in
+  stdcompat__domain.ml.in
+  stdcompat__domain.mli.in
+  stdcompat__domain_s.mli.in
   stdcompat__either.ml.in
   stdcompat__either.mli.in
   stdcompat__either_s.mli.in
