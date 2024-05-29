@@ -134,6 +134,6 @@ let ocaml_release = {
 @END_BEFORE_4_14_0@
 
 @BEGIN_BEFORE_5_1_0@
-let is_regular_file path =
+let is_regular_file _path =
   failwith "not implemented"
 @END_BEFORE_5_1_0@

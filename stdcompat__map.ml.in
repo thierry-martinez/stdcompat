@@ -62,18 +62,22 @@ module Make (Ord : OrderedType) = struct
   @END_BEFORE_4_07_0@
 
   @BEGIN_WITH_MAGIC@
+    @BEGIN_BEFORE_4_12_0@
     type 'a internal =
       | Empty
       | Node of 'a internal * key * 'a * 'a internal * int
       @BEGIN_FROM_4_02_0@
       [@@ocaml.warning "-37"]
       @END_FROM_4_02_0@
+    @END_BEFORE_4_12_0@
 
     @BEGIN_BEFORE_4_11_0@
     external t_of_internal : 'a internal -> 'a t = "%identity"
     @END_BEFORE_4_11_0@
 
+    @BEGIN_BEFORE_4_12_0@
     external internal_of_t : 'a t -> 'a internal = "%identity"
+    @END_BEFORE_4_12_0@
 
     @BEGIN_BEFORE_4_05_0@
       let rec min_binding_aux l v d =

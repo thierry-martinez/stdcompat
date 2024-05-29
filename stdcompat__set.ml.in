@@ -34,16 +34,20 @@ module Make (Ord : OrderedType) = struct
   include Set.Make (Ord)
 
   @BEGIN_WITH_MAGIC@
+    @BEGIN_BEFORE_4_12_0@
     type internal = Empty | Node of internal * elt * internal * int
       @BEGIN_FROM_4_02_0@
       [@@ocaml.warning "-37"]
       @END_FROM_4_02_0@
+    @END_BEFORE_4_12_0@
 
     @BEGIN_BEFORE_4_11_0@
     external t_of_internal : internal -> t = "%identity"
     @END_BEFORE_4_11_0@
 
+    @BEGIN_BEFORE_4_12_0@
     external internal_of_t : t -> internal = "%identity"
+    @END_BEFORE_4_12_0@
   @END_WITH_MAGIC@
 
   @BEGIN_BEFORE_4_12_0@

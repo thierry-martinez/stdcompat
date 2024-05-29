@@ -54,10 +54,10 @@ let really_input_bigarray channel tgt pos len =
       loop (len - read) in
   loop len
 *)
-let input_bigarray channel tgt pos len =
+let input_bigarray _channel _tgt _pos _len =
   failwith "input_bigarray"
 
-let really_input_bigarray channel tgt pos len =
+let really_input_bigarray _channel _tgt _pos _len =
   failwith "really_input_bigarray"
 
 let is_binary_mode _channel =
@@ -171,11 +171,11 @@ let input_all channel =
 let rec fold_lines f acc ic =
   match input_line ic with
   | None -> acc
-  | Some line -> f acc line
+  | Some line -> fold_lines f (f acc line) ic
 
 let input_lines ic =
   List.rev (fold_lines (fun acc line -> line :: acc) [] ic)
 
-let isatty ic =
+let isatty _ic =
   failwith "not implemented"
 @END_BEFORE_5_1_0@
