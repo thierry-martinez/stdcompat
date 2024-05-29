@@ -149,7 +149,7 @@ sig type key
 type +!'a t
 @END_FROM_4_12_0@
 @BEGIN_BEFORE_4_12_0@
-type 'a t
+type +'a t
 @END_BEFORE_4_12_0@
 val empty : 'a t
 val add : key:key -> data:'a -> 'a t -> 'a t
