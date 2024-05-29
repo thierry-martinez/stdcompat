@@ -1,7 +1,7 @@
-@BEGIN_FROM_5_1_0@
+@BEGIN_FROM_5_2_0@
 include Random
-@END_FROM_5_1_0@
-@BEGIN_BEFORE_5_1_0@
+@END_FROM_5_2_0@
+@BEGIN_BEFORE_5_2_0@
 module State = struct
   include Random.State
 
@@ -120,9 +120,9 @@ let full_int = Random.full_int
 @BEGIN_BEFORE_4_13_0@
 let full_int n = State.full_int (get_state ()) n
 @END_BEFORE_4_13_0@
-@END_BEFORE_5_1_0@
 
-@BEGIN_BEFORE_5_1_0@
+@BEGIN_BEFORE_5_0_0@
 let split () =
   get_state ()
-@END_BEFORE_5_1_0@
+@END_BEFORE_5_0_0@
+@END_BEFORE_5_2_0@
