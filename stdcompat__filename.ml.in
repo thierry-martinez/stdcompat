@@ -90,7 +90,7 @@ let temp_file ?(temp_dir = !current_temp_dir_name) prefix suffix =
 let temp_dir
     ?(temp_dir = get_temp_dir_name ()) ?(perms = 0o600) prefix suffix =
   let name, () =
-    try_name temp_dir prefix suffix 0 (fun name -> Sys.mkdir name perms) in
+    try_name temp_dir prefix suffix 0 (fun name -> Stdcompat_sys.mkdir name perms) in
   name
 @END_BEFORE_5_1_0@
 
