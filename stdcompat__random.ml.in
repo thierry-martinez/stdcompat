@@ -121,6 +121,9 @@ let full_int = Random.full_int
 let full_int n = State.full_int (get_state ()) n
 @END_BEFORE_4_13_0@
 
+@BEGIN_FROM_5_0_0@
+let split = Random.split
+@END_FROM_5_0_0@
 @BEGIN_BEFORE_5_0_0@
 let split () =
   get_state ()
