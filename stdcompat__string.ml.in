@@ -362,7 +362,7 @@ let check_find_last_start sub start s caller =
   | None -> max
   | Some start ->
       check_valid_position start (length s) caller;
-      Int.min start max
+      min start max
 
 let find_last ~sub ?start s =
   let start = check_find_last_start sub start s "find_last" in
