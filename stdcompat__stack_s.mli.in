@@ -1,30 +1,12 @@
 module type S = sig
-@BEGIN_FROM_5_1_0@
 @BEGIN_FROM_4_12_0@
 type !'a t = 'a Stack.t
 @END_FROM_4_12_0@
 @BEGIN_BEFORE_4_12_0@
 type 'a t = 'a Stack.t
 @END_BEFORE_4_12_0@
-
-@END_FROM_5_1_0@
-@BEGIN_BEFORE_5_1_0@
-@BEGIN_FROM_5_0_0@
-type 'a t
-@END_FROM_5_0_0@
-@BEGIN_BEFORE_5_0_0@
-@BEGIN_FROM_4_12_0@
-type !'a t = 'a Stack.t
-@END_FROM_4_12_0@
-@BEGIN_BEFORE_4_12_0@
-type 'a t = 'a Stack.t
-@END_BEFORE_4_12_0@
-
-@END_BEFORE_5_0_0@
-
-@END_BEFORE_5_1_0@
 (** @since 5.1.0: type !'a t
-@since 3.07.0: type !'a t
+@since 3.07.0: type 'a t
  *)
 
 exception Empty 
