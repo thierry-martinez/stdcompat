@@ -40,28 +40,31 @@ type stag
 type tag = string
 (** Alias for {!Format.tag} *)
 
-@BEGIN_FROM_4_06_0@
+@BEGIN_FROM_5_4_0@
 type formatter_out_functions = Format.formatter_out_functions =
   {
   out_string: string -> int -> int -> unit ;
+  out_width: string -> pos:int -> len:int -> int ;
   out_flush: unit -> unit ;
   out_newline: unit -> unit ;
   out_spaces: int -> unit ;
   out_indent: int -> unit }
-@END_FROM_4_06_0@
-@BEGIN_BEFORE_4_06_0@
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
 type formatter_out_functions =
   {
   out_string: string -> int -> int -> unit ;
+  out_width: string -> pos:int -> len:int -> int ;
   out_flush: unit -> unit ;
   out_newline: unit -> unit ;
   out_spaces: int -> unit ;
   out_indent: int -> unit }
-@END_BEFORE_4_06_0@
-(** @since 4.06.0:
+@END_BEFORE_5_4_0@
+(** @since 5.4.0:
     type formatter_out_functions =
       {
       out_string: string -> int -> int -> unit ;
+      out_width: string -> pos:int -> len:int -> int ;
       out_flush: unit -> unit ;
       out_newline: unit -> unit ;
       out_spaces: int -> unit ;
@@ -127,6 +130,210 @@ type symbolic_output_buffer
 (** @since 4.06.0: type symbolic_output_buffer
  *)
 
+@BEGIN_FROM_5_5_0@
+module Args = Format.Args
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+module Args : sig @BEGIN_FROM_4_00_0@
+type ('a, 'r) t =
+  | []: ('r, 'r) t 
+  | (::): 'a * ('b, 'r) t -> ('a -> 'b, 'r) t 
+@END_FROM_4_00_0@
+@BEGIN_BEFORE_4_00_0@
+type ('a, 'r) t =
+  | [] 
+  | (::) of 'a * ('b, 'r) t 
+@END_BEFORE_4_00_0@
+ val apply : 'a -> ('a, 'r) t -> 'r
+val (@) : ('a, 'r1) t -> ('r1, 'r2) t -> ('a, 'r2) t
+end
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: module Args = Format.Args
+ *)
+
+@BEGIN_FROM_5_5_0@
+val synchronized_formatter_of_out_channel :
+  out_channel -> formatter Domain.DLS.key
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val synchronized_formatter_of_out_channel :
+  out_channel -> formatter Domain.DLS.key
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val synchronized_formatter_of_out_channel :
+      out_channel -> formatter Domain.DLS.key
+ *)
+
+@BEGIN_FROM_5_5_0@
+val formatter_of_buffer : Buffer.t -> formatter
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val formatter_of_buffer : Buffer.t -> formatter
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val formatter_of_buffer : Buffer.t -> formatter
+ *)
+
+@BEGIN_FROM_5_5_0@
+val stdbuf : Buffer.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val stdbuf : Buffer.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val stdbuf : Buffer.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val get_stdbuf : unit -> Buffer.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val get_stdbuf : unit -> Buffer.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val get_stdbuf : unit -> Buffer.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val make_synchronized_formatter :
+  (string -> int -> int -> unit) ->
+    (unit -> unit) -> formatter Domain.DLS.key
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val make_synchronized_formatter :
+  (string -> int -> int -> unit) ->
+    (unit -> unit) -> formatter Domain.DLS.key
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val make_synchronized_formatter :
+      (string -> int -> int -> unit) ->
+        (unit -> unit) -> formatter Domain.DLS.key
+ *)
+
+@BEGIN_FROM_5_5_0@
+val pp_print_seq :
+  ?pp_sep:(formatter -> unit -> unit) ->
+    (formatter -> 'a -> unit) -> formatter -> 'a Seq.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val pp_print_seq :
+  ?pp_sep:(formatter -> unit -> unit) ->
+    (formatter -> 'a -> unit) -> formatter -> 'a Stdcompat__seq.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val pp_print_seq :
+      ?pp_sep:(formatter -> unit -> unit) ->
+        (formatter -> 'a -> unit) -> formatter -> 'a Seq.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val pp_print_either :
+  left:(formatter -> 'a -> unit) ->
+    right:(formatter -> 'b -> unit) -> formatter -> ('a, 'b) Either.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val pp_print_either :
+  left:(formatter -> 'a -> unit) ->
+    right:(formatter -> 'b -> unit) ->
+      formatter -> ('a, 'b) Stdcompat__either.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val pp_print_either :
+      left:(formatter -> 'a -> unit) ->
+        right:(formatter -> 'b -> unit) ->
+          formatter -> ('a, 'b) Either.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val lfprintf :
+  formatter -> ('a, formatter, unit) format -> ('a, unit) Args.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val lfprintf :
+  formatter -> ('a, formatter, unit) format -> ('a, unit) Args.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val lfprintf :
+      formatter -> ('a, formatter, unit) format -> ('a, unit) Args.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val lprintf : ('a, formatter, unit) format -> ('a, unit) Args.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val lprintf : ('a, formatter, unit) format -> ('a, unit) Args.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val lprintf : ('a, formatter, unit) format -> ('a, unit) Args.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val leprintf : ('a, formatter, unit) format -> ('a, unit) Args.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val leprintf : ('a, formatter, unit) format -> ('a, unit) Args.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val leprintf : ('a, formatter, unit) format -> ('a, unit) Args.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val lasprintf :
+  ('a, formatter, unit, string) format4 -> ('a, string) Args.t -> string
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val lasprintf :
+  ('a, formatter, unit, string) format4 -> ('a, string) Args.t -> string
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val lasprintf :
+      ('a, formatter, unit, string) format4 -> ('a, string) Args.t -> string
+ *)
+
+@BEGIN_FROM_5_5_0@
+val ldprintf :
+  ('a, formatter, unit, unit) format4 ->
+    ('a, unit) Args.t -> formatter -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val ldprintf :
+  ('a, formatter, unit, unit) format4 ->
+    ('a, unit) Args.t -> formatter -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val ldprintf :
+      ('a, formatter, unit, unit) format4 ->
+        ('a, unit) Args.t -> formatter -> unit
+ *)
+
+val utf_8_scalar_width : string -> pos:int -> len:int -> int
+(** @since 5.4.0:
+    val utf_8_scalar_width : string -> pos:int -> len:int -> int *)
+
+val ascii_width : string -> pos:int -> len:int -> int
+(** @since 5.4.0: val ascii_width : string -> pos:int -> len:int -> int *)
+
+val format_text :
+  ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6
+(** @since 5.4.0:
+    val format_text :
+      ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6 *)
+
+val pp_print_substring : pos:int -> len:int -> formatter -> string -> unit
+(** @since 5.3.0:
+    val pp_print_substring :
+      pos:int -> len:int -> formatter -> string -> unit *)
+
+val print_substring : pos:int -> len:int -> string -> unit
+(** @since 5.3.0: val print_substring : pos:int -> len:int -> string -> unit *)
+
+val pp_print_substring_as :
+  pos:int -> len:int -> formatter -> int -> string -> unit
+(** @since 5.3.0:
+    val pp_print_substring_as :
+      pos:int -> len:int -> formatter -> int -> string -> unit *)
+
+val print_substring_as : pos:int -> len:int -> int -> string -> unit
+(** @since 5.3.0:
+    val print_substring_as : pos:int -> len:int -> int -> string -> unit *)
+
 val pp_print_nothing : formatter -> unit -> unit
 (** @since 5.2.0: val pp_print_nothing : formatter -> unit -> unit *)
 
@@ -151,31 +358,14 @@ val pp_print_array :
       ?pp_sep:(formatter -> unit -> unit) ->
         (formatter -> 'a -> unit) -> formatter -> 'a array -> unit *)
 
-val synchronized_formatter_of_out_channel :
-  out_channel -> formatter Stdcompat__domain.DLS.key
-(** @since 5.0.0:
-    val synchronized_formatter_of_out_channel :
-      out_channel -> formatter Stdcompat__domain.DLS.key *)
-
 val get_std_formatter : unit -> formatter
 (** @since 5.0.0: val get_std_formatter : unit -> formatter *)
 
 val get_err_formatter : unit -> formatter
 (** @since 5.0.0: val get_err_formatter : unit -> formatter *)
 
-val get_stdbuf : unit -> Buffer.t
-(** @since 5.0.0: val get_stdbuf : unit -> Buffer.t *)
-
 val get_str_formatter : unit -> formatter
 (** @since 5.0.0: val get_str_formatter : unit -> formatter *)
-
-val make_synchronized_formatter :
-  (string -> int -> int -> unit) ->
-    (unit -> unit) -> formatter Stdcompat__domain.DLS.key
-(** @since 5.0.0:
-    val make_synchronized_formatter :
-      (string -> int -> int -> unit) ->
-        (unit -> unit) -> formatter Stdcompat__domain.DLS.key *)
 
 @BEGIN_FROM_4_13_0@
 val pp_print_bytes : formatter -> bytes -> unit
@@ -193,40 +383,6 @@ val print_bytes : bytes -> unit
 val print_bytes : Stdcompat__init.bytes -> unit
 @END_BEFORE_4_13_0@
 (** @since 4.13.0: val print_bytes : bytes -> unit
- *)
-
-@BEGIN_FROM_4_13_0@
-val pp_print_either :
-  left:(formatter -> 'a -> unit) ->
-    right:(formatter -> 'b -> unit) -> formatter -> ('a, 'b) Either.t -> unit
-@END_FROM_4_13_0@
-@BEGIN_BEFORE_4_13_0@
-val pp_print_either :
-  left:(formatter -> 'a -> unit) ->
-    right:(formatter -> 'b -> unit) ->
-      formatter -> ('a, 'b) Stdcompat__either.t -> unit
-@END_BEFORE_4_13_0@
-(** @since 4.13.0:
-    val pp_print_either :
-      left:(formatter -> 'a -> unit) ->
-        right:(formatter -> 'b -> unit) ->
-          formatter -> ('a, 'b) Either.t -> unit
- *)
-
-@BEGIN_FROM_4_12_0@
-val pp_print_seq :
-  ?pp_sep:(formatter -> unit -> unit) ->
-    (formatter -> 'a -> unit) -> formatter -> 'a Seq.t -> unit
-@END_FROM_4_12_0@
-@BEGIN_BEFORE_4_12_0@
-val pp_print_seq :
-  ?pp_sep:(formatter -> unit -> unit) ->
-    (formatter -> 'a -> unit) -> formatter -> 'a Stdcompat__seq.t -> unit
-@END_BEFORE_4_12_0@
-(** @since 4.12.0:
-    val pp_print_seq :
-      ?pp_sep:(formatter -> unit -> unit) ->
-        (formatter -> 'a -> unit) -> formatter -> 'a Seq.t -> unit
  *)
 
 val pp_update_geometry : formatter -> (geometry -> geometry) -> unit
@@ -471,12 +627,6 @@ val open_hovbox : int -> unit
 
 val pp_print_string : formatter -> string -> unit
 (** Alias for {!Format.pp_print_string} *)
-
-val pp_print_substring : pos:int -> len:int -> formatter -> string -> unit
-val print_substring : pos:int -> len:int -> string -> unit
-val pp_print_substring_as :
-  pos:int -> len:int -> formatter -> int -> string -> unit
-val print_substring_as : pos:int -> len:int -> int -> string -> unit
 
 val print_string : string -> unit
 (** Alias for {!Format.print_string} *)
@@ -867,12 +1017,6 @@ val std_formatter : formatter
 
 val err_formatter : formatter
 (** Alias for {!Format.err_formatter} *)
-
-val formatter_of_buffer : Buffer.t -> formatter
-(** Alias for {!Format.formatter_of_buffer} *)
-
-val stdbuf : Buffer.t
-(** Alias for {!Format.stdbuf} *)
 
 val str_formatter : formatter
 (** Alias for {!Format.str_formatter} *)

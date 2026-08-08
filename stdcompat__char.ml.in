@@ -13,3 +13,67 @@ let hash = Hashtbl.hash
 
 let seeded_hash = Stdcompat__hashtbl.seeded_hash
 @END_BEFORE_5_1_0@
+
+@BEGIN_BEFORE_5_4_0@
+module Ascii = struct
+  let min = '\000'
+  let max = '\x7F'
+  let is_valid c = c <= max
+  let is_upper c = 'A' <= c && c <= 'Z'
+  let is_lower c = 'a' <= c && c <= 'z'
+  let is_letter c = is_upper c || is_lower c
+  let is_digit c = '0' <= c && c <= '9'
+  let is_alphanum c = is_digit c || is_letter c
+  let is_white c = c = '\t' || c = '\n' || c = '\x0b' || c = '\x0c' || c = '\r' || c = ' '
+  let is_blank c = c = ' ' || c = '\t'
+  let is_graphic c = c > ' ' && c < max
+  let is_print c = c = ' ' || is_graphic c
+  let is_control c = c < ' ' || c = max
+
+  let digit_to_int c =
+    if not (is_digit c) then
+      invalid_arg "digit_to_int";
+    int_of_char c - int_of_char '0'
+
+  let digit_of_int n =
+    char_of_int (abs (n mod 10) + int_of_char '0')
+
+  let is_hex_digit c = is_digit c || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f'
+
+  let hex_digit_to_int c =
+    if is_digit c then
+      digit_to_int c
+    else if c >= 'A' && c <= 'F' then
+      int_of_char c - int_of_char 'A' + 10
+    else if c >= 'a' && c <= 'f' then
+      int_of_char c - int_of_char 'a' + 10
+    else
+      invalid_arg "hex_digit_to_int"
+
+  let lower_hex_digit_of_int n =
+    let v = abs (n mod 16) in
+    if v < 10 then
+      digit_of_int v
+    else
+      char_of_int (v - 10 + int_of_char 'a')
+
+  let upper_hex_digit_of_int n =
+    let v = abs (n mod 16) in
+    if v < 10 then
+      digit_of_int v
+    else
+      char_of_int (v - 10 + int_of_char 'A')
+
+  let uppercase c =
+    if is_lower c then
+      char_of_int (int_of_char c - int_of_char 'a' + int_of_char 'A')
+    else
+      c
+
+  let lowercase c =
+    if is_upper c then
+      char_of_int (int_of_char c - int_of_char 'A' + int_of_char 'a')
+    else
+      c
+end
+@END_BEFORE_5_4_0@

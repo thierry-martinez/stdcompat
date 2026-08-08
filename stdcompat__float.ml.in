@@ -1,7 +1,7 @@
 @BEGIN_FROM_5_2_0@
  include Float
 @END_FROM_5_2_0@
-@BEGIN_BEFORE_5_2_0@
+@BEGIN_BEFORE_5_4_0@
 
 module Array = struct
   @BEGIN_FROM_4_08_0@
@@ -158,17 +158,11 @@ module Array = struct
     done;
     result
 
-  let for_all f a =
-    let len = length a in
-    let rec aux i =
-      i >= len || f (unsafe_get a i) && aux (succ i) in
-    aux 0
+  let for_all p a =
+    Stdcompat__generic_array.for_all ~length ~unsafe_get p a
 
   let exists f a =
-    let len = length a in
-    let rec aux i =
-      i < len && (f (unsafe_get a i) || aux (succ i)) in
-    aux 0
+    Stdcompat__generic_array.exists ~length ~unsafe_get p a
 
   let mem x a =
     exists (fun y -> compare x y = 0) a
@@ -225,64 +219,26 @@ module Array = struct
 @END_BEFORE_4_08_0@
 
   @BEGIN_BEFORE_5_1_0@
-  let map_inplace f array =
-    for i = 0 to length array - 1 do
-      unsafe_set array i (f (unsafe_get array i))
-    done
+  let map_inplace f a =
+    Stdcompat__generic_array.map_inplace ~length ~unsafe_get ~unsafe_set f a
 
-  let mapi_inplace f array =
-    for i = 0 to length array - 1 do
-      unsafe_set array i (f i (unsafe_get array i))
-    done
+  let mapi_inplace f a =
+    Stdcompat__generic_array.mapi_inplace ~length ~unsafe_get ~unsafe_set f a
 
-  let rec find_opt_from index f array =
-    if index < length array then
-      let v = unsafe_get array index in
-      if f v then
-        Some v
-      else
-        find_opt_from (succ index) f array
-    else
-      None
+  let find_opt p a =
+    Stdcompat__generic_array.find_opt ~length ~unsafe_get p a
 
-  let find_opt f array =
-    find_opt_from 0 f array
-
-  let rec find_index_from index p array =
-    if index < length array then
-      if p (unsafe_get array index) then
-        Some index
-      else
-        find_index_from (succ index) p array
-    else
-      None
-
-  let find_index p array =
-    find_index_from 0 p array
-
-  let rec find_map_from index f array =
-    if index < length array then
-      match f (unsafe_get array index) with
-      | None -> find_map_from (succ index) f array
-      | some -> some
-    else
-      None
+  let find_index p a =
+    Stdcompat__generic_array.find_index ~length ~unsafe_get p a
 
   let find_map f array =
-    find_map_from 0 f array
-
-  let rec find_mapi_from index f array =
-    if index < length array then
-      match f index (unsafe_get array index) with
-      | None -> find_mapi_from (succ index) f array
-      | some -> some
-    else
-      None
+    Stdcompat__generic_array.find_map ~length ~unsafe_get f a
 
   let find_mapi f array =
-    find_mapi_from 0 f array
+    Stdcompat__generic_array.find_mapi ~length ~unsafe_get f a
   @END_BEFORE_5_1_0@
 
+  (*
   let make_matrix m n x =
     Array.init m (fun _ -> make n x)
 
@@ -296,6 +252,14 @@ module Array = struct
       unsafe_set array i (get array j);
       unsafe_set array j tmp
     done
+*)
+@BEGIN_BEFORE_5_4_0@
+  let equal eq a b =
+    Stdcompat__generic_array.equal ~length ~unsafe_get eq a b
+
+  let compare cmp a b =
+    Stdcompat__generic_array.compare ~length ~unsafe_get cmp a b
+@END_BEFORE_5_4_0@
 end
 
 module ArrayLabels = struct
@@ -367,12 +331,18 @@ module ArrayLabels = struct
   let init_matrix ~dimx ~dimy ~f = Array.init_matrix dimx dimy f
 
   let shuffle ~rand a = Array.shuffle rand a
+
+@BEGIN_BEFORE_5_4_0@
+  let equal = Array.equal
+
+  let compare = Array.compare
+@END_BEFORE_5_4_0@
 end
 
 @BEGIN_FROM_4_07_0@
  include (Float : module type of Float with module Array := Array and module ArrayLabels := ArrayLabels)
 @END_FROM_4_07_0@
-@END_BEFORE_5_2_0@
+@END_BEFORE_5_4_0@
 @BEGIN_BEFORE_4_07_0@
 type fpclass = Pervasives.fpclass =
   | FP_normal 

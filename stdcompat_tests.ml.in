@@ -967,6 +967,681 @@ let test_channels () =
     Stdcompat.In_channel.input_all = "world");
   Sys.remove "testfile"
 
+let test_set_is_singleton () =
+  let module S = Stdcompat.Set.Make (Stdcompat.Int) in
+  assert (S.is_singleton (S.singleton 0));
+  assert (not (S.is_singleton S.empty));
+  assert (not (S.is_singleton (S.of_list [0; 1])))
+
+let test_map_is_singleton () =
+  let module M = Stdcompat.Map.Make (Stdcompat.Int) in
+  assert (M.is_singleton (M.singleton 0 ()));
+  assert (not (M.is_singleton M.empty));
+  assert (not (M.is_singleton (M.of_list [0, "a"; 1, "b"])))
+
+let test_seq_singleton () =
+  assert (Stdcompat.List.of_seq (Stdcompat.Seq.singleton 1) = [1])
+
+let test_seq_filteri () =
+  let f i j =
+    assert (i = j);
+    i mod 2 = 0 in
+  assert (Stdcompat.List.of_seq (Stdcompat.Seq.filteri f (Stdcompat.Seq.take 10 (Stdcompat.Seq.ints 0))) = [0;2;4;6;8])
+
+let test_seq_delay () =
+  let executed = ref false in
+  let s = Stdcompat.Seq.delay (fun () ->
+    executed := true;
+    Stdcompat.Seq.empty) in
+  assert (not !executed);
+  assert (Stdcompat.Seq.is_empty s);
+  assert !executed
+
+let test_list_singleton () =
+  assert (Stdcompat.List.singleton 1 == [1])
+
+let test_list_filter_mapi () =
+  assert (Stdcompat.List.filter_mapi (fun i s -> if s = "" then None else Some (i, s)) ["a"; ""; "b"] = [0, "a"; 2, "b"])
+
+let test_list_split_map () =
+  assert (Stdcompat.List.split_map (fun i -> (i - 1, i + 1)) [1; 2; 3] = ([0; 1; 2], [2; 3; 4]))
+
+type empty = { absurd: 'a. 'a }
+
+let test_either_get_left () =
+  assert (Stdcompat.Either.get_left (Left 0) = 0);
+  try
+    (Stdcompat.Either.get_left (Right "") : empty).absurd
+  with Invalid_argument _ ->
+    ()
+
+let test_either_get_right () =
+  assert (Stdcompat.Either.get_right (Right "") = "");
+  try
+    (Stdcompat.Either.get_right (Left 0) : empty).absurd
+  with Invalid_argument _ ->
+    ()
+
+let test_either_retract () =
+  assert (Stdcompat.Either.retract (Left 0) = 0);
+  assert (Stdcompat.Either.retract (Right "") = "")
+
+let test_option_product () =
+  assert (Stdcompat.Option.product (Some 0) (Some "") = Some (0, ""));
+  assert (Stdcompat.Option.product (Some 0) None = None);
+  assert (Stdcompat.Option.product None (Some "") = None);
+  assert (Stdcompat.Option.product None None = None)
+
+let test_option_blend () =
+  assert (Stdcompat.Option.blend (-) (Some 3) (Some 1) = Some 2);
+  assert (Stdcompat.Option.blend (+) (Some 0) None = Some 0);
+  assert (Stdcompat.Option.blend (+) None (Some 1) = Some 1);
+  assert (Stdcompat.Option.blend (+) None None = None)
+
+let test_option_for_all () =
+  assert (Stdcompat.Option.for_all (fun i -> i mod 2 = 0) (Some 0));
+  assert (not (Stdcompat.Option.for_all (fun i -> i mod 2 = 0) (Some 1)));
+  assert (Stdcompat.Option.for_all (fun i -> i mod 2 = 0) None)
+
+let test_option_exists () =
+  assert (Stdcompat.Option.exists (fun i -> i mod 2 = 0) (Some 0));
+  assert (not (Stdcompat.Option.exists (fun i -> i mod 2 = 0) (Some 1)));
+  assert (not (Stdcompat.Option.exists (fun i -> i mod 2 = 0) None))
+
+let test_result_get_ok' () =
+  assert (Stdcompat.Result.get_ok' (Ok 0) = 0);
+  try
+    Stdcompat.Result.get_ok' (Error "msg")
+  with Invalid_argument s ->
+    assert (s = "msg")
+
+let test_result_error_to_failure () =
+  assert (Stdcompat.Result.error_to_failure (Ok 0) = 0);
+  try
+    Stdcompat.Result.error_to_failure (Error "msg")
+  with Failure s ->
+    assert (s = "msg")
+
+let test_result_product () =
+  assert (Stdcompat.Result.product (Ok 0) (Ok "") = Ok (0, ""));
+  assert (Stdcompat.Result.product (Ok 0) (Error "") = Error "");
+  assert (Stdcompat.Result.product (Error 0) (Ok "") = Error 0);
+  assert (Stdcompat.Result.product (Error 0) (Error 1) = Error 0)
+
+let test_result_retract () =
+  assert (Stdcompat.Result.retract (Ok 0) = 0);
+  assert (Stdcompat.Result.retract (Error "") = "")
+
+let test_format_utf_8_scalar_width () =
+  assert (Stdcompat.Format.utf_8_scalar_width "abcd" ~pos:1 ~len:2 = 2);
+  assert (Stdcompat.Format.utf_8_scalar_width "abéçd" ~pos:1 ~len:5 = 3);
+  assert (Stdcompat.Format.utf_8_scalar_width "ab桁çd" ~pos:2 ~len:5 = 2)
+
+let test_nativeint_fdiv () =
+  assert (Stdcompat.Nativeint.fdiv 8n 2n = 4n);
+  assert (Stdcompat.Nativeint.fdiv 9n 2n = 4n);
+  assert (Stdcompat.Nativeint.fdiv (-8n) 2n = -4n);
+  assert (Stdcompat.Nativeint.fdiv (-9n) 2n = -5n);
+  assert (Stdcompat.Nativeint.fdiv 8n (-2n) = -4n);
+  assert (Stdcompat.Nativeint.fdiv 9n (-2n) = -5n);
+  assert (Stdcompat.Nativeint.fdiv 1n 2n = 0n);
+  assert (Stdcompat.Nativeint.fdiv (-1n) 2n = -1n);
+  assert (Stdcompat.Nativeint.fdiv 1n (-2n) = -1n)
+
+let test_nativeint_cdiv () =
+  assert (Stdcompat.Nativeint.cdiv 8n 2n = 4n);
+  assert (Stdcompat.Nativeint.cdiv 9n 2n = 5n);
+  assert (Stdcompat.Nativeint.cdiv (-8n) 2n = -4n);
+  assert (Stdcompat.Nativeint.cdiv (-9n) 2n = -4n);
+  assert (Stdcompat.Nativeint.cdiv 8n (-2n) = -4n);
+  assert (Stdcompat.Nativeint.cdiv 9n (-2n) = -4n);
+  assert (Stdcompat.Nativeint.cdiv 1n 2n = 1n);
+  assert (Stdcompat.Nativeint.cdiv (-1n) 2n = 0n);
+  assert (Stdcompat.Nativeint.cdiv 1n (-2n) = 0n)
+
+let test_nativeint_ediv () =
+  assert (Stdcompat.Nativeint.ediv 8n 2n = 4n);
+  assert (Stdcompat.Nativeint.ediv 9n 2n = 4n);
+  assert (Stdcompat.Nativeint.ediv (-8n) 2n = -4n);
+  assert (Stdcompat.Nativeint.ediv (-9n) 2n = -5n);
+  assert (Stdcompat.Nativeint.ediv 8n (-2n) = -4n);
+  assert (Stdcompat.Nativeint.ediv 9n (-2n) = -4n);
+  assert (Stdcompat.Nativeint.ediv 1n 2n = 0n);
+  assert (Stdcompat.Nativeint.ediv (-1n) 2n = -1n);
+  assert (Stdcompat.Nativeint.ediv 1n (-2n) = 0n)
+
+let test_nativeint_erem () =
+  assert (Stdcompat.Nativeint.erem 8n 2n = 0n);
+  assert (Stdcompat.Nativeint.erem 9n 2n = 1n);
+  assert (Stdcompat.Nativeint.erem (-8n) 2n = 0n);
+  assert (Stdcompat.Nativeint.erem (-9n) 2n = 1n);
+  assert (Stdcompat.Nativeint.erem 8n (-2n) = 0n);
+  assert (Stdcompat.Nativeint.erem 9n (-2n) = 1n);
+  assert (Stdcompat.Nativeint.erem 1n 2n = 1n);
+  assert (Stdcompat.Nativeint.erem (-1n) 2n = 1n);
+  assert (Stdcompat.Nativeint.erem 1n (-2n) = 1n)
+
+let test_nativeint_popcount () =
+  assert (Stdcompat.Nativeint.popcount 6n = 2);
+  assert (Stdcompat.Nativeint.popcount (-6n) = 30)
+
+let test_nativeint_unsigned_bitsize () =
+  assert (Stdcompat.Nativeint.unsigned_bitsize 14n = 4);
+  assert (Stdcompat.Nativeint.unsigned_bitsize (-14n) = 64)
+
+let test_nativeint_signed_bitsize () =
+  assert (Stdcompat.Nativeint.signed_bitsize 14n = 5);
+  assert (Stdcompat.Nativeint.signed_bitsize (-14n) = 5);
+  assert (Stdcompat.Nativeint.signed_bitsize 16n = 6);
+  assert (Stdcompat.Nativeint.signed_bitsize (-16n) = 5)
+
+let test_nativeint_leading_zeros () =
+  assert (Stdcompat.Nativeint.leading_zeros 14n = 60);
+  assert (Stdcompat.Nativeint.leading_zeros (-14n) = 0)
+
+let test_nativeint_leading_sign_bits () =
+  assert (Stdcompat.Nativeint.leading_sign_bits 14n = 59);
+  assert (Stdcompat.Nativeint.leading_sign_bits (-14n) = 59);
+  assert (Stdcompat.Nativeint.leading_sign_bits 16n = 58);
+  assert (Stdcompat.Nativeint.leading_sign_bits (-16n) = 59)
+
+let test_nativeint_trailing_zeros () =
+  assert (Stdcompat.Nativeint.trailing_zeros 0n = 64);
+  assert (Stdcompat.Nativeint.trailing_zeros 4n = 2);
+  assert (Stdcompat.Nativeint.trailing_zeros Stdcompat.Nativeint.min_int = 63)
+
+let test_int32_fdiv () =
+  assert (Stdcompat.Int32.fdiv 8l 2l = 4l);
+  assert (Stdcompat.Int32.fdiv 9l 2l = 4l);
+  assert (Stdcompat.Int32.fdiv (-8l) 2l = -4l);
+  assert (Stdcompat.Int32.fdiv (-9l) 2l = -5l);
+  assert (Stdcompat.Int32.fdiv 8l (-2l) = -4l);
+  assert (Stdcompat.Int32.fdiv 9l (-2l) = -5l);
+  assert (Stdcompat.Int32.fdiv 1l 2l = 0l);
+  assert (Stdcompat.Int32.fdiv (-1l) 2l = -1l);
+  assert (Stdcompat.Int32.fdiv 1l (-2l) = -1l)
+
+let test_int32_cdiv () =
+  assert (Stdcompat.Int32.cdiv 8l 2l = 4l);
+  assert (Stdcompat.Int32.cdiv 9l 2l = 5l);
+  assert (Stdcompat.Int32.cdiv (-8l) 2l = -4l);
+  assert (Stdcompat.Int32.cdiv (-9l) 2l = -4l);
+  assert (Stdcompat.Int32.cdiv 8l (-2l) = -4l);
+  assert (Stdcompat.Int32.cdiv 9l (-2l) = -4l);
+  assert (Stdcompat.Int32.cdiv 1l 2l = 1l);
+  assert (Stdcompat.Int32.cdiv (-1l) 2l = 0l);
+  assert (Stdcompat.Int32.cdiv 1l (-2l) = 0l)
+
+let test_int32_ediv () =
+  assert (Stdcompat.Int32.ediv 8l 2l = 4l);
+  assert (Stdcompat.Int32.ediv 9l 2l = 4l);
+  assert (Stdcompat.Int32.ediv (-8l) 2l = -4l);
+  assert (Stdcompat.Int32.ediv (-9l) 2l = -5l);
+  assert (Stdcompat.Int32.ediv 8l (-2l) = -4l);
+  assert (Stdcompat.Int32.ediv 9l (-2l) = -4l);
+  assert (Stdcompat.Int32.ediv 1l 2l = 0l);
+  assert (Stdcompat.Int32.ediv (-1l) 2l = -1l);
+  assert (Stdcompat.Int32.ediv 1l (-2l) = 0l)
+
+let test_int32_erem () =
+  assert (Stdcompat.Int32.erem 8l 2l = 0l);
+  assert (Stdcompat.Int32.erem 9l 2l = 1l);
+  assert (Stdcompat.Int32.erem (-8l) 2l = 0l);
+  assert (Stdcompat.Int32.erem (-9l) 2l = 1l);
+  assert (Stdcompat.Int32.erem 8l (-2l) = 0l);
+  assert (Stdcompat.Int32.erem 9l (-2l) = 1l);
+  assert (Stdcompat.Int32.erem 1l 2l = 1l);
+  assert (Stdcompat.Int32.erem (-1l) 2l = 1l);
+  assert (Stdcompat.Int32.erem 1l (-2l) = 1l)
+
+let test_int32_popcount () =
+  assert (Stdcompat.Int32.popcount 6l = 2);
+  assert (Stdcompat.Int32.popcount (-6l) = 30)
+
+let test_int32_unsigned_bitsize () =
+  assert (Stdcompat.Int32.unsigned_bitsize 14l = 4);
+  assert (Stdcompat.Int32.unsigned_bitsize (-14l) = 32)
+
+let test_int32_signed_bitsize () =
+  assert (Stdcompat.Int32.signed_bitsize 14l = 5);
+  assert (Stdcompat.Int32.signed_bitsize (-14l) = 5);
+  assert (Stdcompat.Int32.signed_bitsize 16l = 6);
+  assert (Stdcompat.Int32.signed_bitsize (-16l) = 5)
+
+let test_int32_leading_zeros () =
+  assert (Stdcompat.Int32.leading_zeros 14l = 28);
+  assert (Stdcompat.Int32.leading_zeros (-14l) = 0)
+
+let test_int32_leading_sign_bits () =
+  assert (Stdcompat.Int32.leading_sign_bits 14l = 27);
+  assert (Stdcompat.Int32.leading_sign_bits (-14l) = 27);
+  assert (Stdcompat.Int32.leading_sign_bits 16l = 26);
+  assert (Stdcompat.Int32.leading_sign_bits (-16l) = 27)
+
+let test_int32_trailing_zeros () =
+  assert (Stdcompat.Int32.trailing_zeros 0l = 32);
+  assert (Stdcompat.Int32.trailing_zeros 4l = 2);
+  assert (Stdcompat.Int32.trailing_zeros Stdcompat.Int32.min_int = 31)
+
+let test_int64_fdiv () =
+  assert (Stdcompat.Int64.fdiv 8L 2L = 4L);
+  assert (Stdcompat.Int64.fdiv 9L 2L = 4L);
+  assert (Stdcompat.Int64.fdiv (-8L) 2L = -4L);
+  assert (Stdcompat.Int64.fdiv (-9L) 2L = -5L);
+  assert (Stdcompat.Int64.fdiv 8L (-2L) = -4L);
+  assert (Stdcompat.Int64.fdiv 9L (-2L) = -5L);
+  assert (Stdcompat.Int64.fdiv 1L 2L = 0L);
+  assert (Stdcompat.Int64.fdiv (-1L) 2L = -1L);
+  assert (Stdcompat.Int64.fdiv 1L (-2L) = -1L)
+
+let test_int64_cdiv () =
+  assert (Stdcompat.Int64.cdiv 8L 2L = 4L);
+  assert (Stdcompat.Int64.cdiv 9L 2L = 5L);
+  assert (Stdcompat.Int64.cdiv (-8L) 2L = -4L);
+  assert (Stdcompat.Int64.cdiv (-9L) 2L = -4L);
+  assert (Stdcompat.Int64.cdiv 8L (-2L) = -4L);
+  assert (Stdcompat.Int64.cdiv 9L (-2L) = -4L);
+  assert (Stdcompat.Int64.cdiv 1L 2L = 1L);
+  assert (Stdcompat.Int64.cdiv (-1L) 2L = 0L);
+  assert (Stdcompat.Int64.cdiv 1L (-2L) = 0L)
+
+let test_int64_ediv () =
+  assert (Stdcompat.Int64.ediv 8L 2L = 4L);
+  assert (Stdcompat.Int64.ediv 9L 2L = 4L);
+  assert (Stdcompat.Int64.ediv (-8L) 2L = -4L);
+  assert (Stdcompat.Int64.ediv (-9L) 2L = -5L);
+  assert (Stdcompat.Int64.ediv 8L (-2L) = -4L);
+  assert (Stdcompat.Int64.ediv 9L (-2L) = -4L);
+  assert (Stdcompat.Int64.ediv 1L 2L = 0L);
+  assert (Stdcompat.Int64.ediv (-1L) 2L = -1L);
+  assert (Stdcompat.Int64.ediv 1L (-2L) = 0L)
+
+let test_int64_erem () =
+  assert (Stdcompat.Int64.erem 8L 2L = 0L);
+  assert (Stdcompat.Int64.erem 9L 2L = 1L);
+  assert (Stdcompat.Int64.erem (-8L) 2L = 0L);
+  assert (Stdcompat.Int64.erem (-9L) 2L = 1L);
+  assert (Stdcompat.Int64.erem 8L (-2L) = 0L);
+  assert (Stdcompat.Int64.erem 9L (-2L) = 1L);
+  assert (Stdcompat.Int64.erem 1L 2L = 1L);
+  assert (Stdcompat.Int64.erem (-1L) 2L = 1L);
+  assert (Stdcompat.Int64.erem 1L (-2L) = 1L)
+
+let test_int64_popcount () =
+  assert (Stdcompat.Int64.popcount 6L = 2);
+  assert (Stdcompat.Int64.popcount (-6L) = 30)
+
+let test_int64_unsigned_bitsize () =
+  assert (Stdcompat.Int64.unsigned_bitsize 14L = 4);
+  assert (Stdcompat.Int64.unsigned_bitsize (-14L) = 64)
+
+let test_int64_signed_bitsize () =
+  assert (Stdcompat.Int64.signed_bitsize 14L = 5);
+  assert (Stdcompat.Int64.signed_bitsize (-14L) = 5);
+  assert (Stdcompat.Int64.signed_bitsize 16L = 6);
+  assert (Stdcompat.Int64.signed_bitsize (-16L) = 5)
+
+let test_int64_leading_zeros () =
+  assert (Stdcompat.Int64.leading_zeros 14L = 60);
+  assert (Stdcompat.Int64.leading_zeros (-14L) = 0)
+
+let test_int64_leading_sign_bits () =
+  assert (Stdcompat.Int64.leading_sign_bits 14L = 59);
+  assert (Stdcompat.Int64.leading_sign_bits (-14L) = 59);
+  assert (Stdcompat.Int64.leading_sign_bits 16L = 58);
+  assert (Stdcompat.Int64.leading_sign_bits (-16L) = 59)
+
+let test_int64_trailing_zeros () =
+  assert (Stdcompat.Int64.trailing_zeros 0L = 64);
+  assert (Stdcompat.Int64.trailing_zeros 4L = 2);
+  assert (Stdcompat.Int64.trailing_zeros Stdcompat.Int64.min_int = 63)
+
+let test_bool_logand () =
+  assert (Stdcompat.Bool.logand true true = true);
+  assert (Stdcompat.Bool.logand true false = false);
+  let no_shortcut = ref false in
+  assert (Stdcompat.Bool.logand false (no_shortcut := true; true) = false);
+  assert !no_shortcut;
+  let no_shortcut = ref false in
+  assert (Stdcompat.Bool.logand false (no_shortcut := true; false) = false);
+  assert !no_shortcut
+
+let test_bool_logor () =
+  let no_shortcut = ref false in
+  assert (Stdcompat.Bool.logor true (no_shortcut := true; true) = true);
+  assert !no_shortcut;
+  let no_shortcut = ref false in
+  assert (Stdcompat.Bool.logor true (no_shortcut := true; false) = true);
+  assert !no_shortcut;
+  assert (Stdcompat.Bool.logor false true = true);
+  assert (Stdcompat.Bool.logor false false = false)
+
+let test_bool_logxor () =
+  assert (Stdcompat.Bool.logxor true true = false);
+  assert (Stdcompat.Bool.logxor true false = true);
+  assert (Stdcompat.Bool.logxor false true = true);
+  assert (Stdcompat.Bool.logxor false false = false)
+
+let for_all_char f =
+  try
+    for i = 0 to 0xFF do
+      if not (f (char_of_int i)) then
+        raise Exit
+    done;
+    true
+  with Exit ->
+    false
+
+let test_char_ascii_is_valid () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_valid c = (c <= '\x7F')))
+
+let test_char_ascii_is_upper () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_upper c = ('A' <= c && c <= 'Z')))
+
+let test_char_ascii_is_lower () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_lower c = ('a' <= c && c <= 'z')))
+
+let test_char_ascii_is_letter () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_letter c = (Stdcompat.Char.Ascii.is_upper c || Stdcompat.Char.Ascii.is_lower c)))
+
+let test_char_ascii_is_digit () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_digit c = ('0' <= c && c <= '9')))
+
+let test_char_ascii_is_alphanum () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_alphanum c = (Stdcompat.Char.Ascii.is_digit c || Stdcompat.Char.Ascii.is_letter c)))
+
+let test_char_ascii_is_white () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_white c = (c = '\t' || c = '\n' || c = '\x0b' || c = '\x0c' || c = '\r' || c = ' ')))
+
+let test_char_ascii_is_blank () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_blank c = (c = ' ' || c = '\t')))
+
+let test_char_ascii_is_graphic () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_graphic c = (c >= '\x21' && c <= '\x7E')))
+
+let test_char_ascii_is_print () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_print c = (c >= '\x20' && c <= '\x7E')))
+
+let test_char_ascii_is_control () =
+  assert (for_all_char (fun c -> Stdcompat.Char.Ascii.is_control c = (c <= '\x1F' || c = '\x7F')))
+
+let test_char_ascii_digit_to_int () =
+  assert (Stdcompat.Char.Ascii.digit_to_int '0' = 0);
+  assert (Stdcompat.Char.Ascii.digit_to_int '9' = 9)
+
+let test_char_ascii_digit_of_int () =
+  assert (Stdcompat.Char.Ascii.digit_of_int 0 = '0');
+  assert (Stdcompat.Char.Ascii.digit_of_int 627 = '7');
+  assert (Stdcompat.Char.Ascii.digit_of_int (-627) = '7')
+
+let test_char_ascii_hex_digit_to_int () =
+  assert (Stdcompat.Char.Ascii.hex_digit_to_int '0' = 0);
+  assert (Stdcompat.Char.Ascii.hex_digit_to_int '9' = 9);
+  assert (Stdcompat.Char.Ascii.hex_digit_to_int 'a' = 10);
+  assert (Stdcompat.Char.Ascii.hex_digit_to_int 'A' = 10);
+  assert (Stdcompat.Char.Ascii.hex_digit_to_int 'f' = 15);
+  assert (Stdcompat.Char.Ascii.hex_digit_to_int 'F' = 15)
+
+let test_char_ascii_lower_hex_digit_of_int () =
+  assert (Stdcompat.Char.Ascii.lower_hex_digit_of_int 0 = '0');
+  assert (Stdcompat.Char.Ascii.lower_hex_digit_of_int 0x8F = 'f');
+  assert (Stdcompat.Char.Ascii.lower_hex_digit_of_int (-0x7A) = 'a')
+
+let test_char_ascii_upper_hex_digit_of_int () =
+  assert (Stdcompat.Char.Ascii.upper_hex_digit_of_int 0 = '0');
+  assert (Stdcompat.Char.Ascii.upper_hex_digit_of_int 0x8F = 'F');
+  assert (Stdcompat.Char.Ascii.upper_hex_digit_of_int (-0x7A) = 'A')
+
+let test_char_ascii_uppercase () =
+  assert (Stdcompat.Char.Ascii.uppercase 'a' = 'A');
+  assert (Stdcompat.Char.Ascii.uppercase 'z' = 'Z');
+  assert (Stdcompat.Char.Ascii.uppercase 'A' = 'A');
+  assert (Stdcompat.Char.Ascii.uppercase '+' = '+')
+
+let test_char_ascii_lowercase () =
+  assert (Stdcompat.Char.Ascii.lowercase 'A' = 'a');
+  assert (Stdcompat.Char.Ascii.lowercase 'Z' = 'z');
+  assert (Stdcompat.Char.Ascii.lowercase 'a' = 'a');
+  assert (Stdcompat.Char.Ascii.lowercase '+' = '+')
+
+let test_string_edit_distance () =
+  assert (Stdcompat.String.edit_distance "" "" = 0);
+  assert (Stdcompat.String.edit_distance "" "ab" = 2);
+  assert (Stdcompat.String.edit_distance "ca" "abc" = 3)
+
+let test_string_spellcheck () =
+  let dict = ["abc"; "bact"] in
+  let iter_dict yield = List.iter yield dict in
+  assert (Stdcompat.String.spellcheck iter_dict "ab" = ["abc"]);
+  assert (Stdcompat.String.spellcheck iter_dict "bac" = ["abc"; "bact"])
+
+let test_string_of_char () =
+  assert (Stdcompat.String.of_char 'a' = "a")
+
+let test_string_is_empty () =
+  assert (Stdcompat.String.is_empty "" = true);
+  assert (Stdcompat.String.is_empty " " = false)
+
+let test_string_take_first () =
+  assert (Stdcompat.String.take_first 2 "tests" = "te");
+  assert (Stdcompat.String.take_first 6 "tests" = "tests");
+  assert (Stdcompat.String.take_first (-1) "tests" = "")
+
+let test_string_take_last () =
+  assert (Stdcompat.String.take_last 2 "tests" = "ts");
+  assert (Stdcompat.String.take_last 6 "tests" = "tests");
+  assert (Stdcompat.String.take_last (-1) "tests" = "")
+
+let test_string_drop_first () =
+  assert (Stdcompat.String.drop_first 2 "tests" = "sts");
+  assert (Stdcompat.String.drop_first 6 "tests" = "");
+  assert (Stdcompat.String.drop_first (-1) "tests" = "tests")
+
+let test_string_drop_last () =
+  assert (Stdcompat.String.drop_last 2 "tests" = "tes");
+  assert (Stdcompat.String.drop_last 6 "tests" = "");
+  assert (Stdcompat.String.drop_last (-1) "tests" = "tests")
+
+let test_string_cut_first () =
+  assert (Stdcompat.String.cut_first 2 "tests" = ("te", "sts"));
+  assert (Stdcompat.String.cut_first 6 "tests" = ("tests", ""));
+  assert (Stdcompat.String.cut_first (-1) "tests" = ("", "tests"))
+
+let test_string_cut_last () =
+  assert (Stdcompat.String.cut_last 2 "tests" = ("tes", "ts"));
+  assert (Stdcompat.String.cut_last 6 "tests" = ("", "tests"));
+  assert (Stdcompat.String.cut_last (-1) "tests" = ("tests", ""))
+
+let raises_invalid_argument f =
+  try
+    let _ = f () in
+    false
+  with Invalid_argument _ ->
+    true
+
+let test_string_find_first_index () =
+  assert (Stdcompat.String.find_first_index ((=) 'a') "" = None);
+  assert (Stdcompat.String.find_first_index ((=) 'a') "baca" = Some 1);
+  assert (Stdcompat.String.find_first_index ((=) 'a') "bc" = None);
+  assert (Stdcompat.String.find_first_index ((=) 'a') ~start:1 "baca" = Some 1);
+  assert (Stdcompat.String.find_first_index ((=) 'a') ~start:2 "baca" = Some 3);
+  assert (Stdcompat.String.find_first_index ((=) 'a') ~start:4 "baca" = None);
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.find_first_index ((=) 'a') ~start:5 "baca"));
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.find_first_index ((=) 'a') ~start:(-1) "baca"))
+
+let test_string_find_last_index () =
+  assert (Stdcompat.String.find_last_index ((=) 'a') "" = None);
+  assert (Stdcompat.String.find_last_index ((=) 'a') "baca" = Some 3);
+  assert (Stdcompat.String.find_last_index ((=) 'a') "bc" = None);
+  assert (Stdcompat.String.find_last_index ((=) 'a') ~start:3 "baca" = Some 3);
+  assert (Stdcompat.String.find_last_index ((=) 'a') ~start:2 "baca" = Some 1);
+  assert (Stdcompat.String.find_last_index ((=) 'a') ~start:1 "baca" = Some 1);
+  assert (Stdcompat.String.find_last_index ((=) 'a') ~start:0 "baca" = None);
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.find_last_index ((=) 'a') ~start:5 "baca"));
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.find_last_index ((=) 'a') ~start:(-1) "baca"))
+
+let test_string_take_first_while () =
+  assert (Stdcompat.String.take_first_while ((=) 'a') "" = "");
+  assert (Stdcompat.String.take_first_while ((=) 'a') "aaa" = "aaa");
+  assert (Stdcompat.String.take_first_while ((=) 'a') "aabc" = "aa");
+  assert (Stdcompat.String.take_first_while ((=) 'a') "bc" = "")
+
+let test_string_take_last_while () =
+  assert (Stdcompat.String.take_last_while ((=) 'a') "" = "");
+  assert (Stdcompat.String.take_last_while ((=) 'a') "aaa" = "aaa");
+  assert (Stdcompat.String.take_last_while ((=) 'a') "bcaa" = "aa");
+  assert (Stdcompat.String.take_last_while ((=) 'a') "bc" = "")
+
+let test_string_drop_first_while () =
+  assert (Stdcompat.String.drop_first_while ((=) 'a') "" = "");
+  assert (Stdcompat.String.drop_first_while ((=) 'a') "aaa" = "");
+  assert (Stdcompat.String.drop_first_while ((=) 'a') "aabc" = "bc");
+  assert (Stdcompat.String.drop_first_while ((=) 'a') "bc" = "bc")
+
+let test_string_drop_last_while () =
+  assert (Stdcompat.String.drop_last_while ((=) 'a') "" = "");
+  assert (Stdcompat.String.drop_last_while ((=) 'a') "aaa" = "");
+  assert (Stdcompat.String.drop_last_while ((=) 'a') "bcaa" = "bc");
+  assert (Stdcompat.String.drop_last_while ((=) 'a') "bc" = "bc")
+
+let test_string_cut_first_while () =
+  assert (Stdcompat.String.cut_first_while ((=) 'a') "" = ("", ""));
+  assert (Stdcompat.String.cut_first_while ((=) 'a') "aaa" = ("aaa", ""));
+  assert (Stdcompat.String.cut_first_while ((=) 'a') "aabc" = ("aa", "bc"));
+  assert (Stdcompat.String.cut_first_while ((=) 'a') "bc" = ("", "bc"))
+
+let test_string_cut_last_while () =
+  assert (Stdcompat.String.cut_last_while ((=) 'a') "" = ("", ""));
+  assert (Stdcompat.String.cut_last_while ((=) 'a') "aaa" = ("", "aaa"));
+  assert (Stdcompat.String.cut_last_while ((=) 'a') "bcaa" = ("bc", "aa"));
+  assert (Stdcompat.String.cut_last_while ((=) 'a') "bc" = ("bc", ""))
+
+let test_string_find_first () =
+  assert (Stdcompat.String.find_first ~sub:"ababc" "abababc" = Some 2);
+  assert (Stdcompat.String.find_first ~sub:"ababc" "ababab" = None);
+  assert (Stdcompat.String.find_first ~sub:"ababc" "ababcababc" = Some 0);
+  assert (Stdcompat.String.find_first ~sub:"ababc" ~start:1 "ababcababc" = Some 5);
+  assert (Stdcompat.String.find_first ~sub:"" ~start:1 "abc" = Some 1);
+  assert (Stdcompat.String.find_first ~sub:"" "" = Some 0);
+  assert (Stdcompat.String.find_first ~sub:"a" "" = None);
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.find_first ~sub:"" ~start:5 "baca"));
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.find_first ~sub:"baca" ~start:(-1) "baca"))
+
+let test_string_find_last () =
+  assert (Stdcompat.String.find_last ~sub:"ababc" "abababc" = Some 2);
+  assert (Stdcompat.String.find_last ~sub:"ababc" "ababab" = None);
+  assert (Stdcompat.String.find_last ~sub:"ababc" "ababcababc" = Some 5);
+  assert (Stdcompat.String.find_last ~sub:"ababc" ~start:5 "ababcababc" = Some 5);
+  assert (Stdcompat.String.find_last ~sub:"ababc" ~start:4 "ababcababc" = Some 0);
+  assert (Stdcompat.String.find_last ~sub:"" ~start:1 "abc" = Some 1);
+  assert (Stdcompat.String.find_last ~sub:"" "" = Some 0);
+  assert (Stdcompat.String.find_last ~sub:"a" "" = None);
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.find_last ~sub:"" ~start:5 "baca"));
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.find_last ~sub:"baca" ~start:(-1) "baca"))
+
+let test_string_find_all () =
+  assert (Stdcompat.String.find_all ~sub:"abab" Stdcompat.List.cons "ababababab" [] = [4; 0]);
+  assert (Stdcompat.String.find_all ~sub:"abab" Stdcompat.List.cons ~start:1 "ababababab" [] = [6; 2]);
+  assert (Stdcompat.String.find_all ~sub:"" Stdcompat.List.cons "abc" [] = [3; 2; 1; 0]);
+  assert (Stdcompat.String.find_all ~sub:"" Stdcompat.List.cons "" [] = [0]);
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.find_all ~sub:"" Stdcompat.List.cons ~start:5 "baca" []));
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.find_all ~sub:"baca" Stdcompat.List.cons ~start:(-1) "baca" []))
+
+let test_string_rfind_all () =
+  assert (Stdcompat.String.rfind_all ~sub:"abab" Stdcompat.List.cons "ababababab" [] = [2; 6]);
+  assert (Stdcompat.String.rfind_all ~sub:"abab" Stdcompat.List.cons ~start:6 "ababababab" [] = [2; 6]);
+  assert (Stdcompat.String.rfind_all ~sub:"abab" Stdcompat.List.cons ~start:5 "ababababab" [] = [0; 4]);
+  assert (Stdcompat.String.rfind_all ~sub:"" Stdcompat.List.cons "abc" [] = [0; 1; 2; 3]);
+  assert (Stdcompat.String.rfind_all ~sub:"" Stdcompat.List.cons "" [] = [0]);
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.rfind_all ~sub:"" Stdcompat.List.cons ~start:5 "baca" []));
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.rfind_all ~sub:"baca" Stdcompat.List.cons ~start:(-1) "baca" []))
+
+let test_string_includes () =
+  assert (Stdcompat.String.includes ~affix:"ababc" "abababcab");
+  assert (not (Stdcompat.String.includes ~affix:"ababc" "abababab"));
+  assert (Stdcompat.String.includes ~affix:"" "abababab");
+  assert (not (Stdcompat.String.includes ~affix:"ababc" ""))
+
+let test_string_split_first () =
+  assert (Stdcompat.String.split_first ~sep:"abab" "ababababab" = Some ("", "ababab"));
+  assert (Stdcompat.String.split_first ~sep:"" "abab" = Some ("", "abab"));
+  assert (Stdcompat.String.split_first ~sep:"xyz" "abab" = None)
+
+let test_string_split_last () =
+  assert (Stdcompat.String.split_last ~sep:"abab" "ababababab" = Some ("ababab", ""));
+  assert (Stdcompat.String.split_last ~sep:"" "abab" = Some ("abab", ""));
+  assert (Stdcompat.String.split_last ~sep:"xyz" "abab" = None)
+
+let test_string_split_all () =
+  assert (Stdcompat.String.split_all ~sep:"abab" "ababababab" = [""; ""; "ab"]);
+  assert (Stdcompat.String.split_all ~sep:"abab" ~drop:(fun s -> s = "y") "ababxababy" = [""; "x"]);
+  assert (Stdcompat.String.split_all ~sep:"" "abab" = [""; "a"; "b"; "a"; "b"; ""])
+
+let test_string_rsplit_all () =
+  assert (Stdcompat.String.rsplit_all ~sep:"abab" "ababababab" = ["ab"; ""; ""]);
+  assert (Stdcompat.String.rsplit_all ~sep:"abab" ~drop:(fun s -> s = "y") "ababxababy" = [""; "x"]);
+  assert (Stdcompat.String.rsplit_all ~sep:"" "abab" = [""; "a"; "b"; "a"; "b"; ""])
+
+let test_string_replace_first () =
+  assert (Stdcompat.String.replace_first ~sub:"abab" ~by:"xyz" "ababababab" = "xyzababab");
+  assert (Stdcompat.String.replace_first ~sub:"abab" ~by:"xyz" ~start:1 "ababababab" = "abxyzabab");
+  assert (Stdcompat.String.replace_first ~sub:"" ~by:"xyz" ~start:1 "abab" = "axyzbab");
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.replace_first ~sub:"" ~by:"" ~start:5 "baca"));
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.replace_first ~sub:"baca" ~by:"" ~start:(-1) "baca"))
+
+let test_string_replace_last () =
+  assert (Stdcompat.String.replace_last ~sub:"abab" ~by:"xyz" "ababababab" = "abababxyz");
+  assert (Stdcompat.String.replace_last ~sub:"abab" ~by:"xyz" ~start:6 "ababababab" = "abababxyz");
+  assert (Stdcompat.String.replace_last ~sub:"abab" ~by:"xyz" ~start:5 "ababababab" = "ababxyzab");
+  assert (Stdcompat.String.replace_last ~sub:"" ~by:"xyz" ~start:1 "abab" = "axyzbab");
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.replace_last ~sub:"" ~by:"" ~start:5 "baca"));
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.replace_last ~sub:"baca" ~by:"" ~start:(-1) "baca"))
+
+let test_string_replace_all () =
+  assert (Stdcompat.String.replace_all ~sub:"abab" ~by:"xyz" "ababababab" = "xyzxyzab");
+  assert (Stdcompat.String.replace_all ~sub:"abab" ~by:"xyz" ~start:1 "ababababab" = "abxyzxyz");
+  assert (Stdcompat.String.replace_all ~sub:"" ~by:"xyz" ~start:1 "abab" = "axyzbxyzaxyzbxyz");
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.replace_all ~sub:"" ~by:"" ~start:5 "baca"));
+  assert (raises_invalid_argument (fun () ->
+    Stdcompat.String.replace_all ~sub:"baca" ~by:"" ~start:(-1) "baca"))
+
+let test_array_equal () =
+  assert (Stdcompat.Array.equal Stdcompat.Int.equal [||] [||]);
+  assert (Stdcompat.Array.equal Stdcompat.Int.equal [|1; 2|] [|1; 2|]);
+  assert (not (Stdcompat.Array.equal Stdcompat.Int.equal [|1; 2|] [|1; 3|]));
+  assert (not (Stdcompat.Array.equal Stdcompat.Int.equal [|1|] [|1; 3|]));
+  assert (not (Stdcompat.Array.equal Stdcompat.Int.equal [|1; 2|] [|1|]))
+
+let test_array_compare () =
+  assert (Stdcompat.Array.compare Stdcompat.Int.compare [||] [||] = 0);
+  assert (Stdcompat.Array.compare Stdcompat.Int.compare [|1; 2|] [|1; 2|] = 0);
+  assert (Stdcompat.Array.compare Stdcompat.Int.compare [|1; 2; 3|] [|1; 3; 2|] < 0);
+  assert (Stdcompat.Array.compare Stdcompat.Int.compare [|1; 3; 2|] [|1; 2; 3|] > 0);
+  assert (Stdcompat.Array.compare Stdcompat.Int.compare [|1|] [|1; 3|] < 0);
+  assert (Stdcompat.Array.compare Stdcompat.Int.compare [|1; 2|] [|1|] > 0)
+
+let test_array_stable_sort_sub () =
+  let a = [|0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10|] in
+  Stdcompat.Array.stable_sort_sub (fun i j -> Stdcompat.Int.compare (j / 2) (i / 2)) a 1 (Array.length a - 2);
+  assert (a = [|0; 8; 9; 6; 7; 4; 5; 2; 3; 1; 10|])
+
 let tests () =
   testing "hypot" (fun () ->
     assert (Stdcompat.hypot 3. 4. = 5.);
@@ -1495,6 +2170,110 @@ let tests () =
   test_string_starts_with ();
   test_string_ends_with ();
   test_channels ();
+  testing "Set.is_singleton" test_set_is_singleton;
+  testing "Map.is_singleton" test_map_is_singleton;
+  testing "Seq.singleton" test_seq_singleton;
+  testing "Seq.filteri" test_seq_filteri;
+  testing "Seq.delay" test_seq_delay;
+  testing "List.singleton" test_list_singleton;
+  testing "List.filter_mapi" test_list_filter_mapi;
+  testing "List.split_map" test_list_split_map;
+  testing "Either.get_left" test_either_get_left;
+  testing "Either.get_right" test_either_get_right;
+  testing "Either.retract" test_either_retract;
+  testing "Option.product" test_option_product;
+  testing "Option.blend" test_option_blend;
+  testing "Option.for_all" test_option_for_all;
+  testing "Option.exists" test_option_exists;
+  testing "Result.get_ok'" test_result_get_ok';
+  testing "Result.error_to_failure" test_result_error_to_failure;
+  testing "Result.product" test_result_product;
+  testing "Result.retract" test_result_retract;
+  testing "Format.utf_8_scalar_width" test_format_utf_8_scalar_width;
+  testing "Nativeint.fdiv" test_nativeint_fdiv;
+  testing "Nativeint.cdiv" test_nativeint_cdiv;
+  testing "Nativeint.ediv" test_nativeint_ediv;
+  testing "Nativeint.erem" test_nativeint_erem;
+  testing "Nativeint.popcount" test_nativeint_erem;
+  testing "Nativeint.unsigned_bitsize" test_nativeint_unsigned_bitsize;
+  testing "Nativeint.signed_bitsize" test_nativeint_signed_bitsize;
+  testing "Nativeint.leading_zeros" test_nativeint_leading_zeros;
+  testing "Nativeint.leading_sign_bits" test_nativeint_leading_sign_bits;
+  testing "Nativeint.trailing_zeros" test_nativeint_trailing_zeros;
+  testing "Int32.fdiv" test_int32_fdiv;
+  testing "Int32.cdiv" test_int32_cdiv;
+  testing "Int32.ediv" test_int32_ediv;
+  testing "Int32.erem" test_int32_erem;
+  testing "Int32.popcount" test_int32_erem;
+  testing "Int32.unsigned_bitsize" test_int32_unsigned_bitsize;
+  testing "Int32.signed_bitsize" test_int32_signed_bitsize;
+  testing "Int32.leading_zeros" test_int32_leading_zeros;
+  testing "Int32.leading_sign_bits" test_int32_leading_sign_bits;
+  testing "Int32.trailing_zeros" test_int32_trailing_zeros;
+  testing "Int64.fdiv" test_int64_fdiv;
+  testing "Int64.cdiv" test_int64_cdiv;
+  testing "Int64.ediv" test_int64_ediv;
+  testing "Int64.erem" test_int64_erem;
+  testing "Int64.popcount" test_int64_erem;
+  testing "Int64.unsigned_bitsize" test_int64_unsigned_bitsize;
+  testing "Int64.signed_bitsize" test_int64_signed_bitsize;
+  testing "Int64.leading_zeros" test_int64_leading_zeros;
+  testing "Int64.leading_sign_bits" test_int64_leading_sign_bits;
+  testing "Int64.trailing_zeros" test_int64_trailing_zeros;
+  testing "Bool.logand" test_bool_logand;
+  testing "Bool.logor" test_bool_logor;
+  testing "Bool.logxor" test_bool_logxor;
+  testing "Char.Ascii.is_valid" test_char_ascii_is_valid;
+  testing "Char.Ascii.is_upper" test_char_ascii_is_upper;
+  testing "Char.Ascii.is_lower" test_char_ascii_is_lower;
+  testing "Char.Ascii.is_letter" test_char_ascii_is_letter;
+  testing "Char.Ascii.is_digit" test_char_ascii_is_digit;
+  testing "Char.Ascii.is_alphanum" test_char_ascii_is_alphanum;
+  testing "Char.Ascii.is_white" test_char_ascii_is_white;
+  testing "Char.Ascii.is_blank" test_char_ascii_is_blank;
+  testing "Char.Ascii.is_graphic" test_char_ascii_is_graphic;
+  testing "Char.Ascii.is_print" test_char_ascii_is_print;
+  testing "Char.Ascii.is_control" test_char_ascii_is_control;
+  testing "Char.Ascii.digit_to_int" test_char_ascii_digit_to_int;
+  testing "Char.Ascii.digit_of_int" test_char_ascii_digit_of_int;
+  testing "Char.Ascii.hex_digit_to_int" test_char_ascii_hex_digit_to_int;
+  testing "Char.Ascii.lower_hex_digit_of_int" test_char_ascii_lower_hex_digit_of_int;
+  testing "Char.Ascii.upper_hex_digit_of_int" test_char_ascii_upper_hex_digit_of_int;
+  testing "Char.Ascii.lowercase" test_char_ascii_lowercase;
+  testing "Char.Ascii.uppercase" test_char_ascii_uppercase;
+  testing "String.edit_distance" test_string_edit_distance;
+  testing "String.spellcheck" test_string_spellcheck;
+  testing "String.of_char" test_string_of_char;
+  testing "String.is_empty" test_string_is_empty;
+  testing "String.take_first" test_string_take_first;
+  testing "String.take_last" test_string_take_last;
+  testing "String.drop_first" test_string_drop_first;
+  testing "String.drop_last" test_string_drop_last;
+  testing "String.cut_first" test_string_cut_first;
+  testing "String.cut_last" test_string_cut_last;
+  testing "String.find_first_index" test_string_find_first_index;
+  testing "String.find_last_index" test_string_find_last_index;
+  testing "String.take_first_while" test_string_take_first_while;
+  testing "String.take_last_while" test_string_take_last_while;
+  testing "String.drop_first_while" test_string_drop_first_while;
+  testing "String.drop_last_while" test_string_drop_last_while;
+  testing "String.cut_first_while" test_string_cut_first_while;
+  testing "String.cut_last_while" test_string_cut_last_while;
+  testing "String.find_first" test_string_find_first;
+  testing "String.find_last" test_string_find_last;
+  testing "String.find_all" test_string_find_all;
+  testing "String.rfind_all" test_string_rfind_all;
+  testing "String.includes" test_string_includes;
+  testing "String.split_first" test_string_split_first;
+  testing "String.split_last" test_string_split_last;
+  testing "String.split_all" test_string_split_all;
+  testing "String.rsplit_all" test_string_rsplit_all;
+  testing "String.replace_first" test_string_replace_first;
+  testing "String.replace_last" test_string_replace_last;
+  testing "String.replace_all" test_string_replace_all;
+  testing "Array.equal" test_array_equal;
+  testing "Array.compare" test_array_compare;
+  testing "Array.stable_sort_sub" test_array_stable_sort_sub;
   ()
 
 let () =

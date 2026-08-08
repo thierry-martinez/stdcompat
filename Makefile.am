@@ -11,8 +11,11 @@ EXTRA_DIST= stdcompat.opam dune stdcompat.ml stdcompat__native.ml_byte \
 	stdcompat__hashtbl.mli stdcompat__set.mli \
 	stdcompat__map.mli stdcompat__weak.mli \
 	stdcompat__digest.mli stdcompat__nativeint.mli \
+	stdcompat__generic_int_s.mli \
+	stdcompat__generic_int.mli \
 	stdcompat__int.mli \
 	stdcompat__int64.mli stdcompat__int32.mli stdcompat__filename.mli \
+	stdcompat__generic_array.mli \
 	stdcompat__array.mli stdcompat__arrayLabels.mli \
 	stdcompat__float.mli stdcompat__queue.mli stdcompat__ephemeron.mli \
 	stdcompat__moreLabels.mli stdcompat__lexing.mli \
@@ -33,17 +36,21 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 	stdcompat__pervasives_s.ml stdcompat__arg_s.ml stdcompat__lazy_s.ml \
 	stdcompat__char_s.ml stdcompat__uchar_s.ml stdcompat__uchar.ml \
         stdcompat__buffer_s.ml \
-	stdcompat__string_s.ml stdcompat__stringLabels_s.ml stdcompat__bytes_s.ml \
+	stdcompat__bytes_s.ml \
 	stdcompat__bytesLabels_s.ml \
+	stdcompat__string_s.ml stdcompat__stringLabels_s.ml \
 	stdcompat__list_s.ml \
         stdcompat__listLabels_s.ml \
 	stdcompat__stack_s.ml \
 	stdcompat__list.ml \
 	stdcompat__hashtbl_ext.ml stdcompat__hashtbl_s.ml stdcompat__set_s.ml \
 	stdcompat__map_s.ml stdcompat__weak_s.ml stdcompat__sys_s.ml \
-	stdcompat__digest_s.ml stdcompat__nativeint_s.ml \
+	stdcompat__digest_s.ml \
+	stdcompat__generic_int.ml \
+	stdcompat__nativeint_s.ml \
 	stdcompat__int_s.ml \
 	stdcompat__int64_s.ml stdcompat__int32_s.ml stdcompat__filename_s.ml \
+	stdcompat__generic_array.ml \
 	stdcompat__array_s.ml stdcompat__arrayLabels_s.ml \
 	stdcompat__dynarray_s.ml stdcompat__dynarray.ml \
 	stdcompat__float_s.ml stdcompat__queue_s.ml \
@@ -173,6 +180,8 @@ stdcompat__native.cmo : stdcompat__native.ml_byte stdcompat__native.cmi
 
 stdcompat__native.cmx : stdcompat__native.ml_native stdcompat__native.cmi
 	$(OCAMLOPT) $(OCAMLCFLAGS) -c -impl stdcompat__native.ml_native
+
+stdcompat__generic_int.cmi: stdcompat__generic_int_s.cmi
 
 .PHONY : depend
 depend : .depend

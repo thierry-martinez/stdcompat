@@ -73,3 +73,7 @@ let recommended_domain_count () =
 @BEGIN_BEFORE_5_3_0@
 let self_index () = failwith "not implemented"
 @END_BEFORE_5_3_0@
+
+@BEGIN_BEFORE_5_5_0@
+let count () = failwith "not implemented"
+@END_BEFORE_5_5_0@

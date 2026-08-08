@@ -415,3 +415,24 @@ let rec find_mapi_from index f seq =
 let find_mapi f seq =
   find_mapi_from 0 f seq
 @END_BEFORE_5_1_0@
+
+@BEGIN_BEFORE_5_4_0@
+let singleton v () = Cons (v, empty)
+
+let rec filteri_aux i f s () =
+  match s () with
+  | Nil -> Nil
+  | Cons (hd, tl) ->
+      let tl' = filteri_aux (succ i) f tl in
+      if f i hd then
+        Cons (hd, tl')
+      else
+        tl' ()
+
+let filteri f s =
+  filteri_aux 0 f s
+@END_BEFORE_5_4_0@
+
+@BEGIN_BEFORE_5_5_0@
+let delay f () = f () ()
+@END_BEFORE_5_5_0@

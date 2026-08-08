@@ -1,0 +1,65 @@
+module Make (X : Stdcompat__generic_int_s.S) = struct
+  let fdiv x y =
+    let d = X.div x y in
+    if (x >= X.zero) <> (y >= X.zero) && X.rem x y <> X.zero then
+      X.pred d
+    else
+      d
+
+  let cdiv x y =
+    let d = X.div x y in
+    if (x >= X.zero) = (y >= X.zero) && X.rem x y <> X.zero then
+      X.succ d
+    else
+      d
+  
+  let ediv x y =
+    if y < X.zero then
+      cdiv x y
+    else
+      fdiv x y
+  
+  let erem x y =
+    let r = X.rem x y in
+    if r < X.zero then
+      X.neg r
+    else
+      r
+  
+  let rec popcount_aux count x =
+    if x = X.zero then
+      count
+    else
+      let count' = if X.logand x X.one = X.one then count + 1 else count in
+      popcount_aux count' (X.shift_right_logical x 1) 
+  
+  let popcount x =
+    popcount_aux 0 x
+  
+  let rec unsigned_bitsize_aux count x =
+    if x = X.zero then
+      count
+    else
+      unsigned_bitsize_aux (count + 1) (X.shift_right_logical x 1)
+
+  let unsigned_bitsize x =
+    unsigned_bitsize_aux 0 x
+
+  let signed_bitsize x =
+    if x >= X.zero then
+      unsigned_bitsize x + 1
+    else
+      unsigned_bitsize (X.lognot x) + 1
+
+  let leading_zeros x =
+    X.bitsize - unsigned_bitsize x
+  
+  let leading_sign_bits x =
+    X.bitsize - signed_bitsize x
+  
+  let trailing_zeros x =
+    if x = X.zero then
+      X.bitsize
+    else
+      unsigned_bitsize (X.sub (X.logand x (X.neg x)) X.one)
+end

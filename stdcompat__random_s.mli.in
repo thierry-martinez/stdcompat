@@ -1,8 +1,8 @@
 module type S = sig
-@BEGIN_FROM_5_2_0@
+@BEGIN_FROM_5_5_0@
 module State = Random.State
-@END_FROM_5_2_0@
-@BEGIN_BEFORE_5_2_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
 module State :
 sig type t val make : int array -> t val make_self_init : unit -> t
 val copy : t -> t val bits : t -> int val int : t -> int -> int
@@ -18,8 +18,89 @@ val float : t -> float -> float val bool : t -> bool
 val bits32 : t -> Int32.t val bits64 : t -> Int64.t
 val nativebits : t -> Nativeint.t val split : t -> t
 val to_binary_string : t -> string val of_binary_string : string -> t end
-@END_BEFORE_5_2_0@
-(** @since 5.2.0: module State = Random.State
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: module State = Random.State
+ *)
+
+@BEGIN_FROM_5_5_0@
+val int32 : Int32.t -> Int32.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val int32 : Int32.t -> Int32.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val int32 : Int32.t -> Int32.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val nativeint : Nativeint.t -> Nativeint.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val nativeint : Nativeint.t -> Nativeint.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val nativeint : Nativeint.t -> Nativeint.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val int64 : Int64.t -> Int64.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val int64 : Int64.t -> Int64.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val int64 : Int64.t -> Int64.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val bits32 : unit -> Int32.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val bits32 : unit -> Int32.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val bits32 : unit -> Int32.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val bits64 : unit -> Int64.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val bits64 : unit -> Int64.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val bits64 : unit -> Int64.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val nativebits : unit -> Nativeint.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val nativebits : unit -> Nativeint.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val nativebits : unit -> Nativeint.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val get_state : unit -> State.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val get_state : unit -> State.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val get_state : unit -> State.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val set_state : State.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val set_state : State.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val set_state : State.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val split : unit -> State.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val split : unit -> State.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val split : unit -> State.t
  *)
 
 val int_in_range : min:int -> max:int -> int
@@ -34,18 +115,6 @@ val nativeint_in_range : min:nativeint -> max:nativeint -> nativeint
 
 val int64_in_range : min:int64 -> max:int64 -> int64
 (** @since 5.2.0: val int64_in_range : min:int64 -> max:int64 -> int64 *)
-
-val split : unit -> State.t
-(** @since 5.0.0: val split : unit -> State.t *)
-
-val bits32 : unit -> Int32.t
-(** @since 4.14.0: val bits32 : unit -> Int32.t *)
-
-val bits64 : unit -> Int64.t
-(** @since 4.14.0: val bits64 : unit -> Int64.t *)
-
-val nativebits : unit -> Nativeint.t
-(** @since 4.14.0: val nativebits : unit -> Nativeint.t *)
 
 val full_int : int -> int
 (** @since 4.13.0: val full_int : int -> int *)
@@ -65,25 +134,10 @@ val bits : unit -> int
 val int : int -> int
 (** Alias for {!Random.int} *)
 
-val int32 : Int32.t -> Int32.t
-(** Alias for {!Random.int32} *)
-
-val nativeint : Nativeint.t -> Nativeint.t
-(** Alias for {!Random.nativeint} *)
-
-val int64 : Int64.t -> Int64.t
-(** Alias for {!Random.int64} *)
-
 val float : float -> float
 (** Alias for {!Random.float} *)
 
 val bool : unit -> bool
 (** Alias for {!Random.bool} *)
-
-val get_state : unit -> State.t
-(** Alias for {!Random.get_state} *)
-
-val set_state : State.t -> unit
-(** Alias for {!Random.set_state} *)
 
 end

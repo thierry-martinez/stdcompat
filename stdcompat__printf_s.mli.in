@@ -1,13 +1,127 @@
 module type S = sig
-val ibprintf : Buffer.t -> ('a, Buffer.t, unit) format -> 'a
-(** @since 4.11.0:
-    val ibprintf : Buffer.t -> ('a, Buffer.t, unit) format -> 'a *)
+@BEGIN_FROM_5_5_0@
+module Args = Printf.Args
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+module Args : sig @BEGIN_FROM_4_00_0@
+type ('a, 'r) t =
+  | []: ('r, 'r) t 
+  | (::): 'a * ('b, 'r) t -> ('a -> 'b, 'r) t 
+@END_FROM_4_00_0@
+@BEGIN_BEFORE_4_00_0@
+type ('a, 'r) t =
+  | [] 
+  | (::) of 'a * ('b, 'r) t 
+@END_BEFORE_4_00_0@
+ val apply : 'a -> ('a, 'r) t -> 'r
+val (@) : ('a, 'r1) t -> ('r1, 'r2) t -> ('a, 'r2) t
+end
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: module Args = Printf.Args
+ *)
 
+@BEGIN_FROM_5_5_0@
+val bprintf : Buffer.t -> ('a, Buffer.t, unit) format -> 'a
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val bprintf : Buffer.t -> ('a, Buffer.t, unit) format -> 'a
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val bprintf : Buffer.t -> ('a, Buffer.t, unit) format -> 'a
+ *)
+
+@BEGIN_FROM_5_5_0@
+val ibprintf : Buffer.t -> ('a, Buffer.t, unit) format -> 'a
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val ibprintf : Buffer.t -> ('a, Buffer.t, unit) format -> 'a
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val ibprintf : Buffer.t -> ('a, Buffer.t, unit) format -> 'a
+ *)
+
+@BEGIN_FROM_5_5_0@
+val kbprintf :
+  (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val kbprintf :
+  (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val kbprintf :
+      (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
+ *)
+
+@BEGIN_FROM_5_5_0@
 val ikbprintf :
   (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
-(** @since 4.11.0:
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val ikbprintf :
+  (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
     val ikbprintf :
-      (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a *)
+      (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
+ *)
+
+@BEGIN_FROM_5_5_0@
+val lfprintf :
+  out_channel -> ('a, out_channel, unit) format -> ('a, unit) Args.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val lfprintf :
+  out_channel -> ('a, out_channel, unit) format -> ('a, unit) Args.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val lfprintf :
+      out_channel ->
+        ('a, out_channel, unit) format -> ('a, unit) Args.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val lbprintf :
+  Buffer.t -> ('a, Buffer.t, unit) format -> ('a, unit) Args.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val lbprintf :
+  Buffer.t -> ('a, Buffer.t, unit) format -> ('a, unit) Args.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val lbprintf :
+      Buffer.t -> ('a, Buffer.t, unit) format -> ('a, unit) Args.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val lprintf : ('a, out_channel, unit) format -> ('a, unit) Args.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val lprintf : ('a, out_channel, unit) format -> ('a, unit) Args.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val lprintf : ('a, out_channel, unit) format -> ('a, unit) Args.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val leprintf : ('a, out_channel, unit) format -> ('a, unit) Args.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val leprintf : ('a, out_channel, unit) format -> ('a, unit) Args.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val leprintf :
+      ('a, out_channel, unit) format -> ('a, unit) Args.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val lsprintf : ('a, unit, string) format -> ('a, string) Args.t -> string
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val lsprintf : ('a, unit, string) format -> ('a, string) Args.t -> string
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val lsprintf : ('a, unit, string) format -> ('a, string) Args.t -> string
+ *)
 
 @BEGIN_FROM_4_03_0@
 val ifprintf : 'b -> ('a, 'b, 'c, unit) format4 -> 'a
@@ -39,29 +153,6 @@ val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a
 @END_BEFORE_4_03_0@
 (** @since 4.03.0:
     val ikfprintf : ('b -> 'd) -> 'b -> ('a, 'b, 'c, 'd) format4 -> 'a *)
-
-@BEGIN_FROM_4_03_0@
-val kbprintf :
-  (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
-@END_FROM_4_03_0@
-@BEGIN_BEFORE_4_03_0@
-@BEGIN_FROM_3_10_0@
-val kbprintf :
-  (Buffer.t -> 'a) -> Buffer.t -> ('b, Buffer.t, unit, 'a) format4 -> 'b
-@END_FROM_3_10_0@
-@BEGIN_BEFORE_3_10_0@
-val kbprintf :
-  (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
-@END_BEFORE_3_10_0@
-
-@END_BEFORE_4_03_0@
-(** @since 4.03.0:
-    val kbprintf :
-      (Buffer.t -> 'd) -> Buffer.t -> ('a, Buffer.t, unit, 'd) format4 -> 'a
-@since 3.10.0:
-val kbprintf :
-  (Buffer.t -> 'a) -> Buffer.t -> ('b, Buffer.t, unit, 'a) format4 -> 'b
- *)
 
 @BEGIN_FROM_4_03_0@
 val kfprintf :
@@ -120,9 +211,6 @@ val eprintf : ('a, out_channel, unit) format -> 'a
 
 val sprintf : ('a, unit, string) format -> 'a
 (** Alias for {!Printf.sprintf} *)
-
-val bprintf : Buffer.t -> ('a, Buffer.t, unit) format -> 'a
-(** Alias for {!Printf.bprintf} *)
 
 @BEGIN_FROM_4_03_0@
 val kprintf : (string -> 'b) -> ('a, unit, string, 'b) format4 -> 'a

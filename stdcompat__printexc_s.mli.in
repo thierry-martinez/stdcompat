@@ -105,8 +105,14 @@ type raw_backtrace_slot
 (** @since 4.02.0: type raw_backtrace_slot
  *)
 
+@BEGIN_FROM_5_5_0@
 val string_of_extension_constructor : Obj.t -> string
-(** @since 5.0.0: val string_of_extension_constructor : Obj.t -> string *)
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val string_of_extension_constructor : Obj.t -> string
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val string_of_extension_constructor : Obj.t -> string
+ *)
 
 val raw_backtrace_entries : raw_backtrace -> raw_backtrace_entry array
 (** @since 4.12.0:

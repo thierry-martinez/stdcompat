@@ -51,3 +51,11 @@ let hash = Hashtbl.hash
 
 let seeded_hash = Stdcompat__hashtbl.seeded_hash
 @END_BEFORE_5_1_0@
+
+@BEGIN_BEFORE_5_5_0@
+include (Stdcompat__generic_int.Make (struct
+  include Int64
+
+  let bitsize = 64
+end))
+@END_BEFORE_5_5_0@

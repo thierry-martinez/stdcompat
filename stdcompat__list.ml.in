@@ -246,3 +246,29 @@ let rec drop_while p = function
 
 
 @END_BEFORE_5_3_0@
+
+@BEGIN_BEFORE_5_4_0@
+let singleton x = [x]
+@END_BEFORE_5_4_0@
+
+@BEGIN_BEFORE_5_5_0@
+let filter_mapi f list =
+  let rec aux index accu list =
+    match list with
+    | [] -> rev accu
+    | head :: tail ->
+        let accu' =
+          match f index head with
+          | None -> accu
+          | Some head' -> head' :: accu in
+        aux (succ index) accu' tail in
+  aux 0 [] list
+
+let rec split_map f l =
+  match l with
+  | [] -> [], []
+  | hd :: tl ->
+      let hd_a, hd_b = f hd in
+      let tl_a, tl_b = split_map f tl in
+      hd_a :: tl_a, hd_b :: tl_b
+@END_BEFORE_5_5_0@

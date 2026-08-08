@@ -24,6 +24,60 @@ type 'a t = 'a list
                      | (::) of 'a * 'a list 
  *)
 
+val filter_mapi : (int -> 'a -> 'b option) -> 'a list -> 'b list
+(** @since 5.5.0:
+    val filter_mapi : (int -> 'a -> 'b option) -> 'a list -> 'b list *)
+
+@BEGIN_FROM_5_5_0@
+val partition_map :
+  ('a -> ('b, 'c) Either.t) -> 'a list -> ('b list * 'c list)
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val partition_map :
+  ('a -> ('b, 'c) Stdcompat__either.t) -> 'a list -> ('b list * 'c list)
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val partition_map :
+      ('a -> ('b, 'c) Either.t) -> 'a list -> ('b list * 'c list)
+ *)
+
+val split_map : ('c -> ('a * 'b)) -> 'c list -> ('a list * 'b list)
+(** @since 5.5.0:
+    val split_map : ('c -> ('a * 'b)) -> 'c list -> ('a list * 'b list) *)
+
+@BEGIN_FROM_5_5_0@
+val to_seq : 'a list -> 'a Seq.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val to_seq : 'a list -> 'a Stdcompat__seq.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val to_seq : 'a list -> 'a Seq.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val of_seq : 'a Seq.t -> 'a list
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val of_seq : 'a Stdcompat__seq.t -> 'a list
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val of_seq : 'a Seq.t -> 'a list
+ *)
+
+val singleton : 'a -> 'a list
+(** @since 5.4.0: val singleton : 'a -> 'a list *)
+
+val take : int -> 'a list -> 'a list
+(** @since 5.3.0: val take : int -> 'a list -> 'a list *)
+
+val drop : int -> 'a list -> 'a list
+(** @since 5.3.0: val drop : int -> 'a list -> 'a list *)
+
+val take_while : ('a -> bool) -> 'a list -> 'a list
+(** @since 5.3.0: val take_while : ('a -> bool) -> 'a list -> 'a list *)
+
+val drop_while : ('a -> bool) -> 'a list -> 'a list
+(** @since 5.3.0: val drop_while : ('a -> bool) -> 'a list -> 'a list *)
+
 val is_empty : 'a list -> bool
 (** @since 5.1.0: val is_empty : 'a list -> bool *)
 
@@ -41,19 +95,6 @@ val equal : ('a -> 'a -> bool) -> 'a list -> 'a list -> bool
 val compare : ('a -> 'a -> int) -> 'a list -> 'a list -> int
 (** @since 4.12.0:
     val compare : ('a -> 'a -> int) -> 'a list -> 'a list -> int *)
-
-@BEGIN_FROM_4_12_0@
-val partition_map :
-  ('a -> ('b, 'c) Either.t) -> 'a list -> ('b list * 'c list)
-@END_FROM_4_12_0@
-@BEGIN_BEFORE_4_12_0@
-val partition_map :
-  ('a -> ('b, 'c) Stdcompat__either.t) -> 'a list -> ('b list * 'c list)
-@END_BEFORE_4_12_0@
-(** @since 4.12.0:
-    val partition_map :
-      ('a -> ('b, 'c) Either.t) -> 'a list -> ('b list * 'c list)
- *)
 
 @BEGIN_FROM_5_1_0@
 val fold_left_map :
@@ -89,24 +130,6 @@ val find_map : ('a -> 'b option) -> 'a list -> 'b option
 
 val filter_map : ('a -> 'b option) -> 'a list -> 'b list
 (** @since 4.08.0: val filter_map : ('a -> 'b option) -> 'a list -> 'b list *)
-
-@BEGIN_FROM_4_07_0@
-val to_seq : 'a list -> 'a Seq.t
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
-val to_seq : 'a list -> 'a Stdcompat__seq.t
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: val to_seq : 'a list -> 'a Seq.t
- *)
-
-@BEGIN_FROM_4_07_0@
-val of_seq : 'a Seq.t -> 'a list
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
-val of_seq : 'a Stdcompat__seq.t -> 'a list
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: val of_seq : 'a Seq.t -> 'a list
- *)
 
 val init : int -> (int -> 'a) -> 'a list
 (** @since 4.06.0: val init : int -> (int -> 'a) -> 'a list *)
@@ -301,10 +324,5 @@ val fast_sort : ('a -> 'a -> int) -> 'a list -> 'a list
 
 val merge : ('a -> 'a -> int) -> 'a list -> 'a list -> 'a list
 (** Alias for {!List.merge} *)
-
-val take : int -> 'a list -> 'a list
-val drop : int -> 'a list -> 'a list
-val take_while : ('a -> bool) -> 'a list -> 'a list
-val drop_while : ('a -> bool) -> 'a list -> 'a list
 
 end

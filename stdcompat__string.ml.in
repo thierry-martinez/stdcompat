@@ -152,3 +152,304 @@ let seeded_hash = Stdcompat__hashtbl.seeded_hash
 
 let hash = Hashtbl.hash
 @END_BEFORE_5_0_0@
+
+@BEGIN_BEFORE_5_4_0@
+let edit_distance ?limit:_ a b =
+  let d = Array.make_matrix (length a + 1) (length b + 1) 0 in
+  for i = 0 to length a do
+    d.(i).(0) <- i
+  done;
+  for j = 0 to length b do
+    d.(0).(j) <- j
+  done;
+  for i = 1 to length a do
+    for j = 1 to length b do
+      let cost =
+        if unsafe_get a (i - 1) = unsafe_get b (j - 1) then
+          0
+        else
+          1 in
+      let cost_deletion = d.(i - 1).(j) + 1 in
+      let cost_insertion = d.(i).(j - 1) + 1 in
+      let cost_subst = d.(i - 1).(j - 1) + cost in
+      let cost_min = min (min cost_deletion cost_insertion) cost_subst in
+      let cost_min' =
+        if i > 1 && j > 1 && unsafe_get a (i - 1) = unsafe_get b (j - 2)
+            && unsafe_get a (i - 2) = unsafe_get b (j - 1) then
+          min cost_min (d.(i - 2).(j - 2) + cost)
+        else
+          cost_min in
+      d.(i).(j) <- cost_min'
+    done;
+  done;
+  d.(length a).(length b)
+
+let spellcheck ?max_dist iter_dict s =
+  let max_dist = Stdcompat__option.map (fun max_dist -> max_dist s) max_dist in
+  let best_score_ref = ref max_dist in
+  let best_matches = ref [] in
+  let f s' =
+    let best_score = !best_score_ref in
+    let limit = Stdcompat__option.map succ best_score in
+    let dist = edit_distance ?limit s s' in
+    match best_score with
+    | Some best_score when best_score < dist -> ()
+    | Some best_score when best_score = dist ->
+        best_matches := s' :: !best_matches
+    | _ ->
+        best_score_ref := Some dist;
+        best_matches := [s'] in
+  iter_dict f;
+  List.rev !best_matches
+@END_BEFORE_5_4_0@
+
+@BEGIN_BEFORE_5_5_0@
+let of_char c = make 1 c
+
+let is_empty s = s = ""
+
+let take_first n s =
+  if n <= 0 then
+    ""
+  else if n >= length s then
+    s
+  else
+    sub s 0 n
+
+let take_last n s =
+  if n <= 0 then
+    ""
+  else if n >= length s then
+    s
+  else
+    sub s (length s - n) n
+
+let drop_first n s =
+  if n <= 0 then
+    s
+  else if n >= length s then
+    ""
+  else
+    sub s n (length s - n)
+
+let drop_last n s =
+  if n <= 0 then
+    s
+  else if n >= length s then
+    ""
+  else
+    sub s 0 (length s - n)
+
+let cut_first n s =
+  if n <= 0 then
+    "", s
+  else if n >= length s then
+    s, ""
+  else
+    sub s 0 n, sub s n (length s - n)
+
+let cut_last n s =
+  if n <= 0 then
+    s, ""
+  else if n >= length s then
+    "", s
+  else
+    sub s 0 (length s - n), sub s (length s - n) n
+
+let rec find_first_index_aux p start s =
+  if start >= length s then
+    None
+  else if p (unsafe_get s start) then
+    Some start
+  else
+    find_first_index_aux p (start + 1) s
+
+let check_valid_position i len_s caller =
+  if i < 0 || i > len_s then
+    invalid_arg caller
+
+let find_first_index p ?(start = 0) s =
+  check_valid_position start (length s) "find_first_index";
+  find_first_index_aux p start s
+
+let rec find_last_index_aux p start s =
+  if start < 0 then
+    None
+  else if p (unsafe_get s start) then
+    Some start
+  else
+    find_last_index_aux p (start - 1) s
+
+let find_last_index p ?start s =
+  let start =
+    match start with
+    | None -> length s - 1
+    | Some start ->
+        check_valid_position start (length s) "find_last_index";
+        if start < length s then
+          start
+        else
+          length s - 1 in
+  find_last_index_aux p start s
+
+let take_first_while p s =
+  match find_first_index (fun c -> not (p c)) s with
+  | None -> s
+  | Some i -> take_first i s
+
+let take_last_while p s =
+  match find_last_index (fun c -> not (p c)) s with
+  | None -> s
+  | Some i -> take_last (length s - i - 1) s
+
+let drop_first_while p s =
+  match find_first_index (fun c -> not (p c)) s with
+  | None -> ""
+  | Some i -> drop_first i s
+
+let drop_last_while p s =
+  match find_last_index (fun c -> not (p c)) s with
+  | None -> ""
+  | Some i -> drop_last (length s - i - 1) s
+
+let cut_first_while p s =
+  match find_first_index (fun c -> not (p c)) s with
+  | None -> s, ""
+  | Some i -> cut_first i s
+
+let cut_last_while p s =
+  match find_last_index (fun c -> not (p c)) s with
+  | None -> "", s
+  | Some i -> cut_last (length s - i - 1) s
+
+let rec sub_equal sub sub_start s start len =
+  if len <= 0 then
+    true
+  else
+    unsafe_get sub sub_start = unsafe_get s start &&
+    sub_equal sub (sub_start + 1) s (start + 1) (len - 1)
+
+let rec find_first_aux sub start s =
+  if start > length s - length sub then
+    None
+  else if sub_equal sub 0 s start (length sub) then
+    Some start
+  else
+    find_first_aux sub (start + 1) s
+
+let find_first ~sub ?(start = 0) s =
+  check_valid_position start (length s) "find_first";
+  find_first_aux sub start s
+
+let rec find_last_aux sub start s =
+  if start < 0 then
+    None
+  else if sub_equal sub 0 s start (length sub) then
+    Some start
+  else
+    find_last_aux sub (start - 1) s
+
+let check_find_last_start sub start s caller =
+  let max = length s - length sub in
+  match start with
+  | None -> max
+  | Some start ->
+      check_valid_position start (length s) caller;
+      Int.min start max
+
+let find_last ~sub ?start s =
+  let start = check_find_last_start sub start s "find_last" in
+  find_last_aux sub start s
+
+let includes ~affix s =
+  match find_first ~sub:affix s with
+  | None -> false
+  | Some _index -> true
+
+let split_first ~sep s =
+  match find_first sep s with
+  | None -> None
+  | Some index -> Some (sub s 0 index, sub s (index + length sep) (length s - length sep - index))
+
+let split_last ~sep s =
+  match find_last sep s with
+  | None -> None
+  | Some index -> Some (sub s 0 index, sub s (index + length sep) (length s - length sep - index))
+
+let rec find_all_aux sub f start s acc =
+  match find_first_aux sub start s with
+  | None -> acc
+  | Some index ->
+      let acc' = f index acc in
+      let start' = index + Int.max (length sub) 1 in
+      find_all_aux sub f start' s acc'
+
+let find_all ~sub f ?(start = 0) s acc =
+  check_valid_position start (length s) "find_all";
+  find_all_aux sub f start s acc
+
+let rec rfind_all_aux sub f start s acc =
+  match find_last_aux sub start s with
+  | None -> acc
+  | Some index ->
+      let acc' = f index acc in
+      if index = 0 then
+        acc'
+      else
+        rfind_all_aux sub f (index - Int.max (length sub) 1) s acc'
+
+let rfind_all ~sub f ?start s acc =
+  let start = check_find_last_start sub start s "rfind_all" in
+  rfind_all_aux sub f start s acc
+
+let split_add_acc drop s index (last_index, l) =
+  let subs = sub s last_index (index - last_index) in
+  match drop with
+  | Some drop when drop subs -> l
+  | _ -> subs :: l
+
+let split_acc len_sep drop s index (last_index, l) =
+  let l' = split_add_acc drop s index (last_index, l) in
+  (index + len_sep, l')
+
+let split_all_from ?start ~sep ?drop s =
+  let acc = find_all sep (split_acc (length sep) drop s) ?start s (0, []) in
+  List.rev (split_add_acc drop s (length s) acc)
+
+let split_all ~sep ?drop s =
+  split_all_from sep ?drop s
+
+let rsplit_add_acc drop s index (last_index, l) =
+  let subs = sub s index (last_index - index) in
+  match drop with
+  | Some drop when drop subs -> l
+  | _ -> subs :: l
+
+let rsplit_acc len_sep drop s index (last_index, l) =
+  let l' = rsplit_add_acc drop s (index + len_sep) (last_index, l) in
+  (index, l')
+
+let rsplit_all ~sep ?drop s =
+  let acc = rfind_all sep (rsplit_acc (length sep) drop s) s (length s, []) in
+  rsplit_add_acc drop s 0 acc
+
+let unsafe_replace_at len_sub ~by index s =
+  let b = Stdcompat__bytes.create (length s + length by - len_sub) in
+  Stdcompat__bytes.blit_string s 0 b 0 index;
+  Stdcompat__bytes.blit_string by 0 b index (length by);
+  Stdcompat__bytes.blit_string s (index + len_sub) b (index + length by) (length s - index - len_sub);
+  Stdcompat__bytes.unsafe_to_string b
+
+let replace_first ~sub ~by ?start s =
+  match find_first sub ?start s with
+  | None -> s
+  | Some index -> unsafe_replace_at (length sub) by index s
+
+let replace_last ~sub ~by ?start s =
+  match find_last sub ?start s with
+  | None -> s
+  | Some index -> unsafe_replace_at (length sub) by index s
+
+let replace_all ~sub ~by ?start s =
+  concat by (split_all_from ?start sub s)
+@END_BEFORE_5_5_0@

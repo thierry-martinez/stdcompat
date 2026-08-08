@@ -37,29 +37,11 @@ let fold_left_map f init array =
     item') array in
   !r, array'
 
-let rec find_opt_rec f array i =
-  if i >= length array then
-    None
-  else
-    let item = unsafe_get array i in
-    if f item then
-      Some item
-    else
-      find_opt_rec f array (succ i)
+let find_opt p a =
+  Stdcompat__generic_array.find_opt ~length ~unsafe_get p a
 
-let find_opt f array =
-  find_opt_rec f array 0
-
-let rec find_map_rec f array i =
-  if i >= length array then
-    None
-  else
-    match f (unsafe_get array i) with
-    | None -> find_map_rec f array (succ i)
-    | Some _ as result -> result
-
-let find_map f array =
-  find_map_rec f array 0
+let find_map f a =
+  Stdcompat__generic_array.find_map ~length ~unsafe_get f a
 
 let split array =
   let l = length array in
@@ -84,29 +66,17 @@ let combine array_fst array_snd =
 @END_BEFORE_4_13_0@
 
 @BEGIN_BEFORE_4_11_0@
-exception Iter
-
-let for_all2 f array1 array2 =
-  if length array1 <> length array2 then
-    invalid_arg "Array.for_all2";
-  try
-    for i = 0 to length array1 - 1 do
-      if not (f (unsafe_get array1 i) (unsafe_get array2 i)) then
-        raise Iter
-    done;
-    true
-  with Iter -> false
+let for_all2 p a1 a2 =
+  Stdcompat__generic_array.for_all2 ~caller:"Array.for_all2"
+    ~length1:length ~length2:length
+    ~unsafe_get1:unsafe_get ~unsafe_get2:unsafe_get
+    p a1 a2
 
 let exists2 f array1 array2 =
-  if length array1 <> length array2 then
-    invalid_arg "Array.exists2";
-  try
-    for i = 0 to length array1 - 1 do
-      if f (unsafe_get array1 i) (unsafe_get array2 i) then
-        raise Iter
-    done;
-    false
-  with Iter -> true
+  Stdcompat__generic_array.exists2 ~caller:"Array.exists2"
+    ~length1:length ~length2:length
+    ~unsafe_get1:unsafe_get ~unsafe_get2:unsafe_get
+    p a1 a2
 @END_BEFORE_4_11_0@
 
 @BEGIN_BEFORE_4_03_0@
@@ -123,23 +93,11 @@ let map2 f array1 array2 =
   init (length array1)
     (fun i -> f (unsafe_get array1 i) (unsafe_get array2 i))
 
-let for_all f array =
-  try
-    for i = 0 to length array - 1 do
-      if not (f (unsafe_get array i)) then
-        raise Iter
-    done;
-    true
-  with Iter -> false
+let for_all p a =
+  Stdcompat__generic_array.for_all ~length ~unsafe_get p a
 
 let exists f array =
-  try
-    for i = 0 to length array - 1 do
-      if f (unsafe_get array i) then
-        raise Iter
-    done;
-    false
-  with Iter -> true
+  Stdcompat__generic_array.exists ~length ~unsafe_get p a
 
 let mem item =
   exists (( = ) item)
@@ -196,36 +154,296 @@ let of_seq g =
 @END_BEFORE_4_07_1@
 
 @BEGIN_BEFORE_5_1_0@
-let map_inplace f array =
-  for i = 0 to length array - 1 do
-    unsafe_set array i (f (unsafe_get array i))
-  done
+let map_inplace f a =
+  Stdcompat__generic_array.map_inplace ~length ~unsafe_get ~unsafe_set f a
 
-let mapi_inplace f array =
-  for i = 0 to length array - 1 do
-    unsafe_set array i (f i (unsafe_get array i))
-  done
+let mapi_inplace f a =
+  Stdcompat__generic_array.mapi_inplace ~length ~unsafe_get ~unsafe_set f a
 
-let rec find_index_from index p array =
-  if index < length array then
-    if p (unsafe_get array index) then
-      Some index
-    else
-      find_index_from (succ index) p array
-  else
-    None
+let find_index p a =
+  Stdcompat__generic_array.find_index ~length ~unsafe_get p a
 
-let find_index p array =
-  find_index_from 0 p array
-
-let rec find_mapi_from index f array =
-  if index < length array then
-    match f index (unsafe_get array index) with
-    | None -> find_mapi_from (succ index) f array
-    | some -> some
-  else
-    None
-
-let find_mapi f array =
-  find_mapi_from 0 f array
+let find_mapi f a =
+  Stdcompat__generic_array.mapi ~length ~unsafe_get p a
 @END_BEFORE_5_1_0@
+
+@BEGIN_BEFORE_5_4_0@
+let equal eq a b =
+  Stdcompat__generic_array.equal ~length ~unsafe_get eq a b
+
+let compare cmp a b =
+  Stdcompat__generic_array.compare ~length ~unsafe_get cmp a b
+@END_BEFORE_5_4_0@
+
+@BEGIN_BEFORE_5_5_0@
+(* Generated with ChatGPT (Free version, 2026-08-08)
+   with the following prompt:
+
+  Implement powersort in OCaml.
+  The interface should be:
+  val stable_sort_sub : ('a -> 'a -> int) -> 'a array -> int -> int -> unit
+*)
+
+type run = {
+    mutable start : int;
+    mutable len : int;
+    mutable power : int;
+  }
+
+let stable_sort_sub cmp a ofs len =
+  if len < 2 then
+    ()
+  else begin
+    let last = ofs + len in
+
+    (* Powersort's minrun heuristic, with MAX_MINRUN = 64. *)
+    let minrun n =
+      let r = ref 0 in
+      let n = ref n in
+      while !n >= 64 do
+        r := !r lor (!n land 1);
+        n := !n lsr 1
+      done;
+      !n + !r
+    in
+
+    (* Stable binary insertion sort of a[lo .. hi), where
+       a[lo .. start) is already sorted. *)
+    let binary_sort lo start hi =
+      for i = start to hi - 1 do
+        let x = a.(i) in
+        let left = ref lo in
+        let right = ref i in
+
+        (* Upper bound: equal elements already in the sorted
+           prefix stay before x, hence stability. *)
+        while !left < !right do
+          let m = !left + ((!right - !left) lsr 1) in
+          if cmp x a.(m) < 0 then
+            right := m
+          else
+            left := m + 1
+        done;
+
+        let j = ref i in
+        while !j > !left do
+          a.(!j) <- a.(!j - 1);
+          decr j
+        done;
+        a.(!left) <- x
+      done
+    in
+
+    (* Find a natural run starting at lo.
+
+       Equal elements belong to ascending runs. A descending run is
+       necessarily strictly descending, so reversing it is stable. *)
+    let find_run lo =
+      let p = ref (lo + 1) in
+      if !p = last then
+        last
+      else if cmp a.(!p) a.(lo) < 0 then begin
+        (* Strictly descending. *)
+        incr p;
+        while !p < last && cmp a.(!p) a.(!p - 1) < 0 do
+          incr p
+        done;
+
+        let i = ref lo in
+        let j = ref (!p - 1) in
+        while !i < !j do
+          let x = a.(!i) in
+          a.(!i) <- a.(!j);
+          a.(!j) <- x;
+          incr i;
+          decr j
+        done;
+        !p
+      end else begin
+        (* Non-decreasing. *)
+        incr p;
+        while !p < last && cmp a.(!p) a.(!p - 1) >= 0 do
+          incr p
+        done;
+        !p
+      end
+    in
+
+    (*
+       Compute the Powersort node power of the boundary between
+
+           [s1, s1+n1)
+           [s1+n1, s1+n1+n2)
+
+       This is the number of common leading bits of the two run
+       midpoints, as fractions of the whole array.
+
+       We use doubled midpoints so everything remains integral.
+    *)
+    let node_power s1 n1 n2 n =
+      let rec loop result a b =
+        let result = result + 1 in
+        if a >= n then
+          loop result (a - n) (b - n)
+        else if b >= n then
+          result
+        else
+          loop result (a lsl 1) (b lsl 1)
+      in
+      loop 0 (2 * s1 + n1) (2 * s1 + n1 + n1 + n2)
+    in
+
+    (* The stack has logarithmic size in Powersort. *)
+    let stack = Array.make (max 32 (Sys.int_size * 2))
+        { start = 0; len = 0; power = 0 } in
+    let top = ref 0 in
+
+    let ensure_stack () =
+      if !top = Array.length stack then
+        invalid_arg "stable_sort_sub: run stack overflow"
+    in
+
+    (* Temporary storage.  We grow it to the size of the smaller
+       run whenever a merge requires it. *)
+    let tmp = ref [||] in
+
+    let ensure_tmp n =
+      if Array.length !tmp < n then
+        tmp := Array.make n a.(ofs)
+    in
+
+    (* Merge adjacent sorted runs [lo,mid) and [mid,hi).
+
+       Only the smaller run is copied. *)
+    let merge lo mid hi =
+      let n1 = mid - lo in
+      let n2 = hi - mid in
+
+      if n1 = 0 || n2 = 0 then
+        ()
+      else if cmp a.(mid - 1) a.(mid) <= 0 then
+        (* Already merged. *)
+        ()
+      else if n1 <= n2 then begin
+        (* Copy the left run and merge forwards. *)
+        ensure_tmp n1;
+        Array.blit a lo !tmp 0 n1;
+
+        let i = ref 0 in
+        let j = ref mid in
+        let k = ref lo in
+
+        while !i < n1 && !j < hi do
+          if cmp !tmp.(!i) a.(!j) <= 0 then begin
+            a.(!k) <- !tmp.(!i);
+            incr i
+          end else begin
+            a.(!k) <- a.(!j);
+            incr j
+          end;
+          incr k
+        done;
+
+        while !i < n1 do
+          a.(!k) <- !tmp.(!i);
+          incr i;
+          incr k
+        done
+      end else begin
+        (* Copy the right run and merge backwards.
+
+           On equality we take from the right run first, because
+           we're filling the result from right to left. *)
+        ensure_tmp n2;
+        Array.blit a mid !tmp 0 n2;
+
+        let i = ref (mid - 1) in
+        let j = ref (n2 - 1) in
+        let k = ref (hi - 1) in
+
+        while !i >= lo && !j >= 0 do
+          if cmp a.(!i) !tmp.(!j) > 0 then begin
+            a.(!k) <- a.(!i);
+            decr i
+          end else begin
+            a.(!k) <- !tmp.(!j);
+            decr j
+          end;
+          decr k
+        done;
+
+        while !j >= 0 do
+          a.(!k) <- !tmp.(!j);
+          decr j;
+          decr k
+        done
+      end
+    in
+
+    (* Merge runs at stack positions i and i+1. *)
+    let merge_at i =
+      let r1 = stack.(i) in
+      let r2 = stack.(i + 1) in
+
+      merge r1.start (r1.start + r1.len)
+        (r2.start + r2.len);
+
+      r1.len <- r1.len + r2.len;
+
+      (* Remove r2 from the stack. *)
+      for j = i + 1 to !top - 2 do
+        stack.(j) <- stack.(j + 1)
+      done;
+      decr top
+    in
+
+    let mr = minrun len in
+    let pos = ref ofs in
+
+    while !pos < last do
+      let start = !pos in
+      let natural_end = find_run start in
+      let natural_len = natural_end - start in
+
+      let run_len =
+        if natural_len < mr && natural_end < last then begin
+          let n = min mr (last - start) in
+          binary_sort start natural_end (start + n);
+          n
+        end else
+          natural_len
+      in
+
+      let run = { start; len = run_len; power = 0 } in
+
+      if !top > 0 then begin
+        let previous = stack.(!top - 1) in
+        let power =
+          node_power previous.start previous.len run.len len
+        in
+
+        (* Powers on the stack are strictly increasing.
+           Close every node whose power is larger than the
+           boundary we have just discovered. *)
+        while !top > 1 &&
+              stack.(!top - 2).power > power do
+          merge_at (!top - 2)
+        done;
+
+        (* The power belongs to the boundary after the current
+           top run, so it is stored in the current top entry. *)
+        stack.(!top - 1).power <- power
+      end;
+
+      ensure_stack ();
+      stack.(!top) <- run;
+      incr top;
+      pos := start + run_len
+    done;
+
+    (* Finish the merge tree. *)
+    while !top > 1 do
+      merge_at (!top - 2)
+    done
+  end
+@END_BEFORE_5_5_0@
