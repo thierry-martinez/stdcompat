@@ -153,11 +153,11 @@ end
 
 @BEGIN_FROM_5_5_0@
 val synchronized_formatter_of_out_channel :
-  out_channel -> formatter Domain.DLS.key
+  out_channel -> formatter Stdcompat__domain.DLS.key
 @END_FROM_5_5_0@
 @BEGIN_BEFORE_5_5_0@
 val synchronized_formatter_of_out_channel :
-  out_channel -> formatter Domain.DLS.key
+  out_channel -> formatter Stdcompat__domain.DLS.key
 @END_BEFORE_5_5_0@
 (** @since 5.5.0:
     val synchronized_formatter_of_out_channel :
@@ -194,12 +194,12 @@ val get_stdbuf : unit -> Buffer.t
 @BEGIN_FROM_5_5_0@
 val make_synchronized_formatter :
   (string -> int -> int -> unit) ->
-    (unit -> unit) -> formatter Domain.DLS.key
+    (unit -> unit) -> formatter Stdcompat__domain.DLS.key
 @END_FROM_5_5_0@
 @BEGIN_BEFORE_5_5_0@
 val make_synchronized_formatter :
   (string -> int -> int -> unit) ->
-    (unit -> unit) -> formatter Domain.DLS.key
+    (unit -> unit) -> formatter Stdcompat__domain.DLS.key
 @END_BEFORE_5_5_0@
 (** @since 5.5.0:
     val make_synchronized_formatter :

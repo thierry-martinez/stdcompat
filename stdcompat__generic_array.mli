@@ -23,6 +23,11 @@ val find_mapi :
     unsafe_get:('a -> int -> 'e) ->
     (int -> 'e -> 'b option) -> 'a -> 'b option
 
+val find_map :
+    length:('a -> int) ->
+    unsafe_get:('a -> int -> 'e) ->
+    ('e -> 'b option) -> 'a -> 'b option
+
 val find_opt :
     length:('a -> int) ->
     unsafe_get:('a -> int -> 'e) ->

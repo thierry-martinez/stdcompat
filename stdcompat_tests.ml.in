@@ -1412,7 +1412,8 @@ let test_string_edit_distance () =
 let test_string_spellcheck () =
   let dict = ["abc"; "bact"] in
   let iter_dict yield = List.iter yield dict in
-  assert (Stdcompat.String.spellcheck iter_dict "ab" = ["abc"]);
+  assert (Stdcompat.String.spellcheck iter_dict "ab" = []);
+  assert (Stdcompat.String.spellcheck iter_dict "abd" = ["abc"]);
   assert (Stdcompat.String.spellcheck iter_dict "bac" = ["abc"; "bact"])
 
 let test_string_of_char () =

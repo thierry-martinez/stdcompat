@@ -184,21 +184,28 @@ let edit_distance ?limit:_ a b =
   done;
   d.(length a).(length b)
 
-let spellcheck ?max_dist iter_dict s =
-  let max_dist = Stdcompat__option.map (fun max_dist -> max_dist s) max_dist in
-  let best_score_ref = ref max_dist in
+let default_max_dist s =
+  let w = Stdcompat__utf8.utf_8_scalar_width s ~pos:0 ~len:(length s) in
+  if w <= 2 then
+    0
+  else if w <= 4 then
+    1
+  else
+    2
+
+let spellcheck ?(max_dist = default_max_dist) iter_dict s =
+  let best_score_ref = ref (max_dist s) in
   let best_matches = ref [] in
   let f s' =
     let best_score = !best_score_ref in
-    let limit = Stdcompat__option.map succ best_score in
-    let dist = edit_distance ?limit s s' in
-    match best_score with
-    | Some best_score when best_score < dist -> ()
-    | Some best_score when best_score = dist ->
-        best_matches := s' :: !best_matches
-    | _ ->
-        best_score_ref := Some dist;
-        best_matches := [s'] in
+    let dist = edit_distance ~limit:(succ best_score) s s' in
+    if dist = best_score then
+      best_matches := s' :: !best_matches
+    else if dist < best_score then
+      begin
+        best_score_ref := dist;
+        best_matches := [s'];
+      end in
   iter_dict f;
   List.rev !best_matches
 @END_BEFORE_5_4_0@

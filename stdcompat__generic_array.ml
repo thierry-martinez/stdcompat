@@ -34,6 +34,9 @@ let rec find_mapi_aux ~len ~unsafe_get f a i =
 let find_mapi ~length ~unsafe_get f a =
   find_mapi_aux ~len:(length a) ~unsafe_get f a 0
 
+let find_map ~length ~unsafe_get f a =
+  find_mapi ~length ~unsafe_get (fun _i -> f) a
+
 let find_opt ~length ~unsafe_get p a =
   find_mapi ~length ~unsafe_get (fun _i v -> if p v then Some v else None) a
 
@@ -46,7 +49,7 @@ let mapi_inplace ~length ~unsafe_get ~unsafe_set f a =
   done
 
 let map_inplace ~length ~unsafe_get ~unsafe_set f a =
-  mapi_inplace ~length ~unsafe_get ~unsafe_set (fun _i v -> f v) a
+  mapi_inplace ~length ~unsafe_get ~unsafe_set (fun _i -> f) a
 
 let equal ~length ~unsafe_get p a1 a2 =
   let len = length a1 in

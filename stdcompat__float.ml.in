@@ -215,8 +215,7 @@ module Array = struct
 
   let map_from_array f a =
     init (Array.length a) (fun i -> f (Array.unsafe_get a i))
-
-@END_BEFORE_4_08_0@
+  @END_BEFORE_4_08_0@
 
   @BEGIN_BEFORE_5_1_0@
   let map_inplace f a =
@@ -231,14 +230,14 @@ module Array = struct
   let find_index p a =
     Stdcompat__generic_array.find_index ~length ~unsafe_get p a
 
-  let find_map f array =
+  let find_map f a =
     Stdcompat__generic_array.find_map ~length ~unsafe_get f a
 
-  let find_mapi f array =
+  let find_mapi f a =
     Stdcompat__generic_array.find_mapi ~length ~unsafe_get f a
   @END_BEFORE_5_1_0@
 
-  (*
+  @BEGIN_BEFORE_5_2_0@
   let make_matrix m n x =
     Array.init m (fun _ -> make n x)
 
@@ -252,14 +251,15 @@ module Array = struct
       unsafe_set array i (get array j);
       unsafe_set array j tmp
     done
-*)
-@BEGIN_BEFORE_5_4_0@
+  @END_BEFORE_5_2_0@
+
+  @BEGIN_BEFORE_5_4_0@
   let equal eq a b =
     Stdcompat__generic_array.equal ~length ~unsafe_get eq a b
 
   let compare cmp a b =
     Stdcompat__generic_array.compare ~length ~unsafe_get cmp a b
-@END_BEFORE_5_4_0@
+  @END_BEFORE_5_4_0@
 end
 
 module ArrayLabels = struct

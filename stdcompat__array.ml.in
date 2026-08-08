@@ -164,7 +164,7 @@ let find_index p a =
   Stdcompat__generic_array.find_index ~length ~unsafe_get p a
 
 let find_mapi f a =
-  Stdcompat__generic_array.mapi ~length ~unsafe_get p a
+  Stdcompat__generic_array.find_mapi ~length ~unsafe_get f a
 @END_BEFORE_5_1_0@
 
 @BEGIN_BEFORE_5_4_0@
