@@ -998,7 +998,7 @@ let test_seq_delay () =
   assert !executed
 
 let test_list_singleton () =
-  assert (Stdcompat.List.singleton 1 == [1])
+  assert (Stdcompat.List.singleton 1 = [1])
 
 let test_list_filter_mapi () =
   assert (Stdcompat.List.filter_mapi (fun i s -> if s = "" then None else Some (i, s)) ["a"; ""; "b"] = [0, "a"; 2, "b"])
