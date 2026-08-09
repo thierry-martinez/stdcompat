@@ -74,8 +74,6 @@ module Fun = Stdcompat__fun
 
 module Gc = Gc
 
-module Genlex = Genlex
-
 module Hashtbl = Stdcompat__hashtbl
 
 module In_channel = Stdcompat__in_channel
