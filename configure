@@ -5630,6 +5630,8 @@ ac_config_files="$ac_config_files stdcompat__format_s.mli"
 
 ac_config_files="$ac_config_files stdcompat__fun_s.mli"
 
+ac_config_files="$ac_config_files stdcompat__generic_int_s.mli"
+
 ac_config_files="$ac_config_files stdcompat__hashtbl_s.mli"
 
 ac_config_files="$ac_config_files stdcompat__in_channel_s.mli"
@@ -5823,6 +5825,8 @@ ac_config_files="$ac_config_files stdcompat__format.ml"
 ac_config_files="$ac_config_files stdcompat__fun.ml"
 
 ac_config_files="$ac_config_files stdcompat__hashtbl.ml"
+
+ac_config_files="$ac_config_files stdcompat__generic_int.ml"
 
 ac_config_files="$ac_config_files stdcompat__int.ml"
 
@@ -6766,6 +6770,7 @@ do
     "stdcompat__float_s.mli") CONFIG_FILES="$CONFIG_FILES stdcompat__float_s.mli" ;;
     "stdcompat__format_s.mli") CONFIG_FILES="$CONFIG_FILES stdcompat__format_s.mli" ;;
     "stdcompat__fun_s.mli") CONFIG_FILES="$CONFIG_FILES stdcompat__fun_s.mli" ;;
+    "stdcompat__generic_int_s.mli") CONFIG_FILES="$CONFIG_FILES stdcompat__generic_int_s.mli" ;;
     "stdcompat__hashtbl_s.mli") CONFIG_FILES="$CONFIG_FILES stdcompat__hashtbl_s.mli" ;;
     "stdcompat__in_channel_s.mli") CONFIG_FILES="$CONFIG_FILES stdcompat__in_channel_s.mli" ;;
     "stdcompat__int_s.mli") CONFIG_FILES="$CONFIG_FILES stdcompat__int_s.mli" ;;
@@ -6863,6 +6868,7 @@ do
     "stdcompat__format.ml") CONFIG_FILES="$CONFIG_FILES stdcompat__format.ml" ;;
     "stdcompat__fun.ml") CONFIG_FILES="$CONFIG_FILES stdcompat__fun.ml" ;;
     "stdcompat__hashtbl.ml") CONFIG_FILES="$CONFIG_FILES stdcompat__hashtbl.ml" ;;
+    "stdcompat__generic_int.ml") CONFIG_FILES="$CONFIG_FILES stdcompat__generic_int.ml" ;;
     "stdcompat__int.ml") CONFIG_FILES="$CONFIG_FILES stdcompat__int.ml" ;;
     "stdcompat__int32.ml") CONFIG_FILES="$CONFIG_FILES stdcompat__int32.ml" ;;
     "stdcompat__int64.ml") CONFIG_FILES="$CONFIG_FILES stdcompat__int64.ml" ;;

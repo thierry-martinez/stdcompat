@@ -1,15 +1,5 @@
 include Int64
 
-@BEGIN_BEFORE_4_13_0@
-let min i j =
-  if compare i j >= 0 then j
-  else i
-
-let max i j =
-  if compare i j >= 0 then i
-  else j
-@END_BEFORE_4_13_0@
-
 @BEGIN_BEFORE_4_08_0@
 let unsigned_compare i j =
   compare (sub i min_int) (sub j min_int)
@@ -45,12 +35,6 @@ let equal : t -> t -> bool = ( = )
 let of_string_opt s =
   Stdcompat__tools.option_fail of_string s
 @END_BEFORE_4_05_0@
-
-@BEGIN_BEFORE_5_1_0@
-let hash = Hashtbl.hash
-
-let seeded_hash = Stdcompat__hashtbl.seeded_hash
-@END_BEFORE_5_1_0@
 
 @BEGIN_BEFORE_5_5_0@
 include (Stdcompat__generic_int.Make (struct

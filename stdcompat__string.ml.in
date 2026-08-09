@@ -172,11 +172,13 @@ let edit_distance ?limit:_ a b =
       let cost_deletion = d.(i - 1).(j) + 1 in
       let cost_insertion = d.(i).(j - 1) + 1 in
       let cost_subst = d.(i - 1).(j - 1) + cost in
-      let cost_min = min (min cost_deletion cost_insertion) cost_subst in
+      let cost_min =
+        Stdcompat__int.min
+          (Stdcompat__int.min cost_deletion cost_insertion) cost_subst in
       let cost_min' =
         if i > 1 && j > 1 && unsafe_get a (i - 1) = unsafe_get b (j - 2)
             && unsafe_get a (i - 2) = unsafe_get b (j - 1) then
-          min cost_min (d.(i - 2).(j - 2) + cost)
+          Stdcompat__int.min cost_min (d.(i - 2).(j - 2) + cost)
         else
           cost_min in
       d.(i).(j) <- cost_min'
@@ -362,7 +364,7 @@ let check_find_last_start sub start s caller =
   | None -> max
   | Some start ->
       check_valid_position start (length s) caller;
-      min start max
+      Stdcompat__int.min start max
 
 let find_last ~sub ?start s =
   let start = check_find_last_start sub start s "find_last" in
@@ -388,7 +390,7 @@ let rec find_all_aux sub f start s acc =
   | None -> acc
   | Some index ->
       let acc' = f index acc in
-      let start' = index + Int.max (length sub) 1 in
+      let start' = index + Stdcompat__int.max (length sub) 1 in
       find_all_aux sub f start' s acc'
 
 let find_all ~sub f ?(start = 0) s acc =
@@ -403,7 +405,7 @@ let rec rfind_all_aux sub f start s acc =
       if index = 0 then
         acc'
       else
-        rfind_all_aux sub f (index - Int.max (length sub) 1) s acc'
+        rfind_all_aux sub f (index - Stdcompat__int.max (length sub) 1) s acc'
 
 let rfind_all ~sub f ?start s acc =
   let start = check_find_last_start sub start s "rfind_all" in

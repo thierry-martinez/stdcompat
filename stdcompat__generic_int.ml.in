@@ -1,4 +1,21 @@
 module Make (X : Stdcompat__generic_int_s.S) = struct
+  @BEGIN_BEFORE_4_13_0@
+  let min i j =
+    if compare i j >= 0 then j
+    else i
+
+  let max i j =
+    if compare i j >= 0 then i
+    else j
+  @END_BEFORE_4_13_0@
+
+  @BEGIN_BEFORE_5_1_0@
+  let hash = Hashtbl.hash
+
+  let seeded_hash = Stdcompat__hashtbl.seeded_hash
+  @END_BEFORE_5_1_0@
+  
+  @BEGIN_BEFORE_5_5_0@
   let fdiv x y =
     let d = X.div x y in
     if (x >= X.zero) <> (y >= X.zero) && X.rem x y <> X.zero then
@@ -62,4 +79,5 @@ module Make (X : Stdcompat__generic_int_s.S) = struct
       X.bitsize
     else
       unsigned_bitsize (X.sub (X.logand x (X.neg x)) X.one)
+  @END_BEFORE_5_5_0@
 end

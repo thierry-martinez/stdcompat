@@ -44,7 +44,8 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
         stdcompat__listLabels_s.ml \
 	stdcompat__stack_s.ml \
 	stdcompat__list.ml \
-	stdcompat__hashtbl_ext.ml stdcompat__hashtbl_s.ml stdcompat__set_s.ml \
+	stdcompat__hashtbl_ext.ml stdcompat__hashtbl_s.ml stdcompat__hashtbl.ml \
+	stdcompat__set_s.ml \
 	stdcompat__map_s.ml stdcompat__weak_s.ml stdcompat__sys_s.ml \
 	stdcompat__digest_s.ml \
 	stdcompat__generic_int.ml \
@@ -55,7 +56,6 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 	stdcompat__array_s.ml stdcompat__arrayLabels_s.ml \
 	stdcompat__dynarray_s.ml stdcompat__dynarray.ml \
 	stdcompat__float_s.ml stdcompat__queue_s.ml \
-	stdcompat__hashtbl.ml \
 	stdcompat__ephemeron_s.ml \
 	stdcompat__moreLabels_s.ml stdcompat__lexing_s.ml \
 	stdcompat__pervasives.ml \
@@ -73,6 +73,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 	stdcompat__buffer.ml stdcompat__sys.ml \
 	stdcompat__bytes.ml stdcompat__bytesLabels.ml \
 	stdcompat__utf8.ml \
+	stdcompat__int.ml \
 	stdcompat__string.ml stdcompat__stringLabels.ml \
 	stdcompat__filename.ml \
         stdcompat__listLabels.ml \
@@ -80,7 +81,7 @@ MODULES = stdcompat__init.ml stdcompat__root.ml \
 	stdcompat__map.ml stdcompat__weak.ml \
 	stdcompat__random.ml \
 	stdcompat__digest.ml stdcompat__nativeint.ml \
-	stdcompat__int.ml stdcompat__int64.ml stdcompat__int32.ml \
+	stdcompat__int64.ml stdcompat__int32.ml \
 	stdcompat__array.ml stdcompat__arrayLabels.ml \
 	stdcompat__float.ml stdcompat__queue.ml stdcompat__ephemeron.ml \
 	stdcompat__moreLabels.ml stdcompat__lexing.ml \

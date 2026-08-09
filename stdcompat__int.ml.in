@@ -30,3 +30,11 @@ external to_float : int -> float = "%floatofint"
 external of_float : float -> int = "%intoffloat"
 let to_string = string_of_int
 @END_BEFORE_4_08_0@
+
+@BEGIN_BEFORE_5_5_0@
+include (Stdcompat__generic_int.Make (struct
+  include Int
+
+  let bitsize = 63
+end))
+@END_BEFORE_5_5_0@

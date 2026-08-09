@@ -868,10 +868,6 @@ let test_seq_4_14 () =
   test_seq_to_dispenser ();
   test_seq_ints ()
 
-let test_int32_min_max () =
-  assert (Stdcompat.Int32.min 1l 2l = 1l);
-  assert (Stdcompat.Int32.max 1l 2l = 2l)
-
 let test_int32_unsigned_compare () =
   assert (Stdcompat.Int32.unsigned_compare 1l 2l < 0);
   assert (Stdcompat.Int32.unsigned_compare (-1l) 2l > 0)
@@ -1077,6 +1073,91 @@ let test_format_utf_8_scalar_width () =
   assert (Stdcompat.Format.utf_8_scalar_width "abéçd" ~pos:1 ~len:5 = 3);
   assert (Stdcompat.Format.utf_8_scalar_width "ab桁çd" ~pos:2 ~len:5 = 2)
 
+let test_int_min () =
+  assert (Stdcompat.Int.min 1 2 = 1)
+
+let test_int_max () =
+  assert (Stdcompat.Int.max 1 2 = 2)
+
+let test_int_fdiv () =
+  assert (Stdcompat.Int.fdiv 8 2 = 4);
+  assert (Stdcompat.Int.fdiv 9 2 = 4);
+  assert (Stdcompat.Int.fdiv (-8) 2 = -4);
+  assert (Stdcompat.Int.fdiv (-9) 2 = -5);
+  assert (Stdcompat.Int.fdiv 8 (-2) = -4);
+  assert (Stdcompat.Int.fdiv 9 (-2) = -5);
+  assert (Stdcompat.Int.fdiv 1 2 = 0);
+  assert (Stdcompat.Int.fdiv (-1) 2 = -1);
+  assert (Stdcompat.Int.fdiv 1 (-2) = -1)
+
+let test_int_cdiv () =
+  assert (Stdcompat.Int.cdiv 8 2 = 4);
+  assert (Stdcompat.Int.cdiv 9 2 = 5);
+  assert (Stdcompat.Int.cdiv (-8) 2 = -4);
+  assert (Stdcompat.Int.cdiv (-9) 2 = -4);
+  assert (Stdcompat.Int.cdiv 8 (-2) = -4);
+  assert (Stdcompat.Int.cdiv 9 (-2) = -4);
+  assert (Stdcompat.Int.cdiv 1 2 = 1);
+  assert (Stdcompat.Int.cdiv (-1) 2 = 0);
+  assert (Stdcompat.Int.cdiv 1 (-2) = 0)
+
+let test_int_ediv () =
+  assert (Stdcompat.Int.ediv 8 2 = 4);
+  assert (Stdcompat.Int.ediv 9 2 = 4);
+  assert (Stdcompat.Int.ediv (-8) 2 = -4);
+  assert (Stdcompat.Int.ediv (-9) 2 = -5);
+  assert (Stdcompat.Int.ediv 8 (-2) = -4);
+  assert (Stdcompat.Int.ediv 9 (-2) = -4);
+  assert (Stdcompat.Int.ediv 1 2 = 0);
+  assert (Stdcompat.Int.ediv (-1) 2 = -1);
+  assert (Stdcompat.Int.ediv 1 (-2) = 0)
+
+let test_int_erem () =
+  assert (Stdcompat.Int.erem 8 2 = 0);
+  assert (Stdcompat.Int.erem 9 2 = 1);
+  assert (Stdcompat.Int.erem (-8) 2 = 0);
+  assert (Stdcompat.Int.erem (-9) 2 = 1);
+  assert (Stdcompat.Int.erem 8 (-2) = 0);
+  assert (Stdcompat.Int.erem 9 (-2) = 1);
+  assert (Stdcompat.Int.erem 1 2 = 1);
+  assert (Stdcompat.Int.erem (-1) 2 = 1);
+  assert (Stdcompat.Int.erem 1 (-2) = 1)
+
+let test_int_popcount () =
+  assert (Stdcompat.Int.popcount 6 = 2);
+  assert (Stdcompat.Int.popcount (-6) = 61)
+
+let test_int_unsigned_bitsize () =
+  assert (Stdcompat.Int.unsigned_bitsize 14 = 4);
+  assert (Stdcompat.Int.unsigned_bitsize (-14) = 63)
+
+let test_int_signed_bitsize () =
+  assert (Stdcompat.Int.signed_bitsize 14 = 5);
+  assert (Stdcompat.Int.signed_bitsize (-14) = 5);
+  assert (Stdcompat.Int.signed_bitsize 16 = 6);
+  assert (Stdcompat.Int.signed_bitsize (-16) = 5)
+
+let test_int_leading_zeros () =
+  assert (Stdcompat.Int.leading_zeros 14 = 59);
+  assert (Stdcompat.Int.leading_zeros (-14) = 0)
+
+let test_int_leading_sign_bits () =
+  assert (Stdcompat.Int.leading_sign_bits 14 = 58);
+  assert (Stdcompat.Int.leading_sign_bits (-14) = 58);
+  assert (Stdcompat.Int.leading_sign_bits 16 = 57);
+  assert (Stdcompat.Int.leading_sign_bits (-16) = 58)
+
+let test_int_trailing_zeros () =
+  assert (Stdcompat.Int.trailing_zeros 0 = 63);
+  assert (Stdcompat.Int.trailing_zeros 4 = 2);
+  assert (Stdcompat.Int.trailing_zeros Stdcompat.Int.min_int = 62)
+
+let test_nativeint_min () =
+  assert (Stdcompat.Nativeint.min 1n 2n = 1n)
+
+let test_nativeint_max () =
+  assert (Stdcompat.Nativeint.max 1n 2n = 2n)
+
 let test_nativeint_fdiv () =
   assert (Stdcompat.Nativeint.fdiv 8n 2n = 4n);
   assert (Stdcompat.Nativeint.fdiv 9n 2n = 4n);
@@ -1150,6 +1231,12 @@ let test_nativeint_trailing_zeros () =
   assert (Stdcompat.Nativeint.trailing_zeros 4n = 2);
   assert (Stdcompat.Nativeint.trailing_zeros Stdcompat.Nativeint.min_int = 63)
 
+let test_int32_min () =
+  assert (Stdcompat.Int32.min 1l 2l = 1l)
+
+let test_int32_max () =
+  assert (Stdcompat.Int32.max 1l 2l = 2l)
+
 let test_int32_fdiv () =
   assert (Stdcompat.Int32.fdiv 8l 2l = 4l);
   assert (Stdcompat.Int32.fdiv 9l 2l = 4l);
@@ -1222,6 +1309,12 @@ let test_int32_trailing_zeros () =
   assert (Stdcompat.Int32.trailing_zeros 0l = 32);
   assert (Stdcompat.Int32.trailing_zeros 4l = 2);
   assert (Stdcompat.Int32.trailing_zeros Stdcompat.Int32.min_int = 31)
+
+let test_int64_min () =
+  assert (Stdcompat.Int64.min 1L 2L = 1L)
+
+let test_int64_max () =
+  assert (Stdcompat.Int64.max 1L 2L = 2L)
 
 let test_int64_fdiv () =
   assert (Stdcompat.Int64.fdiv 8L 2L = 4L);
@@ -2157,7 +2250,6 @@ let tests () =
   test_format_pp_print_seq ();
   test_either ();
   test_seq_concat ();
-  test_int32_min_max ();
   test_int32_unsigned_compare ();
   test_array_fold_left_map ();
   test_array_find_opt ();
@@ -2191,6 +2283,20 @@ let tests () =
   testing "Result.product" test_result_product;
   testing "Result.retract" test_result_retract;
   testing "Format.utf_8_scalar_width" test_format_utf_8_scalar_width;
+  testing "Int.min" test_int_min;
+  testing "Int.max" test_int_max;
+  testing "Int.fdiv" test_int_fdiv;
+  testing "Int.cdiv" test_int_cdiv;
+  testing "Int.ediv" test_int_ediv;
+  testing "Int.erem" test_int_erem;
+  testing "Int.popcount" test_int_erem;
+  testing "Int.unsigned_bitsize" test_int_unsigned_bitsize;
+  testing "Int.signed_bitsize" test_int_signed_bitsize;
+  testing "Int.leading_zeros" test_int_leading_zeros;
+  testing "Int.leading_sign_bits" test_int_leading_sign_bits;
+  testing "Int.trailing_zeros" test_int_trailing_zeros;
+  testing "Nativeint.min" test_nativeint_min;
+  testing "Nativeint.max" test_nativeint_max;
   testing "Nativeint.fdiv" test_nativeint_fdiv;
   testing "Nativeint.cdiv" test_nativeint_cdiv;
   testing "Nativeint.ediv" test_nativeint_ediv;
@@ -2201,6 +2307,8 @@ let tests () =
   testing "Nativeint.leading_zeros" test_nativeint_leading_zeros;
   testing "Nativeint.leading_sign_bits" test_nativeint_leading_sign_bits;
   testing "Nativeint.trailing_zeros" test_nativeint_trailing_zeros;
+  testing "Int32.min" test_int32_min;
+  testing "Int32.max" test_int32_max;
   testing "Int32.fdiv" test_int32_fdiv;
   testing "Int32.cdiv" test_int32_cdiv;
   testing "Int32.ediv" test_int32_ediv;
@@ -2211,6 +2319,8 @@ let tests () =
   testing "Int32.leading_zeros" test_int32_leading_zeros;
   testing "Int32.leading_sign_bits" test_int32_leading_sign_bits;
   testing "Int32.trailing_zeros" test_int32_trailing_zeros;
+  testing "Int64.min" test_int64_min;
+  testing "Int64.max" test_int64_max;
   testing "Int64.fdiv" test_int64_fdiv;
   testing "Int64.cdiv" test_int64_cdiv;
   testing "Int64.ediv" test_int64_ediv;

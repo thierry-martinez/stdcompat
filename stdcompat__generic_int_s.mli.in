@@ -29,6 +29,19 @@ end
 module type F = sig
   type t
 
+  @BEGIN_BEFORE_4_13_0@
+  val min : t -> t -> t
+
+  val max : t -> t -> t
+  @END_BEFORE_4_13_0@
+
+  @BEGIN_BEFORE_5_1_0@
+  val seeded_hash : int -> t -> int
+
+  val hash : t -> int
+  @END_BEFORE_5_1_0@
+
+  @BEGIN_BEFORE_5_5_0@
   val fdiv : t -> t -> t
 
   val cdiv : t -> t -> t
@@ -48,4 +61,5 @@ module type F = sig
   val leading_sign_bits : t -> int
 
   val trailing_zeros : t -> int
+  @END_BEFORE_5_5_0@
 end
