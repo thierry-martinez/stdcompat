@@ -43,6 +43,9 @@
    stdcompat__format_s
    stdcompat__fun
    stdcompat__fun_s
+   stdcompat__generic_array
+   stdcompat__generic_int
+   stdcompat__generic_int_s
    stdcompat__hashtbl
    stdcompat__hashtbl_ext
    stdcompat__hashtbl_s
@@ -106,9 +109,12 @@
    stdcompat__uchar_s
    stdcompat__unit
    stdcompat__unit_s
+   stdcompat__utf8
    stdcompat__weak
    stdcompat__weak_s
-   stdcompat))
+   stdcompat)
+ (modules_without_implementation
+   stdcompat__generic_int_s))
 
 (executable
  (name stdcompat_tests)
