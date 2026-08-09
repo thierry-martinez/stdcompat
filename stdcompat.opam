@@ -2,7 +2,7 @@ opam-version: "2.0"
 synopsis: "Compatibility module for OCaml standard library"
 description:
   "Compatibility module for OCaml standard library allowing programs to use some recent additions to the OCaml standard library while preserving the ability to be compiled on former versions of OCaml."
-maintainer: "Sébastien Hinderer <sebastien.hinderer@inria.f>"
+maintainer: "Sébastien Hinderer <sebastien.hinderer@inria.fr>"
 authors: "Thierry Martinez <martinez@nsup.org>"
 license: "LGPL-2.1-or-later"
 homepage: "https://github.com/ocamllibs/stdcompat"
