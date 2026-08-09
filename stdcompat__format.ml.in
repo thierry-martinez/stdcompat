@@ -368,18 +368,6 @@ let print_substring_as ~pos ~len _as_len _v =
 @END_BEFORE_5_3_0@
 
 @BEGIN_BEFORE_5_4_0@
-
-let rec utf_8_scalar_width_aux count s pos len =
-  if len <= 0 then
-    count
-  else
-    let c = String.unsafe_get s pos in
-    let c_len =
-      match Stdcompat__uchar.utf_8_decode_length_of_byte c with
-      | 0 -> 1
-      | c_len -> c_len in
-    utf_8_scalar_width_aux (succ count) s (pos + c_len) (len - c_len)
-
 let utf_8_scalar_width s ~pos ~len =
   Stdcompat__utf8.utf_8_scalar_width s ~pos ~len
 
