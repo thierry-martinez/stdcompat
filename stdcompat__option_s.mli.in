@@ -14,6 +14,41 @@ type 'a t = 'a option =
                      | Some of 'a 
  *)
 
+@BEGIN_FROM_5_5_0@
+module Syntax = Option.Syntax
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+module Syntax :
+sig val ( let* ) : 'a option -> ('a -> 'b option) -> 'b option
+val ( and* ) : 'a option -> 'b option -> ('a * 'b) option
+val (let+) : 'a option -> ('a -> 'b) -> 'b option
+val (and+) : 'a option -> 'b option -> ('a * 'b) option end
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: module Syntax = Option.Syntax
+ *)
+
+val product : 'a option -> 'b option -> ('a * 'b) option
+(** @since 5.5.0: val product : 'a option -> 'b option -> ('a * 'b) option *)
+
+val blend : ('a -> 'a -> 'a) -> 'a option -> 'a option -> 'a option
+(** @since 5.5.0:
+    val blend : ('a -> 'a -> 'a) -> 'a option -> 'a option -> 'a option *)
+
+val for_all : ('a -> bool) -> 'a option -> bool
+(** @since 5.5.0: val for_all : ('a -> bool) -> 'a option -> bool *)
+
+val exists : ('a -> bool) -> 'a option -> bool
+(** @since 5.5.0: val exists : ('a -> bool) -> 'a option -> bool *)
+
+@BEGIN_FROM_5_5_0@
+val to_seq : 'a option -> 'a Seq.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val to_seq : 'a option -> 'a Stdcompat__seq.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val to_seq : 'a option -> 'a Seq.t
+ *)
+
 val none : 'a option
 (** @since 4.08.0: val none : 'a option *)
 
@@ -66,14 +101,5 @@ val to_result : none:'e -> 'a option -> ('a, 'e) Stdcompat__pervasives.result
 
 val to_list : 'a option -> 'a list
 (** @since 4.08.0: val to_list : 'a option -> 'a list *)
-
-@BEGIN_FROM_4_08_0@
-val to_seq : 'a option -> 'a Seq.t
-@END_FROM_4_08_0@
-@BEGIN_BEFORE_4_08_0@
-val to_seq : 'a option -> 'a Stdcompat__seq.t
-@END_BEFORE_4_08_0@
-(** @since 4.08.0: val to_seq : 'a option -> 'a Seq.t
- *)
 
 end

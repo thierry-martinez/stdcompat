@@ -1,3 +1,5 @@
+include Printf
+
 @BEGIN_BEFORE_4_11_0@
 let not_implemented _ =
   failwith "Stdcompat.Printf is not implemented yet. Please fill an issue: https://github.com/ocamllibs/stdcompat/issues ."
@@ -21,4 +23,21 @@ let ksprintf = not_implemented
 let ikfprintf = not_implemented
 @END_BEFORE_4_01_0@
 
-include Printf
+@BEGIN_BEFORE_5_5_0@
+module Args = Stdcompat__format.Args
+
+let lfprintf chan pp args =
+  Args.apply (fprintf chan pp) args
+
+let lbprintf buf pp args =
+  Args.apply (bprintf buf pp) args
+
+let lprintf pp args =
+  Args.apply (printf pp) args
+
+let leprintf pp args =
+  Args.apply (eprintf pp) args
+
+let lsprintf pp args =
+  Args.apply (sprintf pp) args
+@END_BEFORE_5_5_0@

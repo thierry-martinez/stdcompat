@@ -11,8 +11,17 @@ type t = Uchar.t
 @BEGIN_BEFORE_4_14_0@
 @BEGIN_FROM_4_03_0@
 type t = Uchar.t
-
 @END_FROM_4_03_0@
+@BEGIN_BEFORE_4_03_0@
+@BEGIN_FROM_4_02_0@
+type t[@@immediate ]
+@END_FROM_4_02_0@
+@BEGIN_BEFORE_4_02_0@
+type t
+@END_BEFORE_4_02_0@
+
+@END_BEFORE_4_03_0@
+
 @END_BEFORE_4_14_0@
 (** @since 4.14.0: type t[@@immediate ]
 @since 4.03.0: type t
@@ -38,6 +47,15 @@ type utf_decode
 @END_BEFORE_4_14_0@
 (** @since 4.14.0: type utf_decode[@@immediate ]
  *)
+
+val utf_8_decode_length_of_byte : char -> int
+(** @since 5.4.0: val utf_8_decode_length_of_byte : char -> int *)
+
+val max_utf_8_decode_length : int
+(** @since 5.4.0: val max_utf_8_decode_length : int *)
+
+val seeded_hash : int -> t -> int
+(** @since 5.3.0: val seeded_hash : int -> t -> int *)
 
 val utf_decode_is_valid : utf_decode -> bool
 (** @since 4.14.0: val utf_decode_is_valid : utf_decode -> bool *)
@@ -107,8 +125,6 @@ val equal : t -> t -> bool
 
 val compare : t -> t -> int
 (** @since 4.03.0: val compare : t -> t -> int *)
-
-val seeded_hash : int -> t -> int
 
 val hash : t -> int
 (** @since 4.03.0: val hash : t -> int *)

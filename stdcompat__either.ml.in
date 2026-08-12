@@ -68,3 +68,20 @@ let compare ~left ~right e1 e2 =
   | Left _, Right _ -> -1
   | Right _, Left _ -> 1
 @END_BEFORE_4_12_0@
+
+@BEGIN_BEFORE_5_4_0@
+let get_left e =
+  match e with
+  | Left v -> v
+  | Right _ -> invalid_arg "get_left: Right _"
+
+let get_right e =
+  match e with
+  | Left _ -> invalid_arg "get_right: Left _"
+  | Right v -> v
+
+let retract e =
+  match e with
+  | Left v -> v
+  | Right v -> v
+@END_BEFORE_5_4_0@

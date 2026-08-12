@@ -36,3 +36,17 @@ let decr = decr
 @BEGIN_BEFORE_5_2_0@
 let make_contended = make
 @END_BEFORE_5_2_0@
+
+@BEGIN_BEFORE_5_4_0@
+type 'a u = 'a t
+module Loc = struct
+  type 'a t = 'a u
+  let get = get
+  let set = set
+  let exchange = exchange
+  let compare_and_set = compare_and_set
+  let fetch_and_add = fetch_and_add
+  let incr = incr
+  let decr = decr
+end
+@END_BEFORE_5_4_0@

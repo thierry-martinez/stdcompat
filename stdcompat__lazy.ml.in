@@ -18,3 +18,17 @@ let map_val f v =
   else
     map f v
 @END_BEFORE_4_13_0@
+
+@BEGIN_BEFORE_5_5_0@
+module Mutexed = struct
+  type 'a t = 'a Lazy.t
+
+  let is_val = is_val
+
+  let from_val = from_val
+
+  let from_fun = from_fun
+
+  let force = force
+end
+@END_BEFORE_5_5_0@

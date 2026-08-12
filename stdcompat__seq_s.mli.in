@@ -21,6 +21,26 @@ and 'a node = 'a Stdcompat__init.seq_node =
 exception Forced_twice 
 (** Alias for {!Seq.Forced_twice} *)
 
+val delay : (unit -> 'a t) -> 'a t
+(** @since 5.5.0: val delay : (unit -> 'a t) -> 'a t *)
+
+@BEGIN_FROM_5_5_0@
+val partition_map : ('a -> ('b, 'c) Either.t) -> 'a t -> ('b t * 'c t)
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val partition_map :
+  ('a -> ('b, 'c) Stdcompat__either.t) -> 'a t -> ('b t * 'c t)
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
+    val partition_map : ('a -> ('b, 'c) Either.t) -> 'a t -> ('b t * 'c t)
+ *)
+
+val singleton : 'a -> 'a t
+(** @since 5.4.0: val singleton : 'a -> 'a t *)
+
+val filteri : (int -> 'a -> bool) -> 'a t -> 'a t
+(** @since 5.4.0: val filteri : (int -> 'a -> bool) -> 'a t -> 'a t *)
+
 val find_index : ('a -> bool) -> 'a t -> int option
 (** @since 5.1.0: val find_index : ('a -> bool) -> 'a t -> int option *)
 
@@ -172,17 +192,6 @@ val unzip : ('a * 'b) t -> ('a t * 'b t)
 
 val split : ('a * 'b) t -> ('a t * 'b t)
 (** @since 4.14.0: val split : ('a * 'b) t -> ('a t * 'b t) *)
-
-@BEGIN_FROM_4_14_0@
-val partition_map : ('a -> ('b, 'c) Either.t) -> 'a t -> ('b t * 'c t)
-@END_FROM_4_14_0@
-@BEGIN_BEFORE_4_14_0@
-val partition_map :
-  ('a -> ('b, 'c) Stdcompat__either.t) -> 'a t -> ('b t * 'c t)
-@END_BEFORE_4_14_0@
-(** @since 4.14.0:
-    val partition_map : ('a -> ('b, 'c) Either.t) -> 'a t -> ('b t * 'c t)
- *)
 
 val partition : ('a -> bool) -> 'a t -> ('a t * 'a t)
 (** @since 4.14.0: val partition : ('a -> bool) -> 'a t -> ('a t * 'a t) *)

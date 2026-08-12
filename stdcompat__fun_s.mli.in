@@ -5,8 +5,21 @@ exception Finally_raised of exn
 val compose : ('b -> 'c) -> ('a -> 'b) -> 'a -> 'c
 (** @since 5.2.0: val compose : ('b -> 'c) -> ('a -> 'b) -> 'a -> 'c *)
 
+@BEGIN_FROM_5_5_0@
+val id : 'a -> 'a
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+@BEGIN_FROM_4_08_0@
 external id : 'a -> 'a = "%identity"
-(** @since 4.08.0: external id : 'a -> 'a = "%identity" *)
+@END_FROM_4_08_0@
+@BEGIN_BEFORE_4_08_0@
+val id : 'a -> 'a
+@END_BEFORE_4_08_0@
+
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val id : 'a -> 'a
+@since 4.08.0: external id : 'a -> 'a = "%identity"
+ *)
 
 val const : 'a -> 'b -> 'a
 (** @since 4.08.0: val const : 'a -> 'b -> 'a *)

@@ -17,11 +17,33 @@ type backend_type =
                      | Other of string 
  *)
 
+@BEGIN_FROM_5_4_0@
+type signal = int
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
+type signal = int
+@END_BEFORE_5_4_0@
+(** @since 5.4.0: type signal = int
+ *)
+
+@BEGIN_FROM_5_4_0@
 type signal_behavior = Sys.signal_behavior =
   | Signal_default 
   | Signal_ignore 
-  | Signal_handle of (int -> unit) 
-(** Alias for {!Sys.signal_behavior} *)
+  | Signal_handle of (signal -> unit) 
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
+type signal_behavior =
+  | Signal_default 
+  | Signal_ignore 
+  | Signal_handle of (signal -> unit) 
+@END_BEFORE_5_4_0@
+(** @since 5.4.0:
+    type signal_behavior =
+      | Signal_default 
+      | Signal_ignore 
+      | Signal_handle of (signal -> unit) 
+ *)
 
 exception Break 
 (** Alias for {!Sys.Break} *)
@@ -75,10 +97,10 @@ type ocaml_release_info =
       extra: extra_info option }
  *)
 
-@BEGIN_FROM_4_10_0@
+@BEGIN_FROM_5_5_0@
 module Immediate64 = Sys.Immediate64
-@END_FROM_4_10_0@
-@BEGIN_BEFORE_4_10_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
 module Immediate64 :
 sig module type Non_immediate = sig type t end
 module type Immediate = sig @BEGIN_FROM_4_02_0@
@@ -109,8 +131,139 @@ type 'a repr =
 @END_BEFORE_4_00_0@
  val repr : t repr end
 end
-@END_BEFORE_4_10_0@
-(** @since 4.10.0: module Immediate64 = Sys.Immediate64
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: module Immediate64 = Sys.Immediate64
+ *)
+
+val runtime_executable : string
+(** @since 5.5.0: val runtime_executable : string *)
+
+val io_buffer_size : int
+(** @since 5.4.0: val io_buffer_size : int *)
+
+@BEGIN_FROM_5_4_0@
+external signal :
+  signal -> signal_behavior -> signal_behavior =
+    "caml_install_signal_handler"
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
+val signal : signal -> signal_behavior -> signal_behavior
+@END_BEFORE_5_4_0@
+(** @since 5.4.0:
+    external signal :
+      signal -> signal_behavior -> signal_behavior =
+        "caml_install_signal_handler"
+ *)
+
+val set_signal : signal -> signal_behavior -> unit
+(** @since 5.4.0: val set_signal : signal -> signal_behavior -> unit *)
+
+val sigabrt : signal
+(** @since 5.4.0: val sigabrt : signal *)
+
+val sigalrm : signal
+(** @since 5.4.0: val sigalrm : signal *)
+
+val sigfpe : signal
+(** @since 5.4.0: val sigfpe : signal *)
+
+val sighup : signal
+(** @since 5.4.0: val sighup : signal *)
+
+val sigill : signal
+(** @since 5.4.0: val sigill : signal *)
+
+val sigint : signal
+(** @since 5.4.0: val sigint : signal *)
+
+val sigkill : signal
+(** @since 5.4.0: val sigkill : signal *)
+
+val sigpipe : signal
+(** @since 5.4.0: val sigpipe : signal *)
+
+val sigquit : signal
+(** @since 5.4.0: val sigquit : signal *)
+
+val sigsegv : signal
+(** @since 5.4.0: val sigsegv : signal *)
+
+val sigterm : signal
+(** @since 5.4.0: val sigterm : signal *)
+
+val sigusr1 : signal
+(** @since 5.4.0: val sigusr1 : signal *)
+
+val sigusr2 : signal
+(** @since 5.4.0: val sigusr2 : signal *)
+
+val sigchld : signal
+(** @since 5.4.0: val sigchld : signal *)
+
+val sigcont : signal
+(** @since 5.4.0: val sigcont : signal *)
+
+val sigstop : signal
+(** @since 5.4.0: val sigstop : signal *)
+
+val sigtstp : signal
+(** @since 5.4.0: val sigtstp : signal *)
+
+val sigttin : signal
+(** @since 5.4.0: val sigttin : signal *)
+
+val sigttou : signal
+(** @since 5.4.0: val sigttou : signal *)
+
+val sigvtalrm : signal
+(** @since 5.4.0: val sigvtalrm : signal *)
+
+val sigprof : signal
+(** @since 5.4.0: val sigprof : signal *)
+
+val sigbus : signal
+(** @since 5.4.0: val sigbus : signal *)
+
+val sigpoll : signal
+(** @since 5.4.0: val sigpoll : signal *)
+
+val sigsys : signal
+(** @since 5.4.0: val sigsys : signal *)
+
+val sigtrap : signal
+(** @since 5.4.0: val sigtrap : signal *)
+
+val sigurg : signal
+(** @since 5.4.0: val sigurg : signal *)
+
+val sigxcpu : signal
+(** @since 5.4.0: val sigxcpu : signal *)
+
+val sigxfsz : signal
+(** @since 5.4.0: val sigxfsz : signal *)
+
+val sigio : signal
+(** @since 5.4.0: val sigio : signal *)
+
+val sigwinch : signal
+(** @since 5.4.0: val sigwinch : signal *)
+
+val signal_to_string : signal -> string
+(** @since 5.4.0: val signal_to_string : signal -> string *)
+
+val signal_of_int : int -> signal
+(** @since 5.4.0: val signal_of_int : int -> signal *)
+
+val signal_to_int : signal -> int
+(** @since 5.4.0: val signal_to_int : signal -> int *)
+
+@BEGIN_FROM_5_3_0@
+external poll_actions : unit -> unit = "%poll"
+@END_FROM_5_3_0@
+@BEGIN_BEFORE_5_3_0@
+val poll_actions : unit -> unit
+@END_BEFORE_5_3_0@
+(** @since 5.3.0: external poll_actions : unit -> unit = "%poll"
  *)
 
 @BEGIN_FROM_5_1_0@
@@ -178,27 +331,6 @@ val runtime_parameters : unit -> string
 (** @since 4.03.0:
     external runtime_parameters : unit -> string = "caml_runtime_parameters"
  *)
-
-val sigbus : int
-(** @since 4.03.0: val sigbus : int *)
-
-val sigpoll : int
-(** @since 4.03.0: val sigpoll : int *)
-
-val sigsys : int
-(** @since 4.03.0: val sigsys : int *)
-
-val sigtrap : int
-(** @since 4.03.0: val sigtrap : int *)
-
-val sigurg : int
-(** @since 4.03.0: val sigurg : int *)
-
-val sigxcpu : int
-(** @since 4.03.0: val sigxcpu : int *)
-
-val sigxfsz : int
-(** @since 4.03.0: val sigxfsz : int *)
 
 val enable_runtime_warnings : bool -> unit
 (** @since 4.03.0: val enable_runtime_warnings : bool -> unit *)
@@ -372,101 +504,10 @@ val max_string_length : int
 val max_array_length : int
 (** Alias for {!Sys.max_array_length} *)
 
-@BEGIN_FROM_3_08_0@
-external signal :
-  int -> signal_behavior -> signal_behavior = "caml_install_signal_handler"
-@END_FROM_3_08_0@
-@BEGIN_BEFORE_3_08_0@
-external signal :
-  int -> signal_behavior -> signal_behavior = "install_signal_handler"
-@END_BEFORE_3_08_0@
-(** @since 3.08.0:
-    external signal :
-      int -> signal_behavior -> signal_behavior =
-        "caml_install_signal_handler"
-@since 3.07.0:
-external signal :
-  int -> signal_behavior -> signal_behavior = "install_signal_handler"
- *)
-
-val set_signal : int -> signal_behavior -> unit
-(** Alias for {!Sys.set_signal} *)
-
-val sigabrt : int
-(** Alias for {!Sys.sigabrt} *)
-
-val sigalrm : int
-(** Alias for {!Sys.sigalrm} *)
-
-val sigfpe : int
-(** Alias for {!Sys.sigfpe} *)
-
-val sighup : int
-(** Alias for {!Sys.sighup} *)
-
-val sigill : int
-(** Alias for {!Sys.sigill} *)
-
-val sigint : int
-(** Alias for {!Sys.sigint} *)
-
-val sigkill : int
-(** Alias for {!Sys.sigkill} *)
-
-val sigpipe : int
-(** Alias for {!Sys.sigpipe} *)
-
-val sigquit : int
-(** Alias for {!Sys.sigquit} *)
-
-val sigsegv : int
-(** Alias for {!Sys.sigsegv} *)
-
-val sigterm : int
-(** Alias for {!Sys.sigterm} *)
-
-val sigusr1 : int
-(** Alias for {!Sys.sigusr1} *)
-
-val sigusr2 : int
-(** Alias for {!Sys.sigusr2} *)
-
-val sigchld : int
-(** Alias for {!Sys.sigchld} *)
-
-val sigcont : int
-(** Alias for {!Sys.sigcont} *)
-
-val sigstop : int
-(** Alias for {!Sys.sigstop} *)
-
-val sigtstp : int
-(** Alias for {!Sys.sigtstp} *)
-
-val sigttin : int
-(** Alias for {!Sys.sigttin} *)
-
-val sigttou : int
-(** Alias for {!Sys.sigttou} *)
-
-val sigvtalrm : int
-(** Alias for {!Sys.sigvtalrm} *)
-
-val sigprof : int
-(** Alias for {!Sys.sigprof} *)
-
 val catch_break : bool -> unit
 (** Alias for {!Sys.catch_break} *)
 
 val ocaml_version : string
 (** Alias for {!Sys.ocaml_version} *)
-
-@BEGIN_FROM_5_3_0@
-external poll_actions : unit -> unit = "%poll"
-@END_FROM_5_3_0@
-
-@BEGIN_BEFORE_5_3_0@
-val poll_actions : unit -> unit
-@END_BEFORE_5_3_0@
 
 end

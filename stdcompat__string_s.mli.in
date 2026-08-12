@@ -2,44 +2,195 @@ module type S = sig
 type t = string
 (** Alias for {!String.t} *)
 
+val of_char : char -> string
+(** @since 5.5.0: val of_char : char -> string *)
+
+val is_empty : string -> bool
+(** @since 5.5.0: val is_empty : string -> bool *)
+
+val includes : affix:string -> string -> bool
+(** @since 5.5.0: val includes : affix:string -> string -> bool *)
+
+val take_first : int -> string -> string
+(** @since 5.5.0: val take_first : int -> string -> string *)
+
+val take_last : int -> string -> string
+(** @since 5.5.0: val take_last : int -> string -> string *)
+
+val drop_first : int -> string -> string
+(** @since 5.5.0: val drop_first : int -> string -> string *)
+
+val drop_last : int -> string -> string
+(** @since 5.5.0: val drop_last : int -> string -> string *)
+
+val cut_first : int -> string -> (string * string)
+(** @since 5.5.0: val cut_first : int -> string -> (string * string) *)
+
+val cut_last : int -> string -> (string * string)
+(** @since 5.5.0: val cut_last : int -> string -> (string * string) *)
+
+val take_first_while : (char -> bool) -> string -> string
+(** @since 5.5.0: val take_first_while : (char -> bool) -> string -> string *)
+
+val take_last_while : (char -> bool) -> string -> string
+(** @since 5.5.0: val take_last_while : (char -> bool) -> string -> string *)
+
+val drop_first_while : (char -> bool) -> string -> string
+(** @since 5.5.0: val drop_first_while : (char -> bool) -> string -> string *)
+
+val drop_last_while : (char -> bool) -> string -> string
+(** @since 5.5.0: val drop_last_while : (char -> bool) -> string -> string *)
+
+val cut_first_while : (char -> bool) -> string -> (string * string)
+(** @since 5.5.0:
+    val cut_first_while : (char -> bool) -> string -> (string * string) *)
+
+val cut_last_while : (char -> bool) -> string -> (string * string)
+(** @since 5.5.0:
+    val cut_last_while : (char -> bool) -> string -> (string * string) *)
+
+val split_first : sep:string -> string -> (string * string) option
+(** @since 5.5.0:
+    val split_first : sep:string -> string -> (string * string) option *)
+
+val split_last : sep:string -> string -> (string * string) option
+(** @since 5.5.0:
+    val split_last : sep:string -> string -> (string * string) option *)
+
+val split_all : sep:string -> ?drop:(string -> bool) -> string -> string list
+(** @since 5.5.0:
+    val split_all :
+      sep:string -> ?drop:(string -> bool) -> string -> string list *)
+
+val rsplit_all :
+  sep:string -> ?drop:(string -> bool) -> string -> string list
+(** @since 5.5.0:
+    val rsplit_all :
+      sep:string -> ?drop:(string -> bool) -> string -> string list *)
+
+val find_first_index : (char -> bool) -> ?start:int -> string -> int option
+(** @since 5.5.0:
+    val find_first_index :
+      (char -> bool) -> ?start:int -> string -> int option *)
+
+val find_last_index : (char -> bool) -> ?start:int -> string -> int option
+(** @since 5.5.0:
+    val find_last_index :
+      (char -> bool) -> ?start:int -> string -> int option *)
+
+val find_first : sub:string -> ?start:int -> string -> int option
+(** @since 5.5.0:
+    val find_first : sub:string -> ?start:int -> string -> int option *)
+
+val find_last : sub:string -> ?start:int -> string -> int option
+(** @since 5.5.0:
+    val find_last : sub:string -> ?start:int -> string -> int option *)
+
+val find_all :
+  sub:string -> (int -> 'acc -> 'acc) -> ?start:int -> string -> 'acc -> 'acc
+(** @since 5.5.0:
+    val find_all :
+      sub:string ->
+        (int -> 'acc -> 'acc) -> ?start:int -> string -> 'acc -> 'acc *)
+
+val rfind_all :
+  sub:string -> (int -> 'acc -> 'acc) -> ?start:int -> string -> 'acc -> 'acc
+(** @since 5.5.0:
+    val rfind_all :
+      sub:string ->
+        (int -> 'acc -> 'acc) -> ?start:int -> string -> 'acc -> 'acc *)
+
+val replace_first : sub:string -> by:string -> ?start:int -> string -> string
+(** @since 5.5.0:
+    val replace_first :
+      sub:string -> by:string -> ?start:int -> string -> string *)
+
+val replace_last : sub:string -> by:string -> ?start:int -> string -> string
+(** @since 5.5.0:
+    val replace_last :
+      sub:string -> by:string -> ?start:int -> string -> string *)
+
+val replace_all : sub:string -> by:string -> ?start:int -> string -> string
+(** @since 5.5.0:
+    val replace_all :
+      sub:string -> by:string -> ?start:int -> string -> string *)
+
+@BEGIN_FROM_5_5_0@
+val to_seq : t -> char Seq.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val to_seq : t -> char Stdcompat__seq.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val to_seq : t -> char Seq.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val to_seqi : t -> (int * char) Seq.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val to_seqi : t -> (int * char) Stdcompat__seq.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val to_seqi : t -> (int * char) Seq.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val of_seq : char Seq.t -> t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val of_seq : char Stdcompat__seq.t -> t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val of_seq : char Seq.t -> t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val get_utf_8_uchar : t -> int -> Uchar.utf_decode
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val get_utf_8_uchar : t -> int -> Stdcompat__uchar.utf_decode
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val get_utf_8_uchar : t -> int -> Uchar.utf_decode
+ *)
+
+@BEGIN_FROM_5_5_0@
+val get_utf_16be_uchar : t -> int -> Uchar.utf_decode
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val get_utf_16be_uchar : t -> int -> Stdcompat__uchar.utf_decode
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val get_utf_16be_uchar : t -> int -> Uchar.utf_decode
+ *)
+
+@BEGIN_FROM_5_5_0@
+val get_utf_16le_uchar : t -> int -> Uchar.utf_decode
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val get_utf_16le_uchar : t -> int -> Stdcompat__uchar.utf_decode
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val get_utf_16le_uchar : t -> int -> Uchar.utf_decode
+ *)
+
+val edit_distance : ?limit:int -> t -> t -> int
+(** @since 5.4.0: val edit_distance : ?limit:int -> t -> t -> int *)
+
+val spellcheck :
+  ?max_dist:(string -> int) ->
+    ((string -> unit) -> unit) -> string -> string list
+(** @since 5.4.0:
+    val spellcheck :
+      ?max_dist:(string -> int) ->
+        ((string -> unit) -> unit) -> string -> string list *)
+
 val hash : t -> int
 (** @since 5.0.0: val hash : t -> int *)
 
 val seeded_hash : int -> t -> int
 (** @since 5.0.0: val seeded_hash : int -> t -> int *)
 
-@BEGIN_FROM_4_14_0@
-val get_utf_8_uchar : t -> int -> Uchar.utf_decode
-@END_FROM_4_14_0@
-@BEGIN_BEFORE_4_14_0@
-val get_utf_8_uchar : t -> int -> Stdcompat__uchar.utf_decode
-@END_BEFORE_4_14_0@
-(** @since 4.14.0: val get_utf_8_uchar : t -> int -> Uchar.utf_decode
- *)
-
 val is_valid_utf_8 : t -> bool
 (** @since 4.14.0: val is_valid_utf_8 : t -> bool *)
 
-@BEGIN_FROM_4_14_0@
-val get_utf_16be_uchar : t -> int -> Uchar.utf_decode
-@END_FROM_4_14_0@
-@BEGIN_BEFORE_4_14_0@
-val get_utf_16be_uchar : t -> int -> Stdcompat__uchar.utf_decode
-@END_BEFORE_4_14_0@
-(** @since 4.14.0: val get_utf_16be_uchar : t -> int -> Uchar.utf_decode
- *)
-
 val is_valid_utf_16be : t -> bool
 (** @since 4.14.0: val is_valid_utf_16be : t -> bool *)
-
-@BEGIN_FROM_4_14_0@
-val get_utf_16le_uchar : t -> int -> Uchar.utf_decode
-@END_FROM_4_14_0@
-@BEGIN_BEFORE_4_14_0@
-val get_utf_16le_uchar : t -> int -> Stdcompat__uchar.utf_decode
-@END_BEFORE_4_14_0@
-(** @since 4.14.0: val get_utf_16le_uchar : t -> int -> Uchar.utf_decode
- *)
 
 val is_valid_utf_16le : t -> bool
 (** @since 4.14.0: val is_valid_utf_16le : t -> bool *)
@@ -155,33 +306,6 @@ val get_int64_be : string -> int -> int64
 
 val get_int64_le : string -> int -> int64
 (** @since 4.13.0: val get_int64_le : string -> int -> int64 *)
-
-@BEGIN_FROM_4_07_0@
-val to_seq : t -> char Seq.t
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
-val to_seq : t -> char Stdcompat__seq.t
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: val to_seq : t -> char Seq.t
- *)
-
-@BEGIN_FROM_4_07_0@
-val to_seqi : t -> (int * char) Seq.t
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
-val to_seqi : t -> (int * char) Stdcompat__seq.t
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: val to_seqi : t -> (int * char) Seq.t
- *)
-
-@BEGIN_FROM_4_07_0@
-val of_seq : char Seq.t -> t
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
-val of_seq : char Stdcompat__seq.t -> t
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: val of_seq : char Seq.t -> t
- *)
 
 val index_from_opt : string -> int -> char -> int option
 (** @since 4.05.0: val index_from_opt : string -> int -> char -> int option *)

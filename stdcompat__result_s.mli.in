@@ -15,6 +15,82 @@ type ('a, 'e) t = ('a, 'e) Stdcompat__pervasives.result =
       | Error of 'e 
  *)
 
+@BEGIN_FROM_5_4_0@
+module Syntax = Result.Syntax
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
+module Syntax :
+sig
+val ( let* ) :
+  ('a, 'e) Stdcompat__pervasives.result ->
+    ('a -> ('b, 'e) Stdcompat__pervasives.result) ->
+      ('b, 'e) Stdcompat__pervasives.result
+val ( and* ) :
+  ('a, 'e) Stdcompat__pervasives.result ->
+    ('b, 'e) Stdcompat__pervasives.result ->
+      (('a * 'b), 'e) Stdcompat__pervasives.result
+val (let+) :
+  ('a, 'e) Stdcompat__pervasives.result ->
+    ('a -> 'b) -> ('b, 'e) Stdcompat__pervasives.result
+val (and+) :
+  ('a, 'e) Stdcompat__pervasives.result ->
+    ('b, 'e) Stdcompat__pervasives.result ->
+      (('a * 'b), 'e) Stdcompat__pervasives.result
+end
+@END_BEFORE_5_4_0@
+(** @since 5.4.0: module Syntax = Result.Syntax
+ *)
+
+@BEGIN_FROM_5_5_0@
+val to_seq : ('a, 'e) result -> 'a Seq.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val to_seq : ('a, 'e) Stdcompat__pervasives.result -> 'a Stdcompat__seq.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val to_seq : ('a, 'e) result -> 'a Seq.t
+ *)
+
+@BEGIN_FROM_5_4_0@
+val get_ok' : ('a, string) result -> 'a
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
+val get_ok' : ('a, string) Stdcompat__pervasives.result -> 'a
+@END_BEFORE_5_4_0@
+(** @since 5.4.0: val get_ok' : ('a, string) result -> 'a
+ *)
+
+@BEGIN_FROM_5_4_0@
+val error_to_failure : ('a, string) result -> 'a
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
+val error_to_failure : ('a, string) Stdcompat__pervasives.result -> 'a
+@END_BEFORE_5_4_0@
+(** @since 5.4.0: val error_to_failure : ('a, string) result -> 'a
+ *)
+
+@BEGIN_FROM_5_4_0@
+val product : ('a, 'e) result -> ('b, 'e) result -> (('a * 'b), 'e) result
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
+val product :
+  ('a, 'e) Stdcompat__pervasives.result ->
+    ('b, 'e) Stdcompat__pervasives.result ->
+      (('a * 'b), 'e) Stdcompat__pervasives.result
+@END_BEFORE_5_4_0@
+(** @since 5.4.0:
+    val product :
+      ('a, 'e) result -> ('b, 'e) result -> (('a * 'b), 'e) result
+ *)
+
+@BEGIN_FROM_5_4_0@
+val retract : ('a, 'a) result -> 'a
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
+val retract : ('a, 'a) Stdcompat__pervasives.result -> 'a
+@END_BEFORE_5_4_0@
+(** @since 5.4.0: val retract : ('a, 'a) result -> 'a
+ *)
+
 @BEGIN_FROM_4_08_0@
 val ok : 'a -> ('a, 'e) result
 @END_FROM_4_08_0@
@@ -211,15 +287,6 @@ val to_list : ('a, 'e) result -> 'a list
 val to_list : ('a, 'e) Stdcompat__pervasives.result -> 'a list
 @END_BEFORE_4_08_0@
 (** @since 4.08.0: val to_list : ('a, 'e) result -> 'a list
- *)
-
-@BEGIN_FROM_4_08_0@
-val to_seq : ('a, 'e) result -> 'a Seq.t
-@END_FROM_4_08_0@
-@BEGIN_BEFORE_4_08_0@
-val to_seq : ('a, 'e) Stdcompat__pervasives.result -> 'a Stdcompat__seq.t
-@END_BEFORE_4_08_0@
-(** @since 4.08.0: val to_seq : ('a, 'e) result -> 'a Seq.t
  *)
 
 end

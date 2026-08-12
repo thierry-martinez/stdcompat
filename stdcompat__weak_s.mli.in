@@ -81,10 +81,10 @@ module type S  =
   end
  *)
 
-@BEGIN_FROM_4_05_0@
+@BEGIN_FROM_5_5_0@
 module Make = Weak.Make
-@END_FROM_4_05_0@
-@BEGIN_BEFORE_4_05_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
 module Make :
 functor (H : Hashtbl.HashedType) ->
 sig type data = H.t type t = Weak.Make(H).t val create : int -> t
@@ -95,8 +95,8 @@ val find_all : t -> data -> data list val mem : t -> data -> bool
 val iter : (data -> unit) -> t -> unit
 val fold : (data -> 'acc -> 'acc) -> t -> 'acc -> 'acc val count : t -> int
 val stats : t -> (int * int * int * int * int * int) end
-@END_BEFORE_4_05_0@
-(** @since 4.05.0: module Make = Weak.Make
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: module Make = Weak.Make
  *)
 
 val create : int -> 'a t

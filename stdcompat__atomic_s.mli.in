@@ -14,6 +14,20 @@ type 'a t
 (** @since 4.12.0: type !'a t
  *)
 
+@BEGIN_FROM_5_4_0@
+module Loc = Atomic.Loc
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
+module Loc :
+sig type 'a t val get : 'a t -> 'a
+val set : 'a t -> 'a -> unit val exchange : 'a t -> 'a -> 'a
+val compare_and_set : 'a t -> 'a -> 'a -> bool
+val fetch_and_add : int t -> int -> int val incr : int t -> unit
+val decr : int t -> unit end
+@END_BEFORE_5_4_0@
+(** @since 5.4.0: module Loc = Atomic.Loc
+ *)
+
 val make_contended : 'a -> 'a t
 (** @since 5.2.0: val make_contended : 'a -> 'a t *)
 
