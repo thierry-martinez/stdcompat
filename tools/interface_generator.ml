@@ -78,7 +78,7 @@ let rec is_core_type_isomorphic kind (t : Parsetree.core_type)
       is_core_type_isomorphic kind u u' &&
       is_core_type_isomorphic kind v v'
   | Ptyp_tuple l, Ptyp_tuple l' ->
-      List.equal (is_core_type_isomorphic kind) l l'
+      List.equal (is_tuple_field_isomorphic kind) l l'
   | Ptyp_constr (c, args), Ptyp_constr (c', args') ->
       let eq_c, args, args' =
         match kind, (c.txt, args), (c'.txt, args') with
@@ -113,6 +113,11 @@ and is_object_field_isomorphic kind (f : Parsetree.object_field)
   | Oinherit t, Oinherit t' ->
       is_core_type_isomorphic kind t t'
   | _ -> false
+
+and is_tuple_field_isomorphic kind ((l, t) : string option * Parsetree.core_type)
+     ((l', t') : string option * Parsetree.core_type) =
+  Option.equal String.equal l l' &&
+  is_core_type_isomorphic kind t t'
 
 let is_label_declaration_isomorphic kind (l : Parsetree.label_declaration)
     (l' : Parsetree.label_declaration) =
@@ -481,7 +486,7 @@ let qualify_type_decl ~module_name (type_decl : Parsetree.type_declaration) =
   | Private ->
       { type_decl with ptype_private = Public; ptype_manifest =
         Some (Ast_helper.Typ.constr
-          { txt = Longident.Ldot (module_name, type_decl.ptype_name.txt);
+          { txt = Longident.Ldot (Interface_tools.with_default_loc module_name, Interface_tools.with_default_loc type_decl.ptype_name.txt);
             loc = type_decl.ptype_name.loc }
           (List.map fst type_decl.ptype_params)) }
   | Public ->
@@ -490,7 +495,7 @@ let qualify_type_decl ~module_name (type_decl : Parsetree.type_declaration) =
         Option.map @@ fun (ty : Parsetree.core_type) ->
           match ty.ptyp_desc with
           | Ptyp_constr ({ txt = Lident "fpclass"; loc }, []) ->
-              let txt = Longident.Ldot (Lident "Stdlib", "fpclass") in
+              let txt = Interface_tools.ldot (Lident "Stdlib") "fpclass" in
               let ptyp_desc =
                 Parsetree.Ptyp_constr ({ Location.txt; loc }, []) in
               { ty with ptyp_desc }
@@ -502,7 +507,7 @@ let qualify_type_decl ~module_name (type_decl : Parsetree.type_declaration) =
                  && ident <> "list" && ident <> "bool" && ident <> "array"
             && ident <> "exn" && ident <> "int" && ident <> "unit"
             && ident <> "in_channel" && ident <> "out_channel" ->
-              let txt = Longident.Ldot (module_name, ident) in
+              let txt = Interface_tools.ldot module_name ident in
               let ptyp_desc =
                 Parsetree.Ptyp_constr ({ Location.txt; loc }, args) in
               { ty with ptyp_desc }
@@ -531,82 +536,82 @@ let rec compat_core_type ~module_name (core_type : Parsetree.core_type) =
            compat_core_type ~module_name right) in
       { core_type with ptyp_desc }
   | Ptyp_tuple args ->
-      let args = List.map (compat_core_type ~module_name) args in
+      let args = List.map (fun (l, ty) -> l, compat_core_type ~module_name ty) args in
       let ptyp_desc =
         Parsetree.Ptyp_tuple args in
       { core_type with ptyp_desc }
-  | Ptyp_constr ({ loc; txt = Ldot (Lident "CamlinternalLazy", "t") }, [arg]) ->
+  | Ptyp_constr ({ loc; txt = Ldot ({txt = Lident "CamlinternalLazy"}, {txt = "t"}) }, [arg]) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__init", "lazy_t") }, [arg]) in
+          ({ loc; txt = Interface_tools.ldot (Lident "Stdcompat__init") "lazy_t" }, [arg]) in
       { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Lident "bytes" }, []) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__init", "bytes") }, []) in
+          ({ loc; txt = Interface_tools.ldot (Lident "Stdcompat__init") "bytes" }, []) in
       { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Lident "floatarray" }, []) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__init", "floatarray") }, []) in
+          ({ loc; txt = Interface_tools.ldot (Lident "Stdcompat__init") "floatarray" }, []) in
       { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt = Lident "result" }, [v; e]) ->
       let v = compat_core_type ~module_name v in
       let e = compat_core_type ~module_name e in
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__pervasives", "result") },
+          ({ loc; txt = Interface_tools.ldot (Lident "Stdcompat__pervasives") "result" },
            [v; e]) in
       { core_type with ptyp_desc }
-  | Ptyp_constr ({ loc; txt = Ldot (Lident "Seq", "t") }, [arg]) ->
+  | Ptyp_constr ({ loc; txt = Ldot ({txt = Lident "Seq"}, {txt="t"}) }, [arg]) ->
       let arg = compat_core_type ~module_name arg in
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__seq", "t") },
+          ({ loc; txt = Interface_tools.ldot (Lident "Stdcompat__seq") "t" },
            [compat_core_type ~module_name arg]) in
       { core_type with ptyp_desc }
-  | Ptyp_constr ({ loc; txt = Ldot (Lident "Stdlib", t) }, args) ->
+  | Ptyp_constr ({ loc; txt = Ldot ({txt = Lident "Stdlib"}, {txt = t}) }, args) ->
       let args = List.map (compat_core_type ~module_name) args in
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__stdlib", t) },
+          ({ loc; txt = Interface_tools.ldot (Lident "Stdcompat__stdlib") t },
            args) in
       { core_type with ptyp_desc }
-  | Ptyp_constr ({ loc; txt = Ldot (Lident "Uchar", t) }, []) ->
+  | Ptyp_constr ({ loc; txt = Ldot ({txt = Lident "Uchar"}, {txt= t}) }, []) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__uchar", t) }, []) in
+          ({ loc; txt = Interface_tools.ldot (Lident "Stdcompat__uchar") t }, []) in
       { core_type with ptyp_desc }
-  | Ptyp_constr ({ loc; txt = Ldot (Lident "Hashtbl", "statistics") }, []) ->
+  | Ptyp_constr ({ loc; txt = Ldot ({txt = Lident "Hashtbl"}, {txt= "statistics"}) }, []) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__hashtbl_ext", "statistics") },
+          ({ loc; txt = Interface_tools.ldot (Lident "Stdcompat__hashtbl_ext") "statistics" },
            []) in
       { core_type with ptyp_desc }
   | Ptyp_constr ({ loc; txt =
-      Ldot (Lapply (Ldot (Lident "Hashtbl", "MakeSeeded"),
-        Lident "H"), "t") }, args) ->
+      Ldot ({txt = Lapply ({txt = Ldot ({ txt = Lident "Hashtbl"}, {txt = "MakeSeeded"})},
+        {txt = Lident "H"})}, {txt = "t"}) }, args) ->
       let args = List.map (compat_core_type ~module_name) args in
       let ptyp_desc =
         Parsetree.Ptyp_constr
           ({ loc; txt =
-             Ldot (Lapply (Ldot (Lident "Stdcompat__hashtbl_ext",
-               "MakeSeeded"), Lident "H"), "t") },
+             Interface_tools.ldot (Interface_tools.lapply (Interface_tools.ldot (Lident "Stdcompat__hashtbl_ext")
+               "MakeSeeded") (Lident "H")) "t" },
            args) in
       { core_type with ptyp_desc }
-  | Ptyp_constr ({ loc; txt = Ldot (Lident "Either", "t") }, [a; b]) ->
+  | Ptyp_constr ({ loc; txt = Ldot ({txt = Lident "Either"}, {txt = "t"}) }, [a; b]) ->
       let ptyp_desc =
         Parsetree.Ptyp_constr
-          ({ loc; txt = Ldot (Lident "Stdcompat__either", "t") }, [a; b]) in
+          ({ loc; txt = Interface_tools.ldot (Lident "Stdcompat__either") "t" }, [a; b]) in
       { core_type with ptyp_desc }
   | Ptyp_constr (constr, args) ->
       let rec remove_module_name (constr : Longident.t) : Longident.t =
         match constr with
-        | Ldot (module_name', x) ->
+        | Ldot ({txt = module_name'}, {txt = x}) ->
             if module_name = module_name' then
               Lident x
             else
-              Ldot (remove_module_name module_name', x)
+              Interface_tools.ldot (remove_module_name module_name') x
         | _ -> constr in
       let constr = { constr with txt = remove_module_name constr.txt } in
       let ptyp_desc =
@@ -655,10 +660,10 @@ let compat_type_kind ~module_name
 let remove_injectivity ptype_params =
   List.map (fun (ty, (v, _)) -> (ty, (v, Asttypes.NoInjectivity))) ptype_params
 
-let compat_type_declaration ~module_name
+let compat_type_declaration ~(module_name : Longident.t)
     (type_decl : Parsetree.type_declaration) =
-  match Longident.Ldot (module_name, type_decl.ptype_name.txt) with
-  | Ldot (Lident "Pervasives", "format6") ->
+  match module_name, type_decl.ptype_name.txt with
+  | Lident "Pervasives", "format6" ->
     let ptype_manifest =
       match type_decl.ptype_manifest with
       |  Some (
@@ -666,34 +671,27 @@ let compat_type_declaration ~module_name
           let ptyp_desc =
             Parsetree.Ptyp_constr
             ({ loc;
-               txt = Ldot (Lident "Stdcompat__init", "format6") }, args) in
+               txt = Interface_tools.ldot (Lident "Stdcompat__init") "format6" }, args) in
           Some { core_type with ptyp_desc }
       | _ -> assert false in
     { type_decl with ptype_manifest }
-  | Lident "result" ->
+  | Lident "Hashtbl", "statistics" ->
     { type_decl with ptype_manifest =
       Some (core_type_of_desc
         (Ptyp_constr
            (loc_of_txt
-              (Longident.Ldot
-                 (Lident "Stdcompat__pervasives", "result")), []))) }
-  | Ldot (Lident "Hashtbl", "statistics") ->
+              (Interface_tools.ldot
+                 (Lident "Stdcompat__hashtbl_ext") "statistics"), []))) }
+  | Lapply ({txt = Ldot ({txt = Lident "Hashtbl"}, {txt = "MakeSeeded"})}, {txt = Lident "H"}), "t" ->
     { type_decl with ptype_manifest =
       Some (core_type_of_desc
         (Ptyp_constr
            (loc_of_txt
-              (Longident.Ldot
-                 (Lident "Stdcompat__hashtbl_ext", "statistics")), []))) }
-  | Ldot (Lapply (Ldot (Lident "Hashtbl", "MakeSeeded"), Lident "H"), "t") ->
-    { type_decl with ptype_manifest =
-      Some (core_type_of_desc
-        (Ptyp_constr
-           (loc_of_txt
-              (Longident.Ldot
-                 (Lapply
-                    (Ldot
-                       (Lident "Stdcompat__hashtbl_ext", "MakeSeeded"),
-                     Lident "H"), "t")),
+              (Interface_tools.ldot
+                 (Interface_tools.lapply
+                    (Interface_tools.ldot
+                       (Lident "Stdcompat__hashtbl_ext") "MakeSeeded")
+                     (Lident "H")) "t"),
             type_decl.ptype_params |> List.map fst))) }
   | _ ->
 (*
@@ -717,7 +715,7 @@ let compat_type_declaration ~module_name
         when name = type_decl.ptype_name.txt -> None
       | Some { ptyp_desc =
           Parsetree.Ptyp_constr
-            ({ txt = Ldot (module_name', name) }, _) }
+            ({ txt = Ldot ({txt = module_name'}, { txt = name}) }, _) }
         when name = type_decl.ptype_name.txt && module_name = module_name' ->
           None
       |  Some (
@@ -727,7 +725,7 @@ let compat_type_declaration ~module_name
           let ptyp_desc =
             Parsetree.Ptyp_constr
             ({ loc;
-               txt = Ldot (Lident "Stdcompat__init", "bytes") }, args) in
+               txt = Interface_tools.ldot (Lident "Stdcompat__init") "bytes" }, args) in
           Some { core_type with ptyp_desc }
       | Some ptype_manifest ->
           Some (compat_core_type ~module_name ptype_manifest) in
@@ -783,7 +781,7 @@ let rec compat_signature_item ~module_name ~reference_version ~version
       { item with psig_desc = Psig_value value_desc}
   | Psig_module module_declaration ->
       let module_name =
-        Longident.Ldot (module_name, Option.get module_declaration.pmd_name.txt) in
+        Interface_tools.ldot module_name (Option.get module_declaration.pmd_name.txt) in
       let pmd_type =
         module_declaration.pmd_type |>
         compat_module_type ~module_name ~reference_version ~version in
@@ -801,14 +799,14 @@ and compat_module_type ~module_name ~reference_version ~version
     (module_type : Parsetree.module_type) =
   match module_type.pmty_desc with
   | Pmty_ident
-      ({ txt = Ldot (Lident "Hashtbl", "SeededHashedType") } as longident) ->
+      ({ txt = Ldot ({txt = Lident "Hashtbl"}, {txt = "SeededHashedType"}) } as longident) ->
         let longident =
           { longident with txt =
-            if module_name = Ldot (Lident "Hashtbl", "MakeSeeded") then
+            if module_name = Interface_tools.ldot (Lident "Hashtbl") "MakeSeeded" then
               Longident.Lident "SeededHashedType"
             else
-              Longident.Ldot
-                (Lident "Stdcompat__hashtbl", "SeededHashedType") } in
+              Interface_tools.ldot
+                (Lident "Stdcompat__hashtbl") "SeededHashedType" } in
         { module_type with pmty_desc = Pmty_ident longident }
   | Pmty_signature signature ->
       let signature =
@@ -822,7 +820,7 @@ and compat_module_type ~module_name ~reference_version ~version
           (compat_module_type ~module_name ~reference_version ~version)
           (Some arg) in
       let module_name =
-        Longident.Lapply (module_name, Lident (Option.get var.txt)) in
+        Interface_tools.lapply module_name (Lident (Option.get var.txt)) in
       let body =
         compat_module_type ~module_name ~reference_version ~version body in
       { module_type with pmty_desc = Pmty_functor (Named (var, Option.get arg), body) }
@@ -973,7 +971,7 @@ let find_prim_opt version pval_name prim =
   let modules : Longident.t list =
     if Interface_tools.Version.compare version
         { major = 4; minor = 6; patch = 0 } >= 0 then
-      Ldot (Lident "Array", "Floatarray") :: modules
+      Interface_tools.ldot (Lident "Array") "Floatarray" :: modules
     else
       modules in
   modules |> List.find_map @@
@@ -1090,9 +1088,8 @@ let version_signature_item ~reference_version ~module_name ~signatures
                           pmty_desc =
                           Pmty_alias
                             { loc = Location.none; txt =
-                              Ldot
-                                (module_name,
-                                 (Option.get module_declaration.pmd_name.txt)) };
+                              Interface_tools.ldot module_name
+                                 (Option.get module_declaration.pmd_name.txt) };
                           pmty_loc = Location.none;
                           pmty_attributes = [] }}
                       else
@@ -1301,25 +1298,27 @@ let rec format_default_item ~module_name formatter
   match item.psig_desc with
   | Psig_type (rec_flag, [{ ptype_name = { txt = "result" }} as type_decl]) ->
       let ptyp_desc = Parsetree.Ptyp_constr (
-        { txt = Ldot (Lident "Result", "result"); loc = Location.none },
+        { txt = Interface_tools.ldot (Lident "Result") "result"; loc = Location.none },
         [type_of_desc (Ptyp_var "a"); type_of_desc (Ptyp_var "b")]) in
       let manifest = type_of_desc ptyp_desc in
       let type_decl' = { type_decl with ptype_manifest = Some manifest } in
-      format_with_without "UCHAR_PKG" format_sig_type formatter
-        (rec_flag, [type_decl']) (rec_flag, [type_decl])
+      (*format_with_without "UCHAR_PKG" format_sig_type formatter
+        (rec_flag, [type_decl']) (rec_flag, [type_decl])*)
+      format_sig_type formatter (rec_flag, [type_decl])
   | Psig_type (rec_flag, [{ ptype_name = { txt = "t" }} as type_decl])
       when module_name = Longident.Lident "Uchar" ->
       let ptyp_desc = Parsetree.Ptyp_constr (
-        { txt = Ldot (Lident "Uchar", "t"); loc = Location.none },
+        { txt = Interface_tools.ldot (Lident "Uchar") "t"; loc = Location.none },
         []) in
       let manifest = type_of_desc ptyp_desc in
       let type_decl' = { type_decl with ptype_manifest = Some manifest } in
-      format_with_without "UCHAR_PKG" format_sig_type formatter
-        (rec_flag, [type_decl']) (rec_flag, [type_decl])
+      (*format_with_without "UCHAR_PKG" format_sig_type formatter
+        (rec_flag, [type_decl']) (rec_flag, [type_decl])*)
+      format_sig_type formatter (rec_flag, [type_decl])
   | Psig_type (rec_flag, [{ ptype_name = { txt = "t" }} as type_decl])
       when module_name = Longident.Lident "Either" ->
       let ptyp_desc = Parsetree.Ptyp_constr (
-        { txt = Ldot (Lident "Stdcompat__init", "either"); loc = Location.none },
+        { txt = Interface_tools.ldot (Lident "Stdcompat__init") "either"; loc = Location.none },
         List.map fst type_decl.ptype_params) in
       let manifest = type_of_desc ptyp_desc in
       let type_decl = { type_decl with ptype_manifest = Some manifest } in
@@ -1457,15 +1456,15 @@ let add_self_type_manifest_to_type_decl ~(module_name : Longident.t)
   | None ->
       let module_name : Longident.t =
         match module_name with
-        | Lapply (Ldot (Lident "Hashtbl", "MakeSeeded"), Lident "H") ->
-            Lapply (Ldot (Lident "Stdcompat__hashtbl_ext", "MakeSeeded"),
-              Lident "H")
+        | Lapply ({txt = Ldot ({txt = Lident "Hashtbl"}, { txt = "MakeSeeded" })}, {txt = Lident "H"}) ->
+            Interface_tools.lapply (Interface_tools.ldot (Lident "Stdcompat__hashtbl_ext") "MakeSeeded")
+              (Lident "H")
         | _ -> module_name in
       { type_decl with ptype_manifest =
         let params = type_decl.ptype_params |> List.map fst in
         Some (Ast_helper.Typ.constr
           ({ loc = Location.none; txt =
-            Ldot (module_name, type_decl.ptype_name.txt) }) params)}
+            Interface_tools.ldot module_name type_decl.ptype_name.txt }) params)}
   | Some manifest -> type_decl
 
 let rec add_self_type_manifest ~module_name (item : Parsetree.signature_item) =
@@ -1477,7 +1476,7 @@ let rec add_self_type_manifest ~module_name (item : Parsetree.signature_item) =
   | Psig_value _ | Psig_modtype _ | Psig_exception _ -> item
   | Psig_module module_declaration ->
       let module_name : Longident.t =
-        Ldot (module_name, Option.get module_declaration.pmd_name.txt) in
+        Interface_tools.ldot module_name (Option.get module_declaration.pmd_name.txt) in
       { item with psig_desc = Psig_module { module_declaration with
         pmd_type = module_declaration.pmd_type |>
           (add_self_type_manifest_to_module_type ~module_name) }}
@@ -1500,7 +1499,7 @@ and add_self_type_manifest_to_module_type ~module_name
         (add_self_type_manifest_to_module_type ~module_name) in
 *)
       let module_name : Longident.t =
-        Lapply (module_name, Lident (Option.get var.txt)) in
+        Interface_tools.lapply module_name (Lident (Option.get var.txt)) in
       let body = body |> add_self_type_manifest_to_module_type ~module_name in
       { module_type with pmty_desc = Pmty_functor (Named (var, arg), body) }
   | Pmty_with (ty, cstr) ->
@@ -1625,7 +1624,7 @@ let main _argv =
     "Option"; "Parsing"; "Printexc"; "Printf"; "Queue"; "Random"; "Result"; "Scanf"; "Seq"; "Set";
     "Stack"; "StdLabels"; "String"; "StringLabels"; "Sys"; "Uchar"; "Weak"; "In_channel"; "Out_channel";
     "Unit"] in
-  let versions = ["5.2"; "5.1"; "5.0"; "4.14"; "4.13"; "4.12"; "4.11"; "4.10"; "4.09"; "4.08"; "4.07"; "4.06"; "4.05"; "4.04"; "4.03"; "4.02"; "4.01"; "4.00"; "3.12"; "3.11"; "3.10"; "3.09"; "3.08"; "3.07"] in
+  let versions = ["5.5"; "5.4"; "5.3"; "5.2"; "5.1"; "5.0"; "4.14"; "4.13"; "4.12"; "4.11"; "4.10"; "4.09"; "4.08"; "4.07"; "4.06"; "4.05"; "4.04"; "4.03"; "4.02"; "4.01"; "4.00"; "3.12"; "3.11"; "3.10"; "3.09"; "3.08"; "3.07"] in
   List.iter (do_module versions) modules
 
 let () =

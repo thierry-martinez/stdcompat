@@ -74,9 +74,9 @@ let refine_signature_item ~module_name
   match signature_item.psig_desc with
   | Psig_value value_description ->
       let pstr_desc : Parsetree.structure_item_desc =
-        Pstr_eval (Ast_helper.Exp.ident (Location.mkloc (Longident.Ldot (
-          Lident module_name, value_description.pval_name.txt))
-          !Ast_helper.default_loc), []) in
+        Pstr_eval (Ast_helper.Exp.ident (Interface_tools.with_default_loc (Longident.Ldot (
+          Interface_tools.with_default_loc (Longident.Lident module_name),
+          Interface_tools.with_default_loc value_description.pval_name.txt))), []) in
       let s = interpret (Ptop_def [{ pstr_desc; pstr_loc = Location.none }]) in
       let lines = String.split_on_char '\n' s in
       let rec chop_warning lines =
@@ -115,7 +115,7 @@ let self_name ~(module_name : Longident.t) (type_declaration : Parsetree.type_de
   if module_name = Lident "Pervasives" then
     Lident type_declaration.ptype_name.txt
   else
-    Ldot (module_name, type_declaration.ptype_name.txt)
+    Interface_tools.ldot module_name type_declaration.ptype_name.txt
 
 let rec remove_self_aliases_of_type_declaration ~module_name
     (type_declaration : Parsetree.type_declaration) =
@@ -129,8 +129,8 @@ let rec remove_self_aliases_of_module_type ~module_name
     (module_type : Parsetree.module_type) =
   match module_type.pmty_desc with
   | Pmty_functor (Named (var, arg), body) ->
-      let module_name : Longident.t =
-        Lapply (module_name, Lident (Option.get var.txt)) in
+      let module_name =
+         Interface_tools.lapply module_name (Longident.Lident (Option.get var.txt)) in
       let body = remove_self_aliases_of_module_type ~module_name body in
       { module_type with pmty_desc = Pmty_functor (Named (var, arg), body) }
   | Pmty_signature s ->
@@ -147,8 +147,8 @@ and remove_self_aliases_of_signature_item ~module_name
         List.map @@ remove_self_aliases_of_type_declaration ~module_name in
       { item with psig_desc = Psig_type (rec_flag, list) }
   | Psig_module module_declaration ->
-      let module_name : Longident.t =
-        Ldot (module_name, Option.get module_declaration.pmd_name.txt) in
+      let module_name =
+        Interface_tools.ldot module_name (Option.get module_declaration.pmd_name.txt) in
       let pmd_type = remove_self_aliases_of_module_type ~module_name
           module_declaration.pmd_type in
       { item with psig_desc = Psig_module { module_declaration with pmd_type }}
@@ -207,7 +207,7 @@ let module_type_of_name ~command_line ~module_name =
           Ast_helper.Exp.apply
             (Ast_helper.Exp.ident
               (Location.mkloc (Longident.Lident "exit") !Ast_helper.default_loc))
-            [Nolabel, Ast_helper.Exp.constant (Pconst_integer ("0", None))])]) in
+            [Nolabel, Ast_helper.Exp.constant (Interface_tools.loc_constant (Interface_tools.with_default_loc (Parsetree.Pconst_integer ("0", None))))])]) in
     module_type)
 
 let main () =
