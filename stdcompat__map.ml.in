@@ -34,7 +34,9 @@ val filter : (key -> 'a -> bool) -> 'a t -> 'a t
 val filter_map : (key -> 'a -> 'b option) -> 'a t -> 'b t
 val partition : (key -> 'a -> bool) -> 'a t -> ('a t * 'a t)
 val split : key -> 'a t -> ('a t * 'a option * 'a t)
-val is_empty : 'a t -> bool val mem : key -> 'a t -> bool
+val is_empty : 'a t -> bool
+val is_singleton : 'a t -> bool
+val mem : key -> 'a t -> bool
 val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
 val for_all : (key -> 'a -> bool) -> 'a t -> bool
@@ -47,10 +49,10 @@ val add_seq : (key * 'a) Seq.t -> 'a t -> 'a t
 val of_seq : (key * 'a) Seq.t -> 'a t
 end
 
-@BEGIN_FROM_5_1_0@
+@BEGIN_FROM_5_5_0@
 module Make = Map.Make
-@END_FROM_5_1_0@
-@BEGIN_BEFORE_5_1_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
 module Make (Ord : OrderedType) = struct
   include Map.Make (Ord)
 
@@ -62,22 +64,22 @@ module Make (Ord : OrderedType) = struct
   @END_BEFORE_4_07_0@
 
   @BEGIN_WITH_MAGIC@
-    @BEGIN_BEFORE_4_12_0@
+    @BEGIN_BEFORE_5_5_0@
     type 'a internal =
       | Empty
       | Node of 'a internal * key * 'a * 'a internal * int
       @BEGIN_FROM_4_02_0@
       [@@ocaml.warning "-37"]
       @END_FROM_4_02_0@
-    @END_BEFORE_4_12_0@
+    @END_BEFORE_5_5_0@
 
     @BEGIN_BEFORE_4_11_0@
     external t_of_internal : 'a internal -> 'a t = "%identity"
     @END_BEFORE_4_11_0@
 
-    @BEGIN_BEFORE_4_12_0@
+    @BEGIN_BEFORE_5_5_0@
     external internal_of_t : 'a t -> 'a internal = "%identity"
-    @END_BEFORE_4_12_0@
+    @END_BEFORE_5_5_0@
 
     @BEGIN_BEFORE_4_05_0@
       let rec min_binding_aux l v d =
@@ -609,7 +611,6 @@ module Make (Ord : OrderedType) = struct
           equal_aux (cons_enum r1 e1) (cons_enum r2 e2) in
     equal_aux (cons_enum m1 End) (cons_enum m2 End)
 
-
   let equal eq (map : 'a t) (map' : 'a t) =
     let map : 'a internal = internal_of_t map in
     let map' : 'a internal = internal_of_t map' in
@@ -878,5 +879,25 @@ module Make (Ord : OrderedType) = struct
   let of_list l =
     List.fold_left (fun acc (key, value) -> add key value acc) empty l
 @END_BEFORE_5_1_0@
+
+@BEGIN_BEFORE_5_5_0@
+  @BEGIN_WITH_MAGIC@
+  let is_singleton m =
+    match internal_of_t m with
+      Node (Empty, _key, _v, Empty, _w) -> true
+    | Empty
+    | Node (Node _, _, _, _, _)
+    | Node (_, _, _, Node _, _) -> false
+  @END_WITH_MAGIC@
+  @BEGIN_WITHOUT_MAGIC@
+  let is_singleton m =
+    let has_one_element = ref false in
+    try
+      iter (fun _ _ -> if !has_one_element then raise Exit else has_one_element := true) m;
+      !has_one_element
+    with Exit ->
+      false
+  @END_WITHOUT_MAGIC@
+@END_BEFORE_5_5_0@
 end
-@END_BEFORE_5_1_0@
+@END_BEFORE_5_5_0@

@@ -177,10 +177,12 @@ module type S = sig
   val copy : 'a t -> 'a t
   val add : 'a t -> key -> 'a -> unit
   val remove : 'a t -> key -> unit
+  val find_and_remove : 'a t -> key -> 'a option
   val find : 'a t -> key -> 'a
   val find_opt : 'a t -> key -> 'a option
   val find_all : 'a t -> key -> 'a list
   val replace : 'a t -> key -> 'a -> unit
+  val find_and_replace : 'a t -> key -> 'a -> 'a option
   val mem : 'a t -> key -> bool
   val iter : (key -> 'a -> unit) -> 'a t -> unit
   val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
@@ -195,10 +197,10 @@ module type S = sig
   val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
 end
 
-@BEGIN_FROM_4_07_0@
+@BEGIN_FROM_5_5_0@
 module Make = Hashtbl.Make
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
 module Make (H : HashedType) = struct
   include Hashtbl.Make (H)
 
@@ -251,7 +253,7 @@ module Make (H : HashedType) = struct
   let length (table : 'a t) =
     let table : (key, 'a) Stdcompat__hashtbl_ext.internal = Obj.magic table in
     table.Stdcompat__hashtbl_ext.size
-@END_WITH_MAGIC@
+y@END_WITH_MAGIC@
 @BEGIN_WITHOUT_MAGIC@
   let length table =
     fold (fun _ _ counter -> succ counter) table 0
@@ -272,8 +274,18 @@ module Make (H : HashedType) = struct
     Stdcompat__hashtbl_ext.stats ~length h
 @END_WITHOUT_MAGIC@
 @END_BEFORE_4_00_0@
+
+  let find_and_replace h k v =
+    let old = find_opt h k in
+    replace h k v;
+    old
+
+  let find_and_remove h k =
+    let old = find_opt h k in
+    remove h k;
+    old
 end
-@END_BEFORE_4_07_0@
+@END_BEFORE_5_5_0@
 
 module type SeededHashedType = sig
   type t
@@ -297,10 +309,12 @@ module type SeededS = sig
   val copy : 'a t -> 'a t
   val add : 'a t -> key -> 'a -> unit
   val remove : 'a t -> key -> unit
+  val find_and_remove : 'a t -> key -> 'a option
   val find : 'a t -> key -> 'a
   val find_opt : 'a t -> key -> 'a option
   val find_all : 'a t -> key -> 'a list
   val replace : 'a t -> key -> 'a -> unit
+  val find_and_replace : 'a t -> key -> 'a -> 'a option
   val mem : 'a t -> key -> bool
   val iter : (key -> 'a -> unit) -> 'a t -> unit
   val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
@@ -315,10 +329,10 @@ module type SeededS = sig
   val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t
 end
 
-@BEGIN_FROM_5_0_0@
+@BEGIN_FROM_5_5_0@
 module MakeSeeded = Hashtbl.MakeSeeded
-@END_FROM_5_0_0@
-@BEGIN_BEFORE_5_0_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
 module MakeSeeded (H : SeededHashedType) = struct
   include Stdcompat__hashtbl_ext.MakeSeeded (H)
 
@@ -390,8 +404,18 @@ let length table =
       bucket_histogram = [| |];
     }
 @END_BEFORE_4_00_0@
+
+  let find_and_replace h k v =
+    let old = find_opt h k in
+    replace h k v;
+    old
+
+  let find_and_remove h k =
+    let old = find_opt h k in
+    remove h k;
+    old
 end
-@END_BEFORE_5_0_0@
+@END_BEFORE_5_5_0@
 
 @BEGIN_FROM_4_12_0@
 let rebuild = Hashtbl.rebuild
@@ -402,3 +426,22 @@ let rebuild ?random tbl =
   iter (add result) tbl;
   result
 @END_BEFORE_4_12_0@
+
+
+@BEGIN_FROM_5_5_0@
+let find_and_remove = Hashtbl.find_and_remove
+
+let find_and_replace = Hashtbl.find_and_replace
+@END_FROM_5_5_0@
+
+@BEGIN_BEFORE_5_5_0@
+let find_and_replace h k v =
+  let old = find_opt h k in
+  replace h k v;
+  old
+
+let find_and_remove h k =
+  let old = find_opt h k in
+  remove h k;
+  old
+@END_BEFORE_5_5_0@

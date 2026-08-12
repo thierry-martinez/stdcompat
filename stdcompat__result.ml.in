@@ -99,3 +99,32 @@ let to_seq r =
   | Ok v -> fun () -> Stdcompat__seq.Cons (v, Stdcompat__seq.empty)
   | Error _ -> Stdcompat__seq.empty
 @END_BEFORE_4_08_0@
+
+@BEGIN_BEFORE_5_4_0@
+let get_ok' r =
+  match r with
+  | Ok v -> v
+  | Error err -> invalid_arg err
+
+let error_to_failure r =
+  match r with
+  | Ok v -> v
+  | Error err -> failwith err
+
+let product r r' =
+  match r, r' with
+  | Ok v, Ok v' -> Ok (v, v')
+  | Error err, _  | _, Error err -> Error err
+
+let retract r =
+  match r with
+  | Ok v -> v
+  | Error err -> err
+
+module Syntax = struct
+  let ( let* ) = bind
+  let ( and* ) = product
+  let (let+) r f = map f r
+  let (and+) = product
+end
+@END_BEFORE_5_4_0@

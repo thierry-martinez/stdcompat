@@ -9,6 +9,10 @@ module type S = sig
   external mul : int -> int -> int = "%mulint"
   external div : int -> int -> int = "%divint"
   external rem : int -> int -> int = "%modint"
+  val fdiv : int -> int -> int
+  val cdiv : int -> int -> int
+  val ediv : int -> int -> int
+  val erem : int -> int -> int
   external succ : int -> int = "%succint"
   external pred : int -> int = "%predint"
   val abs : int -> int
@@ -23,7 +27,32 @@ module type S = sig
   external shift_right_logical : int -> int -> int = "%lsrint"
   val equal : int -> int -> bool
   val compare : int -> int -> int
+  val min : int -> int -> int
+  val max : int -> int -> int
+
+  val popcount : t -> int
+  (** @since 5.5.0: val popcount : t -> int *)
+  
+  val unsigned_bitsize : t -> int
+  (** @since 5.5.0: val unsigned_bitsize : t -> int *)
+  
+  val signed_bitsize : t -> int
+  (** @since 5.5.0: val signed_bitsize : t -> int *)
+  
+  val leading_zeros : t -> int
+  (** @since 5.5.0: val leading_zeros : t -> int *)
+  
+  val leading_sign_bits : t -> int
+  (** @since 5.5.0: val leading_sign_bits : t -> int *)
+  
+  val trailing_zeros : t -> int
+  (** @since 5.5.0: val trailing_zeros : t -> int *)
+
   external to_float : int -> float = "%floatofint"
   external of_float : float -> int = "%intoffloat"
   val to_string : int -> string
+
+  val seeded_hash : int -> int -> int
+
+  val hash : int -> int
 end

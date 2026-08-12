@@ -14,6 +14,15 @@ type ('a, 'b) t = ('a, 'b) Stdcompat__init.either =
                      | Right of 'b 
  *)
 
+val get_left : ('a, 'b) t -> 'a
+(** @since 5.4.0: val get_left : ('a, 'b) t -> 'a *)
+
+val get_right : ('a, 'b) t -> 'b
+(** @since 5.4.0: val get_right : ('a, 'b) t -> 'b *)
+
+val retract : ('a, 'a) t -> 'a
+(** @since 5.4.0: val retract : ('a, 'a) t -> 'a *)
+
 val left : 'a -> ('a, 'b) t
 (** @since 4.12.0: val left : 'a -> ('a, 'b) t *)
 

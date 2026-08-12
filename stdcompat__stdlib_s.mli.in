@@ -1,10 +1,10 @@
 module type S = sig
-@BEGIN_FROM_5_0_0@
+@BEGIN_FROM_5_5_0@
   include module type of struct
     include Stdlib
   end
-@END_FROM_5_0_0@
-@BEGIN_BEFORE_5_0_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
   module Pervasives : Stdcompat__pervasives_s.S
 
   include Stdcompat__pervasives_s.S
@@ -164,5 +164,5 @@ module type S = sig
   module Unit : Stdcompat__unit_s.S
 
   module Weak : Stdcompat__weak_s.S
-@END_BEFORE_5_0_0@
+@END_BEFORE_5_5_0@
 end

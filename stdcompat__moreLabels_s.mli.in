@@ -1,8 +1,8 @@
 module type S = sig
-@BEGIN_FROM_5_0_0@
+@BEGIN_FROM_5_5_0@
 module Hashtbl = MoreLabels.Hashtbl
-@END_FROM_5_0_0@
-@BEGIN_BEFORE_5_0_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
 module Hashtbl :
 sig type ('a, 'b) t = ('a, 'b) Hashtbl.t
 val create : ?random:bool -> int -> ('a, 'b) t val clear : ('a, 'b) t -> unit
@@ -12,7 +12,9 @@ val find : ('a, 'b) t -> 'a -> 'b
 val find_opt : ('a, 'b) t -> 'a -> 'b option
 val find_all : ('a, 'b) t -> 'a -> 'b list val mem : ('a, 'b) t -> 'a -> bool
 val remove : ('a, 'b) t -> 'a -> unit
+val find_and_remove : ('a, 'b) t -> 'a -> 'b option
 val replace : ('a, 'b) t -> key:'a -> data:'b -> unit
+val find_and_replace : ('a, 'b) t -> key:'a -> data:'b -> 'b option
 val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b) t -> unit
 val filter_map_inplace :
   f:(key:'a -> data:'b -> 'b option) -> ('a, 'b) t -> unit
@@ -38,18 +40,19 @@ module type HashedType =
 sig type t val equal : t -> t -> bool val hash : t -> int end
 module type S =
 sig type key
-    @BEGIN_FROM_4_12_0@
-    type !'a t
-    @END_FROM_4_12_0@
-    @BEGIN_BEFORE_4_12_0@
-    type 'a t
-    @END_BEFORE_4_12_0@
+@BEGIN_FROM_4_12_0@
+type !'a t
+@END_FROM_4_12_0@
+@BEGIN_BEFORE_4_12_0@
+type 'a t
+@END_BEFORE_4_12_0@
 val create : int -> 'a t val clear : 'a t -> unit
 val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key:key -> data:'a -> unit val remove : 'a t -> key -> unit
-val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
-val find_all : 'a t -> key -> 'a list
+val find_and_remove : 'a t -> key -> 'a option val find : 'a t -> key -> 'a
+val find_opt : 'a t -> key -> 'a option val find_all : 'a t -> key -> 'a list
 val replace : 'a t -> key:key -> data:'a -> unit
+val find_and_replace : 'a t -> key:key -> data:'a -> 'a option
 val mem : 'a t -> key -> bool
 val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
 val filter_map_inplace : f:(key:key -> data:'a -> 'a option) -> 'a t -> unit
@@ -67,9 +70,10 @@ functor (H : HashedType) ->
 sig type key = H.t type 'a t = 'a Hashtbl.Make(H).t val create : int -> 'a t
 val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key:key -> data:'a -> unit val remove : 'a t -> key -> unit
-val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
-val find_all : 'a t -> key -> 'a list
+val find_and_remove : 'a t -> key -> 'a option val find : 'a t -> key -> 'a
+val find_opt : 'a t -> key -> 'a option val find_all : 'a t -> key -> 'a list
 val replace : 'a t -> key:key -> data:'a -> unit
+val find_and_replace : 'a t -> key:key -> data:'a -> 'a option
 val mem : 'a t -> key -> bool
 val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
 val filter_map_inplace : f:(key:key -> data:'a -> 'a option) -> 'a t -> unit
@@ -95,9 +99,10 @@ type 'a t
 val create : ?random:bool -> int -> 'a t
 val clear : 'a t -> unit val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key:key -> data:'a -> unit val remove : 'a t -> key -> unit
-val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
-val find_all : 'a t -> key -> 'a list
+val find_and_remove : 'a t -> key -> 'a option val find : 'a t -> key -> 'a
+val find_opt : 'a t -> key -> 'a option val find_all : 'a t -> key -> 'a list
 val replace : 'a t -> key:key -> data:'a -> unit
+val find_and_replace : 'a t -> key:key -> data:'a -> 'a option
 val mem : 'a t -> key -> bool
 val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
 val filter_map_inplace : f:(key:key -> data:'a -> 'a option) -> 'a t -> unit
@@ -116,9 +121,10 @@ sig type key = H.t type 'a t = 'a Stdcompat__hashtbl_ext.MakeSeeded(H).t
 val create : ?random:bool -> int -> 'a t val clear : 'a t -> unit
 val reset : 'a t -> unit val copy : 'a t -> 'a t
 val add : 'a t -> key:key -> data:'a -> unit val remove : 'a t -> key -> unit
-val find : 'a t -> key -> 'a val find_opt : 'a t -> key -> 'a option
-val find_all : 'a t -> key -> 'a list
+val find_and_remove : 'a t -> key -> 'a option val find : 'a t -> key -> 'a
+val find_opt : 'a t -> key -> 'a option val find_all : 'a t -> key -> 'a list
 val replace : 'a t -> key:key -> data:'a -> unit
+val find_and_replace : 'a t -> key:key -> data:'a -> 'a option
 val mem : 'a t -> key -> bool
 val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
 val filter_map_inplace : f:(key:key -> data:'a -> 'a option) -> 'a t -> unit
@@ -133,14 +139,14 @@ val replace_seq : 'a t -> (key * 'a) Stdcompat__seq.t -> unit
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end val hash : 'a -> int
 val seeded_hash : int -> 'a -> int val hash_param : int -> int -> 'a -> int
 val seeded_hash_param : int -> int -> int -> 'a -> int end
-@END_BEFORE_5_0_0@
-(** @since 5.0.0: module Hashtbl = MoreLabels.Hashtbl
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: module Hashtbl = MoreLabels.Hashtbl
  *)
 
-@BEGIN_FROM_5_1_0@
+@BEGIN_FROM_5_5_0@
 module Map = MoreLabels.Map
-@END_FROM_5_1_0@
-@BEGIN_BEFORE_5_1_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
 module Map :
 sig module type OrderedType = sig type t val compare : t -> t -> int end
 module type S =
@@ -179,7 +185,8 @@ val filter : f:(key -> 'a -> bool) -> 'a t -> 'a t
 val filter_map : f:(key -> 'a -> 'b option) -> 'a t -> 'b t
 val partition : f:(key -> 'a -> bool) -> 'a t -> ('a t * 'a t)
 val split : key -> 'a t -> ('a t * 'a option * 'a t)
-val is_empty : 'a t -> bool val mem : key -> 'a t -> bool
+val is_empty : 'a t -> bool val is_singleton : 'a t -> bool
+val mem : key -> 'a t -> bool
 val equal : cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 val compare : cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
 val for_all : f:(key -> 'a -> bool) -> 'a t -> bool
@@ -220,7 +227,8 @@ val filter : f:(key -> 'a -> bool) -> 'a t -> 'a t
 val filter_map : f:(key -> 'a -> 'b option) -> 'a t -> 'b t
 val partition : f:(key -> 'a -> bool) -> 'a t -> ('a t * 'a t)
 val split : key -> 'a t -> ('a t * 'a option * 'a t)
-val is_empty : 'a t -> bool val mem : key -> 'a t -> bool
+val is_empty : 'a t -> bool val is_singleton : 'a t -> bool
+val mem : key -> 'a t -> bool
 val equal : cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 val compare : cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
 val for_all : f:(key -> 'a -> bool) -> 'a t -> bool
@@ -231,14 +239,14 @@ val to_rev_seq : 'a t -> (key * 'a) Stdcompat__seq.t
 val to_seq_from : key -> 'a t -> (key * 'a) Stdcompat__seq.t
 val add_seq : (key * 'a) Stdcompat__seq.t -> 'a t -> 'a t
 val of_seq : (key * 'a) Stdcompat__seq.t -> 'a t end end
-@END_BEFORE_5_1_0@
-(** @since 5.1.0: module Map = MoreLabels.Map
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: module Map = MoreLabels.Map
  *)
 
-@BEGIN_FROM_5_1_0@
+@BEGIN_FROM_5_5_0@
 module Set = MoreLabels.Set
-@END_FROM_5_1_0@
-@BEGIN_BEFORE_5_1_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
 module Set :
 sig module type OrderedType = sig type t val compare : t -> t -> int end
 module type S =
@@ -260,9 +268,9 @@ val map : f:(elt -> elt) -> t -> t val filter : f:(elt -> bool) -> t -> t
 val filter_map : f:(elt -> elt option) -> t -> t
 val partition : f:(elt -> bool) -> t -> (t * t)
 val split : elt -> t -> (t * bool * t) val is_empty : t -> bool
-val mem : elt -> t -> bool val equal : t -> t -> bool
-val compare : t -> t -> int val subset : t -> t -> bool
-val for_all : f:(elt -> bool) -> t -> bool
+val is_singleton : t -> bool val mem : elt -> t -> bool
+val equal : t -> t -> bool val compare : t -> t -> int
+val subset : t -> t -> bool val for_all : f:(elt -> bool) -> t -> bool
 val exists : f:(elt -> bool) -> t -> bool val to_list : t -> elt list
 val of_list : elt list -> t
 val to_seq_from : elt -> t -> elt Stdcompat__seq.t
@@ -290,9 +298,9 @@ val map : f:(elt -> elt) -> t -> t val filter : f:(elt -> bool) -> t -> t
 val filter_map : f:(elt -> elt option) -> t -> t
 val partition : f:(elt -> bool) -> t -> (t * t)
 val split : elt -> t -> (t * bool * t) val is_empty : t -> bool
-val mem : elt -> t -> bool val equal : t -> t -> bool
-val compare : t -> t -> int val subset : t -> t -> bool
-val for_all : f:(elt -> bool) -> t -> bool
+val is_singleton : t -> bool val mem : elt -> t -> bool
+val equal : t -> t -> bool val compare : t -> t -> int
+val subset : t -> t -> bool val for_all : f:(elt -> bool) -> t -> bool
 val exists : f:(elt -> bool) -> t -> bool val to_list : t -> elt list
 val of_list : elt list -> t
 val to_seq_from : elt -> t -> elt Stdcompat__seq.t
@@ -300,8 +308,8 @@ val to_seq : t -> elt Stdcompat__seq.t
 val to_rev_seq : t -> elt Stdcompat__seq.t
 val add_seq : elt Stdcompat__seq.t -> t -> t
 val of_seq : elt Stdcompat__seq.t -> t end end
-@END_BEFORE_5_1_0@
-(** @since 5.1.0: module Set = MoreLabels.Set
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: module Set = MoreLabels.Set
  *)
 
 end

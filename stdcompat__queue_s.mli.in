@@ -11,38 +11,41 @@ type 'a t = 'a Queue.t
 exception Empty 
 (** Alias for {!Queue.Empty} *)
 
+@BEGIN_FROM_5_5_0@
+val to_seq : 'a t -> 'a Seq.t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val to_seq : 'a t -> 'a Stdcompat__seq.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val to_seq : 'a t -> 'a Seq.t
+ *)
+
+@BEGIN_FROM_5_5_0@
+val add_seq : 'a t -> 'a Seq.t -> unit
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val add_seq : 'a t -> 'a Stdcompat__seq.t -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val add_seq : 'a t -> 'a Seq.t -> unit
+ *)
+
+@BEGIN_FROM_5_5_0@
+val of_seq : 'a Seq.t -> 'a t
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val of_seq : 'a Stdcompat__seq.t -> 'a t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: val of_seq : 'a Seq.t -> 'a t
+ *)
+
+val drop : 'a t -> unit
+(** @since 5.3.0: val drop : 'a t -> unit *)
+
 val take_opt : 'a t -> 'a option
 (** @since 4.08.0: val take_opt : 'a t -> 'a option *)
 
 val peek_opt : 'a t -> 'a option
 (** @since 4.08.0: val peek_opt : 'a t -> 'a option *)
-
-@BEGIN_FROM_4_07_0@
-val to_seq : 'a t -> 'a Seq.t
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
-val to_seq : 'a t -> 'a Stdcompat__seq.t
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: val to_seq : 'a t -> 'a Seq.t
- *)
-
-@BEGIN_FROM_4_07_0@
-val add_seq : 'a t -> 'a Seq.t -> unit
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
-val add_seq : 'a t -> 'a Stdcompat__seq.t -> unit
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: val add_seq : 'a t -> 'a Seq.t -> unit
- *)
-
-@BEGIN_FROM_4_07_0@
-val of_seq : 'a Seq.t -> 'a t
-@END_FROM_4_07_0@
-@BEGIN_BEFORE_4_07_0@
-val of_seq : 'a Stdcompat__seq.t -> 'a t
-@END_BEFORE_4_07_0@
-(** @since 4.07.0: val of_seq : 'a Seq.t -> 'a t
- *)
 
 val create : unit -> 'a t
 (** Alias for {!Queue.create} *)
@@ -99,7 +102,5 @@ val fold : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 
 val transfer : 'a t -> 'a t -> unit
 (** Alias for {!Queue.transfer} *)
-
-val drop : 'a t -> unit
 
 end

@@ -1,12 +1,12 @@
-@BEGIN_FROM_4_06_0@
+@BEGIN_FROM_5_4_0@
 include Format
-@END_FROM_4_06_0@
+@END_FROM_5_4_0@
 @BEGIN_BEFORE_5_2_0@
 let pp_print_nothing _fmt () = ()
 
 let pp_infinity = 1000000010
 @END_BEFORE_5_2_0@
-@BEGIN_BEFORE_4_06_0@
+@BEGIN_BEFORE_5_4_0@
 @BEGIN_FROM_4_01_0@
 include (Format : module type of struct include Format end
   with type formatter_out_functions := Format.formatter_out_functions)
@@ -18,6 +18,7 @@ include Format
 type formatter_out_functions =
   {
   out_string: string -> int -> int -> unit ;
+  out_width : string -> pos:int -> len:int -> int;
   out_flush: unit -> unit ;
   out_newline: unit -> unit ;
   out_spaces: int -> unit ;
@@ -25,16 +26,35 @@ type formatter_out_functions =
 
 @BEGIN_FROM_4_01_0@
 let downgrade_formatter_out_functions functions =
-  let { out_string; out_flush; out_newline; out_spaces; out_indent = _ } =
+  let { out_string; out_width = _; out_flush; out_newline; out_spaces;
+        @BEGIN_FROM_4_05_0@
+        out_indent;
+        @END_FROM_4_05_0@
+        @BEGIN_BEFORE_4_05_0@
+        out_indent = _;
+        @END_BEFORE_4_05_0@
+        } =
     functions in
-  { Format.out_string; out_flush; out_newline; out_spaces }
+  { Format.out_string; out_flush; out_newline; out_spaces;
+        @BEGIN_FROM_4_05_0@
+        out_indent;
+        @END_FROM_4_05_0@
+  }
 
 let upgrade_formatter_out_functions functions =
-  let { Format.out_string; out_flush; out_newline; out_spaces } =
+  let { Format.out_string; out_flush; out_newline; out_spaces;
+        @BEGIN_FROM_4_05_0@
+        out_indent;
+        @END_FROM_4_05_0@
+      } =
     functions in
+  let out_width _ =
+    failwith "Not implemented." in
+  @BEGIN_BEFORE_4_05_0@
   let out_indent _ =
     failwith "Not implemented." in
-  { out_string; out_flush; out_newline; out_spaces; out_indent }
+  @END_BEFORE_4_05_0@
+  { out_string; out_width; out_flush; out_newline; out_spaces; out_indent }
 
 let pp_set_formatter_out_functions fmt functions =
   Format.pp_set_formatter_out_functions fmt
@@ -63,7 +83,7 @@ let pp_get_formatter_out_functions _ =
 let get_formatter_out_functions _ =
   failwith "Not implemented."
 @END_BEFORE_4_01_0@
-@END_BEFORE_4_06_0@
+@END_BEFORE_5_4_0@
 
 @BEGIN_BEFORE_4_01_0@
 let asprintf _ =
@@ -172,6 +192,13 @@ type formatter_stag_functions =
   print_close_stag: stag -> unit }
 
 @END_BEFORE_4_08_0@
+
+@BEGIN_FROM_4_06_0@
+@BEGIN_BEFORE_5_4_0@
+let formatter_of_out_functions functions =
+  formatter_of_out_functions (downgrade_formatter_out_functions functions)
+@END_BEFORE_5_4_0@
+@END_FROM_4_06_0@
 
 @BEGIN_BEFORE_4_06_0@
 let formatter_of_out_functions _ =
@@ -339,3 +366,48 @@ let print_substring_as ~pos ~len _as_len _v =
   pp_print_substring_as ~pos ~len (DLS.get std_formatter_key) as_len v
 *)
 @END_BEFORE_5_3_0@
+
+@BEGIN_BEFORE_5_4_0@
+let utf_8_scalar_width s ~pos ~len =
+  Stdcompat__utf8.utf_8_scalar_width s ~pos ~len
+
+let ascii_width _ ~pos:_ ~len = len
+
+let format_text _ =
+  failwith "Not implemented."  
+@END_BEFORE_5_4_0@
+
+@BEGIN_BEFORE_5_5_0@
+module Args = struct 
+  type ('a, 'r) t =
+    | []: ('r, 'r) t 
+    | (::): 'a * ('b, 'r) t -> ('a -> 'b, 'r) t 
+
+  let rec apply : type a r . a -> (a, r) t -> r =
+  fun f args ->
+    match args with
+    | [] -> f
+    | hd :: tl -> apply (f hd) tl
+
+  let rec (@) : type a r1 r2 . (a, r1) t -> (r1, r2) t -> (a, r2) t =
+  fun a1 a2 ->
+    match a1 with
+    | [] -> a2
+    | hd :: tl -> hd :: (tl @ a2)
+end
+
+let lfprintf fmt pp args =
+  Args.apply (fprintf fmt pp) args
+
+let lprintf pp args =
+  Args.apply (printf pp) args
+
+let leprintf pp args =
+  Args.apply (eprintf pp) args
+
+let lasprintf pp args =
+  Args.apply (asprintf pp) args
+
+let ldprintf pp args fmt =
+  lfprintf fmt pp args
+@END_BEFORE_5_5_0@

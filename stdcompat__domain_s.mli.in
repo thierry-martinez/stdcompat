@@ -41,6 +41,12 @@ val get : 'a key -> 'a val set : 'a key -> 'a -> unit end
 (** @since 5.0.0: module DLS = Domain.DLS
  *)
 
+val count : unit -> int
+(** @since 5.5.0: val count : unit -> int *)
+
+val self_index : unit -> int
+(** @since 5.3.0: val self_index : unit -> int *)
+
 val spawn : (unit -> 'a) -> 'a t
 (** @since 5.0.0: val spawn : (unit -> 'a) -> 'a t *)
 
@@ -67,8 +73,5 @@ val is_main_domain : unit -> bool
 
 val recommended_domain_count : unit -> int
 (** @since 5.0.0: val recommended_domain_count : unit -> int *)
-
-val self_index : unit -> int
-(** @since 5.3: self_index : unit -> int *)
 
 end

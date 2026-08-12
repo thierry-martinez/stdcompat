@@ -1,15 +1,26 @@
 module type S = sig
-@BEGIN_FROM_4_08_0@
+@BEGIN_FROM_5_5_0@
 type 'a t = 'a CamlinternalLazy.t
-@END_FROM_4_08_0@
-@BEGIN_BEFORE_4_08_0@
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
 type 'a t = 'a Stdcompat__init.lazy_t
-@END_BEFORE_4_08_0@
-(** @since 4.08.0: type 'a t = 'a CamlinternalLazy.t
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: type 'a t = 'a CamlinternalLazy.t
  *)
 
 exception Undefined 
 (** Alias for {!Lazy.Undefined} *)
+
+@BEGIN_FROM_5_5_0@
+module Mutexed = Lazy.Mutexed
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+module Mutexed :
+sig type 'a t val is_val : 'a t -> bool val from_val : 'a -> 'a t
+val from_fun : (unit -> 'a) -> 'a t val force : 'a t -> 'a end
+@END_BEFORE_5_5_0@
+(** @since 5.5.0: module Mutexed = Lazy.Mutexed
+ *)
 
 val map : ('a -> 'b) -> 'a t -> 'b t
 (** @since 4.13.0: val map : ('a -> 'b) -> 'a t -> 'b t *)

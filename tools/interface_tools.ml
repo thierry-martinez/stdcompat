@@ -152,3 +152,15 @@ module String = struct
   let suffix_from s pos =
     sub s pos (length s - pos)
 end
+
+let with_default_loc value =
+  Location.mkloc value !Ast_helper.default_loc
+
+let loc_constant (value : Parsetree.constant_desc Location.loc) : Parsetree.constant =
+  { pconst_desc = value.txt; pconst_loc = value.loc }
+
+let ldot (m : Longident.t) (s : string) : Longident.t =
+  Ldot (with_default_loc m, with_default_loc s)
+
+let lapply (i : Longident.t) (j : Longident.t) : Longident.t =
+  Lapply (with_default_loc i, with_default_loc j)

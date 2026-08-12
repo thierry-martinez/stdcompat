@@ -45,15 +45,24 @@ type open_flag =
       | Open_nonblock 
  *)
 
+@BEGIN_FROM_5_5_0@
 val output_bigarray :
   t ->
     ('a, Bigarray.int8_unsigned_elt, Bigarray.c_layout) Bigarray.Array1.t ->
       int -> int -> unit
-(** @since 5.2.0:
+@END_FROM_5_5_0@
+@BEGIN_BEFORE_5_5_0@
+val output_bigarray :
+  t ->
+    ('a, Bigarray.int8_unsigned_elt, Bigarray.c_layout) Bigarray.Array1.t ->
+      int -> int -> unit
+@END_BEFORE_5_5_0@
+(** @since 5.5.0:
     val output_bigarray :
       t ->
         ('a, Bigarray.int8_unsigned_elt, Bigarray.c_layout) Bigarray.Array1.t
-          -> int -> int -> unit *)
+          -> int -> int -> unit
+ *)
 
 val is_binary_mode : t -> bool
 (** @since 5.2.0: val is_binary_mode : t -> bool *)

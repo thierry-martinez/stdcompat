@@ -77,3 +77,34 @@ let to_seq o =
   | Some v -> fun () -> Stdcompat__seq.Cons (v, Stdcompat__seq.empty)
   | None -> Stdcompat__seq.empty
 @END_BEFORE_4_08_0@
+
+@BEGIN_BEFORE_5_5_0@
+let product o o' =
+  match o, o' with
+  | None, _ | _, None -> None
+  | Some v, Some v' -> Some (v, v')
+
+let blend f o o' =
+  match o, o' with
+  | None, None -> None
+  | Some v, None
+  | None, Some v -> Some v
+  | Some v, Some v' -> Some (f v v')
+
+let for_all f o =
+  match o with
+  | None -> true
+  | Some v -> f v
+
+let exists f o =
+  match o with
+  | None -> false
+  | Some v -> f v
+
+module Syntax = struct
+  let ( let* ) = bind
+  let ( and* ) = product
+  let (let+) o f = map f o
+  let (and+) = product
+end
+@END_BEFORE_5_5_0@

@@ -2,20 +2,40 @@ module type S = sig
 type t = char
 (** Alias for {!Char.t} *)
 
+@BEGIN_FROM_5_4_0@
+module Ascii = Char.Ascii
+@END_FROM_5_4_0@
+@BEGIN_BEFORE_5_4_0@
+module Ascii :
+sig val min : char val max : char val is_valid : char -> bool
+val is_upper : char -> bool val is_lower : char -> bool
+val is_letter : char -> bool val is_alphanum : char -> bool
+val is_white : char -> bool val is_blank : char -> bool
+val is_graphic : char -> bool val is_print : char -> bool
+val is_control : char -> bool val is_digit : char -> bool
+val digit_to_int : char -> int val digit_of_int : int -> char
+val is_hex_digit : char -> bool val hex_digit_to_int : char -> int
+val lower_hex_digit_of_int : int -> char
+val upper_hex_digit_of_int : int -> char val uppercase : char -> char
+val lowercase : char -> char end
+@END_BEFORE_5_4_0@
+(** @since 5.4.0: module Ascii = Char.Ascii
+ *)
+
 val seeded_hash : int -> t -> int
 (** @since 5.1.0: val seeded_hash : int -> t -> int *)
 
 val hash : t -> int
 (** @since 5.1.0: val hash : t -> int *)
 
+val equal : t -> t -> bool
+(** @since 4.03.0: val equal : t -> t -> bool *)
+
 val lowercase_ascii : char -> char
 (** @since 4.03.0: val lowercase_ascii : char -> char *)
 
 val uppercase_ascii : char -> char
 (** @since 4.03.0: val uppercase_ascii : char -> char *)
-
-val equal : t -> t -> bool
-(** @since 4.03.0: val equal : t -> t -> bool *)
 
 external code : char -> int = "%identity"
 (** Alias for {!Char.code} *)

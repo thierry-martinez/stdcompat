@@ -78,3 +78,11 @@ module String : sig
 
   val suffix_from : string -> int -> string
 end
+
+val with_default_loc : 'a -> 'a Location.loc
+
+val loc_constant : Parsetree.constant_desc Location.loc -> Parsetree.constant
+
+val ldot : Longident.t -> string -> Longident.t
+
+val lapply : Longident.t -> Longident.t -> Longident.t

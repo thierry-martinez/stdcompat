@@ -81,12 +81,17 @@ let v4_13_1 = mk 4 13 1
 let v4_14_0 = mk 4 14 0
 let v4_14_1 = mk 4 14 1
 let v4_14_2 = mk 4 14 2
+let v4_14_3 = mk 4 14 3
+let v4_14_4 = mk 4 14 4
 let v5_0_0 = mk 5 0 0
 let v5_1_0 = mk 5 1 0
 let v5_1_1 = mk 5 1 1
 let v5_2_0 = mk 5 2 0
 let v5_2_1 = mk 5 2 1
 let v5_3_0 = mk 5 3 0
+let v5_4_0 = mk 5 4 0
+let v5_4_1 = mk 5 4 1
+let v5_5_0 = mk 5 5 0
 
 let known_versions =
 [
@@ -127,12 +132,17 @@ let known_versions =
   v4_14_0;
   v4_14_1;
   v4_14_2;
+  v4_14_3;
+  v4_14_4;
   v5_0_0;
   v5_1_0;
   v5_1_1;
   v5_2_0;
   v5_2_1;
   v5_3_0;
+  v5_4_0;
+  v5_4_1;
+  v5_5_0;
 ]
 
 let is_known v = List.mem v known_versions

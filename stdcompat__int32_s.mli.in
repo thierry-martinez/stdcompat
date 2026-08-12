@@ -2,6 +2,36 @@ module type S = sig
 type t = int32
 (** Alias for {!Int32.t} *)
 
+val fdiv : int32 -> int32 -> int32
+(** @since 5.5.0: val fdiv : int32 -> int32 -> int32 *)
+
+val cdiv : int32 -> int32 -> int32
+(** @since 5.5.0: val cdiv : int32 -> int32 -> int32 *)
+
+val ediv : int32 -> int32 -> int32
+(** @since 5.5.0: val ediv : int32 -> int32 -> int32 *)
+
+val erem : int32 -> int32 -> int32
+(** @since 5.5.0: val erem : int32 -> int32 -> int32 *)
+
+val popcount : t -> int
+(** @since 5.5.0: val popcount : t -> int *)
+
+val unsigned_bitsize : t -> int
+(** @since 5.5.0: val unsigned_bitsize : t -> int *)
+
+val signed_bitsize : t -> int
+(** @since 5.5.0: val signed_bitsize : t -> int *)
+
+val leading_zeros : t -> int
+(** @since 5.5.0: val leading_zeros : t -> int *)
+
+val leading_sign_bits : t -> int
+(** @since 5.5.0: val leading_sign_bits : t -> int *)
+
+val trailing_zeros : t -> int
+(** @since 5.5.0: val trailing_zeros : t -> int *)
+
 val seeded_hash : int -> t -> int
 (** @since 5.1.0: val seeded_hash : int -> t -> int *)
 

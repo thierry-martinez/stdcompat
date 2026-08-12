@@ -14,6 +14,15 @@ type t = bool =
                      | true 
  *)
 
+val logand : bool -> bool -> bool
+(** @since 5.4.0: val logand : bool -> bool -> bool *)
+
+val logor : bool -> bool -> bool
+(** @since 5.4.0: val logor : bool -> bool -> bool *)
+
+val logxor : bool -> bool -> bool
+(** @since 5.4.0: val logxor : bool -> bool -> bool *)
+
 val seeded_hash : int -> bool -> int
 (** @since 5.1.0: val seeded_hash : int -> bool -> int *)
 
